@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Crosswell Landing Site
 
-## Getting Started
+Marketing site for **Crosswell Consulting**: custom AI tools, software, and automations for investment funds.
 
-First, run the development server:
+Built with Next.js 16 (App Router), React 19, TypeScript, and Tailwind CSS v4. Deployed on Vercel.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+> The landing page is not built yet. This repo currently holds the scaffold plus the brain sync setup. The page itself will be planned before any page code is written.
+
+## The brain
+
+Strategy, brand, voice, copy, and the landing page brief live in the Crosswell "brain" (an Obsidian vault), not in this repo:
+
+```
+C:\AISecondBrain\03 Projects\Crosswell Consulting
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+A read-only snapshot is mirrored into `docs/brain/`. The full working contract (brand, voice, sync protocol, team) is in `CLAUDE.md`. Read it first.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Develop
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm install      # if needed
+npm run dev      # http://localhost:3000
+npm run build    # production build
+```
 
-## Learn More
+## Brain sync
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run sync:brain            # pull brain context into docs/brain/
+npm run log:brain -- "note"   # write a build milestone back into the brain
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Conventions
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Finance credible voice, specific to fund workflows. No startup hype.
+- No em dashes anywhere, in copy or in repo files.
+- Never name the active fund client publicly. Keep proof realistic but unnamed.

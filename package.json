@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "sync:brain": "node scripts/sync-brain.mjs",
+    "log:brain": "node scripts/log-to-brain.mjs"
   },
   "dependencies": {
     "next": "16.2.9",
