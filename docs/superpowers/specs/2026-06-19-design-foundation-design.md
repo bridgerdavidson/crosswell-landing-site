@@ -70,7 +70,7 @@ The system is **semantic tokens with a sectional charcoal remap**. Every semanti
 | `--color-disabled-foreground` | `#A39D8F` | on-dark text at 45% opacity | Disabled text |
 
 Notes:
-- `--color-primary-hover` and `--color-accent-text` deliberately share deep fern `#3D633D` on light so they cannot silently drift. The Brand Guide reserves deep fern for green text and the wordmark; reusing it as the button hover is a deliberate overload of that brand color and is flagged for sign-off.
+- `--color-primary-hover` and `--color-accent-text` deliberately share deep fern `#3D633D` on light so they cannot silently drift. The Brand Guide reserves deep fern for green text and the wordmark; reusing it as the button hover is an intentional, approved overload (it is the natural darker fern and reads cohesively).
 - `--color-control-border` (`#8A8475`) is darker than the brand warm gray on purpose: input and outline boundaries are the sole visual indicator of the control, so they must meet the 3:1 non-text contrast rule, which `#B8B2A7` does not.
 - On charcoal, the fern button keeps its `#4E7A4E` fill with white label (the fill is self-contained). The focus ring and any green accent use the lightened fern `#8FB68F`, never `#4E7A4E`, which is near-invisible on charcoal.
 - Disabled controls intentionally sit below AA contrast; WCAG exempts disabled controls from the contrast minimums. Disabled also sets `cursor: not-allowed`.
