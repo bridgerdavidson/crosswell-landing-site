@@ -22,6 +22,8 @@ The code, the landing site, and all technical build work live in a separate repo
 
 This brain folder holds business strategy, positioning, client context, and sales only. When working in the repo, pull the why, the audience, the offerings, the brand, and the tone from this folder and from `C:\AISecondBrain\GOALS.md`.
 
+The landing site and this brain stay in sync through the repo. The repo pulls this folder's files into its own `docs/brain/` snapshot (via `npm run sync:brain`) and writes build milestones back here to `Landing Site Build Log.md` (via `npm run log:brain`). Read that log for what the build has shipped. The strategy, brand, and brief in this folder remain the source of truth.
+
 ## Process
 
 - **Strategy and sales flow (here):** raw ideas (`00 Ideas`) sharpen into client context (`01 Clients`), offerings and positioning (`02 Offerings & Positioning`), and outreach (`03 Sales & Outreach`), with the reasoning behind moves logged in `04 Strategy & Decisions`. Brand and visual assets live in `05 Brand & Assets`.
@@ -58,8 +60,8 @@ This brain folder holds business strategy, positioning, client context, and sale
 ## Current Status
 
 > **Last updated:** 2026-06-19
-> **Status:** Just created. Brain layer set up from the company brief and the landing-page brief.
+> **Status:** Landing site scaffolded and deployed. Next.js + TypeScript on Vercel, repo at `bridgerdavidson/crosswell-landing-site` (private). Live starter page: https://crosswell-landing-site.vercel.app. The landing page itself is the next build.
 
 Crosswell has moved from an early-stage idea into a real, active firm: a three-person team (Bridger, Mikey, and Max) building the full AI operating layer for a live private credit fund and turning that into a repeatable, fund-focused offering. The repo is scaffolded at `C:\Builds\Crosswell` with `landing-site/` and `client-projects/` folders. The immediate build target is the landing site (brief in `03 Sales & Outreach/`).
 
-<!-- TODO: Update this status as the project progresses. Add the live site URL once it exists. -->
+<!-- TODO: Update this status as the project progresses. -->

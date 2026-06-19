@@ -1,7 +1,7 @@
 {
   "source": "C:\\AISecondBrain\\03 Projects\\Crosswell Consulting",
-  "syncedAt": "2026-06-19T20:38:35.774Z",
-  "fileCount": 9,
+  "syncedAt": "2026-06-19T21:05:29.774Z",
+  "fileCount": 10,
   "files": [
     "01 Clients/Active Fund Client.md",
     "02 Offerings & Positioning/Offerings & Tools.md",
@@ -11,6 +11,7 @@
     "05 Brand & Assets/xw_logo_dark.svg",
     "05 Brand & Assets/xw_logo_light.svg",
     "CLAUDE.md",
-    "COMMANDS.md"
+    "COMMANDS.md",
+    "Landing Site Build Log.md"
   ]
 }
