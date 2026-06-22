@@ -25,6 +25,10 @@ export function Hero() {
       <AmbientBackground />
       <Container className="relative">
         <motion.div
+          // Remount when animation enables so the "hidden" initial is committed at a
+          // fresh mount; otherwise the entrance animates show -> show (a no-op).
+          // useReady flips post-mount and motion reads `initial` only at mount.
+          key={animate ? "motion" : "static"}
           className="max-w-[48rem]"
           variants={animate ? containerVariants : undefined}
           initial={animate ? "hidden" : false}

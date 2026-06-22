@@ -22,6 +22,11 @@ export function Reveal({
   const animate = ready && !reduce;
   return (
     <motion.div
+      // Remount when animation turns on. `animate` is false at mount (useReady flips
+      // in a post-mount effect) and motion reads `initial` only at mount, so without a
+      // fresh mount the hidden start state is never committed and the entrance animates
+      // visible -> visible (nothing moves). The key forces that fresh mount.
+      key={animate ? "motion" : "static"}
       className={className}
       initial={animate ? { opacity: 0, y } : false}
       whileInView={animate ? { opacity: 1, y: 0 } : undefined}
@@ -47,6 +52,9 @@ export function RevealGroup({
   const animate = ready && !reduce;
   return (
     <motion.div
+      // See Reveal: remount on enable so the "hidden" initial is committed and the
+      // staggered children actually reveal instead of mounting already-visible.
+      key={animate ? "motion" : "static"}
       className={className}
       initial={animate ? "hidden" : false}
       whileInView={animate ? "show" : undefined}
