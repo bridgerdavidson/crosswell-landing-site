@@ -33,6 +33,7 @@ export function CountUp({
 
   useEffect(() => {
     if (reduce) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- one-shot sync of animation display state to reduced-motion / in-view; single non-cascading update
       setText(renderValue(to));
       return;
     }

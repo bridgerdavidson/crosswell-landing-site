@@ -1,10 +1,18 @@
-import { useEffect, useState } from "react";
+"use client";
 
-// Only apply a hidden initial animation state after hydration, so server-rendered
-// content (and no-JS / crawler views) is always visible. Shared by the motion
-// islands (Reveal, Hero entrance, AgentFlow) so they degrade identically.
+import { useSyncExternalStore } from "react";
+
+// True only after hydration on the client; false during server render and the
+// hydration snapshot. Lets the motion islands (Reveal, Hero entrance, AgentFlow)
+// keep their hidden initial state out of server-rendered / no-JS output, so that
+// content is always visible without JS. useSyncExternalStore is the SSR-safe
+// primitive for client detection (no setState-in-effect).
+const subscribe = () => () => {};
+
 export function useReady(): boolean {
-  const [ready, setReady] = useState(false);
-  useEffect(() => setReady(true), []);
-  return ready;
+  return useSyncExternalStore(
+    subscribe,
+    () => true, // client snapshot: ready
+    () => false, // server snapshot: not ready
+  );
 }
