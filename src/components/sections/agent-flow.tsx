@@ -73,6 +73,10 @@ export function AgentFlow() {
   const animate = ready && !reduce;
   return (
     <motion.ol
+      // Remount when animation enables so the "hidden" initial is committed at a fresh
+      // mount and the steps actually stagger in; without it they mount already-visible
+      // and whileInView animates show -> show (a no-op). See reveal.tsx for the why.
+      key={animate ? "motion" : "static"}
       className="mt-12 grid gap-4 md:grid-cols-5"
       variants={animate ? listVariants : undefined}
       initial={animate ? "hidden" : false}

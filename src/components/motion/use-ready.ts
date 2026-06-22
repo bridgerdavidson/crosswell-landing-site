@@ -7,13 +7,15 @@ import { useEffect, useState } from "react";
 // keep their hidden initial state out of server-rendered / no-JS output, so that
 // content is always visible without JS, then flip on once the client takes over.
 //
-// This MUST flip to true after hydration or every useReady-gated animation stays
-// off. A useEffect set-on-mount is the reliable way to do that: the effect runs
-// once, unconditionally, after the client hydrates. (A useSyncExternalStore
-// client/server-snapshot split reads cleaner and avoids the lint rule below, but
-// its post-hydration snapshot flip did not fire in the Next.js static-prerender +
-// React 19 build, leaving ready stuck false and all entrance/reveal animations
-// dead. Do not "simplify" this back to that pattern without a real hydration test.)
+// IMPORTANT: this hook only reports "the client has hydrated." It does NOT, by
+// itself, make an entrance animation play. Because the flip to true happens in a
+// POST-mount effect, and Framer Motion reads `initial` only at the element's mount,
+// a consumer that merely swaps `initial` from false to "hidden" when this flips will
+// never animate: the hidden start state was never committed, so the entrance runs
+// visible -> visible (a no-op). That was the real cause of the "nothing animates"
+// bug, NOT this hook. The consumers fix it by remounting the motion element when
+// animation enables (key={animate ? "motion" : "static"}), forcing a fresh mount
+// that does read the hidden `initial`. See reveal.tsx / hero.tsx / agent-flow.tsx.
 export function useReady(): boolean {
   const [ready, setReady] = useState(false);
   // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional one-shot post-hydration flag to enable client-only motion; runs once after mount
