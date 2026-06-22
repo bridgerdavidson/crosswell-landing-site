@@ -27,13 +27,12 @@ describe("Footer", () => {
   });
 
   it("links the on-page anchors", () => {
-    const { getByRole } = render(<Footer />);
-    const footerNav = screen.getByRole("navigation", { name: /footer/i });
-
-    expect(screen.getByRole("link", { name: /what we do/i })).toHaveAttribute("href", "#what-we-do");
-    expect(getByRole("link", { name: /why us/i }, { within: footerNav })).toHaveAttribute("href", "#why-us");
-    expect(getByRole("link", { name: /how we work/i }, { within: footerNav })).toHaveAttribute("href", "#how-we-work");
-    expect(getByRole("link", { name: /book a call/i }, { within: footerNav })).toHaveAttribute("href", "#final-cta");
+    render(<Footer />);
+    const footerNav = within(screen.getByRole("navigation", { name: /footer/i }));
+    expect(footerNav.getByRole("link", { name: /what we do/i })).toHaveAttribute("href", "#what-we-do");
+    expect(footerNav.getByRole("link", { name: /why us/i })).toHaveAttribute("href", "#why-us");
+    expect(footerNav.getByRole("link", { name: /how we work/i })).toHaveAttribute("href", "#how-we-work");
+    expect(footerNav.getByRole("link", { name: /book a call/i })).toHaveAttribute("href", "#final-cta");
   });
 
   it("has no accessibility violations", async () => {
