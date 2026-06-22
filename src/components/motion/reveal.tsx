@@ -1,18 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
+import { useReady } from "./use-ready";
 
 const EASE_OUT: [number, number, number, number] = [0.16, 1, 0.3, 1];
 const DURATION = 0.4;
-
-// Only apply the hidden initial state after hydration, so server-rendered
-// content (and no-JS / crawler views) is always visible.
-function useReady(): boolean {
-  const [ready, setReady] = useState(false);
-  useEffect(() => setReady(true), []);
-  return ready;
-}
 
 export function Reveal({
   children,

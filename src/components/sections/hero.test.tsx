@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
+import { renderToStaticMarkup } from "react-dom/server";
 import { axe } from "jest-axe";
 import { Hero } from "./hero";
 
@@ -31,5 +32,11 @@ describe("Hero", () => {
   it("has no accessibility violations", async () => {
     const { container } = render(<Hero />);
     expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("renders visible (no opacity:0) in server output for no-JS", () => {
+    const html = renderToStaticMarkup(<Hero />);
+    expect(html).toMatch(/holding your business back/i);
+    expect(html).not.toContain("opacity:0");
   });
 });

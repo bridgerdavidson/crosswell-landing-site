@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
+import { useReady } from "@/components/motion/use-ready";
 import { Icon } from "@/components/ui";
 
 type Step = { label: string; title: string; detail: string; icon: LucideIcon };
@@ -67,8 +68,9 @@ const connectorVariants = {
 };
 
 export function AgentFlow() {
+  const ready = useReady();
   const reduce = useReducedMotion();
-  const animate = !reduce;
+  const animate = ready && !reduce;
   return (
     <motion.ol
       className="mt-12 grid gap-4 md:grid-cols-5"

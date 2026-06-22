@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "motion/react";
 import { ArrowRight } from "lucide-react";
+import { useReady } from "@/components/motion/use-ready";
 import { Section, Container, Eyebrow, ButtonLink, Icon } from "@/components/ui";
 import { AmbientBackground } from "./ambient-background";
 
@@ -16,8 +17,9 @@ const itemVariants = {
 };
 
 export function Hero() {
+  const ready = useReady();
   const reduce = useReducedMotion();
-  const animate = !reduce;
+  const animate = ready && !reduce;
   return (
     <Section id="hero" className="relative overflow-hidden scroll-mt-24">
       <AmbientBackground />
