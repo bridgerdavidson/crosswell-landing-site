@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
+import { renderToStaticMarkup } from "react-dom/server";
 import { axe } from "jest-axe";
 import { CountUp } from "./count-up";
 
@@ -33,5 +34,10 @@ describe("CountUp", () => {
     setReducedMotion(false);
     const { container } = render(<CountUp to={20} suffix=" min" />);
     expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("shows the final value in server output for no-JS", () => {
+    const html = renderToStaticMarkup(<CountUp to={80} suffix="%" />);
+    expect(html).toContain("80%");
   });
 });

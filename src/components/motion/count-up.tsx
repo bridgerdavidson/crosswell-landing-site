@@ -26,14 +26,20 @@ export function CountUp({
   const inView = useInView(ref, { once: true, amount: 0.6 });
   const reduce = useReducedMotion();
   const renderValue = (v: number) => (format ? format(v) : String(Math.round(v)));
-  const [text, setText] = useState(() => renderValue(from));
+  // Initialize to the FINAL value so server-rendered / no-JS output shows the real
+  // number (not 0), and hydration matches. With JS the effect arms the start value
+  // while the element is out of view, then animates up when it scrolls into view.
+  const [text, setText] = useState(() => renderValue(to));
 
   useEffect(() => {
     if (reduce) {
       setText(renderValue(to));
       return;
     }
-    if (!inView) return;
+    if (!inView) {
+      setText(renderValue(from));
+      return;
+    }
     const controls = animate(from, to, {
       duration,
       ease: EASE_OUT,
