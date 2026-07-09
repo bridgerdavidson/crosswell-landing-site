@@ -1,6 +1,6 @@
 # Crosswell Landing Site
 
-The public marketing site for Crosswell and Crosswell Core. Built fresh on 2026-07-07 against the brief in `../sales-outreach/landing-page-brief.md`. The old `crosswell-landing-site` repo build is scrapped; only the Fern colors carried over.
+The public marketing site for Crosswell and Crosswell Core. Rebuilt fresh in July 2026 against the brief at `/Users/bridgerdavidson/ai-os/projects/crosswell-consulting/sales-outreach/landing-page-brief.md`, then migrated into this repo on 2026-07-08, replacing the scrapped pre-pivot site (archived in branch `old-site-archive`; only the Fern colors carried over).
 
 ## Locked design decisions (2026-07-07 session)
 
@@ -28,7 +28,9 @@ npm run build   # production build (fully static)
 
 ## Deploy
 
-Point the existing Vercel project at this repo with Root Directory set to `projects/crosswell-consulting/landing-site`. Framework preset: Next.js. No environment variables needed.
+The Vercel project `crosswell-landing-site` auto-deploys `main` to production at `crosswell-landing-site.vercel.app`, using the Next.js framework preset with default settings and Root Directory = repo root. No environment variables needed.
+
+Keep `vercel.json` minimal (`cleanUrls` only). Do NOT add `installCommand`, `buildCommand`, or `outputDirectory` overrides: this is a static-export Next.js app, and an `outputDirectory: "out"` override makes the build fail with `NEXT_NO_ROUTES_MANIFEST`. Let the Next.js preset handle the export.
 
 ## Content rules honored (from the brief)
 
