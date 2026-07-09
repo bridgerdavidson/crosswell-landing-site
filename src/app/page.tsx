@@ -1,31 +1,29 @@
-import { Nav } from "@/components/sections/nav";
-import { Hero } from "@/components/sections/hero";
-import { Problem } from "@/components/sections/problem";
-import { Tools } from "@/components/sections/tools";
-import { Flagship } from "@/components/sections/flagship";
-import { WhyUs } from "@/components/sections/why-us";
-import { Value } from "@/components/sections/value";
-import { HowWeWork } from "@/components/sections/how-we-work";
-import { Team } from "@/components/sections/team";
-import { FinalCta } from "@/components/sections/final-cta";
-import { Footer } from "@/components/sections/footer";
+import Nav from "@/components/Nav";
+import Hero from "@/components/Hero";
+import HowItWorks from "@/components/HowItWorks";
+import Edge from "@/components/Edge";
+import Trust from "@/components/Trust";
+import BeyondCore from "@/components/BeyondCore";
+import WhoItsFor from "@/components/WhoItsFor";
+import TimeBack from "@/components/TimeBack";
+import Team from "@/components/Team";
+import FinalCta from "@/components/FinalCta";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <>
+    <main>
       <Nav />
-      <main>
-        <Hero />
-        <Problem />
-        <Tools />
-        <Flagship />
-        <WhyUs />
-        <Value />
-        <HowWeWork />
-        <Team />
-        <FinalCta />
-      </main>
+      <Hero />
+      <HowItWorks />
+      <Edge />
+      <TimeBack />
+      <Trust />
+      <BeyondCore />
+      <WhoItsFor />
+      <Team />
+      <FinalCta />
       <Footer />
-    </>
+    </main>
   );
 }

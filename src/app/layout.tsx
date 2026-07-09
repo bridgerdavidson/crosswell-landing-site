@@ -1,39 +1,39 @@
 import type { Metadata } from "next";
-import { Source_Serif_4, Inter } from "next/font/google";
+import { Inter, Newsreader } from "next/font/google";
 import "./globals.css";
-import { SmoothScroll } from "@/components/motion/smooth-scroll";
 
-const serif = Source_Serif_4({
-  variable: "--font-source-serif",
+const inter = Inter({
   subsets: ["latin"],
+  variable: "--font-inter",
   display: "swap",
 });
 
-const sans = Inter({
-  variable: "--font-inter",
+const newsreader = Newsreader({
   subsets: ["latin"],
+  variable: "--font-newsreader",
+  style: ["normal", "italic"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://crosswellconsulting.com"),
-  title: "Crosswell Consulting | Custom AI tools and automations for your business",
+  title: "Crosswell | The operating layer for financial stewards",
   description:
-    "Crosswell builds custom AI tools, software, and automations that take manual work off your team so your business runs leaner and saves money. Our deepest proof is in investment funds. Book a call.",
-  alternates: { canonical: "/" },
+    "Crosswell Core is a managed AI brain for funds and wealth managers. Your firm's knowledge flows in, anyone can ask it anything, and the busywork runs itself. Built by people who have worked inside funds.",
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="en"
-      className={`${serif.variable} ${sans.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col font-sans">
-        <SmoothScroll>{children}</SmoothScroll>
-      </body>
+    <html lang="en" className={`${inter.variable} ${newsreader.variable}`}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('js');",
+          }}
+        />
+      </head>
+      <body>{children}</body>
     </html>
   );
 }

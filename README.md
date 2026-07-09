@@ -1,38 +1,35 @@
 # Crosswell Landing Site
 
-Marketing site for **Crosswell Consulting**: custom AI tools, software, and automations for investment funds.
+The public marketing site for Crosswell and Crosswell Core. Built fresh on 2026-07-07 against the brief in `../sales-outreach/landing-page-brief.md`. The old `crosswell-landing-site` repo build is scrapped; only the Fern colors carried over.
 
-Built with Next.js 16 (App Router), React 19, TypeScript, and Tailwind CSS v4. Deployed on Vercel.
+## Locked design decisions (2026-07-07 session)
 
-> The landing page is not built yet. This repo currently holds the scaffold plus the brain sync setup. The page itself will be planned before any page code is written.
+- **Brand name:** Crosswell wordmark, XW monogram as the mark. "Xwell" spelling not adopted.
+- **Headline:** "The operating layer for financial stewards."
+- **No "coming soon" badge.** The waitlist CTA carries the pre-launch message.
+- **Vibe:** Anthropic-inspired. Warm, soft, editorial, approachable, deliberately not tech-company blue. Ivory-dominant canvas with charcoal reserved for two gravity moments (Security, final CTA).
+- **Type:** Newsreader (editorial serif, headlines) + Inter (sans, body and UI).
+- **Motion:** animation-rich because the site doubles as a visual aid in face-to-face pitches. Typed chat simulation in How it works, rotating vault rings in Security, audience marquee, soft scroll reveals everywhere. All reduced-motion aware and no-JS safe.
+- **Hero animation: REMOVED 2026-07-07, starting over.** Two versions were built (CSS keyframes, then a GSAP knowledge-flow scene) and scrapped; the hero is a clean centered composition until the animation is redesigned from scratch. The concept brief for the next attempt: make Core feel real and inevitable, warm and editorial, not tech-flashy. GSAP was uninstalled; re-add it (or another tool) when the redesign starts.
+- **CTAs:** mailto for both waitlist and book-a-call. Address lives in `src/lib/site.ts` (TODO: confirm final email).
+- **Team:** text-only cards, one trust-earning line each. Photos later if wanted.
 
-## The brain
+## Page order
 
-Strategy, brand, voice, copy, and the landing page brief live in the Crosswell "brain" (an Obsidian vault), not in this repo:
+Nav, Hero, How it works (+ chat demo), Why Crosswell, The value (time back), Security (dark), Beyond Core, Who it's for (marquee), Team, Final CTA (dark), Footer.
 
-```
-C:\AISecondBrain\03 Projects\Crosswell Consulting
-```
-
-A read-only snapshot is mirrored into `docs/brain/`. The full working contract (brand, voice, sync protocol, team) is in `CLAUDE.md`. Read it first.
-
-## Develop
-
-```bash
-npm install      # if needed
-npm run dev      # http://localhost:3000
-npm run build    # production build
-```
-
-## Brain sync
+## Run it
 
 ```bash
-npm run sync:brain            # pull brain context into docs/brain/
-npm run log:brain -- "note"   # write a build milestone back into the brain
+npm install
+npm run dev     # http://localhost:3000
+npm run build   # production build (fully static)
 ```
 
-## Conventions
+## Deploy
 
-- Finance credible voice, specific to fund workflows. No startup hype.
-- No em dashes anywhere, in copy or in repo files.
-- Never name the active fund client publicly. Keep proof realistic but unnamed.
+Point the existing Vercel project at this repo with Root Directory set to `projects/crosswell-consulting/landing-site`. Framework preset: Next.js. No environment variables needed.
+
+## Content rules honored (from the brief)
+
+No pricing. No internal positioning. No fabricated metrics or client names (chat/hero conversations are labeled illustrative). No em dashes. Finance-credible voice, funds as the hero, trust as the through-line.
