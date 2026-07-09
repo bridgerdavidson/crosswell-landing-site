@@ -155,7 +155,7 @@ export default function ChatDemo() {
                         {exchange.sources.map((source) => (
                           <span
                             key={source}
-                            className="rounded-full bg-fern-mist px-2.5 py-0.5 text-[11px] font-medium text-fern-deep"
+                            className="rounded-full bg-fern-mist px-2.5 py-0.5 text-xs font-medium text-fern-deep"
                           >
                             {source}
                           </span>

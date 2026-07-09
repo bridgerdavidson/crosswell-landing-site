@@ -14,7 +14,7 @@
   --color-ink: #1a1915;
 
   --font-serif: var(--font-newsreader), "Georgia", serif;
-  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-sans: var(--font-schibsted), system-ui, sans-serif;
 
   --shadow-whisper: 0 1px 2px rgba(26, 25, 21, 0.05), 0 4px 16px rgba(26, 25, 21, 0.06);
   --shadow-lifted: 0 2px 4px rgba(26, 25, 21, 0.06), 0 12px 32px rgba(26, 25, 21, 0.1);
@@ -22,6 +22,10 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+section[id] {
+  scroll-margin-top: 4rem;
 }
 
 body {
@@ -35,6 +39,50 @@ body {
 ::selection {
   background: var(--color-fern);
   color: var(--color-ivory);
+}
+
+/* ---------- Type roles ----------
+   The typographic hierarchy for the whole site. Color, spacing, and width
+   stay in utilities; these classes own family, size, weight, and rhythm.
+   Small text uses plain utilities by convention: text-sm captions,
+   text-xs labels. */
+
+.type-kicker {
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.type-display {
+  font-family: var(--font-serif);
+  font-size: clamp(3rem, 2.35rem + 2.2vw, 4.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.type-h2 {
+  font-family: var(--font-serif);
+  font-size: clamp(2.25rem, 1.95rem + 1vw, 3rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.type-h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.type-accent {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 1.35rem + 0.5vw, 1.875rem);
+  line-height: 1.35;
+}
+
+.type-body {
+  font-size: 1.125rem;
+  line-height: 1.75;
 }
 
 /* ---------- Scroll reveals (no-JS safe: only hide when JS is present) ---------- */
@@ -112,8 +160,10 @@ body {
   width: 100%;
   height: 100%;
   mix-blend-mode: multiply;
-  filter: brightness(1.03) saturate(0.92);
-  opacity: 0.85;
+  /* the asset is pre-processed (denoise, sharpen, white-point clip, midtone
+     gamma), so no brightness correction here; full opacity keeps the thread
+     density and the clipped-white canvas stays invisible under multiply */
+  filter: saturate(0.92);
   /* clip the square canvas to its inscribed circle: a circle has no corners
      to sweep into view while rotating on near-square viewports */
   -webkit-mask-image: radial-gradient(

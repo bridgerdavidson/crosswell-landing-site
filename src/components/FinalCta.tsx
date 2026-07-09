@@ -6,11 +6,12 @@ export default function FinalCta() {
     <section className="bg-charcoal text-ivory">
       <div className="mx-auto max-w-4xl px-6 py-24 text-center sm:py-32">
         <Reveal>
-          <h2 className="font-serif text-4xl leading-tight tracking-tight sm:text-6xl">
+          {/* deliberate reuse of the hero display scale as a closing bookend */}
+          <h2 className="type-display">
             Your firm already knows the answers.{" "}
             <span className="italic text-fern-soft">Give it a memory.</span>
           </h2>
-          <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-ivory/70">
+          <p className="type-body mx-auto mt-6 max-w-xl text-ivory/70">
             Core is being built alongside the funds it serves. Join the
             waitlist to be early, or talk to us directly.
           </p>

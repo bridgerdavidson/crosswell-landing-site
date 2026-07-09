@@ -23,10 +23,8 @@ export default function HowItWorks() {
   return (
     <section id="how-it-works" className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
       <Reveal>
-        <p className="mb-4 text-sm font-medium uppercase tracking-[0.18em] text-fern-deep">
-          How it works
-        </p>
-        <h2 className="max-w-2xl font-serif text-4xl leading-tight tracking-tight text-ink sm:text-5xl">
+        <p className="type-kicker mb-4 text-fern-deep">How it works</p>
+        <h2 className="type-h2 max-w-2xl text-ink">
           Your firm&apos;s memory, working for you.
         </h2>
       </Reveal>
@@ -36,11 +34,11 @@ export default function HowItWorks() {
           {steps.map((step, i) => (
             <Reveal key={step.number} delay={i * 120}>
               <div className="flex gap-6">
-                <span className="font-serif text-2xl italic text-fern">
+                <span className="type-accent italic text-fern">
                   {step.number}
                 </span>
                 <div>
-                  <h3 className="text-lg font-semibold text-ink">
+                  <h3 className="type-h3 text-ink">
                     {step.title}
                   </h3>
                   <p className="mt-2 leading-relaxed text-ink/70">{step.body}</p>

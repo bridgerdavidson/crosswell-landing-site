@@ -23,13 +23,11 @@ export default function Team() {
     <section id="team" className="border-t border-ink/8 bg-parchment">
       <div className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
         <Reveal>
-          <p className="mb-4 text-sm font-medium uppercase tracking-[0.18em] text-fern-deep">
-            The team
-          </p>
-          <h2 className="max-w-2xl font-serif text-4xl leading-tight tracking-tight text-ink sm:text-5xl">
+          <p className="type-kicker mb-4 text-fern-deep">The team</p>
+          <h2 className="type-h2 max-w-2xl text-ink">
             Three people. Both worlds.
           </h2>
-          <p className="mt-5 max-w-2xl leading-relaxed text-ink/70">
+          <p className="type-body mt-5 max-w-2xl text-ink/70">
             Crosswell lives in finance and technology at the same time. That is
             the whole point.
           </p>
@@ -42,7 +40,7 @@ export default function Team() {
                 <span className="mb-5 flex h-11 w-11 items-center justify-center rounded-full bg-fern font-serif text-lg italic text-ivory">
                   {person.name.charAt(0)}
                 </span>
-                <h3 className="text-lg font-semibold text-ink">{person.name}</h3>
+                <h3 className="type-h3 text-ink">{person.name}</h3>
                 <p className="mt-0.5 text-sm font-medium text-fern-deep">
                   {person.role}
                 </p>

@@ -26,13 +26,9 @@ export default function Trust() {
         <div className="grid items-center gap-14 lg:grid-cols-[1fr_0.85fr]">
           <div>
             <Reveal>
-              <p className="mb-4 text-sm font-medium uppercase tracking-[0.18em] text-fern-soft">
-                Security
-              </p>
-              <h2 className="max-w-xl font-serif text-4xl leading-tight tracking-tight sm:text-5xl">
-                Trust is the product.
-              </h2>
-              <p className="mt-5 max-w-xl text-lg leading-relaxed text-ivory/70">
+              <p className="type-kicker mb-4 text-fern-soft">Security</p>
+              <h2 className="type-h2 max-w-xl">Trust is the product.</h2>
+              <p className="type-body mt-5 max-w-xl text-ivory/70">
                 A firm that manages other people&apos;s money does not get to
                 gamble on its vendors. Core is built to the standard funds
                 actually require, and we sign a data processing agreement with
@@ -45,7 +41,7 @@ export default function Trust() {
                 <Reveal key={item.title} delay={i * 100}>
                   <div>
                     <div className="mb-3.5 h-px w-10 bg-fern-soft" />
-                    <h3 className="font-semibold text-ivory">{item.title}</h3>
+                    <h3 className="type-h3 text-ivory">{item.title}</h3>
                     <p className="mt-2 text-sm leading-relaxed text-ivory/65">
                       {item.body}
                     </p>

@@ -8,7 +8,7 @@ export default function Footer() {
         <div className="flex items-center gap-3">
           <Image src="/xw-logo-light.svg" alt="Crosswell" width={40} height={16} />
           <div>
-            <p className="font-serif text-lg tracking-tight">Crosswell</p>
+            <p className="text-lg font-semibold tracking-tight">Crosswell</p>
             <p className="text-xs text-ivory/50">
               The technology arm for the people who manage money. Arizona.
             </p>

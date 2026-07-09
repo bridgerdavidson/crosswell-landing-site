@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Inter, Newsreader } from "next/font/google";
+import { Newsreader, Schibsted_Grotesk } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
+const schibsted = Schibsted_Grotesk({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-schibsted",
   display: "swap",
 });
 
@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${newsreader.variable}`}
+      className={`${schibsted.variable} ${newsreader.variable}`}
       suppressHydrationWarning
     >
       <head>

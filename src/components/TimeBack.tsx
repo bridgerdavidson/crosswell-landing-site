@@ -24,13 +24,11 @@ export default function TimeBack() {
     <section className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
       <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
         <Reveal>
-          <p className="mb-4 text-sm font-medium uppercase tracking-[0.18em] text-fern-deep">
-            The value
-          </p>
-          <h2 className="font-serif text-4xl leading-tight tracking-tight text-ink sm:text-5xl">
+          <p className="type-kicker mb-4 text-fern-deep">The value</p>
+          <h2 className="type-h2 text-ink">
             Where lean firms lose the week.
           </h2>
-          <p className="mt-5 leading-relaxed text-ink/70">
+          <p className="type-body mt-5 text-ink/70">
             A fund runs on a handful of expensive people whose judgment is the
             product. Every hour they spend on manual reporting, hunting for
             context, or re-answering old questions is an hour of judgment the
@@ -42,7 +40,7 @@ export default function TimeBack() {
           {sinks.map((sink, i) => (
             <Reveal key={sink.pain} delay={i * 110}>
               <div className="py-6 first:pt-0 last:pb-0">
-                <p className="font-serif text-xl leading-snug text-ink sm:text-2xl">
+                <p className="type-accent text-ink">
                   {sink.pain}{" "}
                   <span className="italic text-fern-deep">{sink.fix}</span>
                 </p>

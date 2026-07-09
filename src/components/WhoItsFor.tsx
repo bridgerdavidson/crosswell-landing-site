@@ -14,7 +14,7 @@ export default function WhoItsFor() {
   return (
     <section className="border-y border-ink/8 bg-fern-mist/60 py-16 sm:py-20">
       <Reveal>
-        <h2 className="px-6 text-center font-serif text-3xl tracking-tight text-ink sm:text-4xl">
+        <h2 className="type-h2 px-6 text-center text-ink">
           Built for the people who manage money.
         </h2>
         <p className="mt-3 px-6 text-center text-ink/60">
