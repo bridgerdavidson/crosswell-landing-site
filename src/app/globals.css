@@ -143,8 +143,11 @@ body {
 /* ---------- Hero: the rotating woven core ---------- */
 
 .hero-core-mask {
-  -webkit-mask-image: radial-gradient(ellipse 75% 70% at 50% 50%, black 55%, transparent 98%);
-  mask-image: radial-gradient(ellipse 75% 70% at 50% 50%, black 55%, transparent 98%);
+  /* the double black stop is load-bearing: with a single "black 55%" stop,
+     the production CSS minifier rewrites the position to 0, which fades the
+     whole artwork from the center and washes the hero out (2026-07-09) */
+  -webkit-mask-image: radial-gradient(ellipse 75% 70% at 50% 50%, black 0%, black 55%, transparent 98%);
+  mask-image: radial-gradient(ellipse 75% 70% at 50% 50%, black 0%, black 55%, transparent 98%);
 }
 
 .hero-core {
