@@ -18,14 +18,18 @@ const newsreader = Newsreader({
 export const metadata: Metadata = {
   title: "Crosswell | The operating layer for financial stewards",
   description:
-    "Crosswell Core is a managed AI brain for funds and wealth managers. Your firm's knowledge flows in, anyone can ask it anything, and the busywork runs itself. Built by people who have worked inside funds.",
+    "Crosswell Core is your firm's institutional memory, built on AI and managed for you. Knowledge flows in, anyone can ask it anything, and the busywork runs itself. Built by people who have worked inside funds.",
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${newsreader.variable}`}>
+    <html
+      lang="en"
+      className={`${inter.variable} ${newsreader.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         <script
           dangerouslySetInnerHTML={{

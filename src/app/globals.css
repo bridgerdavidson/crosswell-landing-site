@@ -92,6 +92,65 @@ body {
   40% { opacity: 1; transform: translateY(-3px); }
 }
 
+/* ---------- Hero: the rotating woven core ---------- */
+
+.hero-core-mask {
+  -webkit-mask-image: radial-gradient(ellipse 75% 70% at 50% 50%, black 55%, transparent 98%);
+  mask-image: radial-gradient(ellipse 75% 70% at 50% 50%, black 55%, transparent 98%);
+}
+
+.hero-core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100vmax;
+  height: 100vmax;
+  translate: -50% -50%;
+}
+
+.hero-core img {
+  width: 100%;
+  height: 100%;
+  mix-blend-mode: multiply;
+  filter: brightness(1.03) saturate(0.92);
+  opacity: 0.85;
+  /* clip the square canvas to its inscribed circle: a circle has no corners
+     to sweep into view while rotating on near-square viewports */
+  -webkit-mask-image: radial-gradient(
+    circle closest-side at 50% 50%,
+    black 97%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    circle closest-side at 50% 50%,
+    black 97%,
+    transparent 100%
+  );
+  /* measured center of the sphere in the artwork, so the turn does not wobble */
+  transform-origin: 50.15% 49.9%;
+  animation: core-turn 450s linear infinite;
+}
+
+@keyframes core-turn {
+  to { transform: rotate(360deg); }
+}
+
+/* soft ivory veil between the core art and the hero copy, so text never
+   competes with thread lines; edges stay full strength */
+.hero-core-veil {
+  background: radial-gradient(
+    ellipse 46% 42% at 50% 50%,
+    var(--color-ivory) 30%,
+    rgba(241, 238, 230, 0) 78%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-core img {
+    animation: none;
+  }
+}
+
 /* ---------- Trust section: the vault lines ---------- */
 
 .vault-ring {

@@ -2,8 +2,28 @@ import { CALL_MAILTO, WAITLIST_MAILTO } from "@/lib/site";
 
 export default function Hero() {
   return (
-    <section id="top" className="relative overflow-hidden pt-36 sm:pt-44">
-      <div className="mx-auto max-w-4xl px-6 pb-20 text-center lg:pb-28">
+    <section
+      id="top"
+      className="relative flex min-h-dvh flex-col justify-center overflow-hidden pt-16"
+    >
+      <div
+        aria-hidden
+        className="hero-core-mask pointer-events-none absolute inset-0"
+      >
+        <div className="hero-core">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/hero-core.jpg" alt="" />
+        </div>
+      </div>
+      <div
+        aria-hidden
+        className="hero-core-veil pointer-events-none absolute inset-0"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-44 bg-gradient-to-b from-transparent to-ivory"
+      />
+      <div className="relative mx-auto max-w-4xl px-6 py-20 text-center">
         <p className="mb-5 text-sm font-medium uppercase tracking-[0.18em] text-fern-deep">
           Crosswell Core
         </p>
@@ -12,9 +32,9 @@ export default function Hero() {
           <span className="italic text-fern-deep">financial stewards</span>.
         </h1>
         <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ink/70">
-          Crosswell Core is a managed AI brain for funds and wealth managers.
-          Your firm&apos;s knowledge flows in, anyone can ask it anything, and
-          the busywork runs itself.
+          Crosswell Core is your firm&apos;s institutional memory, built on AI
+          and managed for you. Knowledge flows in, anyone can ask it anything,
+          and the busywork runs itself. Everything we build next stands on it.
         </p>
         <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
           <a
