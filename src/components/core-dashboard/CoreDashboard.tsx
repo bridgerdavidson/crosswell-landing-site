@@ -5,6 +5,15 @@ import { AnalyticsView } from "./AnalyticsView";
 import { ChatView } from "./ChatView";
 import { LibraryView } from "./LibraryView";
 import { IconBars, IconChat, IconFolder, IconPlus } from "./shared";
+import { useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+import { QUESTION } from "./shared";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
+const TYPE_SECONDS = QUESTION.length * 0.03;
 
 const NAV = [
   { key: "add", label: "Add to the brain", short: "Add", Icon: IconPlus },
@@ -43,8 +52,293 @@ function NavItems({ variant }: { variant: "side" | "strip" }) {
 }
 
 export default function CoreDashboard() {
+  const scopeRef = useRef<HTMLDivElement>(null);
+  const tlRef = useRef<gsap.core.Timeline | null>(null);
+  const idleRef = useRef<gsap.core.Tween | null>(null);
+
+  useGSAP(
+    () => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        return; // resting Chat view stays as server-rendered
+      }
+      const scope = scopeRef.current;
+      if (!scope) return;
+      const frame = scope.querySelector<HTMLElement>(".cwd-frame");
+      if (!frame) return;
+
+      const composerText = scope.querySelectorAll<HTMLElement>(".cwd-composer-text");
+      const brainCounts = scope.querySelectorAll<HTMLElement>(".cwd-brain-count");
+      const stats = scope.querySelectorAll<HTMLElement>(".cwd-stat");
+      const replays = scope.querySelectorAll<HTMLButtonElement>(".cwd-replay");
+      const reportBars = scope.querySelectorAll<HTMLElement>(".cwd-report-bar");
+
+      const setComposer = (v: string) =>
+        composerText.forEach((n) => (n.textContent = v));
+
+      // Cursor targeting: measured from the live layout at tween start.
+      // Function-based values re-evaluate after tl.invalidate() on replay.
+      const center = (sel: string) => {
+        const el = scope.querySelector<HTMLElement>(sel);
+        if (!el) return { x: 0, y: 0 };
+        const b = el.getBoundingClientRect();
+        const f = frame.getBoundingClientRect();
+        return { x: b.left - f.left + b.width / 2, y: b.top - f.top + b.height / 2 };
+      };
+      // Nav containers differ per breakpoint; target whichever is visible.
+      const navSel = (key: string) => {
+        const items = Array.from(
+          scope.querySelectorAll<HTMLElement>(`.cwd-nav-item-${key}`)
+        );
+        const visible = items.find((el) => el.offsetParent !== null);
+        return visible ?? items[0];
+      };
+      const navCenter = (key: string) => {
+        const el = navSel(key);
+        if (!el) return { x: 0, y: 0 };
+        const b = el.getBoundingClientRect();
+        const f = frame.getBoundingClientRect();
+        return { x: b.left - f.left + b.width / 2, y: b.top - f.top + b.height / 2 };
+      };
+
+      // Nav indicator: instant width/position set + label colors (sets, not tweens).
+      const setNav = (key: string, animate: boolean) => {
+        scope.querySelectorAll<HTMLElement>(".cwd-nav").forEach((nav) => {
+          const item = nav.querySelector<HTMLElement>(`.cwd-nav-item-${key}`);
+          const pill = nav.querySelector<HTMLElement>(".cwd-nav-pill");
+          if (!item || !pill) return;
+          gsap.set(pill, {
+            width: item.offsetWidth,
+            height: item.offsetHeight,
+            autoAlpha: 1,
+          });
+          gsap[animate ? "to" : "set"](pill, {
+            x: item.offsetLeft,
+            y: item.offsetTop,
+            ...(animate ? { duration: 0.25, ease: "power2.inOut" } : {}),
+          });
+          nav.querySelectorAll<HTMLElement>(".cwd-nav-label").forEach((l) =>
+            gsap.set(l, { color: "rgba(241,238,230,0.55)" })
+          );
+          const label = item.querySelector<HTMLElement>(".cwd-nav-label");
+          if (label) gsap.set(label, { color: "#b5cbb5" });
+        });
+      };
+
+      const tw = { i: 0 };
+
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: scope, start: "top 75%", once: true },
+        defaults: { ease: "power2.out" },
+      });
+      tlRef.current = tl;
+
+      tl
+        // ===== Arm (t=0; restart() re-runs all of this) =====
+        .call(() => {
+          idleRef.current?.kill();
+          idleRef.current = null;
+          tw.i = 0;
+          setComposer("");
+          brainCounts.forEach((n) => (n.textContent = "1,203"));
+          stats.forEach((n) => (n.textContent = "0"));
+          replays.forEach((b) => (b.hidden = false));
+          setNav("add", false);
+        })
+        .set(".cwd-nav-chat-static", { autoAlpha: 0 })
+        .set(".cwd-frame", { autoAlpha: 0, y: 12 })
+        .set(".cwd-view-add", { autoAlpha: 1 })
+        .set([".cwd-view-chat", ".cwd-view-library", ".cwd-view-analytics"], {
+          autoAlpha: 0,
+        })
+        .set(".cwd-feed", { autoAlpha: 0, x: 16 })
+        .set(".cwd-feed-reading", { autoAlpha: 0 })
+        .set(".cwd-tag", { autoAlpha: 0, y: 4 })
+        .set(".cwd-feed-filed", { autoAlpha: 0 })
+        .set(".cwd-q", { autoAlpha: 0, y: 8, scale: 0.96 })
+        .set([".cwd-thinking", ".cwd-answer"], { autoAlpha: 0 })
+        .set(".cwd-answer", { y: 14 })
+        .set(".cwd-cite", { autoAlpha: 0, y: 6 })
+        .set(".cwd-caret", { autoAlpha: 0 })
+        .set(".cwd-composer-hint", { autoAlpha: 1 })
+        .set(".cwd-lib-highlight", { scaleX: 0 })
+        .set(".cwd-lib-cited", { autoAlpha: 0, scale: 0.85 })
+        .set(".cwd-stat-tile", { autoAlpha: 0, y: 8 })
+        .set(".cwd-report-bar", { scaleY: 0.1 })
+        .set(".cwd-cursor", { autoAlpha: 0, scale: 1, xPercent: -50, yPercent: -50 })
+        .set(".cwd-replay", { autoAlpha: 0 })
+
+        // ===== Settle (0-0.5) =====
+        .to(".cwd-frame", { autoAlpha: 1, y: 0, duration: 0.5 }, 0)
+
+        // ===== Auto-capture (0.5-3.5): no cursor anywhere =====
+        .addLabel("capture", 0.5)
+        .to(".cwd-feed", { autoAlpha: 1, x: 0, duration: 0.45 }, "capture")
+        .to(".cwd-feed-reading", { autoAlpha: 1, duration: 0.2 }, "capture+=0.55")
+        .to(".cwd-feed-reading", { autoAlpha: 0, duration: 0.15 }, "capture+=1.15")
+        .to(".cwd-tag", { autoAlpha: 1, y: 0, duration: 0.3, stagger: 0.05 }, "capture+=1.25")
+        .to(".cwd-feed-filed", { autoAlpha: 1, duration: 0.3 }, "capture+=1.8")
+        .call(
+          () => brainCounts.forEach((n) => (n.textContent = "1,204")),
+          undefined,
+          "capture+=2.0"
+        )
+        .fromTo(".cwd-brain-count", { y: -3 }, { y: 0, duration: 0.25 }, "capture+=2.0")
+
+        // ===== Go to Chat (3.5-4.4) =====
+        .addLabel("goChat", 3.5)
+        .call(
+          () => {
+            const c = center(".cwd-view-add .cwd-feed");
+            gsap.set(".cwd-cursor", { x: c.x, y: c.y + 40 });
+          },
+          undefined,
+          "goChat"
+        )
+        .to(".cwd-cursor", { autoAlpha: 1, duration: 0.2 }, "goChat")
+        .to(
+          ".cwd-cursor",
+          { x: () => navCenter("chat").x, y: () => navCenter("chat").y, duration: 0.55, ease: "power2.inOut" },
+          "goChat+=0.15"
+        )
+        .to(".cwd-cursor", { scale: 0.85, duration: 0.1, yoyo: true, repeat: 1 }, "goChat+=0.72")
+        .call(() => setNav("chat", true), undefined, "goChat+=0.78")
+        .to(".cwd-view-add", { autoAlpha: 0, duration: 0.18 }, "goChat+=0.78")
+        .fromTo(
+          ".cwd-view-chat",
+          { autoAlpha: 0, y: 6 },
+          { autoAlpha: 1, y: 0, duration: 0.28 },
+          "goChat+=0.88"
+        )
+
+        // ===== Ask (4.4-8.4) =====
+        .addLabel("ask", 4.4)
+        .set(".cwd-composer-hint", { autoAlpha: 0 }, "ask")
+        .to(".cwd-caret", { autoAlpha: 1, duration: 0.1 }, "ask")
+        .to(
+          ".cwd-cursor",
+          { x: () => center(".cwd-send").x - 60, y: () => center(".cwd-send").y, duration: 0.5, ease: "power2.inOut" },
+          "ask"
+        )
+        .to(
+          tw,
+          {
+            i: QUESTION.length,
+            duration: TYPE_SECONDS,
+            ease: "none",
+            onUpdate: () => setComposer(QUESTION.slice(0, Math.round(tw.i))),
+          },
+          "ask+=0.2"
+        )
+        .to(
+          ".cwd-cursor",
+          { x: () => center(".cwd-send").x, y: () => center(".cwd-send").y, duration: 0.35, ease: "power2.inOut" },
+          `ask+=${0.3 + TYPE_SECONDS}`
+        )
+        .to(".cwd-cursor", { scale: 0.85, duration: 0.1, yoyo: true, repeat: 1 }, `ask+=${0.7 + TYPE_SECONDS}`)
+        .fromTo(".cwd-send", { scale: 1 }, { scale: 0.9, duration: 0.1, yoyo: true, repeat: 1 }, `ask+=${0.7 + TYPE_SECONDS}`)
+        .call(
+          () => {
+            setComposer("");
+            gsap.set(".cwd-caret", { autoAlpha: 0 });
+          },
+          undefined,
+          `ask+=${0.85 + TYPE_SECONDS}`
+        )
+        .to(".cwd-q", { autoAlpha: 1, y: 0, scale: 1, duration: 0.3 }, `ask+=${0.85 + TYPE_SECONDS}`)
+        .to(".cwd-thinking", { autoAlpha: 1, duration: 0.2 }, `ask+=${1.25 + TYPE_SECONDS}`)
+        .to(".cwd-thinking", { autoAlpha: 0, duration: 0.15 }, `ask+=${2.45 + TYPE_SECONDS}`)
+        .to(".cwd-answer", { autoAlpha: 1, y: 0, duration: 0.45 }, `ask+=${2.55 + TYPE_SECONDS}`)
+        .to(".cwd-cite", { autoAlpha: 1, y: 0, duration: 0.3, stagger: 0.08 }, `ask+=${2.85 + TYPE_SECONDS}`)
+
+        // ===== Verify (8.4-11.7) =====
+        .addLabel("verify", `ask+=${3.3 + TYPE_SECONDS}`)
+        .to(
+          ".cwd-cursor",
+          { x: () => center(".cwd-cite-new").x, y: () => center(".cwd-cite-new").y, duration: 0.55, ease: "power2.inOut" },
+          "verify"
+        )
+        .to(".cwd-cursor", { scale: 0.85, duration: 0.1, yoyo: true, repeat: 1 }, "verify+=0.6")
+        .fromTo(".cwd-cite-new", { scale: 1 }, { scale: 0.94, duration: 0.1, yoyo: true, repeat: 1 }, "verify+=0.6")
+        .call(() => setNav("library", true), undefined, "verify+=0.75")
+        .to(".cwd-view-chat", { autoAlpha: 0, duration: 0.18 }, "verify+=0.75")
+        .fromTo(
+          ".cwd-view-library",
+          { autoAlpha: 0, y: 6 },
+          { autoAlpha: 1, y: 0, duration: 0.28 },
+          "verify+=0.85"
+        )
+        .to(".cwd-lib-cited", { autoAlpha: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, "verify+=1.3")
+        .to(".cwd-lib-highlight", { scaleX: 1, duration: 0.5, ease: "power2.inOut" }, "verify+=1.5")
+
+        // ===== Report (11.7-15.5) =====
+        .addLabel("report", "verify+=3.3")
+        .to(
+          ".cwd-cursor",
+          { x: () => navCenter("analytics").x, y: () => navCenter("analytics").y, duration: 0.6, ease: "power2.inOut" },
+          "report"
+        )
+        .to(".cwd-cursor", { scale: 0.85, duration: 0.1, yoyo: true, repeat: 1 }, "report+=0.65")
+        .call(() => setNav("analytics", true), undefined, "report+=0.78")
+        .to(".cwd-view-library", { autoAlpha: 0, duration: 0.18 }, "report+=0.78")
+        .fromTo(
+          ".cwd-view-analytics",
+          { autoAlpha: 0, y: 6 },
+          { autoAlpha: 1, y: 0, duration: 0.28 },
+          "report+=0.88"
+        )
+        .to(".cwd-stat-tile", { autoAlpha: 1, y: 0, duration: 0.35, stagger: 0.12 }, "report+=1.05")
+        .call(
+          () => {
+            stats.forEach((el) => {
+              const target = Number(el.dataset.count ?? "0");
+              const o = { v: 0 };
+              gsap.to(o, {
+                v: target,
+                duration: 0.6,
+                ease: "power1.out",
+                onUpdate: () => (el.textContent = String(Math.round(o.v))),
+              });
+            });
+          },
+          undefined,
+          "report+=1.15"
+        )
+        .to(".cwd-report-bar", { scaleY: 1, duration: 0.5, stagger: 0.08 }, "report+=1.7")
+
+        // ===== Rest =====
+        .addLabel("rest", "report+=2.6")
+        .to(".cwd-cursor", { autoAlpha: 0, duration: 0.3 }, "rest")
+        .call(
+          () => {
+            idleRef.current = gsap.to(reportBars[0] ?? reportBars, {
+              scaleY: 0.86,
+              duration: 2.4,
+              repeat: -1,
+              yoyo: true,
+              ease: "sine.inOut",
+            });
+          },
+          undefined,
+          "rest+=0.2"
+        )
+        .to(".cwd-replay", { autoAlpha: 1, duration: 0.4 }, "rest+=0.2");
+
+      return () => {
+        idleRef.current?.kill();
+      };
+    },
+    { scope: scopeRef }
+  );
+
+  const replay = () => {
+    const tl = tlRef.current;
+    if (!tl) return;
+    tl.invalidate(); // re-measure cursor targets against the current layout
+    tl.restart();
+  };
+
   return (
-    <div className="cwd-scope mx-auto max-w-5xl">
+    <div className="cwd-scope mx-auto max-w-5xl" ref={scopeRef}>
       <p className="sr-only">
         Product preview: the firm&apos;s brain ingests a meeting transcript
         automatically, a teammate asks about wire approvals and gets a cited
@@ -114,6 +408,7 @@ export default function CoreDashboard() {
         <button
           type="button"
           hidden
+          onClick={replay}
           aria-label="Replay the product preview animation"
           className="cwd-replay absolute right-4 top-3 z-10 cursor-pointer text-xs font-medium text-fern-soft transition-colors hover:text-ivory focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fern-soft sm:right-5"
         >
