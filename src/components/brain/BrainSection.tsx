@@ -1,4 +1,5 @@
 import BrainStill from "./BrainStill";
+import BrainField from "./BrainField";
 
 export default function BrainSection() {
   return (
@@ -24,6 +25,7 @@ export default function BrainSection() {
             deals, people, meetings, operations, and investors.
           </p>
           <BrainStill />
+          <BrainField />
         </div>
       </div>
     </section>

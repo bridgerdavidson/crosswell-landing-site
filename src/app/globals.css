@@ -532,3 +532,7 @@ body {
 .brain-stage .brain-field { opacity: 0; }
 .brain-stage[data-mode="live"] .brain-field { opacity: 1; }
 .brain-stage[data-mode="live"] .brain-still { visibility: hidden; }
+.brain-stage .brain-field {
+  -webkit-mask-image: radial-gradient(120% 118% at 50% 48%, #000 62%, transparent 99%);
+          mask-image: radial-gradient(120% 118% at 50% 48%, #000 62%, transparent 99%);
+}
