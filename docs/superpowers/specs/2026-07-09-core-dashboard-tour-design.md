@@ -21,9 +21,11 @@ V1 played one loop inside a static Chat view. Feedback after seeing it live:
 - **The brain rail is removed.** Its jobs moved into the views: capture confirmation lives in Add to the brain, numbers live in Analytics. Chat gets the full canvas.
 - **Analytics flavor:** operational pulse. A monthly report about the FIRM's activity, not about product usage. Mundane, obviously illustrative numbers.
 - **Reduced-motion / no-JS resting state: the answered Chat view** (the signature frame), NOT the tour's final Analytics frame. Deliberate divergence from "finished = final frame": a static Analytics screen undersells the product to non-animating visitors. Sidebar statically marks Chat active in that state; the cursor never renders.
-- **Pacing:** brisk. No beat lingers past ~4s; composer typing is quicker than the old bubble typewriter.
+- **Pacing:** brisk. No beat lingers past ~4s; composer typing is quicker than the old bubble typewriter. (Amended 2026-07-10 after live review: retimed roomy, total ~22.5s, with reading holds after each payoff.)
 
 ## 3. The tour (beat table, ~16s)
+
+(Times below are the original brisk pass. As built 2026-07-10: go-to-chat at 5.2s, ask at 6.1s, verify at ask + 5.9 + typing, report at verify + 5.3, rest at report + 3.0, total ~22.5s.)
 
 | Beat | Time | View | What happens |
 |---|---|---|---|
@@ -62,7 +64,7 @@ Replay restarts the full tour (re-arm inside the timeline, as v1 did).
 - Bar chart "Activity by area": Deals 18 · Investors 9 · Operations 14.
 
 Caption below the frame (unchanged): "Product preview. Illustrative data."
-Workspace label (unchanged): "Your firm". No client names, no usage metrics, no performance claims.
+Top bar label: "Your firm's Core" (no mark, no wordmark; a fake mini-logo read as inaccurate and was removed 2026-07-10). No client names, no usage metrics, no performance claims.
 
 ## 5. Frame and visual system (carried from v1, deltas only)
 
@@ -72,6 +74,7 @@ Everything in the v1 spec's visual system holds (ink canvas, three-tone ladder, 
 - The sidebar's active state becomes a single sliding indicator pill (transform-only). Server-rendered position: Chat (the no-JS/reduced-motion resting view). Nav label colors swap via timeline calls at each switch.
 - The cursor dot: ~14px, ivory core with a soft fern-soft halo, slight blur, ~85% opacity; press = scale to 0.85 and back plus a momentary press state (background tint) on the target. Rendered only when the timeline runs.
 - New-surface pieces (source chips, feed card, library rows, report tiles) reuse the raised-card tone `#24221c` and existing chip/tag styles. No new hex values beyond the enumerated set.
+- Top bar identity (2026-07-10): the fern-square ✕ mark and "Crosswell Core · Your firm" are replaced by the single label "Your firm's Core".
 
 ## 6. Mechanics
 

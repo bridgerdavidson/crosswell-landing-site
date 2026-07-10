@@ -205,7 +205,7 @@ export default function CoreDashboard() {
         .fromTo(".cwd-brain-count", { y: -3 }, { y: 0, duration: 0.25 }, "capture+=2.0")
 
         // ===== Go to Chat (3.5-4.4) =====
-        .addLabel("goChat", 3.5)
+        .addLabel("goChat", 5.2)
         .call(
           () => {
             const c = center(".cwd-view-add .cwd-feed");
@@ -231,7 +231,7 @@ export default function CoreDashboard() {
         )
 
         // ===== Ask (4.4-8.4) =====
-        .addLabel("ask", 4.4)
+        .addLabel("ask", 6.1)
         .set(".cwd-composer-hint", { autoAlpha: 0 }, "ask")
         .to(".cwd-caret", { autoAlpha: 1, duration: 0.1 }, "ask")
         .to(
@@ -271,7 +271,7 @@ export default function CoreDashboard() {
         .to(".cwd-cite", { autoAlpha: 1, y: 0, duration: 0.3, stagger: 0.08 }, `ask+=${2.85 + TYPE_SECONDS}`)
 
         // ===== Verify (8.4-11.7) =====
-        .addLabel("verify", `ask+=${3.3 + TYPE_SECONDS}`)
+        .addLabel("verify", `ask+=${5.9 + TYPE_SECONDS}`)
         .to(
           ".cwd-cursor",
           { x: () => center(".cwd-cite-new").x, y: () => center(".cwd-cite-new").y, duration: 0.55, ease: "power2.inOut" },
@@ -291,7 +291,7 @@ export default function CoreDashboard() {
         .to(".cwd-lib-highlight", { scaleX: 1, duration: 0.5, ease: "power2.inOut" }, "verify+=1.5")
 
         // ===== Report (11.7-15.5) =====
-        .addLabel("report", "verify+=3.3")
+        .addLabel("report", "verify+=5.3")
         .to(
           ".cwd-cursor",
           { x: () => navCenter("analytics").x, y: () => navCenter("analytics").y, duration: 0.6, ease: "power2.inOut" },
@@ -326,7 +326,7 @@ export default function CoreDashboard() {
         .to(".cwd-report-bar", { scaleY: 1, duration: 0.5, stagger: 0.08 }, "report+=1.7")
 
         // ===== Rest =====
-        .addLabel("rest", "report+=2.6")
+        .addLabel("rest", "report+=3.0")
         .to(".cwd-cursor", { autoAlpha: 0, duration: 0.3 }, "rest")
         .call(
           () => {
@@ -375,13 +375,9 @@ export default function CoreDashboard() {
         >
           {/* Top bar (hairline 1 of 1) */}
           <div className="flex items-center gap-2.5 border-b border-ivory/10 px-4 py-3 sm:px-5">
-            <span className="flex h-5 w-5 flex-none items-center justify-center rounded-md bg-fern text-[10px] font-bold text-ivory">
-              ✕
-            </span>
             <span className="text-[13.5px] font-semibold tracking-[0.01em]">
-              Crosswell Core
+              Your firm&apos;s Core
             </span>
-            <span className="text-xs text-ivory/45">· Your firm</span>
             <span className="flex-1" />
             <span className="hidden items-center gap-2 text-[11px] text-ivory/45 sm:mr-12 sm:flex">
               <span className="flex">
