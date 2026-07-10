@@ -23,7 +23,7 @@ export default function BrainField() {
     stage?.setAttribute("data-mode", "live");
     // CSS reveals .brain-replay as soon as data-mode flips to "live"; hide it
     // immediately so it doesn't flash before runInject fades it in at the end.
-    if (replayRef.current) gsap.set(replayRef.current, { opacity: 0 });
+    if (replayRef.current) gsap.set(replayRef.current, { opacity: 0, pointerEvents: "none" });
 
     // shared inject progress (0 = note hidden, 1 = note fully connected); read by draw()
     const chor = { inject: 0 };
@@ -121,16 +121,18 @@ export default function BrainField() {
 
     const card = cardRef.current;
     const replay = replayRef.current;
+    let tl: gsap.core.Timeline | null = null;
 
     function runInject() {
       if (!card) return;
+      tl?.kill();
       gsap.killTweensOf([card, chor]);
       chor.inject = 0;
       card.classList.remove("is-sorted");
       gsap.set(card, { clearProps: "transform,opacity" });
       gsap.set(card, { xPercent: -50, yPercent: -50, scale: 1, opacity: 0, y: 24 });
-      if (replay) gsap.set(replay, { opacity: 0 });
-      const tl = gsap.timeline();
+      if (replay) { gsap.set(replay, { opacity: 0, pointerEvents: "none" }); replay.tabIndex = -1; }
+      tl = gsap.timeline();
       tl.to(card, { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, 0.2);       // rise
       tl.add(() => card.classList.add("is-sorted"), 2.6);                                // sort
       tl.addLabel("inject", 4.6);
@@ -145,7 +147,7 @@ export default function BrainField() {
         gsap.to(card, { x: `+=${tx}`, y: `+=${ty}`, scale: 0.12, opacity: 0, duration: 1.1, ease: "power2.inOut" });
       }, "inject");
       tl.to(chor, { inject: 1, duration: 1.1, ease: "power2.out" }, "inject");           // reveal note + threads
-      tl.add(() => { if (replay) gsap.to(replay, { opacity: 1, duration: 0.4 }); }, "inject+=1.4");
+      tl.add(() => { if (replay) { gsap.to(replay, { opacity: 1, duration: 0.4 }); gsap.set(replay, { pointerEvents: "auto" }); replay.tabIndex = 0; } }, "inject+=1.4");
     }
 
     const st = ScrollTrigger.create({ trigger: stage!, start: "top 70%", once: true, onEnter: runInject });
@@ -165,6 +167,7 @@ export default function BrainField() {
       window.clearTimeout(rt);
       st.kill();
       replay?.removeEventListener("click", runInject);
+      tl?.kill();
       gsap.killTweensOf([card, chor].filter(Boolean) as object[]);
       stage?.setAttribute("data-mode", "still");
     };
@@ -174,7 +177,7 @@ export default function BrainField() {
     <>
       <canvas ref={canvasRef} className="brain-field" aria-hidden="true" />
       <NoteCard ref={cardRef} />
-      <button ref={replayRef} className="brain-replay" type="button">Replay</button>
+      <button ref={replayRef} className="brain-replay" type="button" tabIndex={-1}>Replay</button>
     </>
   );
 }
