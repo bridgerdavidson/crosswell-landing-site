@@ -15,7 +15,7 @@
 - **No em dashes in any copy or docs. Ever.** Use middots (`·`) as separators.
 - No real client names: the workspace label is "Your firm". Caption under the frame: "Product preview. Illustrative data."
 - Copy is locked (section 4 of the spec); do not rewrite it.
-- Brand tokens only (`ivory`, `parchment`, `fern`, `fern-deep`, `fern-soft`, `fern-mist`, `warmgray`, `charcoal`, `charcoal-deep`, `ink`) plus exactly three component-local dark hexes: `#161512` (sunken rail), `#24221c` (raised cards), `#3c4a38` (dim sparkline bars). Do not add them to `@theme`.
+- Brand tokens only (`ivory`, `parchment`, `fern`, `fern-deep`, `fern-soft`, `fern-mist`, `warmgray`, `charcoal`, `charcoal-deep`, `ink`) plus these component-local hexes only: `#161512` (sunken rail), `#24221c` (raised cards), `#3c4a38` (dim sparkline bars), and the three muted avatar fills `#5c6b52` / `#6b5f4c` / `#4c5c6b` from the approved wireframe. Do not add any of them to `@theme`. (Amended during execution: the avatar fills were in the approved wireframe but omitted from this list's original "exactly three" count.)
 - Icons: inline SVG only (Lucide-style strokes, `strokeWidth={1.8}`). Never emoji.
 - Tabular numerals (`tabular-nums`) on every animated counter.
 - Animation: transform/opacity only, except the deliberate count-text swap and box-shadow ring pulse. Reserve heights; zero layout shift at rest.
