@@ -536,3 +536,35 @@ body {
   -webkit-mask-image: radial-gradient(120% 118% at 50% 48%, #000 62%, transparent 99%);
           mask-image: radial-gradient(120% 118% at 50% 48%, #000 62%, transparent 99%);
 }
+
+/* the readable note card and Replay control (motion-only; hidden for reduced-motion) */
+.brain-card {
+  position: absolute; left: 50%; top: 46%;
+  width: min(360px, 80%); transform: translate(-50%, -50%);
+  background: #24221c; color: var(--color-ivory);
+  border: 1px solid rgba(241, 238, 230, 0.08);
+  border-radius: 14px; padding: 16px 16px 18px;
+  box-shadow: 0 24px 50px -30px rgba(26, 25, 21, 0.8);
+  opacity: 0; pointer-events: none;
+}
+.brain-card-raw, .brain-card-sorted { transition: opacity 0.5s ease; }
+.brain-card-sorted { position: absolute; inset: 16px 16px 18px; opacity: 0; }
+.brain-card.is-sorted .brain-card-raw { opacity: 0; }
+.brain-card.is-sorted .brain-card-sorted { opacity: 1; }
+.brain-card-head { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; margin-bottom: 12px; }
+.brain-card-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-fern-soft); }
+.brain-card-badge { margin-left: auto; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-fern-soft); background: rgba(78, 122, 78, 0.22); padding: 3px 8px; border-radius: 6px; }
+.brain-card-line { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 11.5px; line-height: 1.6; color: rgba(241, 238, 230, 0.6); margin: 0 0 6px; }
+.brain-card-summary { font-size: 14px; line-height: 1.5; color: rgba(241, 238, 230, 0.95); margin: 0; }
+.brain-card-context { font-size: 12.5px; color: rgba(241, 238, 230, 0.6); margin: 8px 0 0; }
+.brain-card-tags { display: flex; gap: 6px; margin-top: 12px; }
+.brain-card-tag { font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 6px; background: rgba(78, 122, 78, 0.28); color: rgba(241, 238, 230, 0.9); }
+.brain-replay {
+  position: absolute; right: 8px; bottom: 8px;
+  font-size: 12px; font-weight: 600; color: var(--color-fern-soft);
+  background: transparent; border: 0; cursor: pointer; padding: 6px 8px; opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.brain-stage[data-mode="live"] .brain-replay { opacity: 1; }
+.brain-replay:focus-visible { outline: 2px solid var(--color-fern-deep); outline-offset: 2px; border-radius: 6px; }
+@media (prefers-reduced-motion: reduce) { .brain-card, .brain-replay { display: none; } }
