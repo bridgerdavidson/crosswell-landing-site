@@ -56,9 +56,9 @@ Copy rules: no em dashes anywhere, middots as separators. All copy above is fina
 
 - **Surfaces (3-tone ladder):** canvas ink `#1a1915`; sunken rail `#161512`; raised cards `#24221c`; question bubble charcoal `#3d3a34`. Hairlines `rgba(241,238,230,.08-.10)`.
 - **Text:** ivory `#f1eee6` primary; secondary `rgba(241,238,230,.55)`; faint `.38-.45`. Answer body at `.92`.
-- **Accent discipline:** fern `#4e7a4e` for fills only (mark, send button, active pill tint); fern-soft `#93b393` for text accents, rings, glows; citation chips `rgba(78,122,78,.22)` bg + `#a8c3a8` text. Fern appears only at story beats.
-- **Type:** Schibsted Grotesk throughout the frame (product chrome voice; serif stays outside the frame in section copy). Frame base 13px, answer 13px/1.55, big count 23px/650. `font-variant-numeric: tabular-nums` on all counters.
-- **Shape:** frame radius 16px with soft ambient shadow; cards 14px; pills/chips full-round.
+- **Accent discipline:** fern `#4e7a4e` for fills only (mark, send button, active pill tint); fern-soft `#93b393` for text accents, rings, glows; citation chips `rgba(78,122,78,.22)` bg with `#93b393` text (`#c2d6c2` on the highlighted new chip). Fern appears only at story beats.
+- **Type:** Schibsted Grotesk throughout the frame (product chrome voice; serif stays outside the frame in section copy). Frame base 13px, answer 13px/1.55, big count 23px/600. `font-variant-numeric: tabular-nums` on all counters.
+- **Shape:** frame radius 16px with soft ambient shadow; chat bubbles 16px, filed card 12px; pills/chips full-round.
 - **Icons:** inline SVG only, single stroke family. No emoji.
 
 Contrast (checked against dark surfaces): ivory on ink ~13:1; secondary text ~5:1; fern-soft on ink ~7:1; chip text on chip bg >4.5:1. All pass AA.
@@ -80,11 +80,13 @@ Timeline, plays once when the frame enters viewport (`start: "top 75%"`, `once: 
 
 Rules: transform/opacity only (the count tick and ring pulse are the deliberate exceptions); exits shorter than enters; no animation blocks reading; reserve all heights up front so nothing shifts layout (CLS 0).
 
-**Replay:** text button at the far right of the frame's top bar; fades in when the timeline reaches idle (hidden until then, but present in the DOM for no-JS visitors). Restarts the timeline; keyboard-focusable with visible focus.
+**Replay:** text button rendered as an absolutely positioned sibling outside the aria-hidden frame (so screen readers can reach it), visually overlaying the far right of the top bar, with an aria-label; fades in when the timeline reaches idle (hidden until then). Restarts the timeline; keyboard-focusable with visible focus.
 
 **Reduced motion:** `prefers-reduced-motion` skips the timeline and idle loop entirely; scene renders finished.
 
 **No-JS / SSR:** server-render the finished scene (TrustDiagram precedent). On mount, GSAP `set()` arms initial hidden states before the timeline plays; if JS never runs, visitors see the completed scene, not a blank.
+
+As built during review: the Replay relocation above was a review-driven fix; the caret carries a static invisible state so reduced-motion and no-JS viewers never see it blink.
 
 ## 7. Responsive
 
