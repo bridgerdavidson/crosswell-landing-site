@@ -1,4 +1,4 @@
-import CoreDashboard from "./CoreDashboard";
+import CoreDashboard from "./core-dashboard/CoreDashboard";
 import Reveal from "./Reveal";
 
 const steps = [
