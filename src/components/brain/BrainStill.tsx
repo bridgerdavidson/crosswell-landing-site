@@ -1,5 +1,5 @@
 import {
-  buildGraph, CLUSTERS, settled, curveControl, nodeSize, nodeAlpha,
+  buildGraph, settled, curveControl, nodeSize, nodeAlpha,
   STILL_W, STILL_H, type GNode,
 } from "./graph-data";
 

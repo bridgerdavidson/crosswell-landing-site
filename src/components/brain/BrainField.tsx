@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import NoteCard from "./NoteCard";
-import { buildGraph, nodeHome, nodeSize, nodeAlpha, settled, CALM, type GNode } from "./graph-data";
+import { buildGraph, nodeHome, nodeSize, nodeAlpha, CALM, type GNode } from "./graph-data";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function BrainField() {
@@ -21,6 +21,9 @@ export default function BrainField() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     stage?.setAttribute("data-mode", "live");
+    // CSS reveals .brain-replay as soon as data-mode flips to "live"; hide it
+    // immediately so it doesn't flash before runInject fades it in at the end.
+    if (replayRef.current) gsap.set(replayRef.current, { opacity: 0 });
 
     // shared inject progress (0 = note hidden, 1 = note fully connected); read by draw()
     const chor = { inject: 0 };
@@ -118,7 +121,6 @@ export default function BrainField() {
 
     const card = cardRef.current;
     const replay = replayRef.current;
-    const noteNode = g.nodes[g.noteIndex];
 
     function runInject() {
       if (!card) return;
@@ -133,10 +135,11 @@ export default function BrainField() {
       tl.add(() => card.classList.add("is-sorted"), 2.6);                                // sort
       tl.addLabel("inject", 4.6);
       tl.add(() => {
-        // compute the fly target: card center -> note screen position
+        // compute the fly target: card center -> the note's live animated
+        // position (not its t=0 settled spot), so the card lands exactly on it
         const cr = canvas!.getBoundingClientRect();
         const dr = card.getBoundingClientRect();
-        const nHome = settled(noteNode, W, H);
+        const nHome = pos[g.noteIndex];
         const tx = cr.left + nHome.x - (dr.left + dr.width / 2);
         const ty = cr.top + nHome.y - (dr.top + dr.height / 2);
         gsap.to(card, { x: `+=${tx}`, y: `+=${ty}`, scale: 0.12, opacity: 0, duration: 1.1, ease: "power2.inOut" });

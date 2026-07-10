@@ -564,7 +564,8 @@ body {
   font-size: 12px; font-weight: 600; color: var(--color-fern-soft);
   background: transparent; border: 0; cursor: pointer; padding: 6px 8px; opacity: 0;
   transition: opacity 0.4s ease;
+  pointer-events: none;
 }
-.brain-stage[data-mode="live"] .brain-replay { opacity: 1; }
+.brain-stage[data-mode="live"] .brain-replay { opacity: 1; pointer-events: auto; }
 .brain-replay:focus-visible { outline: 2px solid var(--color-fern-deep); outline-offset: 2px; border-radius: 6px; }
 @media (prefers-reduced-motion: reduce) { .brain-card, .brain-replay { display: none; } }
