@@ -55,6 +55,7 @@ export default function CoreDashboard() {
   const scopeRef = useRef<HTMLDivElement>(null);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
   const idleRef = useRef<gsap.core.Tween | null>(null);
+  const liveRef = useRef<gsap.core.Tween | null>(null);
 
   useGSAP(
     () => {
@@ -71,6 +72,7 @@ export default function CoreDashboard() {
       const stats = scope.querySelectorAll<HTMLElement>(".cwd-stat");
       const replays = scope.querySelectorAll<HTMLButtonElement>(".cwd-replay");
       const reportBars = scope.querySelectorAll<HTMLElement>(".cwd-report-bar");
+      const liveDots = scope.querySelectorAll<HTMLElement>(".cwd-live-dot");
 
       const setComposer = (v: string) =>
         composerText.forEach((n) => (n.textContent = v));
@@ -147,6 +149,14 @@ export default function CoreDashboard() {
           armed = true;
           idleRef.current?.kill();
           idleRef.current = null;
+          liveRef.current?.kill();
+          liveRef.current = gsap.to(liveDots, {
+            opacity: 0.35,
+            duration: 1.1,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+          });
           tw.i = 0;
           setComposer("");
           brainCounts.forEach((n) => (n.textContent = "1,203"));
@@ -336,6 +346,7 @@ export default function CoreDashboard() {
       return () => {
         window.removeEventListener("resize", onResize);
         idleRef.current?.kill();
+        liveRef.current?.kill();
       };
     },
     { scope: scopeRef }

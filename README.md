@@ -16,7 +16,7 @@ The public marketing site for Crosswell and Crosswell Core. Rebuilt fresh in Jul
 
 ## Page order
 
-Nav, Hero, How it works (+ dashboard scene), Why Crosswell, The value (time back), Security (dark), Beyond Core, Who it's for (marquee), Team, Final CTA (dark), Footer.
+Nav, Hero, How it works (+ dashboard tour), Why Crosswell, The value (time back), Security (dark), Beyond Core, Who it's for (marquee), Team, Final CTA (dark), Footer.
 
 ## Next up
 
