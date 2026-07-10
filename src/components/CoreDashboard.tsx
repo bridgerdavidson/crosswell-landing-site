@@ -319,7 +319,7 @@ export default function CoreDashboard() {
                 <div className="cwd-q max-w-[78%] self-end rounded-2xl rounded-br-[5px] bg-charcoal px-3.5 py-2 text-[13px] leading-relaxed">
                   <span className="cwd-qtext">{QUESTION}</span>
                   <span
-                    className="cwd-caret chat-caret ml-0.5 opacity-0"
+                    className="cwd-caret chat-caret ml-0.5 opacity-0 invisible"
                     style={{ background: "var(--color-fern-soft)" }}
                   />
                 </div>
