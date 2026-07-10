@@ -1,4 +1,5 @@
 import { TagChip } from "./shared";
+import { CORE_NOTE } from "@/lib/core-note";
 
 const ROWS = [
   { title: "Ops meeting notes", date: "Mar 28" },
@@ -13,7 +14,7 @@ export function LibraryView() {
         <div className="rounded-[10px] bg-fern/20 px-3 py-2">
           <div className="flex items-center justify-between gap-2">
             <p className="truncate text-xs font-semibold text-[#b5cbb5]">
-              Policy note · Wire approvals
+              {CORE_NOTE.noteLabel}
             </p>
             <span className="text-[10px] text-ivory/40 tabular-nums">Apr 8</span>
           </div>
@@ -28,27 +29,23 @@ export function LibraryView() {
 
       <div className="min-w-0 flex-1 rounded-xl bg-[#24221c] p-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <p className="text-xs font-semibold text-ivory/90">Policy note · Wire approvals</p>
+          <p className="text-xs font-semibold text-ivory/90">{CORE_NOTE.noteLabel}</p>
           <span className="cwd-lib-cited rounded-full bg-fern/20 px-2 py-px text-[9.5px] font-semibold text-fern-soft">
             Cited just now
           </span>
         </div>
         <p className="relative mt-3 text-[12.5px] leading-relaxed text-ivory/85">
           <span className="cwd-lib-highlight absolute -inset-x-1 -inset-y-0.5 origin-left rounded-sm bg-fern/25" />
-          <span className="relative">
-            Any wire over $250k requires sign-off from both a managing partner and operations.
-          </span>
+          <span className="relative">{CORE_NOTE.summary}</span>
         </p>
         <p className="mt-2 text-[12.5px] leading-relaxed text-ivory/60">
-          Context: a near miss in March with a mistyped account number.
+          {CORE_NOTE.context}
         </p>
-        <p className="mt-3 text-[11px] text-ivory/40">
-          Filed in Operations · Linked to Ops meeting · Mar 28
-        </p>
+        <p className="mt-3 text-[11px] text-ivory/40">{CORE_NOTE.filedLinked}</p>
         <div className="mt-2 flex flex-wrap gap-1">
-          <TagChip label="Operations" />
-          <TagChip label="Policy" />
-          <TagChip label="April" />
+          {CORE_NOTE.tags.map((t) => (
+            <TagChip key={t} label={t} />
+          ))}
         </div>
       </div>
     </div>
