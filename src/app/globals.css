@@ -204,27 +204,297 @@ body {
   }
 }
 
-/* ---------- Trust section: the vault lines ---------- */
+/* ---------- Trust section: the secured route ----------
 
-.vault-ring {
-  transform-origin: center;
-  animation: vault-spin 40s linear infinite;
+   Base styles are the FINISHED diagram (sealed fern route, shield,
+   closed lock) so the markup reads without JS and under reduced
+   motion. JS arms the diagram (hidden), then data-state="play"
+   runs the entrance once, on scroll-into-view. Every entrance
+   animation declares explicit from/to states and uses fill-mode
+   "both" so elements hold their pre-animation state during delays. */
+
+.trust-diagram {
+  max-width: 420px;
+  margin-inline: auto;
 }
 
-.vault-ring-reverse {
-  transform-origin: center;
-  animation: vault-spin 55s linear infinite reverse;
-}
-
-@keyframes vault-spin {
-  to { transform: rotate(360deg); }
+.trust-diagram[data-state="armed"] svg {
+  opacity: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .vault-ring,
-  .vault-ring-reverse {
-    animation: none;
+  .trust-diagram svg {
+    transition: opacity 0.6s ease;
   }
+}
+
+/* resting states */
+.td-route {
+  fill: none;
+  stroke: var(--color-fern-soft);
+  stroke-opacity: 0.8;
+  stroke-width: 1;
+  stroke-dasharray: 7.2 0.01;
+}
+
+.td-rev {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-dasharray: 100 100;
+  stroke-dashoffset: 0;
+}
+
+.td-node,
+.td-lock-body,
+.td-shield-pop,
+.td-confirm {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.td-shield-face {
+  fill: var(--color-charcoal);
+}
+
+.td-shield-warmth {
+  fill: var(--color-fern-soft);
+  opacity: 0.06;
+}
+
+.td-shield-outline {
+  fill: none;
+  stroke: var(--color-fern-soft);
+  stroke-width: 1;
+  stroke-opacity: 0.8;
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 0;
+}
+
+.td-shield-inner {
+  fill: none;
+  stroke: var(--color-fern-soft);
+  stroke-width: 0.7;
+  stroke-opacity: 0.3;
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 0;
+}
+
+.td-pulse {
+  opacity: 0;
+  fill: var(--color-fern-soft);
+  offset-rotate: 0deg;
+}
+
+.td-pulse-trunk {
+  offset-path: path("M46 150 L150 150");
+}
+
+.td-pulse-b1 {
+  offset-path: path("M150 150 C210 150 220 102 254 102");
+}
+
+.td-pulse-b2 {
+  offset-path: path("M150 150 C210 150 220 198 254 198");
+}
+
+.td-halo,
+.td-confirm {
+  fill: none;
+  stroke: var(--color-fern-soft);
+  opacity: 0;
+}
+
+/* the one-shot entrance + ambient relay */
+@media (prefers-reduced-motion: no-preference) {
+  .trust-diagram[data-state="play"] .td-node {
+    animation: td-node-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .trust-diagram[data-state="play"] .td-node-src {
+    animation-delay: 0.05s;
+  }
+  .trust-diagram[data-state="play"] .td-node-ep {
+    animation-delay: 1.4s;
+  }
+
+  .trust-diagram[data-state="play"] .td-rev-trunk {
+    animation: td-rev-draw 0.5s cubic-bezier(0.55, 0, 0.85, 0.45) 0.3s both;
+  }
+  .trust-diagram[data-state="play"] .td-rev-branch {
+    animation: td-rev-draw 0.65s cubic-bezier(0.15, 0.55, 0.35, 1) 0.8s both;
+  }
+
+  .trust-diagram[data-state="play"] .td-route {
+    animation: td-route-seal 1.2s cubic-bezier(0.5, 0, 0.3, 1) 3.5s both;
+  }
+
+  .trust-diagram[data-state="play"] .td-shield-face {
+    animation: td-appear 0.5s ease 2.3s both;
+  }
+  .trust-diagram[data-state="play"] .td-shield-warmth {
+    animation: td-warmth 1.2s ease 3.3s both;
+  }
+  .trust-diagram[data-state="play"] .td-shield-outline {
+    animation:
+      td-shield-draw 0.9s cubic-bezier(0.5, 0, 0.25, 1) 2s both,
+      td-shield-secure 1.6s ease 3.3s both,
+      td-shield-breathe 8s ease-in-out 6s infinite;
+  }
+  .trust-diagram[data-state="play"] .td-shield-inner {
+    animation: td-shield-draw 0.9s cubic-bezier(0.5, 0, 0.25, 1) 2.2s both;
+  }
+  .trust-diagram[data-state="play"] .td-shield-pop {
+    animation: td-shield-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 3.3s;
+  }
+
+  .trust-diagram[data-state="play"] .td-lock-body {
+    animation: td-node-in 0.4s ease 2.9s both;
+  }
+  .trust-diagram[data-state="play"] .td-shackle {
+    animation:
+      td-appear 0.01s linear 2.9s both,
+      td-shackle-drop 0.15s ease-in 3.3s both;
+  }
+
+  .trust-diagram[data-state="play"] .td-confirm-1 {
+    animation: td-confirm 0.9s ease-out 4.7s both;
+  }
+  .trust-diagram[data-state="play"] .td-confirm-2 {
+    animation: td-confirm 0.9s ease-out 4.9s both;
+  }
+
+  .trust-diagram[data-state="play"] .td-pulse-trunk {
+    animation: td-run-trunk 7s linear 6s infinite;
+  }
+  .trust-diagram[data-state="play"] .td-pulse-b1,
+  .trust-diagram[data-state="play"] .td-pulse-b2 {
+    animation: td-run-branch 7s linear 6s infinite;
+  }
+  .trust-diagram[data-state="play"] .td-halo {
+    animation: td-halo-blink 7s ease 6s infinite;
+  }
+}
+
+@keyframes td-node-in {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes td-rev-draw {
+  from { stroke-dashoffset: 100; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes td-route-seal {
+  from {
+    stroke-dasharray: 2.2 5;
+    stroke: var(--color-warmgray);
+    stroke-opacity: 0.5;
+  }
+  to {
+    stroke-dasharray: 7.2 0.01;
+    stroke: var(--color-fern-soft);
+    stroke-opacity: 0.8;
+  }
+}
+
+@keyframes td-appear {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes td-warmth {
+  0% { opacity: 0; }
+  30% { opacity: 0.14; }
+  100% { opacity: 0.06; }
+}
+
+@keyframes td-shield-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes td-shield-secure {
+  0% { stroke-opacity: 0.55; }
+  30% { stroke-opacity: 1; }
+  100% { stroke-opacity: 0.8; }
+}
+
+@keyframes td-shield-breathe {
+  0%, 100% { stroke-opacity: 0.8; }
+  50% { stroke-opacity: 0.55; }
+}
+
+@keyframes td-shield-pop {
+  0%, 100% { transform: scale(1); }
+  40% { transform: scale(1.035); }
+}
+
+@keyframes td-shackle-drop {
+  from { transform: translateY(-5px); }
+  to { transform: translateY(0); }
+}
+
+@keyframes td-confirm {
+  0% {
+    opacity: 0.55;
+    transform: scale(0.7);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.9);
+  }
+}
+
+@keyframes td-run-trunk {
+  0% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  2% { opacity: 0.9; }
+  13% {
+    offset-distance: 100%;
+    opacity: 0.9;
+  }
+  15% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes td-run-branch {
+  0%, 15% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  17% { opacity: 0.9; }
+  30% {
+    offset-distance: 100%;
+    opacity: 0.9;
+  }
+  32% { opacity: 0; }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes td-halo-blink {
+  0%, 29% { opacity: 0; }
+  34% { opacity: 0.6; }
+  44% { opacity: 0; }
+  100% { opacity: 0; }
 }
 
 /* ---------- Marquee of audiences ---------- */

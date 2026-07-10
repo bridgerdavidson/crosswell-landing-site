@@ -1,4 +1,5 @@
 import Reveal from "./Reveal";
+import TrustDiagram from "./TrustDiagram";
 
 const guarantees = [
   {
@@ -51,77 +52,9 @@ export default function Trust() {
             </div>
           </div>
 
-          <Reveal delay={150} className="hidden lg:block">
-            <div className="relative mx-auto h-[420px] w-[420px]" aria-hidden="true">
-              <svg viewBox="0 0 420 420" className="h-full w-full">
-                <g className="vault-ring">
-                  <circle
-                    cx="210"
-                    cy="210"
-                    r="190"
-                    fill="none"
-                    stroke="var(--color-fern-soft)"
-                    strokeOpacity="0.25"
-                    strokeWidth="1"
-                    strokeDasharray="3 10"
-                  />
-                </g>
-                <g className="vault-ring-reverse">
-                  <circle
-                    cx="210"
-                    cy="210"
-                    r="145"
-                    fill="none"
-                    stroke="var(--color-fern-soft)"
-                    strokeOpacity="0.35"
-                    strokeWidth="1"
-                    strokeDasharray="2 8"
-                  />
-                </g>
-                <g className="vault-ring">
-                  <circle
-                    cx="210"
-                    cy="210"
-                    r="100"
-                    fill="none"
-                    stroke="var(--color-fern-soft)"
-                    strokeOpacity="0.5"
-                    strokeWidth="1"
-                    strokeDasharray="1 6"
-                  />
-                </g>
-                <circle
-                  cx="210"
-                  cy="210"
-                  r="56"
-                  fill="var(--color-charcoal-deep)"
-                  stroke="var(--color-fern-soft)"
-                  strokeOpacity="0.6"
-                  strokeWidth="1"
-                />
-                <g transform="translate(210 210)">
-                  <path
-                    d="M-11 4v-8a11 11 0 0 1 22 0v8"
-                    fill="none"
-                    stroke="var(--color-fern-soft)"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
-                  <rect
-                    x="-16"
-                    y="2"
-                    width="32"
-                    height="24"
-                    rx="4"
-                    fill="none"
-                    stroke="var(--color-fern-soft)"
-                    strokeWidth="2"
-                  />
-                  <circle cx="0" cy="14" r="3" fill="var(--color-fern-soft)" />
-                </g>
-              </svg>
-            </div>
-          </Reveal>
+          <div className="mt-6 lg:mt-0">
+            <TrustDiagram />
+          </div>
         </div>
       </div>
     </section>
