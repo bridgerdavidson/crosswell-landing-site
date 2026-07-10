@@ -47,15 +47,15 @@ export default function TrustDiagram() {
         <defs>
           <mask id="td-route-reveal">
             <line className="td-rev td-rev-trunk" x1="46" y1="150" x2="150" y2="150" pathLength="100" />
-            <path className="td-rev td-rev-branch" d="M150 150 C210 150 220 102 254 102" pathLength="100" />
-            <path className="td-rev td-rev-branch" d="M150 150 C210 150 220 198 254 198" pathLength="100" />
+            <path className="td-rev td-rev-branch" d="M150 150 C190 136 214 102 254 102" pathLength="100" />
+            <path className="td-rev td-rev-branch" d="M150 150 C190 164 214 198 254 198" pathLength="100" />
           </mask>
         </defs>
 
         <g mask="url(#td-route-reveal)">
           <line className="td-route" x1="46" y1="150" x2="150" y2="150" />
-          <path className="td-route" d="M150 150 C210 150 220 102 254 102" />
-          <path className="td-route" d="M150 150 C210 150 220 198 254 198" />
+          <path className="td-route" d="M150 150 C190 136 214 102 254 102" />
+          <path className="td-route" d="M150 150 C190 164 214 198 254 198" />
         </g>
 
         <circle className="td-pulse td-pulse-trunk" cx="0" cy="0" r="3" />
