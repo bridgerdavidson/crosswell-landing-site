@@ -514,3 +514,21 @@ body {
     animation: none;
   }
 }
+
+/* Behind the chat: the brain map */
+.brain-stage {
+  position: relative;
+  width: 100%;
+  height: clamp(430px, 52vw, 600px);
+}
+.brain-stage .brain-still,
+.brain-stage .brain-field {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+/* canvas is hidden until the client island activates; no-JS shows the still */
+.brain-stage .brain-field { opacity: 0; }
+.brain-stage[data-mode="live"] .brain-field { opacity: 1; }
+.brain-stage[data-mode="live"] .brain-still { visibility: hidden; }

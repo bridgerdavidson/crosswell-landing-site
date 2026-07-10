@@ -1,7 +1,7 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import HowItWorks from "@/components/HowItWorks";
-import BrainStill from "@/components/brain/BrainStill";
+import BrainSection from "@/components/brain/BrainSection";
 import Edge from "@/components/Edge";
 import Trust from "@/components/Trust";
 import BeyondCore from "@/components/BeyondCore";
@@ -17,7 +17,7 @@ export default function Home() {
       <Nav />
       <Hero />
       <HowItWorks />
-      <div style={{ maxWidth: 1000, margin: "0 auto", padding: 40 }}><BrainStill /></div>
+      <BrainSection />
       <Edge />
       <TimeBack />
       <Trust />
