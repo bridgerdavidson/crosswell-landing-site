@@ -9,7 +9,7 @@ export function ChatView() {
         </div>
 
         <div className="relative min-h-[150px] sm:min-h-[118px]">
-          <div className="cwd-thinking absolute left-0 top-0 flex items-center gap-1.5 rounded-2xl rounded-bl-[5px] bg-[#24221c] px-3.5 py-3 opacity-0">
+          <div className="cwd-thinking absolute left-0 top-0 flex items-center gap-1.5 rounded-2xl rounded-bl-[5px] bg-[#24221c] px-3.5 py-3 opacity-0 invisible">
             <span className="chat-dot" />
             <span className="chat-dot" />
             <span className="chat-dot" />

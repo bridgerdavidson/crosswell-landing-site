@@ -28,7 +28,7 @@ V1 played one loop inside a static Chat view. Feedback after seeing it live:
 | Beat | Time | View | What happens |
 |---|---|---|---|
 | Settle | 0.0-0.5s | Add to the brain | Frame rises 12px and fades in; sidebar indicator on Add to the brain; source chips already live |
-| Auto-capture | 0.5-3.5s | Add to the brain | A feed item slides in BY ITSELF: "Meeting transcript · Wire approval policy" with an "Ingested automatically" badge; status ticks Reading… then tags Operations · Policy · April stagger in, then "Filed ✓" and "1,204 notes in the brain" (count ticks from 1,203). No cursor involvement |
+| Auto-capture | 0.5-3.5s | Add to the brain | A feed item slides in BY ITSELF: "Meeting transcript · Wire approval policy" with an "Ingested automatically" badge; status ticks Reading… then tags Operations · Policy · April stagger in, then the filed check and "1,204 notes in the brain" (count ticks from 1,203). No cursor involvement |
 | Go to Chat | 3.5-4.3s | transition | Cursor dot fades in near frame center, glides to Chat in the nav, presses; indicator slides, view crossfades to Chat |
 | Ask | 4.3-8.2s | Chat | Question types INTO THE COMPOSER (~1.4s, proxy tween); cursor glides to the send circle, presses; composer text clears and the question pops up into the thread as a sent bubble (y 8 to 0, scale 0.96 to 1); thinking dots ~1.2s; answer card rises with citation chips staggering in, "Policy note · Apr 8" glowing |
 | Verify | 8.2-11.5s | Library | Cursor glides to the glowing citation chip, presses; nav indicator jumps to Library, view switches; the wire-approvals note sits open in the list, marked "Cited just now"; a highlight sweeps its key line |
@@ -41,7 +41,7 @@ Replay restarts the full tour (re-arm inside the timeline, as v1 did).
 
 **Add to the brain**
 - Section label: "Connected sources", with three live chips: "Meeting bot · in today's ops meeting" (pulsing status dot), "Email · watching forwarded mail", "Files · synced".
-- Feed item: "Meeting transcript · Wire approval policy" + badge "Ingested automatically" → status "Reading…" → tag chips Operations · Policy · April → "Filed ✓" + "1,204 notes in the brain".
+- Feed item: "Meeting transcript · Wire approval policy" + badge "Ingested automatically" → status "Reading…" → tag chips Operations · Policy · April → a check icon + "Filed" + "1,204 notes in the brain".
 - Manual line, quiet, below: "Drop files or paste notes for anything the bots can't catch."
 
 **Chat**

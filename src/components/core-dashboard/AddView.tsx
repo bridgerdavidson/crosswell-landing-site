@@ -47,7 +47,7 @@ export function AddView() {
         </div>
         <div className="cwd-feed-filed mt-2.5 flex items-center gap-1.5 text-[11px] font-semibold text-fern-soft">
           <IconCheck />
-          Filed ✓
+          Filed
           <span className="ml-2 font-medium text-ivory/45 tabular-nums">
             <span className="cwd-brain-count">1,204</span> notes in the brain
           </span>
