@@ -1,8 +1,19 @@
 "use client";
 
+import { useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
 export const QUESTION = "Where did we land on wire approvals over $250k?";
 export const ANSWER =
   "Dual approval, decided in April. Any wire over $250k needs sign-off from both a managing partner and operations, and the reasoning is documented: a near miss in March with a mistyped account number.";
+
+const TYPE_SECONDS = QUESTION.length * 0.028;
+const RING_ON = "0 0 0 1.5px rgba(147,179,147,0.55)";
+const RING_OFF = "0 0 0 1.5px rgba(147,179,147,0)";
 
 const SPARK_HEIGHTS = [35, 55, 40, 70, 50, 60, 90];
 
@@ -112,8 +123,131 @@ function Sparkbars({ className = "" }: { className?: string }) {
 }
 
 export default function CoreDashboard() {
+  const scopeRef = useRef<HTMLDivElement>(null);
+  const tlRef = useRef<gsap.core.Timeline | null>(null);
+  const idleRef = useRef<gsap.core.Tween | null>(null);
+
+  useGSAP(
+    () => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        return; // finished scene stays as server-rendered; replay stays hidden
+      }
+      const scope = scopeRef.current;
+      if (!scope) return;
+
+      // NodeLists resolved once; late-created tweens (idle) must use elements,
+      // not selector strings, because they run outside the useGSAP context.
+      const qTexts = scope.querySelectorAll<HTMLElement>(".cwd-qtext");
+      const counts = scope.querySelectorAll<HTMLElement>(".cwd-count");
+      const replays = scope.querySelectorAll<HTMLButtonElement>(".cwd-replay");
+      const newBars = scope.querySelectorAll<HTMLElement>(".cwd-bar-new");
+
+      const setQuestion = (v: string) => qTexts.forEach((n) => (n.textContent = v));
+      const setCounts = (v: string) => counts.forEach((n) => (n.textContent = v));
+
+      const tw = { i: 0 };
+
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: scope, start: "top 75%", once: true },
+        defaults: { ease: "power2.out" },
+      });
+      tlRef.current = tl;
+
+      tl
+        // Beat 0: arm. Lives inside the timeline so restart() re-arms cleanly.
+        .call(() => {
+          idleRef.current?.kill();
+          idleRef.current = null;
+          tw.i = 0;
+          setQuestion("");
+          setCounts("1,203");
+          replays.forEach((b) => (b.hidden = false));
+        })
+        .set(".cwd-frame", { autoAlpha: 0, y: 12 })
+        .set([".cwd-q", ".cwd-thinking", ".cwd-answer", ".cwd-plus1", ".cwd-replay"], {
+          autoAlpha: 0,
+        })
+        .set(".cwd-filed", { autoAlpha: 0, x: 16, boxShadow: RING_OFF })
+        .set(".cwd-tag", { autoAlpha: 0, y: 4 })
+        .set(".cwd-cite", { autoAlpha: 0, y: 6 })
+        .set(".cwd-cite-new", { boxShadow: RING_OFF })
+        .set(".cwd-bar-new", { scaleY: 0.12 })
+
+        // Settle: 0.0-0.6s
+        .to(".cwd-frame", { autoAlpha: 1, y: 0, duration: 0.6 })
+
+        // Capture: 0.6-2.4s
+        .to(".cwd-filed", { autoAlpha: 1, x: 0, duration: 0.5 }, 0.7)
+        .to(".cwd-tag", { autoAlpha: 1, y: 0, duration: 0.3, stagger: 0.05 }, 1.0)
+        .call(() => setCounts("1,204"), undefined, 1.5)
+        .fromTo(".cwd-count", { y: -3 }, { y: 0, duration: 0.25 }, 1.5)
+        .to(".cwd-plus1", { autoAlpha: 1, duration: 0.3 }, 1.55)
+        .to(".cwd-bar-new", { scaleY: 1, duration: 0.6 }, 1.6)
+
+        // Question: 2.4s onward (typewriter, then thinking dots)
+        .to(".cwd-q", { autoAlpha: 1, duration: 0.2 }, 2.4)
+        .to(".cwd-caret", { autoAlpha: 1, duration: 0.1 }, 2.4)
+        .to(
+          tw,
+          {
+            i: QUESTION.length,
+            duration: TYPE_SECONDS,
+            ease: "none",
+            onUpdate: () => setQuestion(QUESTION.slice(0, Math.round(tw.i))),
+          },
+          2.6
+        )
+        .to(".cwd-caret", { autoAlpha: 0, duration: 0.15 }, 2.6 + TYPE_SECONDS + 0.35)
+        .to(".cwd-thinking", { autoAlpha: 1, duration: 0.2 }, 2.6 + TYPE_SECONDS + 0.4)
+
+        // Answer: after ~1.9s of thinking
+        .to(".cwd-thinking", { autoAlpha: 0, duration: 0.15 }, "+=1.9")
+        .fromTo(
+          ".cwd-answer",
+          { autoAlpha: 0, y: 14 },
+          { autoAlpha: 1, y: 0, duration: 0.5 }
+        )
+        .to(".cwd-cite", { autoAlpha: 1, y: 0, duration: 0.3, stagger: 0.08 }, "-=0.15")
+
+        // Payoff: shared ring pulses twice, ends ON (matches the resting class)
+        .fromTo(
+          [".cwd-cite-new", ".cwd-filed"],
+          { boxShadow: RING_OFF },
+          {
+            boxShadow: RING_ON,
+            duration: 0.35,
+            repeat: 2,
+            yoyo: true,
+            ease: "sine.inOut",
+          },
+          "+=0.4"
+        )
+
+        // Idle: last bar breathes; replay appears
+        .call(() => {
+          idleRef.current = gsap.to(newBars, {
+            scaleY: 0.85,
+            duration: 2.4,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+          });
+        })
+        .to(".cwd-replay", { autoAlpha: 1, duration: 0.4 });
+
+      return () => {
+        idleRef.current?.kill();
+      };
+    },
+    { scope: scopeRef }
+  );
+
+  const replay = () => {
+    tlRef.current?.restart();
+  };
+
   return (
-    <div className="cwd-scope mx-auto max-w-5xl">
+    <div ref={scopeRef} className="cwd-scope mx-auto max-w-5xl">
       <p className="sr-only">
         Product preview: a policy note is filed into the firm&apos;s brain,
         tagged, and moments later a question about wire approvals is answered
@@ -151,6 +285,7 @@ export default function CoreDashboard() {
           <button
             type="button"
             hidden
+            onClick={replay}
             className="cwd-replay ml-2 cursor-pointer text-xs font-medium text-fern-soft transition-colors hover:text-ivory focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fern-soft"
           >
             Replay
