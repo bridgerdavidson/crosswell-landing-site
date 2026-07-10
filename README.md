@@ -18,6 +18,10 @@ The public marketing site for Crosswell and Crosswell Core. Rebuilt fresh in Jul
 
 Nav, Hero, How it works (+ dashboard scene), Why Crosswell, The value (time back), Security (dark), Beyond Core, Who it's for (marquee), Team, Final CTA (dark), Footer.
 
+## Next up
+
+- **"How it's built" backend section.** After the dashboard tour ships: a section showing the infrastructure clients are actually paying for, how their files are stored, tagged, linked, and kept, so Core reads as a brain with a front door rather than a chatbot. Idea logged in the brain at `ai-os/projects/crosswell-consulting/ideas/landing-site-backend-section.md`.
+
 ## Run it
 
 ```bash

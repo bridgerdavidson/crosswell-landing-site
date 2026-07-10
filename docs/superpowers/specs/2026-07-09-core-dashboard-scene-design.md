@@ -1,5 +1,7 @@
 # Core dashboard scene: "The full room, dark"
 
+> Superseded 2026-07-09 by `2026-07-09-core-dashboard-tour-design.md` (the five-beat tour). The frame, visual system, and guardrails here still apply; the staging, rail, and motion sections do not.
+
 Design spec for the second thing a visitor sees: replacing the chat-only demo in How It Works with a scripted, dark-mode Crosswell Core dashboard scene that plays the product's full loop (capture, organize, recall) as one continuous take.
 
 Approved in brainstorming on 2026-07-09 (wireframes reviewed in the visual companion; dark "full room" locked).
