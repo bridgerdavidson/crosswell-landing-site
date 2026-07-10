@@ -1,4 +1,4 @@
-import ChatDemo from "./ChatDemo";
+import CoreDashboard from "./CoreDashboard";
 import Reveal from "./Reveal";
 
 const steps = [
@@ -29,28 +29,24 @@ export default function HowItWorks() {
         </h2>
       </Reveal>
 
-      <div className="mt-16 grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
-        <div className="flex flex-col gap-10">
-          {steps.map((step, i) => (
-            <Reveal key={step.number} delay={i * 120}>
-              <div className="flex gap-6">
-                <span className="type-accent italic text-fern">
-                  {step.number}
-                </span>
-                <div>
-                  <h3 className="type-h3 text-ink">
-                    {step.title}
-                  </h3>
-                  <p className="mt-2 leading-relaxed text-ink/70">{step.body}</p>
-                </div>
+      <div className="mt-14 grid gap-10 sm:grid-cols-3 sm:gap-8">
+        {steps.map((step, i) => (
+          <Reveal key={step.number} delay={i * 120}>
+            <div className="flex gap-5">
+              <span className="type-accent italic text-fern">{step.number}</span>
+              <div>
+                <h3 className="type-h3 text-ink">{step.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-ink/70">
+                  {step.body}
+                </p>
               </div>
-            </Reveal>
-          ))}
-        </div>
+            </div>
+          </Reveal>
+        ))}
+      </div>
 
-        <Reveal delay={150} className="lg:sticky lg:top-24">
-          <ChatDemo />
-        </Reveal>
+      <div className="mt-16">
+        <CoreDashboard />
       </div>
     </section>
   );
