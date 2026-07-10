@@ -311,7 +311,7 @@ export default function CoreDashboard() {
 
             {/* Chat canvas */}
             <div className="flex min-w-0 flex-1 flex-col px-4 pb-4 pt-5 sm:px-6">
-              <div className="relative mx-auto flex w-full max-w-[560px] flex-1 flex-col gap-3 pt-16 md:pt-0">
+              <div className="relative mx-auto flex w-full max-w-[560px] flex-1 flex-col gap-3 pt-24 md:pt-0">
                 {/* Mobile capture toast (below md the rail is hidden; the filed
                     card plays as a floating toast instead) */}
                 <FiledCard className="cwd-filed-toast absolute right-0 top-0 z-10 w-[218px] md:hidden" />
