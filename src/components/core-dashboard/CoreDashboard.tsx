@@ -100,8 +100,12 @@ export default function CoreDashboard() {
         return { x: b.left - f.left + b.width / 2, y: b.top - f.top + b.height / 2 };
       };
 
+      let navKey = "chat";
+      let armed = false;
+
       // Nav indicator: instant width/position set + label colors (sets, not tweens).
       const setNav = (key: string, animate: boolean) => {
+        navKey = key;
         scope.querySelectorAll<HTMLElement>(".cwd-nav").forEach((nav) => {
           const item = nav.querySelector<HTMLElement>(`.cwd-nav-item-${key}`);
           const pill = nav.querySelector<HTMLElement>(".cwd-nav-pill");
@@ -124,6 +128,11 @@ export default function CoreDashboard() {
         });
       };
 
+      const onResize = () => {
+        if (armed) setNav(navKey, false);
+      };
+      window.addEventListener("resize", onResize);
+
       const tw = { i: 0 };
 
       const tl = gsap.timeline({
@@ -135,6 +144,7 @@ export default function CoreDashboard() {
       tl
         // ===== Arm (t=0; restart() re-runs all of this) =====
         .call(() => {
+          armed = true;
           idleRef.current?.kill();
           idleRef.current = null;
           tw.i = 0;
@@ -324,6 +334,7 @@ export default function CoreDashboard() {
         .to(".cwd-replay", { autoAlpha: 1, duration: 0.4 }, "rest+=0.2");
 
       return () => {
+        window.removeEventListener("resize", onResize);
         idleRef.current?.kill();
       };
     },
