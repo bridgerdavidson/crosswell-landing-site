@@ -4,7 +4,7 @@ import TrustDiagram from "./TrustDiagram";
 const guarantees = [
   {
     title: "Isolated per firm",
-    body: "Your brain runs in its own environment. No shared database, nothing to leak across clients.",
+    body: "Your Core runs in its own environment. No shared database, nothing to leak across clients.",
   },
   {
     title: "Encrypted everywhere",
@@ -16,7 +16,7 @@ const guarantees = [
   },
   {
     title: "Host it yourself",
-    body: "For the most sensitive firms, the brain can live entirely on your own servers. Even we cannot see it.",
+    body: "For the most sensitive firms, Core can live entirely on your own servers. Even we cannot see it.",
   },
 ];
 

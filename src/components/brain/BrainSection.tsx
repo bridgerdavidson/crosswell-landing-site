@@ -4,15 +4,15 @@ import BrainField from "./BrainField";
 export default function BrainSection() {
   return (
     <section id="the-brain" className="px-6 py-24 sm:py-32">
-      <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[0.85fr_1.4fr] lg:gap-16">
+      <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[0.62fr_1.55fr] lg:gap-16">
         <div>
-          <p className="type-kicker text-fern-deep">Behind the chat</p>
+          <p className="type-kicker text-fern-deep">This is Core</p>
           <h2 className="type-h2 mt-3">Nothing your firm knows sits alone.</h2>
           <p className="type-body mt-5 max-w-[46ch] text-charcoal/80">
-            Every meeting, email, and file becomes a connected memory, linked
-            to the people, deals, and decisions it touches. Your firm&apos;s
-            knowledge stops living in inboxes and in people&apos;s heads, and
-            starts compounding.
+            Core is everything your firm knows, connected. Every meeting,
+            email, and file becomes a memory linked to the people, deals, and
+            decisions it touches. Your questions search this, and it&apos;s
+            yours, compounding over time instead of walking out the door.
           </p>
           <p className="mt-6 text-[11px] uppercase tracking-[0.14em] text-warmgray">
             Illustrative

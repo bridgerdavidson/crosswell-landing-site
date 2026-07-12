@@ -50,7 +50,7 @@ export function AddView() {
           <IconCheck />
           Filed
           <span className="ml-2 font-medium text-ivory/45 tabular-nums">
-            <span className="cwd-brain-count">1,204</span> notes in the brain
+            <span className="cwd-brain-count">1,204</span> notes in Core
           </span>
         </div>
       </div>

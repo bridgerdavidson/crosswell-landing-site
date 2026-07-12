@@ -16,11 +16,20 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 const TYPE_SECONDS = QUESTION.length * 0.03;
 
 const NAV = [
-  { key: "add", label: "Add to the brain", short: "Add", Icon: IconPlus },
+  { key: "add", label: "Add to Core", short: "Add", Icon: IconPlus },
   { key: "chat", label: "Chat", short: "Chat", Icon: IconChat },
   { key: "library", label: "Library", short: "Library", Icon: IconFolder },
   { key: "analytics", label: "Analytics", short: "Analytics", Icon: IconBars },
 ] as const;
+
+// One caption per view, revealed in sync with the tour. Default (reduced-motion
+// / no-JS rest) is the Chat line, matching the resting Chat view.
+const CAPTIONS = {
+  add: "Meetings, emails, and files flow in on their own. Add anything else by hand.",
+  chat: "Ask in plain language. Every answer is grounded in your firm's own context.",
+  library: "Each answer traces back to the exact note it came from.",
+  analytics: "Ask for a read on the whole firm, and it writes the report.",
+} as const;
 
 function NavItems({ variant }: { variant: "side" | "strip" }) {
   return (
@@ -73,9 +82,23 @@ export default function CoreDashboard() {
       const replays = scope.querySelectorAll<HTMLButtonElement>(".cwd-replay");
       const reportBars = scope.querySelectorAll<HTMLElement>(".cwd-report-bar");
       const liveDots = scope.querySelectorAll<HTMLElement>(".cwd-live-dot");
+      const captionEl = scope.querySelector<HTMLElement>(".cwd-caption");
 
       const setComposer = (v: string) =>
         composerText.forEach((n) => (n.textContent = v));
+
+      // Swap the caption in sync with the active view (quick crossfade).
+      const setCaption = (text: string) => {
+        if (!captionEl) return;
+        gsap.to(captionEl, {
+          opacity: 0,
+          duration: 0.18,
+          onComplete: () => {
+            captionEl.textContent = text;
+            gsap.to(captionEl, { opacity: 1, duration: 0.28 });
+          },
+        });
+      };
 
       // Cursor targeting: measured from the live layout at tween start.
       // Function-based values re-evaluate after tl.invalidate() on replay.
@@ -163,6 +186,10 @@ export default function CoreDashboard() {
           stats.forEach((n) => (n.textContent = "0"));
           replays.forEach((b) => (b.hidden = false));
           setNav("add", false);
+          if (captionEl) {
+            captionEl.textContent = CAPTIONS.add;
+            gsap.set(captionEl, { opacity: 1 });
+          }
         })
         .set(".cwd-nav-chat-static", { autoAlpha: 0 })
         .set(".cwd-frame", { autoAlpha: 0, y: 12 })
@@ -222,6 +249,7 @@ export default function CoreDashboard() {
         )
         .to(".cwd-cursor", { scale: 0.85, duration: 0.1, yoyo: true, repeat: 1 }, "goChat+=0.72")
         .call(() => setNav("chat", true), undefined, "goChat+=0.78")
+        .call(() => setCaption(CAPTIONS.chat), undefined, "goChat+=0.78")
         .to(".cwd-view-add", { autoAlpha: 0, duration: 0.18 }, "goChat+=0.78")
         .fromTo(
           ".cwd-view-chat",
@@ -280,6 +308,7 @@ export default function CoreDashboard() {
         .to(".cwd-cursor", { scale: 0.85, duration: 0.1, yoyo: true, repeat: 1 }, "verify+=0.6")
         .fromTo(".cwd-cite-new", { scale: 1 }, { scale: 0.94, duration: 0.1, yoyo: true, repeat: 1 }, "verify+=0.6")
         .call(() => setNav("library", true), undefined, "verify+=0.75")
+        .call(() => setCaption(CAPTIONS.library), undefined, "verify+=0.75")
         .to(".cwd-view-chat", { autoAlpha: 0, duration: 0.18 }, "verify+=0.75")
         .fromTo(
           ".cwd-view-library",
@@ -299,6 +328,7 @@ export default function CoreDashboard() {
         )
         .to(".cwd-cursor", { scale: 0.85, duration: 0.1, yoyo: true, repeat: 1 }, "report+=0.65")
         .call(() => setNav("analytics", true), undefined, "report+=0.78")
+        .call(() => setCaption(CAPTIONS.analytics), undefined, "report+=0.78")
         .to(".cwd-view-library", { autoAlpha: 0, duration: 0.18 }, "report+=0.78")
         .fromTo(
           ".cwd-view-analytics",
@@ -362,7 +392,7 @@ export default function CoreDashboard() {
   return (
     <div className="cwd-scope mx-auto max-w-5xl" ref={scopeRef}>
       <p className="sr-only">
-        Product preview: the firm&apos;s brain ingests a meeting transcript
+        Product preview: your firm&apos;s Core ingests a meeting transcript
         automatically, a teammate asks about wire approvals and gets a cited
         answer, the citation opens the source note in the library, and a June
         report summarizes activity across the firm.
@@ -434,9 +464,14 @@ export default function CoreDashboard() {
         </button>
       </div>
 
-      <p className="mt-3 text-center text-xs text-ink/45">
-        Product preview. Illustrative data.
-      </p>
+      <div className="mt-5 text-center">
+        <p className="cwd-caption mx-auto min-h-[2.75rem] max-w-xl text-sm leading-relaxed text-charcoal/80 sm:text-[15px]">
+          {CAPTIONS.chat}
+        </p>
+        <p className="mt-2 text-[11px] uppercase tracking-[0.14em] text-warmgray">
+          Product preview · Illustrative
+        </p>
+      </div>
     </div>
   );
 }

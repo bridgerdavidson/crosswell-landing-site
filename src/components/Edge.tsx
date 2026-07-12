@@ -11,7 +11,7 @@ const points = [
   },
   {
     title: "You work directly with us",
-    body: "No account managers, no ticket queues. The people who designed your brain are the people who answer when something needs attention.",
+    body: "No account managers, no ticket queues. The people who designed your Core are the people who answer when something needs attention.",
   },
 ];
 
