@@ -5,14 +5,17 @@ export default function Footer() {
   return (
     <footer className="border-t border-ivory/10 bg-charcoal-deep text-ivory">
       <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-8 px-6 py-12 sm:flex-row sm:items-center">
-        <div className="flex items-center gap-3">
-          <Image src="/xw-logo-light.svg" alt="Crosswell" width={40} height={16} />
-          <div>
-            <p className="text-lg font-semibold tracking-tight">Crosswell</p>
-            <p className="text-xs text-ivory/50">
-              The technology arm for the people who manage money. Arizona.
-            </p>
-          </div>
+        <div className="flex flex-col items-start gap-2.5">
+          <Image
+            src="/xw-h-lockup-light.svg"
+            alt="Crosswell"
+            width={295}
+            height={36}
+            className="h-6 w-auto"
+          />
+          <p className="max-w-xs text-xs text-ivory/50">
+            The technology arm for the people who manage money. Arizona.
+          </p>
         </div>
         <div className="flex flex-col items-start gap-1.5 text-sm sm:items-end">
           <a

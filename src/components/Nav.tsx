@@ -39,20 +39,17 @@ export default function Nav() {
       >
         <a
           href="#top"
-          className="flex items-center gap-3"
+          className="flex items-center"
           onClick={() => setOpen(false)}
         >
           <Image
-            src="/xw-logo-dark.svg"
-            alt=""
-            width={63}
-            height={26}
+            src="/xw-h-lockup-dark.svg"
+            alt="Crosswell"
+            width={295}
+            height={36}
             priority
-            className="h-[26px] w-auto"
+            className="h-7 w-auto"
           />
-          <span className="text-xl font-semibold leading-none tracking-tight text-ink">
-            Crosswell
-          </span>
         </a>
 
         <nav className="hidden items-center gap-8 md:flex">
