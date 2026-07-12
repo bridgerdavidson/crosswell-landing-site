@@ -1,31 +1,44 @@
 import { forwardRef } from "react";
 import { CORE_NOTE } from "@/lib/core-note";
 
-// The one note, big and readable. `raw` and `sorted` layers crossfade via CSS
-// (.is-sorted on the card root). Driven by the timeline in BrainField.
+// The one note, big and readable. The header identity persists while the body
+// transforms: raw transcript reads (phrases highlight in sequence), then the
+// tags fly to the row and the sorted summary resolves in. All opacities and the
+// phrase `.hot` class are driven by the clock in BrainField.
 const NoteCard = forwardRef<HTMLDivElement>(function NoteCard(_, ref) {
   return (
     <div ref={ref} className="brain-card" aria-hidden="true">
-      <div className="brain-card-raw">
+      {/* content fades out as one unit while the shell collapses into the node */}
+      <div className="brain-card-inner" data-inner>
         <div className="brain-card-head">
-          <span className="brain-card-dot" /> {CORE_NOTE.sourceLabel}
-          <span className="brain-card-badge">Capturing</span>
+          <span className="brain-card-dot" />
+          <span className="brain-card-title">{CORE_NOTE.sourceLabel.split(" · ")[0]}</span>
+          <span className="brain-card-badge" data-badge>
+            Capturing
+          </span>
         </div>
-        {CORE_NOTE.raw.map((line, i) => (
-          <p key={i} className="brain-card-line">{line}</p>
-        ))}
-      </div>
-      <div className="brain-card-sorted">
-        <div className="brain-card-head">
-          {CORE_NOTE.noteLabel}
-          <span className="brain-card-badge">Sorted</span>
-        </div>
-        <p className="brain-card-summary">{CORE_NOTE.summary}</p>
-        <p className="brain-card-context">{CORE_NOTE.context}</p>
-        <div className="brain-card-tags">
-          {CORE_NOTE.tags.map((t) => (
-            <span key={t} className="brain-card-tag">{t}</span>
-          ))}
+        <div className="brain-card-body">
+          <div className="brain-card-raw" data-raw>
+            <p className="brain-card-line">
+              ...so on wires, <span className="brain-ph" data-p="0">anything over 250 we said two sign offs</span>, a
+              managing partner and ops, no exceptions...
+            </p>
+            <p className="brain-card-line">
+              ...right, after the <span className="brain-ph" data-p="1">March</span> thing with the mistyped account
+              number. <span className="brain-ph" data-p="2">document the reasoning</span> so it sticks.
+            </p>
+          </div>
+          <div className="brain-card-sorted" data-sorted>
+            <p className="brain-card-summary">{CORE_NOTE.summary}</p>
+            <p className="brain-card-context">{CORE_NOTE.context}</p>
+          </div>
+          <div className="brain-card-tags" data-tags>
+            {CORE_NOTE.tags.map((t) => (
+              <span key={t} className="brain-card-tag">
+                {t}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </div>

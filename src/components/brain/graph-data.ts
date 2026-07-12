@@ -1,107 +1,191 @@
 export type RGB = [number, number, number];
-export type Density = "sparse" | "medium" | "dense";
+export type EdgeKind = "spoke" | "in" | "ring" | "note";
 
-export interface ClusterCfg {
-  key: string; label: string; color: RGB;
-  fx: number; fy: number; n: number; spread: number;
-  dx: number; dy: number; ph: number;
+// v3 radial brain: a deep-fern core at the center, five area-clusters in a ring
+// around it, satellites radiating and meshed so the whole thing reads as one
+// filled disc (not five spokes). Layout is a pure function of dims + time, so
+// the SSR still and the live canvas agree exactly.
+export interface Area {
+  key: string;
+  label: string;
+  color: RGB;
+  ang: number; // seat angle on the ring (radians)
+  n: number; // satellite count
 }
 
-// Locked in the look lab: five area-clusters pulled toward the middle.
-export const CLUSTERS: ClusterCfg[] = [
-  { key: "deals",      label: "Deals",      color: [61, 99, 61],    fx: 0.365, fy: 0.395, n: 10, spread: 0.108, dx: 0.11, dy: 0.14, ph: 0.3 },
-  { key: "investors",  label: "Investors",  color: [61, 58, 52],    fx: 0.665, fy: 0.375, n: 9,  spread: 0.096, dx: 0.13, dy: 0.10, ph: 1.7 },
-  { key: "people",     label: "People",     color: [184, 178, 167], fx: 0.360, fy: 0.640, n: 10, spread: 0.108, dx: 0.10, dy: 0.13, ph: 2.9 },
-  { key: "meetings",   label: "Meetings",   color: [147, 179, 147], fx: 0.510, fy: 0.520, n: 13, spread: 0.120, dx: 0.14, dy: 0.11, ph: 4.1 },
-  { key: "operations", label: "Operations", color: [78, 122, 78],   fx: 0.650, fy: 0.615, n: 10, spread: 0.108, dx: 0.12, dy: 0.15, ph: 5.2 },
+export const AREAS: Area[] = [
+  { key: "operations", label: "Operations", color: [78, 122, 78], ang: -Math.PI / 2, n: 18 },
+  { key: "deals", label: "Deals", color: [61, 99, 61], ang: -Math.PI / 2 + 1.256, n: 18 },
+  { key: "investors", label: "Investors", color: [61, 58, 52], ang: -Math.PI / 2 + 2.513, n: 15 },
+  { key: "people", label: "People", color: [184, 178, 167], ang: -Math.PI / 2 + 3.77, n: 18 },
+  { key: "meetings", label: "Meetings", color: [147, 179, 147], ang: -Math.PI / 2 + 5.026, n: 20 },
 ];
 
-const DENS: Record<Density, number> = { sparse: 0.7, medium: 1.1, dense: 1.85 };
-export const CALM = 0.5;        // locked motion factor
-export const DEPTH = 0.30;      // locked "minimal" depth
 export const SEED = 424242;
 export const STILL_W = 1000;
-export const STILL_H = 560;
+export const STILL_H = 640;
+export const RING = 0.235; // cluster ring radius as a fraction of MIN(W,H)
+export const SPREAD = 0.165; // satellite spread as a fraction of MIN(W,H)
 
 export interface GNode {
-  id: number; ci: number; color: RGB; hub: boolean; note: boolean;
-  offA: number; offR: number; z: number; r: number; ph: number; dir: number;
+  id: number;
+  ci: number; // area index, or -1 for core / inner / note
+  color: RGB;
+  core?: boolean;
+  inner?: boolean; // the dense inner halo around the core
+  hub?: boolean;
+  note?: boolean; // the just-filed memory
+  z: number;
+  r: number;
+  ph: number;
+  dir: number;
+  ang?: number; // orbit seed (inner + satellites)
+  radK?: number; // orbit radius seed (inner + satellites)
+  areaIndex?: number; // which area this hub anchors
 }
-export interface GEdge { a: number; b: number; inter: boolean; }
-export interface Graph { nodes: GNode[]; edges: GEdge[]; lit: GEdge[]; noteIndex: number; }
+export interface GEdge {
+  a: number;
+  b: number;
+  kind: EdgeKind;
+}
+export interface Graph {
+  nodes: GNode[];
+  edges: GEdge[];
+  coreIndex: number;
+  noteIndex: number;
+}
 
 function mulberry32(a: number) {
   return function () {
-    a |= 0; a = (a + 0x6d2b79f5) | 0;
+    a |= 0;
+    a = (a + 0x6d2b79f5) | 0;
     let t = Math.imul(a ^ (a >>> 15), 1 | a);
     t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
 }
 
-export function buildGraph(density: Density): Graph {
+export function buildGraph(): Graph {
   const rnd = mulberry32(SEED);
   const nodes: GNode[] = [];
   const edges: GEdge[] = [];
-  const lit: GEdge[] = [];
-  const ids: number[][] = CLUSTERS.map(() => []);
-  CLUSTERS.forEach((c, ci) => {
-    const count = Math.max(6, Math.round(c.n * DENS[density]));
+
+  const coreIndex = 0;
+  nodes.push({ id: 0, ci: -1, color: [61, 99, 61], core: true, hub: true, z: 0.85, r: 11, ph: 0, dir: 1 });
+
+  // inner halo: a dozen small nodes orbiting close to the core so the middle
+  // reads dense rather than a bare hub.
+  const inner: number[] = [];
+  for (let i = 0; i < 11; i++) {
+    const id = nodes.length;
+    nodes.push({ id, ci: -1, color: [61, 99, 61], inner: true, ang: rnd() * 6.28, radK: 0.05 + rnd() * 0.08, z: rnd(), r: 2.6 + rnd() * 2, ph: rnd() * 6.28, dir: rnd() < 0.5 ? -1 : 1 });
+    inner.push(id);
+  }
+
+  const areaHub: number[] = [];
+  const areaSats: number[][] = [];
+  AREAS.forEach((a, ci) => {
     const hubId = nodes.length;
-    nodes.push({ id: hubId, ci, color: c.color, hub: true, note: false, offA: 0, offR: 0, z: 0.78, r: 9.5, ph: rnd() * 6.28, dir: rnd() < 0.5 ? -1 : 1 });
-    ids[ci].push(hubId);
-    for (let i = 0; i < count; i++) {
+    nodes.push({ id: hubId, ci, color: a.color, hub: true, areaIndex: ci, z: 0.78, r: 8, ph: rnd() * 6.28, dir: rnd() < 0.5 ? -1 : 1 });
+    areaHub[ci] = hubId;
+    const sats: number[] = [];
+    for (let i = 0; i < a.n; i++) {
       const id = nodes.length;
-      nodes.push({ id, ci, color: c.color, hub: false, note: false, offA: rnd() * 6.28, offR: 0.4 + rnd() * 0.55, z: rnd(), r: 2.8 + rnd() * 2.6, ph: rnd() * 6.28, dir: rnd() < 0.5 ? -1 : 1 });
-      ids[ci].push(id);
+      nodes.push({ id, ci, color: a.color, ang: rnd() * 6.28, radK: 0.35 + rnd() * 0.72, z: rnd(), r: 2.4 + rnd() * 2.3, ph: rnd() * 6.28, dir: rnd() < 0.5 ? -1 : 1 });
+      sats.push(id);
     }
-    const cl = ids[ci];
-    for (let j = 1; j < cl.length; j++) {
-      if (j <= 2 || rnd() < 0.5) edges.push({ a: cl[j], b: hubId, inter: false });
-      else edges.push({ a: cl[j], b: cl[1 + Math.floor(rnd() * (j - 1))], inter: false });
+    areaSats[ci] = sats;
+    edges.push({ a: hubId, b: coreIndex, kind: "spoke" });
+    // satellites chain to siblings (fewer straight-to-hub) so it meshes
+    for (let j = 0; j < sats.length; j++) {
+      if (j < 2 || rnd() < 0.3) edges.push({ a: sats[j], b: hubId, kind: "in" });
+      else edges.push({ a: sats[j], b: sats[Math.floor(rnd() * j)], kind: "in" });
     }
-    for (let m = 0; m < 2 && cl.length > 5; m++) {
-      const a = cl[1 + Math.floor(rnd() * (cl.length - 1))], b = cl[1 + Math.floor(rnd() * (cl.length - 1))];
-      if (a !== b) edges.push({ a, b, inter: false });
+    // extra intra-cluster mesh links
+    for (let m = 0; m < 4 && sats.length > 4; m++) {
+      const s1 = sats[Math.floor(rnd() * sats.length)];
+      const s2 = sats[Math.floor(rnd() * sats.length)];
+      if (s1 !== s2) edges.push({ a: s1, b: s2, kind: "in" });
     }
   });
-  const byKey: Record<string, number> = {};
-  CLUSTERS.forEach((c, ci) => (byKey[c.key] = ci));
-  ([["deals", "meetings"], ["meetings", "operations"], ["people", "meetings"], ["investors", "operations"], ["deals", "people"], ["meetings", "investors"]] as const).forEach((p) => {
-    const A = ids[byKey[p[0]]], B = ids[byKey[p[1]]];
-    edges.push({ a: A[1 + Math.floor(rnd() * (A.length - 1))], b: B[1 + Math.floor(rnd() * (B.length - 1))], inter: true });
-  });
-  const opsCi = byKey["operations"];
+
+  // rim links between neighboring clusters so the ring closes into a disc
+  for (let k = 0; k < AREAS.length; k++) {
+    const A = k;
+    const B = (k + 1) % AREAS.length;
+    edges.push({ a: areaHub[A], b: areaHub[B], kind: "ring" });
+    for (let rr = 0; rr < 3; rr++) {
+      edges.push({ a: areaSats[A][Math.floor(rnd() * areaSats[A].length)], b: areaSats[B][Math.floor(rnd() * areaSats[B].length)], kind: "ring" });
+    }
+  }
+
+  // the new memory node: drops near the center; ordinary thin edges to the core
+  // plus a few nearby nodes (it settles in looking like it was always there).
   const noteIndex = nodes.length;
-  nodes.push({ id: noteIndex, ci: opsCi, color: [78, 122, 78], hub: false, note: true, offA: -1.15, offR: 0.52, z: 0.97, r: 7.5, ph: 0, dir: 1 });
-  const meet = ids[byKey["meetings"]], people = ids[byKey["people"]];
-  lit.push({ a: noteIndex, b: ids[opsCi][0], inter: false });
-  lit.push({ a: noteIndex, b: meet[Math.min(4, meet.length - 1)], inter: false });
-  lit.push({ a: noteIndex, b: people[Math.min(3, people.length - 1)], inter: false });
-  return { nodes, edges, lit, noteIndex };
+  nodes.push({ id: noteIndex, ci: -1, color: [61, 99, 61], note: true, z: 0.9, r: 5.5, ph: 0, dir: 1 });
+  edges.push({ a: noteIndex, b: coreIndex, kind: "note" });
+  edges.push({ a: noteIndex, b: inner[0], kind: "note" });
+  edges.push({ a: noteIndex, b: inner[3], kind: "note" });
+  edges.push({ a: noteIndex, b: inner[6], kind: "note" });
+  edges.push({ a: noteIndex, b: areaSats[0][2], kind: "note" });
+
+  return { nodes, edges, coreIndex, noteIndex };
 }
 
-export function clusterCenter(ci: number, W: number, H: number, t: number, motion: number) {
-  const c = CLUSTERS[ci];
-  const amp = Math.min(W, H) * 0.028 * motion;
-  return { x: c.fx * W + Math.sin(t * c.dx + c.ph) * amp, y: c.fy * H + Math.cos(t * c.dy + c.ph * 1.3) * amp };
-}
-export function nodeHome(n: GNode, W: number, H: number, t: number, motion: number) {
-  const c = CLUSTERS[n.ci];
+// ---- layout: pure functions of (node, W, H, t) ----
+export function areaCenter(ci: number, W: number, H: number, t: number) {
   const MIN = Math.min(W, H);
-  const cc = clusterCenter(n.ci, W, H, t, motion);
-  const ang = n.offA + t * 0.03 * motion * n.dir;
-  const rad = n.offR * c.spread * MIN;
-  const wob = MIN * 0.02 * motion;
-  return { x: cc.x + Math.cos(ang) * rad + Math.sin(t * 0.5 + n.ph) * wob, y: cc.y + Math.sin(ang) * rad + Math.cos(t * 0.42 + n.ph) * wob };
+  const a = AREAS[ci];
+  const d = 0.008 * MIN * Math.sin(t * 0.16 + ci);
+  return { x: W * 0.5 + Math.cos(a.ang) * (RING * MIN + d), y: H * 0.5 + Math.sin(a.ang) * (RING * MIN + d) };
 }
-// Settled (t=0) position; used by the still and as the canvas spring home base.
-export function settled(n: GNode, W: number, H: number) { return nodeHome(n, W, H, 0, CALM); }
+
+// soft-drop target for the note: dense, offset down-and-to-the-side so it clears the core
+export function landPos(W: number, H: number) {
+  const MIN = Math.min(W, H);
+  return { x: W * 0.5 + 0.11 * MIN, y: H * 0.5 + 0.05 * H };
+}
+
+// readable spot where the card is read and converts into the big node
+export function cardCenter(W: number, H: number) {
+  return { x: W * 0.5, y: H * 0.35 };
+}
+
+export function nodeHome(n: GNode, W: number, H: number, t: number) {
+  const MIN = Math.min(W, H);
+  const cx = W * 0.5;
+  const cy = H * 0.5;
+  if (n.core) return { x: cx + Math.sin(t * 0.12) * 3, y: cy + Math.cos(t * 0.1) * 3 };
+  if (n.inner) {
+    const ang = n.ang! + t * 0.04 * n.dir;
+    return { x: cx + Math.cos(ang) * n.radK! * MIN, y: cy + Math.sin(ang) * n.radK! * MIN };
+  }
+  if (n.hub) return areaCenter(n.areaIndex!, W, H, t);
+  if (n.note) return landPos(W, H);
+  const c = areaCenter(n.ci, W, H, t);
+  const ang = n.ang! + t * 0.03 * n.dir;
+  const rad = n.radK! * SPREAD * MIN;
+  const wob = MIN * 0.008 * Math.sin(t * 0.4 + n.ph);
+  return { x: c.x + Math.cos(ang) * rad + wob, y: c.y + Math.sin(ang) * rad + Math.cos(t * 0.36 + n.ph) * wob };
+}
+
+// settled (t=0) position; used by the still and the note's spring home.
+export function settled(n: GNode, W: number, H: number) {
+  return nodeHome(n, W, H, 0);
+}
 
 export function curveControl(ax: number, ay: number, bx: number, by: number) {
-  const dx = bx - ax, dy = by - ay, len = Math.hypot(dx, dy) || 1;
-  const off = Math.min(24, len * 0.09), nx = -dy / len, ny = dx / len;
+  const dx = bx - ax;
+  const dy = by - ay;
+  const len = Math.hypot(dx, dy) || 1;
+  const off = Math.min(18, len * 0.07);
+  const nx = -dy / len;
+  const ny = dx / len;
   return { mx: (ax + bx) / 2 + nx * off, my: (ay + by) / 2 + ny * off };
 }
-export function nodeSize(n: GNode) { return n.r * (1 - DEPTH * 0.5 + DEPTH * n.z); }
-export function nodeAlpha(n: GNode) { return n.hub ? 0.95 : 0.5 + 0.5 * n.z; }
+export function nodeSize(n: GNode) {
+  return n.r * (0.85 + 0.3 * n.z);
+}
+export function nodeAlpha(n: GNode) {
+  return n.hub ? 0.95 : 0.5 + 0.5 * n.z;
+}

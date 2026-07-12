@@ -1,6 +1,18 @@
-# Brain-map section redesign (v3) — decisions to carry into the next session
+# Brain-map section redesign (v3) — decisions + as-built record
 
-Status as of 2026-07-11: the v3 motion is **prototyped and approved-in-progress**, but **not yet implemented** in the real section. The current site (on `main`, local, unpushed) still has the **v1** animation from `2026-07-10-behind-the-chat-brain-map-design.md` / `...-plan.md`. This document captures the v3 redesign so a fresh session can resume. It supersedes the v1 *animation* design; the section's purpose, placement, palette, and copy are unchanged.
+Status as of 2026-07-11: **IMPLEMENTED** on branch `brain-map-v3` (not yet merged/committed). The v3 motion below was ported from the prototype into the real section (`src/components/brain/`), replacing the v1 animation, and verified end-to-end (prod build + Playwright beat shots on desktop/mobile + reduced-motion + no-JS, zero console errors, no horizontal overflow). This document captures the v3 redesign and the as-built deviations. It supersedes the v1 *animation* design (`2026-07-10-behind-the-chat-brain-map-design.md` / `...-plan.md`); the section's purpose, placement, palette, and copy are unchanged.
+
+## As-built deviations from the prototype
+- **Ambient time is decoupled from the sequence clock.** The prototype froze the brain whenever the 11s sequence wasn't playing. The real build runs a continuous `tAmb` for the node drift and a separate `clock` for the 7 beats, so the brain keeps breathing before/after the sequence. Both freeze together only when the section is scrolled offscreen (IntersectionObserver).
+- **Card header is concise + persistent.** The head shows `Meeting transcript` (derived from `CORE_NOTE.sourceLabel.split(" · ")[0]`) with the badge (`Capturing` -> `Sorted`); the full `· Wire approval policy` was dropped so the head fits one line at 390px without overflow. Header identity persists while the body transforms (raw -> sorted).
+- **Mask uses a double stop.** `.brain-field` mask is `radial-gradient(130% 130% at 50% 50%, #000 0 68%, transparent 100%)`. A single stop (`#000 68%`) is collapsed to `#000 0` by the prod minifier and washes the field out (see brain-map + css-minifier-gradient-trap memory). Verified in the built CSS.
+- **Trigger/replay** use `ScrollTrigger` (start `top 70%`, once) to start the clock and the Replay button to restart; everything else is a hand-rolled RAF clock (no GSAP tweens drive the beats). Replay fades in after the sequence ends.
+- Section grid widened to `lg:grid-cols-[0.62fr_1.55fr]` and stage height to `clamp(500px, 54vw, 660px)` for the enlarged brain.
+
+## Review outcome (adversarial multi-agent pass)
+Fixed: Replay fade-in tween now killed on replay (no ghost-back); tag-fly indexing guarded so a future 4th tag can't throw; Replay `aria-hidden` toggled (out of the a11y tree until revealed); the SSR still SVG is now `aria-hidden` (the sr-only `<p>` in BrainSection is the single description, no duplicate); settled note radius aligned to 5.5 in both still and live; `will-change` moved off static CSS and toggled on the card in JS only during the sequence window.
+
+Known limitation (accepted, not a regression): the SSR still uses a fixed `viewBox 0 0 1000 640` (`meet`) while the live canvas lays out from the stage's actual pixel size, so the brain can scale/shift at the still->live swap. This matches v1's structure, happens off-screen on mount for a below-fold section, and can't be made exact from SSR (no runtime px). Only a #the-brain deep-link on load could briefly expose it.
 
 ## Where the prototype lives
 - **Repo (source of truth):** `docs/superpowers/prototypes/2026-07-11-brain-scene-v3.html` (self-contained; open in a browser, or run the shoot rig against it).
