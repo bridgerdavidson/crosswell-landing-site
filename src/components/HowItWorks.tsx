@@ -17,8 +17,8 @@ export default function HowItWorks() {
       </div>
 
       <Reveal>
-        <p className="mt-14 text-center type-body text-charcoal">
-          Because behind the chat is{" "}
+        <p className="mt-16 text-center type-accent text-charcoal">
+          Behind the chat is the{" "}
           <span className="font-semibold text-fern-deep">Core</span>.
         </p>
       </Reveal>

@@ -7,10 +7,10 @@ export default function BrainSection() {
     <section id="the-brain" className="px-6 py-24 sm:py-32">
       <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[0.62fr_1.55fr] lg:gap-16">
         <Reveal>
-          <p className="type-kicker text-fern-deep">This is Core</p>
+          <p className="type-kicker text-fern-deep">This is the Core</p>
           <h2 className="type-h2 mt-3">Nothing your firm knows sits alone.</h2>
           <p className="type-body mt-5 max-w-[46ch] text-charcoal/80">
-            Core is everything your firm knows, connected. Every meeting,
+            The Core is everything your firm knows, connected. Every meeting,
             email, and file becomes a memory linked to the people, deals, and
             decisions it touches. Your questions search this, and it&apos;s
             yours, compounding over time instead of walking out the door.
