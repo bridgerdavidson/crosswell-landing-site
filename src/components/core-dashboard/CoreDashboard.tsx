@@ -216,7 +216,7 @@ export default function CoreDashboard() {
         .set(".cwd-lib-cited", { autoAlpha: 0, scale: 0.85 })
         .set(".cwd-stat-tile", { autoAlpha: 0, y: 8 })
         .set(".cwd-report-bar", { scaleY: 0.1 })
-        .set(".cwd-cursor", { autoAlpha: 0, scale: 1, xPercent: -50, yPercent: -50 })
+        .set(".cwd-cursor", { autoAlpha: 0, scale: 1, xPercent: 0, yPercent: 0, transformOrigin: "0% 0%" })
         .set(".cwd-replay", { autoAlpha: 0 })
 
         // ===== Settle (0-0.7): clean fade+rise in, matching the site reveals =====
@@ -454,8 +454,26 @@ export default function CoreDashboard() {
             </div>
           </div>
 
-          {/* Cursor dot (playback only) */}
-          <div className="cwd-cursor invisible absolute left-0 top-0 z-20 h-3.5 w-3.5 rounded-full bg-ivory/90 shadow-[0_0_0_5px_rgba(147,179,147,0.25),0_2px_8px_rgba(26,25,21,0.45)]" />
+          {/* Cursor (playback only) — a white mouse pointer; the tip is the
+              hotspot, so the GSAP arm sets its origin to the top-left corner */}
+          <div className="cwd-cursor invisible absolute left-0 top-0 z-20">
+            <svg
+              width="21"
+              height="21"
+              viewBox="0 0 20 20"
+              fill="none"
+              aria-hidden="true"
+              className="block drop-shadow-[0_2px_5px_rgba(26,25,21,0.5)]"
+            >
+              <path
+                d="M1.2 1.2 L1.2 16.4 L5.3 12.6 L8 18.7 L10.5 17.6 L7.9 11.6 L13.4 11.6 Z"
+                fill="#fff"
+                stroke="rgba(26,25,21,0.55)"
+                strokeWidth="1.1"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
         </div>
 
         <button
