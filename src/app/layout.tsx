@@ -31,6 +31,14 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        {/* start the heavy hero JPEG downloading immediately, in parallel with
+            the HTML, so its decode-gated fade finishes sooner */}
+        <link
+          rel="preload"
+          as="image"
+          href="/hero-core.jpg"
+          fetchPriority="high"
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: "document.documentElement.classList.add('js');",

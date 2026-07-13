@@ -367,7 +367,9 @@ export default function BrainField() {
     playing = false; // wait for scroll-in
     card.style.willChange = "auto"; // release until the sequence actually starts on scroll-in
 
-    const st = ScrollTrigger.create({ trigger: stage!, start: "top 70%", once: true, onEnter: reset });
+    // start the soft-drop sequence once the stage is comfortably in view (~60%
+    // down) so the card fly-in is caught from the first frame, not mid-build
+    const st = ScrollTrigger.create({ trigger: stage!, start: "top 62%", once: true, onEnter: reset });
     replay?.addEventListener("click", reset);
 
     const io = new IntersectionObserver((entries) => { visible = entries[0].isIntersecting; }, { threshold: 0.01 });

@@ -161,7 +161,9 @@ export default function CoreDashboard() {
       const tw = { i: 0 };
 
       const tl = gsap.timeline({
-        scrollTrigger: { trigger: scope, start: "top 75%", once: true },
+        // start once the dashboard is comfortably in view (~60% down) so the
+        // whole tour is caught from the first frame
+        scrollTrigger: { trigger: scope, start: "top 62%", once: true },
         defaults: { ease: "power2.out" },
       });
       tlRef.current = tl;
@@ -192,7 +194,10 @@ export default function CoreDashboard() {
           }
         })
         .set(".cwd-nav-chat-static", { autoAlpha: 0 })
-        .set(".cwd-frame", { autoAlpha: 0, y: 12 })
+        // frame is pre-hidden via CSS (.js .cwd-frame{opacity:0}); only offset it
+        // here, then fade it in below. Never yank a visible frame to 0 (that
+        // flashed the light page through the black frame on first play).
+        .set(".cwd-frame", { y: 22 })
         .set(".cwd-view-add", { autoAlpha: 1 })
         .set([".cwd-view-chat", ".cwd-view-library", ".cwd-view-analytics"], {
           autoAlpha: 0,
@@ -214,8 +219,8 @@ export default function CoreDashboard() {
         .set(".cwd-cursor", { autoAlpha: 0, scale: 1, xPercent: -50, yPercent: -50 })
         .set(".cwd-replay", { autoAlpha: 0 })
 
-        // ===== Settle (0-0.5) =====
-        .to(".cwd-frame", { autoAlpha: 1, y: 0, duration: 0.5 }, 0)
+        // ===== Settle (0-0.7): clean fade+rise in, matching the site reveals =====
+        .to(".cwd-frame", { autoAlpha: 1, y: 0, duration: 0.7, ease: "power3.out" }, 0)
 
         // ===== Auto-capture (0.5-3.5): no cursor anywhere =====
         .addLabel("capture", 0.5)

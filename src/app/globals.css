@@ -108,6 +108,67 @@ body {
   }
 }
 
+/* ---------- Hero load entrance ----------
+   A one-shot staggered rise+fade that plays on first paint, in the same
+   motion language as the scroll reveals above. JS-gated (only hides when
+   the head script has set .js) so no-JS renders the finished hero. Per-
+   element pacing is driven by --enter-delay / --enter-dur set in the markup. */
+
+.js .hero-enter {
+  opacity: 0;
+  animation: hero-rise var(--enter-dur, 0.9s) cubic-bezier(0.22, 1, 0.36, 1)
+    var(--enter-delay, 0s) both;
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.js .nav-enter {
+  animation: nav-drop 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes nav-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .hero-enter,
+  .js .nav-enter {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}
+
+/* Core dashboard frame: hide before paint so the tour's scroll-in is a clean
+   fade, not a flash of the ivory page showing through the black frame (the
+   timeline fades it in from here). JS-gated so no-JS shows it; reduced-motion
+   shows it immediately since the tour never runs. */
+.js .cwd-frame {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .cwd-frame {
+    opacity: 1;
+  }
+}
+
 /* ---------- Chat demo ---------- */
 
 .chat-caret {
@@ -182,6 +243,27 @@ body {
   /* measured center of the sphere in the artwork, so the turn does not wobble */
   transform-origin: 50.15% 49.9%;
   animation: core-turn 450s linear infinite;
+}
+
+/* the woven core is a heavy JPEG: hold it hidden and cross-fade it in only
+   once it has decoded (class set by HeroCore), so it never snaps in mid-draw.
+   JS-gated so no-JS shows it immediately. */
+.js .hero-core img {
+  opacity: 0;
+}
+
+.js .hero-core img.is-loaded {
+  opacity: 1;
+  transition: opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .hero-core img {
+    opacity: 1;
+  }
+  .js .hero-core img.is-loaded {
+    transition: none;
+  }
 }
 
 @keyframes core-turn {

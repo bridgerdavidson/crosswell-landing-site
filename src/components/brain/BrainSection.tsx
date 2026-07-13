@@ -1,11 +1,12 @@
 import BrainStill from "./BrainStill";
 import BrainField from "./BrainField";
+import Reveal from "../Reveal";
 
 export default function BrainSection() {
   return (
     <section id="the-brain" className="px-6 py-24 sm:py-32">
       <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[0.62fr_1.55fr] lg:gap-16">
-        <div>
+        <Reveal>
           <p className="type-kicker text-fern-deep">This is Core</p>
           <h2 className="type-h2 mt-3">Nothing your firm knows sits alone.</h2>
           <p className="type-body mt-5 max-w-[46ch] text-charcoal/80">
@@ -17,16 +18,18 @@ export default function BrainSection() {
           <p className="mt-6 text-[11px] uppercase tracking-[0.14em] text-warmgray">
             Illustrative
           </p>
-        </div>
-        <div id="brain-stage" className="brain-stage" data-mode="still">
-          <p className="sr-only">
-            Illustrative: a meeting transcript is captured, sorted into a tagged
-            note, and connected into the firm&apos;s knowledge graph across
-            deals, people, meetings, operations, and investors.
-          </p>
-          <BrainStill />
-          <BrainField />
-        </div>
+        </Reveal>
+        <Reveal delay={150}>
+          <div id="brain-stage" className="brain-stage" data-mode="still">
+            <p className="sr-only">
+              Illustrative: a meeting transcript is captured, sorted into a tagged
+              note, and connected into the firm&apos;s knowledge graph across
+              deals, people, meetings, operations, and investors.
+            </p>
+            <BrainStill />
+            <BrainField />
+          </div>
+        </Reveal>
       </div>
     </section>
   );

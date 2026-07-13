@@ -30,7 +30,8 @@ export default function TrustDiagram() {
           observer.disconnect();
         }
       },
-      { threshold: 0.35 }
+      // same depth as the site's reveals: play when the diagram's top is ~70% down
+      { threshold: 0, rootMargin: "0px 0px -30% 0px" }
     );
     observer.observe(el);
     return () => observer.disconnect();

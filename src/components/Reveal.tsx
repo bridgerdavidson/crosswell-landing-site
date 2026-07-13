@@ -22,7 +22,9 @@ export default function Reveal({ children, delay = 0, className = "" }: RevealPr
           observer.disconnect();
         }
       },
-      { threshold: 0.15, rootMargin: "0px 0px -48px 0px" }
+      // fire when the block's top has risen to ~70% of the viewport, so nothing
+      // reveals while still half-off-screen (unified with the other triggers)
+      { threshold: 0, rootMargin: "0px 0px -30% 0px" }
     );
     observer.observe(el);
     return () => observer.disconnect();
