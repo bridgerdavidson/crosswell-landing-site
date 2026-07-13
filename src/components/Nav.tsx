@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import Image from "next/image";
 import { CALL_MAILTO } from "@/lib/site";
 
@@ -22,11 +22,50 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Strip any leftover URL hash on load so a refresh restores the scroll
+  // position instead of jumping back to a previously-clicked section. Safari
+  // honors the hash on every reload; the browser has already done its one-time
+  // fragment scroll by the time this effect runs, so removing it is safe.
+  useEffect(() => {
+    if (window.location.hash) {
+      history.replaceState(null, "", window.location.pathname + window.location.search);
+    }
+  }, []);
+
+  // Smooth-scroll a nav target so its title sits just below the nav (filling the
+  // screen from there), without writing a hash to the URL (which is what made
+  // reloads jump). The section's py-24/32 top padding lives on the section
+  // itself (#how-it-works) or on an inner wrapper (the rest); we align below
+  // whichever carries it, so there's no empty gap above the title.
+  const NAV_H = 64; // scrolled nav height (h-16)
+  const TOP_GAP = 20; // small breathing room under the nav
+  const goToSection = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    setOpen(false);
+    const id = href.slice(1);
+    if (id === "top") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    const el = document.getElementById(id);
+    if (!el) return;
+    const padded =
+      (parseFloat(getComputedStyle(el).paddingTop) || 0) > 0
+        ? el
+        : el.firstElementChild ?? el;
+    const padTop = parseFloat(getComputedStyle(padded).paddingTop) || 0;
+    const contentTop =
+      padded.getBoundingClientRect().top + window.scrollY + padTop;
+    const target = contentTop - NAV_H - TOP_GAP;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    window.scrollTo({ top: Math.max(0, Math.min(target, max)), behavior: "smooth" });
+  };
+
   const solid = scrolled || open;
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300 ${
+      className={`nav-enter fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300 ${
         solid
           ? "border-ink/10 bg-ivory/85 backdrop-blur-md"
           : "border-transparent bg-transparent"
@@ -40,7 +79,7 @@ export default function Nav() {
         <a
           href="#top"
           className="flex items-center"
-          onClick={() => setOpen(false)}
+          onClick={(e) => goToSection(e, "#top")}
         >
           <Image
             src="/xw-h-lockup-dark.svg"
@@ -57,6 +96,7 @@ export default function Nav() {
             <a
               key={link.href}
               href={link.href}
+              onClick={(e) => goToSection(e, link.href)}
               className="relative text-xs font-medium uppercase tracking-[0.15em] text-ink/75 transition-colors duration-200 hover:text-ink after:absolute after:inset-x-0 after:-bottom-1.5 after:h-px after:origin-left after:scale-x-0 after:bg-fern after:transition-transform after:duration-300 hover:after:scale-x-100"
             >
               {link.label}
@@ -105,7 +145,7 @@ export default function Nav() {
             <a
               key={link.href}
               href={link.href}
-              onClick={() => setOpen(false)}
+              onClick={(e) => goToSection(e, link.href)}
               className="block border-b border-ink/8 py-3.5 text-sm font-medium uppercase tracking-[0.16em] text-ink/70 transition-colors hover:text-ink"
             >
               {link.label}
