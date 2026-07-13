@@ -237,7 +237,7 @@ export default function CoreDashboard() {
         .fromTo(".cwd-brain-count", { y: -3 }, { y: 0, duration: 0.25 }, "capture+=2.0")
 
         // ===== Go to Chat (3.5-4.4) =====
-        .addLabel("goChat", 5.2)
+        .addLabel("goChat", 3.5)
         .call(
           () => {
             const c = center(".cwd-view-add .cwd-feed");
@@ -263,8 +263,8 @@ export default function CoreDashboard() {
           "goChat+=0.88"
         )
 
-        // ===== Ask (4.4-8.4) =====
-        .addLabel("ask", 6.1)
+        // ===== Ask (4.4-~10.1) =====
+        .addLabel("ask", 4.4)
         .set(".cwd-composer-hint", { autoAlpha: 0 }, "ask")
         .to(".cwd-caret", { autoAlpha: 1, duration: 0.1 }, "ask")
         .to(
@@ -303,8 +303,8 @@ export default function CoreDashboard() {
         .to(".cwd-answer", { autoAlpha: 1, y: 0, duration: 0.45 }, `ask+=${2.55 + TYPE_SECONDS}`)
         .to(".cwd-cite", { autoAlpha: 1, y: 0, duration: 0.3, stagger: 0.08 }, `ask+=${2.85 + TYPE_SECONDS}`)
 
-        // ===== Verify (8.4-11.7) =====
-        .addLabel("verify", `ask+=${5.9 + TYPE_SECONDS}`)
+        // ===== Verify (~10.1-13.4) =====
+        .addLabel("verify", `ask+=${4.3 + TYPE_SECONDS}`)
         .to(
           ".cwd-cursor",
           { x: () => center(".cwd-cite-new").x, y: () => center(".cwd-cite-new").y, duration: 0.55, ease: "power2.inOut" },
@@ -324,8 +324,8 @@ export default function CoreDashboard() {
         .to(".cwd-lib-cited", { autoAlpha: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, "verify+=1.3")
         .to(".cwd-lib-highlight", { scaleX: 1, duration: 0.5, ease: "power2.inOut" }, "verify+=1.5")
 
-        // ===== Report (11.7-15.5) =====
-        .addLabel("report", "verify+=5.3")
+        // ===== Report (~13.4-16.2) =====
+        .addLabel("report", "verify+=3.3")
         .to(
           ".cwd-cursor",
           { x: () => navCenter("analytics").x, y: () => navCenter("analytics").y, duration: 0.6, ease: "power2.inOut" },
@@ -361,7 +361,7 @@ export default function CoreDashboard() {
         .to(".cwd-report-bar", { scaleY: 1, duration: 0.5, stagger: 0.08 }, "report+=1.7")
 
         // ===== Rest =====
-        .addLabel("rest", "report+=3.0")
+        .addLabel("rest", "report+=2.8")
         .to(".cwd-cursor", { autoAlpha: 0, duration: 0.3 }, "rest")
         .call(
           () => {
