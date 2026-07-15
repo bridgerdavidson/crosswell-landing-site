@@ -660,3 +660,47 @@ body {
 .brain-stage[data-mode="live"] .brain-replay { opacity: 1; pointer-events: auto; }
 .brain-replay:focus-visible { outline: 2px solid var(--color-fern-deep); outline-offset: 2px; border-radius: 6px; }
 @media (prefers-reduced-motion: reduce) { .brain-card, .brain-replay { display: none; } }
+
+/* ---------- Team headshot flip ----------
+   The photo face turns on its vertical axis to swap the real headshot for the
+   golden-hour one. Only the photo turns; names and roles stay put. Cards are
+   staggered via --flip-delay set in the markup, in the same easing as the
+   scroll reveals. The back face only exists once the code has fired. */
+
+.team-flip {
+  perspective: 1200px;
+}
+
+.team-flip-inner {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--flip-delay, 0ms);
+}
+
+.team-flip[data-flipped="true"] .team-flip-inner {
+  transform: rotateY(180deg);
+}
+
+.team-flip-face {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.team-flip-back {
+  transform: rotateY(180deg);
+}
+
+/* Reduced motion still gets the joke, just without the turn. */
+@media (prefers-reduced-motion: reduce) {
+  .team-flip-inner {
+    transition: none;
+  }
+}

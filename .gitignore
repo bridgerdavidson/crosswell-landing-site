@@ -6,3 +6,6 @@ next-env.d.ts
 .env*
 .vercel
 .superpowers/
+
+# macOS
+.DS_Store
