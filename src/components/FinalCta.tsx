@@ -12,7 +12,7 @@ export default function FinalCta() {
             <span className="italic text-fern-soft">Give it a memory.</span>
           </h2>
           <p className="type-body mx-auto mt-6 max-w-xl text-ivory/70">
-            Core is being built alongside the funds it serves. Join the
+            The Core is being built alongside the funds it serves. Join the
             waitlist to be early, or talk to us directly.
           </p>
         </Reveal>

@@ -16,7 +16,7 @@ const guarantees = [
   },
   {
     title: "Host it yourself",
-    body: "For the most sensitive firms, Core can live entirely on your own servers. Even we cannot see it.",
+    body: "For the most sensitive firms, the Core can live entirely on your own servers. Even we cannot see it.",
   },
 ];
 
@@ -31,7 +31,7 @@ export default function Trust() {
               <h2 className="type-h2 max-w-xl">Trust is the product.</h2>
               <p className="type-body mt-5 max-w-xl text-ivory/70">
                 A firm that manages other people&apos;s money does not get to
-                gamble on its vendors. Core is built to the standard funds
+                gamble on its vendors. The Core is built to the standard funds
                 actually require, and we sign a data processing agreement with
                 every client.
               </p>
