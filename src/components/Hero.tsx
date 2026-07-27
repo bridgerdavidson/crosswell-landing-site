@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { CALL_MAILTO, WAITLIST_MAILTO } from "@/lib/site";
+import { AUDIT_MAILTO, CALL_MAILTO } from "@/lib/site";
 import HeroCore from "./HeroCore";
 
 export default function Hero() {
@@ -39,25 +39,27 @@ export default function Hero() {
           className="hero-enter type-body mx-auto mt-6 max-w-2xl text-ink/70"
           style={{ "--enter-delay": "0.75s" } as CSSProperties}
         >
-          Crosswell Core is your firm&apos;s institutional memory, built on AI
-          and managed for you. Knowledge flows in, anyone can ask it anything,
-          and the busywork runs itself. Everything we build next stands on it.
+          Crosswell Core is your firm&apos;s institutional memory, built on
+          agentic AI (AI that does the work, not just answers questions) and
+          managed for you. Knowledge flows in, anyone can ask it anything, and
+          the busywork runs itself. Everything we build next stands on it. What
+          we sell is trust.
         </p>
         <div
           className="hero-enter mt-9 flex flex-wrap items-center justify-center gap-4"
           style={{ "--enter-delay": "1s" } as CSSProperties}
         >
           <a
-            href={WAITLIST_MAILTO}
+            href={AUDIT_MAILTO}
             className="rounded-lg bg-fern px-6 py-3.5 text-sm font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep"
           >
-            Join the Core waitlist
+            Start with the audit
           </a>
           <a
             href={CALL_MAILTO}
             className="rounded-lg border border-ink/15 px-6 py-3.5 text-sm font-semibold text-ink transition-colors hover:border-fern hover:text-fern-deep"
           >
-            Book a call
+            Set up a call
           </a>
         </div>
         <p

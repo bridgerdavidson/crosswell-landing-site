@@ -109,7 +109,7 @@ export default function Nav() {
             href={CALL_MAILTO}
             className="hidden rounded-lg bg-fern px-4 py-2 text-sm font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep md:inline-block"
           >
-            Book a call
+            Set up a call
           </a>
 
           <button
@@ -156,7 +156,7 @@ export default function Nav() {
             onClick={() => setOpen(false)}
             className="mt-5 block rounded-lg bg-fern px-4 py-3 text-center text-sm font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep"
           >
-            Book a call
+            Set up a call
           </a>
         </nav>
       )}

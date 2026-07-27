@@ -15,6 +15,10 @@ export default function BrainSection() {
             decisions it touches. Your questions search this, and it&apos;s
             yours, compounding over time instead of walking out the door.
           </p>
+          <p className="type-body mt-4 max-w-[46ch] text-charcoal/80">
+            Everyone runs the same models now. What a competitor can&apos;t copy
+            is what your firm knows. We make that an asset you own.
+          </p>
           <p className="mt-6 text-[11px] uppercase tracking-[0.14em] text-warmgray">
             Illustrative
           </p>

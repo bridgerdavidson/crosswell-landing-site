@@ -1,6 +1,8 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
+import ProblemBand from "@/components/ProblemBand";
 import HowItWorks from "@/components/HowItWorks";
+import HowWeStart from "@/components/HowWeStart";
 import BrainSection from "@/components/brain/BrainSection";
 import Edge from "@/components/Edge";
 import Trust from "@/components/Trust";
@@ -16,11 +18,13 @@ export default function Home() {
     <main>
       <Nav />
       <Hero />
+      <ProblemBand />
       <HowItWorks />
       <BrainSection />
       <Edge />
       <TimeBack />
       <Trust />
+      <HowWeStart />
       <BeyondCore />
       <WhoItsFor />
       <Team />

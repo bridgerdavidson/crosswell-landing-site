@@ -494,6 +494,10 @@ export default function CoreDashboard() {
         <p className="mt-2 text-[11px] uppercase tracking-[0.14em] text-warmgray">
           Product preview · Illustrative
         </p>
+        <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-charcoal/70">
+          We run Crosswell on the Core. Every meeting, decision, and document of
+          our own firm lives in it.
+        </p>
       </div>
     </div>
   );

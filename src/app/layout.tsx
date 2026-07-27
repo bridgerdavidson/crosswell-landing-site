@@ -18,7 +18,7 @@ const newsreader = Newsreader({
 export const metadata: Metadata = {
   title: "Crosswell | The operating layer for financial stewards",
   description:
-    "Crosswell Core is your firm's institutional memory, built on AI and managed for you. Knowledge flows in, anyone can ask it anything, and the busywork runs itself. Built by people who have worked inside funds.",
+    "Crosswell Core is your firm's institutional memory, built and managed for you. Knowledge flows in, anyone can ask it anything, and custom agentic software stands on top. Made for the firms the enterprise platforms weren't built for.",
 };
 
 export default function RootLayout({

@@ -583,7 +583,7 @@ body {
 /* ---------- Marquee of audiences ---------- */
 
 .drift-slow {
-  animation: drift 26s linear infinite;
+  animation: drift 75s linear infinite;
 }
 
 @keyframes drift {

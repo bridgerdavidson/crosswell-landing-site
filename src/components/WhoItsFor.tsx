@@ -19,14 +19,20 @@ const row = [...half, ...half];
 
 export default function WhoItsFor() {
   return (
-    <section className="border-y border-ink/8 bg-fern-wash py-16 sm:py-20">
+    <section className="bg-charcoal py-16 text-ivory sm:py-20">
       <Reveal>
-        <h2 className="type-h2 px-6 text-center text-ink">
+        <h2 className="type-h2 px-6 text-center text-ivory">
           Built for the people who manage money.
         </h2>
-        <p className="mt-3 px-6 text-center text-ink/60">
+        <p className="mt-3 px-6 text-center text-ivory/65">
           Funds first. Arizona first. If your firm runs on knowledge and
           judgment, the Core fits.
+        </p>
+        <p className="mx-auto mt-7 max-w-3xl px-6 text-center type-body text-ivory/75">
+          Everyone is building this for the giants, or stopping at meeting
+          notes. The ten-person firm gets skipped: too lean for the enterprise
+          platforms, too regulated to put client data into consumer AI.
+          That&apos;s exactly who we build for.
         </p>
       </Reveal>
 
@@ -42,7 +48,7 @@ export default function WhoItsFor() {
             {row.map((audience, i) => (
               <span
                 key={`${audience}-${i}`}
-                className="whitespace-nowrap rounded-full border border-fern/30 bg-parchment px-5 py-2.5 text-sm font-medium text-ink/75"
+                className="whitespace-nowrap rounded-full border border-warmgray/30 bg-parchment px-5 py-2.5 text-sm font-medium text-ink/75"
               >
                 {audience}
               </span>

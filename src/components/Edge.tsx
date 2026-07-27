@@ -7,7 +7,7 @@ const points = [
   },
   {
     title: "We sell trust",
-    body: "The most valuable thing inside a firm that handles other people's money is trust. Everything we build is designed to protect it, and we put that in writing.",
+    body: "Time saved is the easy part; any AI tool can promise it. What gets scarcer as agentic AI spreads is trust, and we built the company around protecting it. We put that in writing.",
   },
   {
     title: "You work directly with us",

@@ -1,17 +1,19 @@
 /**
  * Single place to change contact wiring.
- * TODO: confirm the live email address with Max and Mikey before launch.
+ * All CTAs are mailto links until the scheduler is picked (Max owns the pick);
+ * per the messaging handoff, a mailto button says "Set up a call", never
+ * "Book a call".
  */
 export const CONTACT_EMAIL = "hello@crosswellconsulting.com";
 
-export const WAITLIST_MAILTO = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
-  "Crosswell Core waitlist"
+export const AUDIT_MAILTO = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
+  "Start with the audit"
 )}&body=${encodeURIComponent(
-  "Hi Crosswell team,\n\nI'd like to join the waitlist for Crosswell Core.\n\nFirm:\nRole:\n"
+  "Hi Crosswell team,\n\nWe'd like to start with the two-week knowledge audit.\n\nFirm:\nRole:\n"
 )}`;
 
 export const CALL_MAILTO = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
-  "Book a call with Crosswell"
+  "Set up a call with Crosswell"
 )}&body=${encodeURIComponent(
   "Hi Crosswell team,\n\nI'd like to set up a call.\n\nFirm:\nA few times that work:\n"
 )}`;

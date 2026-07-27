@@ -13,7 +13,7 @@ const team = [
     role: "Business & Strategy",
     photo: "/team-max.jpg",
     altPhoto: "/team-max-alt.jpg",
-    line: "Runs operations inside a private lending fund. Finds the problem, owns the relationship, and speaks fund fluently because he lives there.",
+    line: "Runs operations inside a private credit fund. Finds the problem, owns the relationship, and speaks fund fluently because he lives there.",
   },
   {
     name: "Bridger Davidson",
@@ -85,6 +85,11 @@ export default function Team() {
           <p className="type-body mt-5 max-w-2xl text-ink/70">
             Crosswell lives in finance and technology at the same time. That is
             the whole point.
+          </p>
+          <p className="type-body mt-4 max-w-2xl text-ink/70">
+            Small is deliberate: you work directly with the three people who
+            build and run your Core, and because your knowledge lives in open,
+            portable files, nothing about your firm ever depends on ours.
           </p>
         </Reveal>
 

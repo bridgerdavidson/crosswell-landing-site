@@ -47,6 +47,12 @@ export default function TimeBack() {
               </div>
             </Reveal>
           ))}
+          <Reveal delay={480}>
+            <p className="pt-6 leading-relaxed text-ink/70">
+              The hours aren&apos;t the point. They go back where trust gets
+              built: your people, in front of your investors and clients.
+            </p>
+          </Reveal>
         </div>
       </div>
     </section>
