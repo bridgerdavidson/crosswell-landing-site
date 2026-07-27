@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { CONTACT_EMAIL } from "@/lib/site";
 
 export default function Footer() {
@@ -24,6 +25,15 @@ export default function Footer() {
           >
             {CONTACT_EMAIL}
           </a>
+          <p className="text-xs text-ivory/45">
+            <Link href="/privacy" className="transition-colors hover:text-fern-soft">
+              Privacy
+            </Link>
+            {" · "}
+            <Link href="/terms" className="transition-colors hover:text-fern-soft">
+              Terms
+            </Link>
+          </p>
           <p className="text-xs text-ivory/45">
             © 2026 Crosswell. All rights reserved.
           </p>
