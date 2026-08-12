@@ -31,12 +31,21 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        {/* start the heavy hero JPEG downloading immediately, in parallel with
-            the HTML, so its decode-gated fade finishes sooner */}
+        {/* start the hero JPEG downloading immediately, in parallel with the
+            HTML, so its decode-gated fade finishes sooner; media-split so a
+            phone never fetches the 2.2MB desktop original */}
         <link
           rel="preload"
           as="image"
           href="/hero-core.jpg"
+          media="(min-width: 768px)"
+          fetchPriority="high"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href="/hero-core-mobile.jpg"
+          media="(max-width: 767px)"
           fetchPriority="high"
         />
         <script
