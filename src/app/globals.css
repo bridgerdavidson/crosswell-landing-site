@@ -22,6 +22,10 @@
 
 html {
   scroll-behavior: smooth;
+  /* Explicit so the body's ivory stops propagating to the canvas: with its
+     own background the body paints ivory at body level, letting the fixed
+     overscroll backstop below sit between canvas and page. */
+  background: var(--color-ivory);
 }
 
 section[id] {
@@ -34,6 +38,27 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* viewport-fit=cover draws edge to edge; keep flow content clear of the
+     notch in landscape (both are 0 on devices without intrusions) */
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* iOS rubber-banding past the dark footer reveals the canvas, which is
+   ivory; pin a footer-colored panel behind the page at the viewport bottom
+   so the overscroll gap matches the surface it opens under. The body's own
+   ivory background covers it everywhere else. */
+@media (max-width: 767px) {
+  body::after {
+    content: "";
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 40vh;
+    z-index: -1;
+    background: var(--color-charcoal-deep);
+  }
 }
 
 ::selection {
@@ -776,7 +801,10 @@ body {
   display: flex;
   flex-direction: column;
   background: var(--color-ink);
-  padding: 96px 32px 36px;
+  /* full-bleed under viewport-fit=cover, so the takeover itself keeps its
+     content clear of the notch and home indicator */
+  padding: calc(96px + env(safe-area-inset-top)) calc(32px + env(safe-area-inset-right))
+    calc(36px + env(safe-area-inset-bottom)) calc(32px + env(safe-area-inset-left));
   overflow-y: auto;
   visibility: hidden;
   opacity: 0;

@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Newsreader, Schibsted_Grotesk } from "next/font/google";
+import SafeAreaTheme from "@/components/SafeAreaTheme";
 import "./globals.css";
 
 const schibsted = Schibsted_Grotesk({
@@ -19,6 +20,18 @@ export const metadata: Metadata = {
   title: "Crosswell | The operating layer for financial stewards",
   description:
     "Crosswell Core is your firm's institutional memory, built and managed for you. Knowledge flows in, anyone can ask it anything, and custom agentic software stands on top. Made for the firms the enterprise platforms weren't built for.",
+};
+
+// iOS Safari paints its chrome with theme-color; the base pins to the same
+// ivory the page and nav paint so chrome and page read as one piece, and
+// SafeAreaTheme repaints it on phones as dark sections or the menu takeover
+// reach the viewport edges. viewport-fit=cover lets those surfaces extend
+// into the notch and home-indicator zones instead of stopping at a seam.
+export const viewport: Viewport = {
+  themeColor: "#f1eee6",
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
@@ -54,7 +67,10 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <SafeAreaTheme />
+        {children}
+      </body>
     </html>
   );
 }

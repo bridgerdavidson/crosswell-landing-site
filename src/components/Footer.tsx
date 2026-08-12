@@ -3,7 +3,7 @@ import { CONTACT_EMAIL } from "@/lib/site";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-ivory/10 bg-charcoal-deep text-ivory">
+    <footer className="border-t border-ivory/10 bg-charcoal-deep pb-[env(safe-area-inset-bottom)] text-ivory">
       <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-8 px-6 py-12 sm:flex-row sm:items-center">
         <div className="flex flex-col items-start gap-2.5">
           <Image

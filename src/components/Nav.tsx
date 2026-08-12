@@ -3,6 +3,7 @@
 import { useEffect, useState, type CSSProperties, type MouseEvent } from "react";
 import Image from "next/image";
 import { CALL_MAILTO, CONTACT_EMAIL } from "@/lib/site";
+import { setMenuInk } from "./SafeAreaTheme";
 
 const links = [
   { href: "#how-it-works", label: "How it works" },
@@ -32,18 +33,21 @@ export default function Nav() {
     }
   }, []);
 
-  // While the ink takeover is open: lock page scroll and close on Escape.
+  // While the ink takeover is open: lock page scroll, close on Escape, and
+  // paint the iOS Safari chrome ink so it reads as part of the overlay.
   useEffect(() => {
     if (!open) return;
     const root = document.documentElement;
     const prev = root.style.overflow;
     root.style.overflow = "hidden";
+    setMenuInk(true);
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);
     };
     window.addEventListener("keydown", onKey);
     return () => {
       root.style.overflow = prev;
+      setMenuInk(false);
       window.removeEventListener("keydown", onKey);
     };
   }, [open]);
@@ -88,7 +92,7 @@ export default function Nav() {
   return (
     <>
     <header
-      className={`nav-enter fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300 ${headerChrome}`}
+      className={`nav-enter fixed inset-x-0 top-0 z-50 border-b pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] pt-[env(safe-area-inset-top)] transition-colors duration-300 ${headerChrome}`}
     >
       <div
         className={`mx-auto flex max-w-6xl items-center justify-between px-6 transition-[height] duration-300 ${
