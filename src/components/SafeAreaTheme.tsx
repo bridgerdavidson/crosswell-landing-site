@@ -19,8 +19,20 @@ const state = { menuOpen: false, surface: IVORY };
 
 function apply() {
   const meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
-  if (!meta) return;
-  meta.content = state.menuOpen ? INK : state.surface;
+  if (meta) meta.content = state.menuOpen ? INK : state.surface;
+  // theme-color only drives Safari's bottom chrome on iPhone; the top
+  // status-bar band is painted from the page background. While the ink
+  // takeover covers the screen, flip the root and body backgrounds with it
+  // so that band goes ink too, and hand back to the stylesheet's ivory on
+  // close. Nothing on the page itself can show these while the overlay is up.
+  const root = document.documentElement;
+  if (state.menuOpen) {
+    root.style.backgroundColor = INK;
+    document.body.style.backgroundColor = INK;
+  } else {
+    root.style.removeProperty("background-color");
+    document.body.style.removeProperty("background-color");
+  }
 }
 
 /** Nav flips this while the ink takeover owns the screen. */

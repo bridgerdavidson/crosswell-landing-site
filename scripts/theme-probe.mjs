@@ -3,6 +3,13 @@ import { chromium } from "playwright";
 const URL = "http://localhost:3000";
 const meta = (page) =>
   page.evaluate(() => document.querySelector('meta[name="theme-color"]')?.content ?? null);
+// the top status-bar band follows the page background, not theme-color, so
+// menu states must flip these too ("css" means the stylesheet ivory is active)
+const bands = (page) =>
+  page.evaluate(() => ({
+    html: document.documentElement.style.backgroundColor || "css",
+    body: document.body.style.backgroundColor || "css",
+  }));
 const settle = (page) => page.waitForTimeout(700);
 
 const browser = await chromium.launch();
@@ -39,9 +46,11 @@ out.mobileBackTop = await meta(page);
 await page.click('button[aria-controls="mobile-menu"]');
 await settle(page);
 out.mobileMenuOpen = await meta(page);
+out.menuOpenBands = await bands(page);
 await page.click('button[aria-controls="mobile-menu"]');
 await settle(page);
 out.mobileMenuClosed = await meta(page);
+out.menuClosedBands = await bands(page);
 
 // menu open while scrolled to footer, then close: restore should be the
 // footer surface, not ivory
