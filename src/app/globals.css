@@ -746,11 +746,54 @@ body {
   overflow-y: auto;
   visibility: hidden;
   opacity: 0;
+  /* close: quick fade; visibility flips only after the fade finishes */
+  transition:
+    opacity 0.25s ease,
+    visibility 0s linear 0.25s;
 }
 
 .menu-overlay-open {
   visibility: visible;
   opacity: 1;
+  transition:
+    opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s;
+}
+
+/* items hold hidden until the overlay opens, then rise in a 90ms stagger;
+   the class toggle restarts the animation on every open */
+.menu-overlay .menu-link,
+.menu-overlay .menu-bottom {
+  opacity: 0;
+}
+
+.menu-overlay-open .menu-link,
+.menu-overlay-open .menu-bottom {
+  animation: menu-rise 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i) * 90ms + 150ms);
+}
+
+@keyframes menu-rise {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu-overlay,
+  .menu-overlay-open {
+    transition: none;
+  }
+  .menu-overlay-open .menu-link,
+  .menu-overlay-open .menu-bottom {
+    animation: none;
+    opacity: 1;
+  }
 }
 
 .menu-links {
