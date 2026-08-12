@@ -11,11 +11,14 @@ import { useEffect } from "react";
  * bottom chrome follows the page's light and dark sections; the ink menu
  * takeover overrides everything while open. Desktop never leaves ivory.
  *
- * iPhone testing pinned two Safari quirks the write path has to respect:
- * the band tracks explicit background-color values, not property removals,
- * and restoring while the fading overlay still covers the page can get the
- * ink re-sampled and stuck. So values are always written outright, and on
- * close the root holds ink until the overlay fade (0.25s) has finished.
+ * iPhone testing pinned three Safari quirks the write path has to respect:
+ * the band tracks explicit background-color values, not property removals;
+ * restoring while the fading overlay still covers the page can get the
+ * ink re-sampled and stuck; and scrolled away from the top, the band does
+ * not re-evaluate on background changes at all, only on events like a
+ * scroll. So values are always written outright, on close the root holds
+ * ink until the overlay fade (0.25s) has finished, and the restore ends
+ * with a 1px scroll round-trip to force the re-tint.
  */
 
 const IVORY = "#f1eee6";
@@ -65,6 +68,13 @@ export function setMenuInk(open: boolean) {
     htmlTimer = undefined;
     state.htmlBand = IVORY;
     paint();
+    // Scrolled away from the top, Safari latches the band tint and a
+    // background change alone does not make it re-evaluate (it does at the
+    // top, where the document top is on screen and tracked live). A 1px
+    // instant scroll round-trip is a re-tint trigger; net movement is zero
+    // except at the exact page bottom, where it is a single pixel.
+    window.scrollBy({ top: 1, behavior: "instant" });
+    window.scrollBy({ top: -1, behavior: "instant" });
   }, 300);
 }
 

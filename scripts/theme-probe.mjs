@@ -60,12 +60,16 @@ out.menuClosedBands = await bands(page);
 // footer surface, not ivory
 await page.evaluate(() => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "instant" }));
 await settle(page);
+const yBefore = await page.evaluate(() => window.scrollY);
 await page.click('button[aria-controls="mobile-menu"]');
 await settle(page);
 out.menuOpenAtFooter = await meta(page);
 await page.click('button[aria-controls="mobile-menu"]');
 await settle(page);
 out.menuClosedAtFooter = await meta(page);
+// the close-time re-tint nudge must not move the page (1px allowed at the
+// exact bottom, where the down-leg of the round-trip is a no-op)
+out.scrollDriftAtFooter = await page.evaluate(() => window.scrollY) - yBefore;
 
 // no horizontal overflow regressions
 out.overflow390 = await page.evaluate(
