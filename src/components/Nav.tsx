@@ -81,18 +81,26 @@ export default function Nav() {
     window.scrollTo({ top: Math.max(0, Math.min(target, max)), behavior: "smooth" });
   };
 
-  // Open sits the header on the ink overlay, so it goes transparent with a
+  // Open sits the header on the ink overlay, so it goes see-through with a
   // light logo; otherwise the scrolled state gets the ivory blur bar.
+  // The literal rgba, not bg-transparent or bg-ivory/0: both of those
+  // compute to zero-alpha BLACK, and Safari derives its status-bar color
+  // from fixed elements at the viewport edges, so the see-through state
+  // must carry the ivory hue for anything that reads or blends it.
   const headerChrome = open
-    ? "border-transparent bg-transparent"
+    ? "border-transparent bg-[rgba(241,238,230,0)]"
     : scrolled
       ? "border-ink/10 bg-ivory/85 backdrop-blur-md"
-      : "border-transparent bg-transparent";
+      : "border-transparent bg-[rgba(241,238,230,0)]";
 
   return (
     <>
+    {/* no color transition on the header: Safari samples its background for
+        the status-bar band at moments it chooses and latches the result, so
+        a 300ms fade after closing the menu while scrolled is a 300ms window
+        for a wrong color to stick. The swap is instant by design. */}
     <header
-      className={`nav-enter fixed inset-x-0 top-0 z-50 border-b pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] pt-[env(safe-area-inset-top)] transition-colors duration-300 ${headerChrome}`}
+      className={`nav-enter fixed inset-x-0 top-0 z-50 border-b pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] pt-[env(safe-area-inset-top)] ${headerChrome}`}
     >
       <div
         className={`mx-auto flex max-w-6xl items-center justify-between px-6 transition-[height] duration-300 ${

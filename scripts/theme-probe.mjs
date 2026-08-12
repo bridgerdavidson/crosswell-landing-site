@@ -24,6 +24,11 @@ await page.goto(URL, { waitUntil: "networkidle" });
 await page.waitForTimeout(2000);
 
 out.mobileTop = await meta(page);
+// zero-alpha IVORY, not transparent black: Safari walks through whatever
+// hue the header's see-through state carries
+out.headerAtTop = await page.evaluate(
+  () => getComputedStyle(document.querySelector("header")).backgroundColor
+);
 
 // scroll so the charcoal Trust (#security) section covers the bottom edge
 await page.evaluate(() => {
@@ -67,6 +72,12 @@ await page.click('button[aria-controls="mobile-menu"]');
 await settle(page);
 out.menuOpenAtFooter = await meta(page);
 await page.click('button[aria-controls="mobile-menu"]');
+// the scrolled header must be the full ivory blur immediately: no color
+// transition means no dark interpolated value Safari could latch
+await page.waitForTimeout(80);
+out.headerAfterClose = await page.evaluate(
+  () => getComputedStyle(document.querySelector("header")).backgroundColor
+);
 await settle(page);
 out.menuClosedAtFooter = await meta(page);
 // the close-time re-tint nudge must not move the page (1px allowed at the
