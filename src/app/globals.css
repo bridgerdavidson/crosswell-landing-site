@@ -852,6 +852,17 @@ body {
   color: rgba(241, 238, 230, 0.5);
 }
 
+/* phones: pad the dashboard Replay hit box to 44px without moving its text
+   (top -2px + 14px padding puts the label back at the original 12px offset;
+   right 4px + 12px padding restores the original 16px) */
+@media (max-width: 767px) {
+  .cwd-replay {
+    top: -2px;
+    right: 4px;
+    padding: 14px 12px;
+  }
+}
+
 /* the two-line burger that morphs into an X */
 .nav-burger {
   position: relative;

@@ -17,20 +17,22 @@ export function AddView() {
         {SOURCES.map((s) => (
           <span
             key={s.label}
-            className="flex items-center gap-1.5 rounded-full bg-[#24221c] px-3 py-1.5 text-[11px] font-medium text-ivory/70"
+            className="flex max-w-full items-center gap-1.5 rounded-full bg-[#24221c] px-3 py-1.5 text-[11px] font-medium text-ivory/70"
           >
             <span
               className={`h-1.5 w-1.5 flex-none rounded-full ${
                 s.live ? "cwd-live-dot bg-fern-soft" : "bg-ivory/25"
               }`}
             />
-            {s.label}
+            {/* truncate keeps the longest chip from wrapping inside its own
+                pill radius at 320px */}
+            <span className="truncate">{s.label}</span>
           </span>
         ))}
       </div>
 
       <div className="cwd-feed mt-5 max-w-[480px] rounded-xl bg-[#24221c] p-3.5">
-        <div className="flex items-center justify-between gap-2">
+        <div className="flex flex-col items-start gap-1 min-[480px]:flex-row min-[480px]:items-center min-[480px]:justify-between min-[480px]:gap-2">
           <p className="text-xs font-semibold text-ivory/90">
             {CORE_NOTE.sourceLabel}
           </p>

@@ -29,7 +29,9 @@ export function ChatView() {
       </div>
 
       <div className="mx-auto mt-4 flex w-full max-w-[560px] items-center gap-2.5 rounded-full bg-[#24221c] py-2.5 pl-4 pr-2.5 text-[13px]">
-        <span className="min-w-0 flex-1 truncate text-ivory/40">
+        {/* no truncate: the typed question is longer than a phone-width
+            composer, and clipping it swallows the caret mid-animation */}
+        <span className="min-w-0 flex-1 text-ivory/40">
           <span className="cwd-composer-text text-ivory/85" />
           <span
             className="cwd-caret chat-caret ml-0.5 opacity-0 invisible"
