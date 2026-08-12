@@ -4,30 +4,37 @@ import { useEffect } from "react";
 
 /**
  * Keeps the iOS Safari chrome (status bar, tab bar, home-indicator zone) in
- * sync with the surface touching it. Two signals drive that chrome:
- * meta[name="theme-color"] paints the bottom bar, and the page background
- * (html/body) paints the top status-bar band. This is the single runtime
- * writer for all three. On phones the meta re-samples on scroll so the
- * bottom chrome follows the page's light and dark sections; the ink menu
- * takeover overrides everything while open. Desktop never leaves ivory.
+ * sync with the surface touching it.
  *
- * iPhone testing pinned three Safari quirks the write path has to respect:
- * the band tracks explicit background-color values, not property removals;
- * restoring while the fading overlay still covers the page can get the
- * ink re-sampled and stuck; and scrolled away from the top, the band does
- * not re-evaluate on background changes at all, only on events like a
- * scroll. So values are always written outright, on close the root holds
- * ink until the overlay fade (0.25s) has finished, and the restore ends
- * with a 1px scroll round-trip to force the re-tint.
+ * How Safari actually picks those colors, per current behavior: iOS 26
+ * dropped theme-color and derives bar colors from fixed or sticky elements
+ * near the viewport edges, falling back to the body background (html is
+ * ignored); older iOS still reads theme-color for the bottom bar. Critically,
+ * Safari samples at moments of its own choosing rather than tracking JS
+ * changes live, so any transition window can get the wrong color latched.
+ *
+ * The design rule here: every signal agrees within the same frame on every
+ * state change, so WHENEVER Safari samples, it sees one consistent answer.
+ * No timers, no fade windows.
+ *
+ * - meta theme-color follows the section at the bottom edge on scroll
+ *   (older-iOS bottom bar), ink while the menu is open.
+ * - body background flips ink/ivory with the menu, always written as
+ *   explicit values (Safari ignores property removals).
+ * - The overlay itself is display:none while closed (globals.css) so its
+ *   ink can never be sampled behind a light page, and close is instant so
+ *   no sampler can catch a half-faded ink panel.
+ * - Scrolled away from the top Safari latches the tint, and only an event
+ *   like a scroll re-evaluates it; close ends with a 1px instant scroll
+ *   round-trip to provide that event once everything is already ivory.
  */
 
 const IVORY = "#f1eee6";
 const INK = "#1a1915";
 
-const state = { menuOpen: false, surface: IVORY, htmlBand: IVORY, bodyBand: IVORY };
+const state = { menuOpen: false, surface: IVORY };
 // last written values, so scroll-frequency repaints only touch the DOM on change
-const written = { meta: "", html: "", body: "" };
-let htmlTimer: ReturnType<typeof setTimeout> | undefined;
+const written = { meta: "", body: "" };
 
 function paint() {
   const meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
@@ -36,46 +43,23 @@ function paint() {
     written.meta = metaColor;
     meta.content = metaColor;
   }
-  if (written.html !== state.htmlBand) {
-    written.html = state.htmlBand;
-    document.documentElement.style.backgroundColor = state.htmlBand;
-  }
-  if (written.body !== state.bodyBand) {
-    written.body = state.bodyBand;
-    document.body.style.backgroundColor = state.bodyBand;
+  const bodyColor = state.menuOpen ? INK : IVORY;
+  if (written.body !== bodyColor) {
+    written.body = bodyColor;
+    document.body.style.backgroundColor = bodyColor;
   }
 }
 
 /** Nav flips this while the ink takeover owns the screen. */
 export function setMenuInk(open: boolean) {
   state.menuOpen = open;
-  if (htmlTimer !== undefined) {
-    clearTimeout(htmlTimer);
-    htmlTimer = undefined;
-  }
-  if (open) {
-    state.htmlBand = INK;
-    state.bodyBand = INK;
-    paint();
-    return;
-  }
-  // The body and meta restore right away, invisibly under the still-covering
-  // overlay. The root waits out the overlay fade so Safari re-evaluates the
-  // band against ivory pixels; flipping it mid-fade left the band stuck ink.
-  state.bodyBand = IVORY;
   paint();
-  htmlTimer = setTimeout(() => {
-    htmlTimer = undefined;
-    state.htmlBand = IVORY;
-    paint();
-    // Scrolled away from the top, Safari latches the band tint and a
-    // background change alone does not make it re-evaluate (it does at the
-    // top, where the document top is on screen and tracked live). A 1px
-    // instant scroll round-trip is a re-tint trigger; net movement is zero
-    // except at the exact page bottom, where it is a single pixel.
+  if (!open) {
+    // Net movement is zero except at the exact page bottom, where the down
+    // leg is a no-op and the drift is a single pixel.
     window.scrollBy({ top: 1, behavior: "instant" });
     window.scrollBy({ top: -1, behavior: "instant" });
-  }, 300);
+  }
 }
 
 export default function SafeAreaTheme() {
@@ -118,21 +102,13 @@ export default function SafeAreaTheme() {
     mobile.addEventListener("change", queue);
     return () => {
       if (raf) cancelAnimationFrame(raf);
-      if (htmlTimer !== undefined) {
-        clearTimeout(htmlTimer);
-        htmlTimer = undefined;
-      }
       window.removeEventListener("scroll", queue);
       window.removeEventListener("resize", queue);
       mobile.removeEventListener("change", queue);
-      document.documentElement.style.removeProperty("background-color");
       document.body.style.removeProperty("background-color");
       state.menuOpen = false;
       state.surface = IVORY;
-      state.htmlBand = IVORY;
-      state.bodyBand = IVORY;
       written.meta = "";
-      written.html = "";
       written.body = "";
       const meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
       if (meta) meta.content = IVORY;
