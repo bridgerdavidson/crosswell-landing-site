@@ -729,3 +729,92 @@ body {
     transition: none;
   }
 }
+
+/* ---------- Mobile menu: the ink takeover ----------
+   Full-screen inversion into ink with indexed serif links (spec 2026-08-11,
+   section 2). Always mounted so open and close can animate; z-40 sits under
+   the z-50 header, whose logo and burger swap to light while open. */
+
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-ink);
+  padding: 96px 32px 36px;
+  overflow-y: auto;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.menu-overlay-open {
+  visibility: visible;
+  opacity: 1;
+}
+
+.menu-links {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.menu-link {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 17px 0;
+  border-bottom: 1px solid rgba(241, 238, 230, 0.12);
+}
+
+.menu-idx {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--color-fern-soft);
+}
+
+.menu-txt {
+  font-family: var(--font-serif);
+  font-size: 32px;
+  letter-spacing: -0.01em;
+  color: var(--color-ivory);
+}
+
+.menu-bottom {
+  flex: none;
+  padding-top: 40px;
+}
+
+.menu-mail {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 13px;
+  color: rgba(241, 238, 230, 0.5);
+}
+
+/* the two-line burger that morphs into an X */
+.nav-burger {
+  position: relative;
+  display: block;
+  width: 20px;
+  height: 16px;
+}
+
+.nav-burger span {
+  position: absolute;
+  left: 0;
+  display: block;
+  width: 20px;
+  height: 1.5px;
+  border-radius: 1px;
+  background: currentColor;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-burger span:first-child { top: 4px; }
+.nav-burger span:last-child { top: 10.5px; }
+
+.nav-burger-open span:first-child { transform: translateY(3.25px) rotate(45deg); }
+.nav-burger-open span:last-child { transform: translateY(-3.25px) rotate(-45deg); }
