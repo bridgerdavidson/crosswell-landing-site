@@ -18,7 +18,9 @@ if (flag("--open-menu")) {
   await page.click('button[aria-label="Open menu"]');
   await page.waitForTimeout(1400);
 }
-await page.waitForTimeout(600);
+// the hero art crossfades in over 1.2s after decode and the entrance stagger
+// runs ~1.5s; give the page time to fully settle before capturing
+await page.waitForTimeout(2000);
 await page.screenshot({ path: out, fullPage: flag("--full") });
 const overflow = await page.evaluate(
   () => document.scrollingElement.scrollWidth - document.documentElement.clientWidth

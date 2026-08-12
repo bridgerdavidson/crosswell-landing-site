@@ -280,6 +280,31 @@ body {
   );
 }
 
+/* Mobile: 100vmax resolves to the viewport HEIGHT on a phone, which fits the
+   sphere's full top and bottom arcs into frame (the desktop composition shows
+   it wide, never fully). 119vmax pushes the arcs just off-frame under the edge
+   fades (spec 2026-08-11, decision A2). The veil override covers mobile's tall
+   text column; the double ivory stop is load-bearing (minifier trap above). */
+@media (max-width: 767px) {
+  .hero-core {
+    /* the hero SECTION can outgrow the viewport when the text column runs
+       long (narrow phones), and the art centers in the section, so size off
+       the section height with the viewport as a floor for landscape; either
+       way the arcs stay off-frame */
+    width: auto;
+    height: max(119%, 119vmax);
+    aspect-ratio: 1 / 1;
+  }
+  .hero-core-veil {
+    background: radial-gradient(
+      ellipse 100% 54% at 50% 52%,
+      var(--color-ivory) 0%,
+      var(--color-ivory) 36%,
+      rgba(241, 238, 230, 0) 86%
+    );
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero-core img {
     animation: none;
