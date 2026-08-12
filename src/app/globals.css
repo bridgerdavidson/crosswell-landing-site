@@ -795,10 +795,16 @@ body {
    the z-50 header, whose logo and burger swap to light while open. */
 
 .menu-overlay {
+  /* display:none while closed, not visibility: iOS 26 Safari derives its
+     bar colors from fixed elements near the viewport edges, and a merely
+     hidden full-screen ink panel still gets sampled, bleeding black into
+     light pages. Gone from the tree means gone from the sampler. Close is
+     deliberately instant for the same reason: a fading ink panel is a
+     wrong-color sample waiting to be latched. */
+  display: none;
   position: fixed;
   inset: 0;
   z-index: 40;
-  display: flex;
   flex-direction: column;
   background: var(--color-ink);
   /* full-bleed under viewport-fit=cover, so the takeover itself keeps its
@@ -806,20 +812,21 @@ body {
   padding: calc(96px + env(safe-area-inset-top)) calc(32px + env(safe-area-inset-right))
     calc(36px + env(safe-area-inset-bottom)) calc(32px + env(safe-area-inset-left));
   overflow-y: auto;
-  visibility: hidden;
   opacity: 0;
-  /* close: quick fade; visibility flips only after the fade finishes */
-  transition:
-    opacity 0.25s ease,
-    visibility 0s linear 0.25s;
 }
 
 .menu-overlay-open {
-  visibility: visible;
+  display: flex;
   opacity: 1;
-  transition:
-    opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0s;
+  transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* the open fade needs a from-state on the frame the overlay first renders;
+   browsers without @starting-style just show the menu instantly */
+@starting-style {
+  .menu-overlay-open {
+    opacity: 0;
+  }
 }
 
 /* items hold hidden until the overlay opens, then rise in a 90ms stagger;

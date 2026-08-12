@@ -3,12 +3,14 @@ import { chromium } from "playwright";
 const URL = "http://localhost:3000";
 const meta = (page) =>
   page.evaluate(() => document.querySelector('meta[name="theme-color"]')?.content ?? null);
-// the top status-bar band follows the page background, not theme-color, so
-// menu states must flip these too; values are always written explicitly now
+// iOS 26 samples fixed elements near the edges then the body background;
+// html must never carry an inline color, the body flips with the menu, and
+// the overlay must be display:none whenever the menu is closed
 const bands = (page) =>
   page.evaluate(() => ({
     html: document.documentElement.style.backgroundColor || "unset",
     body: document.body.style.backgroundColor || "unset",
+    overlay: getComputedStyle(document.getElementById("mobile-menu")).display,
   }));
 const settle = (page) => page.waitForTimeout(700);
 
@@ -48,8 +50,8 @@ await settle(page);
 out.mobileMenuOpen = await meta(page);
 out.menuOpenBands = await bands(page);
 await page.click('button[aria-controls="mobile-menu"]');
-// mid-fade: the body hands back to ivory at once, the root holds ink until
-// the overlay fade finishes so Safari re-samples against ivory pixels
+// close is instant and atomic: within a frame or two the overlay must be
+// out of the tree and the body already ivory, with no in-between state
 await page.waitForTimeout(100);
 out.menuClosingBands = await bands(page);
 await settle(page);
