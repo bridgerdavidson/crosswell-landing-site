@@ -4,41 +4,68 @@ import { useEffect } from "react";
 
 /**
  * Keeps the iOS Safari chrome (status bar, tab bar, home-indicator zone) in
- * sync with the surface touching it. Safari paints its expanded chrome with
- * meta[name="theme-color"], which Next renders once from the root viewport
- * export; this is the single runtime writer for that tag. On phones it
- * re-samples on scroll so the chrome follows the page's light and dark
- * sections, and the ink menu takeover overrides everything while open.
- * Desktop never leaves the static ivory base.
+ * sync with the surface touching it. Two signals drive that chrome:
+ * meta[name="theme-color"] paints the bottom bar, and the page background
+ * (html/body) paints the top status-bar band. This is the single runtime
+ * writer for all three. On phones the meta re-samples on scroll so the
+ * bottom chrome follows the page's light and dark sections; the ink menu
+ * takeover overrides everything while open. Desktop never leaves ivory.
+ *
+ * iPhone testing pinned two Safari quirks the write path has to respect:
+ * the band tracks explicit background-color values, not property removals,
+ * and restoring while the fading overlay still covers the page can get the
+ * ink re-sampled and stuck. So values are always written outright, and on
+ * close the root holds ink until the overlay fade (0.25s) has finished.
  */
 
 const IVORY = "#f1eee6";
 const INK = "#1a1915";
 
-const state = { menuOpen: false, surface: IVORY };
+const state = { menuOpen: false, surface: IVORY, htmlBand: IVORY, bodyBand: IVORY };
+// last written values, so scroll-frequency repaints only touch the DOM on change
+const written = { meta: "", html: "", body: "" };
+let htmlTimer: ReturnType<typeof setTimeout> | undefined;
 
-function apply() {
+function paint() {
   const meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
-  if (meta) meta.content = state.menuOpen ? INK : state.surface;
-  // theme-color only drives Safari's bottom chrome on iPhone; the top
-  // status-bar band is painted from the page background. While the ink
-  // takeover covers the screen, flip the root and body backgrounds with it
-  // so that band goes ink too, and hand back to the stylesheet's ivory on
-  // close. Nothing on the page itself can show these while the overlay is up.
-  const root = document.documentElement;
-  if (state.menuOpen) {
-    root.style.backgroundColor = INK;
-    document.body.style.backgroundColor = INK;
-  } else {
-    root.style.removeProperty("background-color");
-    document.body.style.removeProperty("background-color");
+  const metaColor = state.menuOpen ? INK : state.surface;
+  if (meta && written.meta !== metaColor) {
+    written.meta = metaColor;
+    meta.content = metaColor;
+  }
+  if (written.html !== state.htmlBand) {
+    written.html = state.htmlBand;
+    document.documentElement.style.backgroundColor = state.htmlBand;
+  }
+  if (written.body !== state.bodyBand) {
+    written.body = state.bodyBand;
+    document.body.style.backgroundColor = state.bodyBand;
   }
 }
 
 /** Nav flips this while the ink takeover owns the screen. */
 export function setMenuInk(open: boolean) {
   state.menuOpen = open;
-  apply();
+  if (htmlTimer !== undefined) {
+    clearTimeout(htmlTimer);
+    htmlTimer = undefined;
+  }
+  if (open) {
+    state.htmlBand = INK;
+    state.bodyBand = INK;
+    paint();
+    return;
+  }
+  // The body and meta restore right away, invisibly under the still-covering
+  // overlay. The root waits out the overlay fade so Safari re-evaluates the
+  // band against ivory pixels; flipping it mid-fade left the band stuck ink.
+  state.bodyBand = IVORY;
+  paint();
+  htmlTimer = setTimeout(() => {
+    htmlTimer = undefined;
+    state.htmlBand = IVORY;
+    paint();
+  }, 300);
 }
 
 export default function SafeAreaTheme() {
@@ -54,7 +81,7 @@ export default function SafeAreaTheme() {
       raf = 0;
       if (!mobile.matches) {
         state.surface = IVORY;
-        apply();
+        paint();
         return;
       }
       // Safari's bar sits on the bottom edge of the viewport; whatever
@@ -68,7 +95,7 @@ export default function SafeAreaTheme() {
         if (bg && bg !== "transparent" && bg !== "rgba(0, 0, 0, 0)") color = bg;
       }
       state.surface = color;
-      apply();
+      paint();
     };
 
     const queue = () => {
@@ -81,11 +108,24 @@ export default function SafeAreaTheme() {
     mobile.addEventListener("change", queue);
     return () => {
       if (raf) cancelAnimationFrame(raf);
+      if (htmlTimer !== undefined) {
+        clearTimeout(htmlTimer);
+        htmlTimer = undefined;
+      }
       window.removeEventListener("scroll", queue);
       window.removeEventListener("resize", queue);
       mobile.removeEventListener("change", queue);
+      document.documentElement.style.removeProperty("background-color");
+      document.body.style.removeProperty("background-color");
+      state.menuOpen = false;
       state.surface = IVORY;
-      apply();
+      state.htmlBand = IVORY;
+      state.bodyBand = IVORY;
+      written.meta = "";
+      written.html = "";
+      written.body = "";
+      const meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+      if (meta) meta.content = IVORY;
     };
   }, []);
 

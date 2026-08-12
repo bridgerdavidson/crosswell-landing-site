@@ -4,11 +4,11 @@ const URL = "http://localhost:3000";
 const meta = (page) =>
   page.evaluate(() => document.querySelector('meta[name="theme-color"]')?.content ?? null);
 // the top status-bar band follows the page background, not theme-color, so
-// menu states must flip these too ("css" means the stylesheet ivory is active)
+// menu states must flip these too; values are always written explicitly now
 const bands = (page) =>
   page.evaluate(() => ({
-    html: document.documentElement.style.backgroundColor || "css",
-    body: document.body.style.backgroundColor || "css",
+    html: document.documentElement.style.backgroundColor || "unset",
+    body: document.body.style.backgroundColor || "unset",
   }));
 const settle = (page) => page.waitForTimeout(700);
 
@@ -48,6 +48,10 @@ await settle(page);
 out.mobileMenuOpen = await meta(page);
 out.menuOpenBands = await bands(page);
 await page.click('button[aria-controls="mobile-menu"]');
+// mid-fade: the body hands back to ivory at once, the root holds ink until
+// the overlay fade finishes so Safari re-samples against ivory pixels
+await page.waitForTimeout(100);
+out.menuClosingBands = await bands(page);
 await settle(page);
 out.mobileMenuClosed = await meta(page);
 out.menuClosedBands = await bands(page);
