@@ -85,6 +85,21 @@ body {
   line-height: 1.75;
 }
 
+/* Mobile: the desktop clamps bottom out around a 473px viewport, so nothing
+   in the type scale adapts across 320-430px phones. These overrides scale
+   within that range and meet the desktop floor exactly at 768px. */
+@media (max-width: 767px) {
+  .type-display {
+    font-size: clamp(2.375rem, 1rem + 6.8vw, 3rem);
+  }
+  .type-h2 {
+    font-size: clamp(1.75rem, 1rem + 3.8vw, 2.25rem);
+  }
+  .type-accent {
+    font-size: clamp(1.25rem, 0.9rem + 1.8vw, 1.5rem);
+  }
+}
+
 /* ---------- Scroll reveals (no-JS safe: only hide when JS is present) ---------- */
 
 .js .reveal {
