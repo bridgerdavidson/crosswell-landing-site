@@ -27,16 +27,22 @@ export default function HeroCore() {
       className="hero-core-mask pointer-events-none absolute inset-0"
     >
       <div className="hero-core">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          ref={imgRef}
-          src="/hero-core.jpg"
-          alt=""
-          fetchPriority="high"
-          decoding="async"
-          onLoad={() => setLoaded(true)}
-          className={loaded ? "is-loaded" : undefined}
-        />
+        {/* display:contents keeps the img's percentage sizing resolving
+            against .hero-core; the load event fires on the img whichever
+            source the browser picks, so the decode crossfade is untouched */}
+        <picture className="contents">
+          <source media="(max-width: 767px)" srcSet="/hero-core-mobile.jpg" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            ref={imgRef}
+            src="/hero-core.jpg"
+            alt=""
+            fetchPriority="high"
+            decoding="async"
+            onLoad={() => setLoaded(true)}
+            className={loaded ? "is-loaded" : undefined}
+          />
+        </picture>
       </div>
     </div>
   );

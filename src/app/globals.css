@@ -85,6 +85,21 @@ body {
   line-height: 1.75;
 }
 
+/* Mobile: the desktop clamps bottom out around a 473px viewport, so nothing
+   in the type scale adapts across 320-430px phones. These overrides scale
+   within that range and meet the desktop floor exactly at 768px. */
+@media (max-width: 767px) {
+  .type-display {
+    font-size: clamp(2.375rem, 1rem + 6.8vw, 3rem);
+  }
+  .type-h2 {
+    font-size: clamp(1.75rem, 1rem + 3.8vw, 2.25rem);
+  }
+  .type-accent {
+    font-size: clamp(1.25rem, 0.9rem + 1.8vw, 1.5rem);
+  }
+}
+
 /* ---------- Scroll reveals (no-JS safe: only hide when JS is present) ---------- */
 
 .js .reveal {
@@ -278,6 +293,31 @@ body {
     var(--color-ivory) 30%,
     rgba(241, 238, 230, 0) 78%
   );
+}
+
+/* Mobile: 100vmax resolves to the viewport HEIGHT on a phone, which fits the
+   sphere's full top and bottom arcs into frame (the desktop composition shows
+   it wide, never fully). 119vmax pushes the arcs just off-frame under the edge
+   fades (spec 2026-08-11, decision A2). The veil override covers mobile's tall
+   text column; the double ivory stop is load-bearing (minifier trap above). */
+@media (max-width: 767px) {
+  .hero-core {
+    /* the hero SECTION can outgrow the viewport when the text column runs
+       long (narrow phones), and the art centers in the section, so size off
+       the section height with the viewport as a floor for landscape; either
+       way the arcs stay off-frame */
+    width: auto;
+    height: max(119%, 119vmax);
+    aspect-ratio: 1 / 1;
+  }
+  .hero-core-veil {
+    background: radial-gradient(
+      ellipse 100% 54% at 50% 52%,
+      var(--color-ivory) 0%,
+      var(--color-ivory) 36%,
+      rgba(241, 238, 230, 0) 86%
+    );
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -603,6 +643,13 @@ body {
   width: 100%;
   height: clamp(500px, 54vw, 660px);
 }
+/* phones: the 500px floor leaves ~215px of dead space above a width-driven
+   graph; near-square tracks the disc instead */
+@media (max-width: 767px) {
+  .brain-stage {
+    height: min(440px, 112vw);
+  }
+}
 .brain-stage .brain-still,
 .brain-stage .brain-field {
   position: absolute;
@@ -659,6 +706,18 @@ body {
 }
 .brain-stage[data-mode="live"] .brain-replay { opacity: 1; pointer-events: auto; }
 .brain-replay:focus-visible { outline: 2px solid var(--color-fern-deep); outline-offset: 2px; border-radius: 6px; }
+/* phones: readable transcript, the raw/sorted layers stop above the tag row
+   instead of colliding with it, and Replay gets a 44px hit box */
+@media (max-width: 767px) {
+  .brain-card-line { font-size: 12.5px; }
+  .brain-card-raw,
+  .brain-card-sorted { inset: 0 0 32px; }
+  .brain-replay {
+    right: 2px;
+    bottom: 0;
+    padding: 15px 14px;
+  }
+}
 @media (prefers-reduced-motion: reduce) { .brain-card, .brain-replay { display: none; } }
 
 /* ---------- Team headshot flip ----------
@@ -704,3 +763,146 @@ body {
     transition: none;
   }
 }
+
+/* ---------- Mobile menu: the ink takeover ----------
+   Full-screen inversion into ink with indexed serif links (spec 2026-08-11,
+   section 2). Always mounted so open and close can animate; z-40 sits under
+   the z-50 header, whose logo and burger swap to light while open. */
+
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-ink);
+  padding: 96px 32px 36px;
+  overflow-y: auto;
+  visibility: hidden;
+  opacity: 0;
+  /* close: quick fade; visibility flips only after the fade finishes */
+  transition:
+    opacity 0.25s ease,
+    visibility 0s linear 0.25s;
+}
+
+.menu-overlay-open {
+  visibility: visible;
+  opacity: 1;
+  transition:
+    opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s;
+}
+
+/* items hold hidden until the overlay opens, then rise in a 90ms stagger;
+   the class toggle restarts the animation on every open */
+.menu-overlay .menu-link,
+.menu-overlay .menu-bottom {
+  opacity: 0;
+}
+
+.menu-overlay-open .menu-link,
+.menu-overlay-open .menu-bottom {
+  animation: menu-rise 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i) * 90ms + 150ms);
+}
+
+@keyframes menu-rise {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu-overlay,
+  .menu-overlay-open {
+    transition: none;
+  }
+  .menu-overlay-open .menu-link,
+  .menu-overlay-open .menu-bottom {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+.menu-links {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.menu-link {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 17px 0;
+  border-bottom: 1px solid rgba(241, 238, 230, 0.12);
+}
+
+.menu-idx {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--color-fern-soft);
+}
+
+.menu-txt {
+  font-family: var(--font-serif);
+  font-size: 32px;
+  letter-spacing: -0.01em;
+  color: var(--color-ivory);
+}
+
+.menu-bottom {
+  flex: none;
+  padding-top: 40px;
+}
+
+.menu-mail {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 13px;
+  color: rgba(241, 238, 230, 0.5);
+}
+
+/* phones: pad the dashboard Replay hit box to 44px without moving its text
+   (top -2px + 14px padding puts the label back at the original 12px offset;
+   right 4px + 12px padding restores the original 16px) */
+@media (max-width: 767px) {
+  .cwd-replay {
+    top: -2px;
+    right: 4px;
+    padding: 14px 12px;
+  }
+}
+
+/* the two-line burger that morphs into an X */
+.nav-burger {
+  position: relative;
+  display: block;
+  width: 20px;
+  height: 16px;
+}
+
+.nav-burger span {
+  position: absolute;
+  left: 0;
+  display: block;
+  width: 20px;
+  height: 1.5px;
+  border-radius: 1px;
+  background: currentColor;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-burger span:first-child { top: 4px; }
+.nav-burger span:last-child { top: 10.5px; }
+
+.nav-burger-open span:first-child { transform: translateY(3.25px) rotate(45deg); }
+.nav-burger-open span:last-child { transform: translateY(-3.25px) rotate(-45deg); }

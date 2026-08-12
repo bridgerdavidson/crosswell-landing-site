@@ -18,9 +18,11 @@ export default function Footer() {
           </p>
         </div>
         <div className="flex flex-col items-start gap-1.5 text-sm sm:items-end">
+          {/* phones: negative margins cancel the padding in layout, so the
+              44px hit box comes free without moving anything visually */}
           <a
             href={`mailto:${CONTACT_EMAIL}`}
-            className="text-ivory/80 transition-colors hover:text-fern-soft"
+            className="text-ivory/80 transition-colors hover:text-fern-soft max-md:-m-3 max-md:inline-block max-md:p-3"
           >
             {CONTACT_EMAIL}
           </a>

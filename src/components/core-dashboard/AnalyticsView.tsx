@@ -18,7 +18,7 @@ export function AnalyticsView() {
         Compiled from meetings, notes, and documents.
       </p>
 
-      <div className="mt-4 grid grid-cols-3 gap-2 sm:gap-3">
+      <div className="mt-4 grid grid-cols-1 gap-2 min-[400px]:grid-cols-3 sm:gap-3">
         {STATS.map((s) => (
           <div key={s.label} className="cwd-stat-tile rounded-xl bg-[#24221c] px-3 py-3">
             <p className="text-[19px] font-semibold leading-none tabular-nums sm:text-[22px]">
@@ -47,7 +47,7 @@ export function AnalyticsView() {
                   className="cwd-report-bar w-full origin-bottom rounded-t-[3px] bg-fern-soft/80"
                 />
               </div>
-              <p className="text-[10px] text-ivory/50">
+              <p className="whitespace-nowrap text-[9px] text-ivory/50 min-[400px]:text-[10px]">
                 {a.label} <span className="text-ivory/35 tabular-nums">{a.value}</span>
               </p>
             </div>

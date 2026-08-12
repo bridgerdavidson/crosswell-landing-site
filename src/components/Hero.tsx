@@ -6,7 +6,7 @@ export default function Hero() {
   return (
     <section
       id="top"
-      className="relative flex min-h-dvh flex-col justify-center overflow-hidden pt-20"
+      className="relative flex min-h-svh flex-col justify-center overflow-hidden pt-20"
     >
       <HeroCore />
       <div

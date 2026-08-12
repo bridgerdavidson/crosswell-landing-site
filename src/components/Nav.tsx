@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState, type MouseEvent } from "react";
+import { useEffect, useState, type CSSProperties, type MouseEvent } from "react";
 import Image from "next/image";
-import { CALL_MAILTO } from "@/lib/site";
+import { CALL_MAILTO, CONTACT_EMAIL } from "@/lib/site";
 
 const links = [
   { href: "#how-it-works", label: "How it works" },
@@ -31,6 +31,22 @@ export default function Nav() {
       history.replaceState(null, "", window.location.pathname + window.location.search);
     }
   }, []);
+
+  // While the ink takeover is open: lock page scroll and close on Escape.
+  useEffect(() => {
+    if (!open) return;
+    const root = document.documentElement;
+    const prev = root.style.overflow;
+    root.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      root.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
 
   // Smooth-scroll a nav target so its title sits just below the nav (filling the
   // screen from there), without writing a hash to the URL (which is what made
@@ -61,15 +77,18 @@ export default function Nav() {
     window.scrollTo({ top: Math.max(0, Math.min(target, max)), behavior: "smooth" });
   };
 
-  const solid = scrolled || open;
+  // Open sits the header on the ink overlay, so it goes transparent with a
+  // light logo; otherwise the scrolled state gets the ivory blur bar.
+  const headerChrome = open
+    ? "border-transparent bg-transparent"
+    : scrolled
+      ? "border-ink/10 bg-ivory/85 backdrop-blur-md"
+      : "border-transparent bg-transparent";
 
   return (
+    <>
     <header
-      className={`nav-enter fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300 ${
-        solid
-          ? "border-ink/10 bg-ivory/85 backdrop-blur-md"
-          : "border-transparent bg-transparent"
-      }`}
+      className={`nav-enter fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300 ${headerChrome}`}
     >
       <div
         className={`mx-auto flex max-w-6xl items-center justify-between px-6 transition-[height] duration-300 ${
@@ -82,12 +101,12 @@ export default function Nav() {
           onClick={(e) => goToSection(e, "#top")}
         >
           <Image
-            src="/xw-h-lockup-dark.svg"
+            src={open ? "/xw-h-lockup-light.svg" : "/xw-h-lockup-dark.svg"}
             alt="Crosswell"
             width={295}
             height={36}
             priority
-            className="h-7 w-auto"
+            className="h-6 w-auto md:h-7"
           />
         </a>
 
@@ -116,50 +135,61 @@ export default function Nav() {
             type="button"
             aria-expanded={open}
             aria-label={open ? "Close menu" : "Open menu"}
+            aria-controls="mobile-menu"
             onClick={() => setOpen((v) => !v)}
-            className="-mr-2 flex h-11 w-11 items-center justify-center text-ink md:hidden"
+            className={`-mr-2 flex h-11 w-11 items-center justify-center md:hidden ${
+              open ? "text-ivory" : "text-ink"
+            }`}
           >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              aria-hidden
-            >
-              {open ? (
-                <path d="M4 4l12 12M16 4L4 16" />
-              ) : (
-                <path d="M2 6h16M2 14h16" />
-              )}
-            </svg>
+            <span className={`nav-burger ${open ? "nav-burger-open" : ""}`} aria-hidden>
+              <span />
+              <span />
+            </span>
           </button>
         </div>
       </div>
-
-      {open && (
-        <nav className="border-t border-ink/10 bg-ivory/95 px-6 pb-6 pt-2 backdrop-blur-md md:hidden">
-          {links.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={(e) => goToSection(e, link.href)}
-              className="block border-b border-ink/8 py-3.5 text-sm font-medium uppercase tracking-[0.16em] text-ink/70 transition-colors hover:text-ink"
-            >
-              {link.label}
-            </a>
-          ))}
-          <a
-            href={CALL_MAILTO}
-            onClick={() => setOpen(false)}
-            className="mt-5 block rounded-lg bg-fern px-4 py-3 text-center text-sm font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep"
-          >
-            Set up a call
-          </a>
-        </nav>
-      )}
     </header>
+
+    {/* The ink takeover. Rendered as a SIBLING of the header: nav-enter's
+        fill-mode keeps a transform on the header forever, which would turn it
+        into the containing block for this fixed overlay and size it to the
+        80px bar instead of the viewport. */}
+    <div
+      id="mobile-menu"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Menu"
+      inert={!open}
+      className={`menu-overlay md:hidden ${open ? "menu-overlay-open" : ""}`}
+    >
+      <nav className="menu-links">
+        {links.map((link, i) => (
+          <a
+            key={link.href}
+            href={link.href}
+            onClick={(e) => goToSection(e, link.href)}
+            className="menu-link"
+            style={{ "--i": i } as CSSProperties}
+          >
+            <span className="menu-idx">{String(i + 1).padStart(2, "0")}</span>
+            <span className="menu-txt">{link.label}</span>
+          </a>
+        ))}
+      </nav>
+      <div
+        className="menu-bottom"
+        style={{ "--i": links.length } as CSSProperties}
+      >
+        <a
+          href={CALL_MAILTO}
+          onClick={() => setOpen(false)}
+          className="block rounded-[10px] bg-fern px-4 py-4 text-center text-[15px] font-semibold text-ivory"
+        >
+          Set up a call
+        </a>
+        <p className="menu-mail">{CONTACT_EMAIL}</p>
+      </div>
+    </div>
+    </>
   );
 }

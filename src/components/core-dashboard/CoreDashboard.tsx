@@ -46,7 +46,15 @@ function NavItems({ variant }: { variant: "side" | "strip" }) {
           {key === "chat" && (
             <span className="cwd-nav-chat-static absolute inset-0 -z-10 rounded-[inherit] bg-fern/20" />
           )}
-          <Icon />
+          {/* the strip needs ~339px with icons but a 320px phone offers 272px;
+              labels alone fit, so icons sit out below sm */}
+          {variant === "side" ? (
+            <Icon />
+          ) : (
+            <span className="hidden flex-none sm:block">
+              <Icon />
+            </span>
+          )}
           <span
             className={`cwd-nav-label ${
               key === "chat" ? "text-[#b5cbb5]" : "text-ivory/55"
@@ -431,7 +439,7 @@ export default function CoreDashboard() {
           </div>
 
           {/* Mobile tab strip (below lg) */}
-          <div className="cwd-nav relative flex gap-1 px-3 pt-3 lg:hidden">
+          <div className="cwd-nav relative flex gap-1 overflow-x-auto px-3 pt-3 lg:hidden">
             <span className="cwd-nav-pill invisible absolute left-0 top-0 rounded-full bg-fern/20" />
             <NavItems variant="strip" />
           </div>
@@ -488,7 +496,7 @@ export default function CoreDashboard() {
       </div>
 
       <div className="mt-5 text-center">
-        <p className="cwd-caption mx-auto min-h-[2.75rem] max-w-xl text-sm leading-relaxed text-charcoal/80 sm:text-[15px]">
+        <p className="cwd-caption mx-auto min-h-[4.25rem] max-w-xl text-sm leading-relaxed text-charcoal/80 sm:min-h-[2.75rem] sm:text-[15px]">
           {CAPTIONS.chat}
         </p>
         <p className="mt-2 text-[11px] uppercase tracking-[0.14em] text-warmgray">
