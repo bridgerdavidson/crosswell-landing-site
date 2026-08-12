@@ -643,6 +643,13 @@ body {
   width: 100%;
   height: clamp(500px, 54vw, 660px);
 }
+/* phones: the 500px floor leaves ~215px of dead space above a width-driven
+   graph; near-square tracks the disc instead */
+@media (max-width: 767px) {
+  .brain-stage {
+    height: min(440px, 112vw);
+  }
+}
 .brain-stage .brain-still,
 .brain-stage .brain-field {
   position: absolute;
@@ -699,6 +706,18 @@ body {
 }
 .brain-stage[data-mode="live"] .brain-replay { opacity: 1; pointer-events: auto; }
 .brain-replay:focus-visible { outline: 2px solid var(--color-fern-deep); outline-offset: 2px; border-radius: 6px; }
+/* phones: readable transcript, the raw/sorted layers stop above the tag row
+   instead of colliding with it, and Replay gets a 44px hit box */
+@media (max-width: 767px) {
+  .brain-card-line { font-size: 12.5px; }
+  .brain-card-raw,
+  .brain-card-sorted { inset: 0 0 32px; }
+  .brain-replay {
+    right: 2px;
+    bottom: 0;
+    padding: 15px 14px;
+  }
+}
 @media (prefers-reduced-motion: reduce) { .brain-card, .brain-replay { display: none; } }
 
 /* ---------- Team headshot flip ----------

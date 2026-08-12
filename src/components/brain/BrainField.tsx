@@ -22,7 +22,16 @@ export default function BrainField() {
     const replay = replayRef.current;
     if (!canvas || !card) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return; // leave the SSR still in place
+    if (reduce) {
+      // portrait phones: the still's landscape viewBox letterboxes to a
+      // dust-scale strip under "meet"; "slice" fills the box and crops the
+      // empty margins instead. no-JS keeps "meet"; live mode hides the still.
+      const still = document.querySelector(".brain-still");
+      if (still && window.matchMedia("(max-width: 767px)").matches) {
+        still.setAttribute("preserveAspectRatio", "xMidYMid slice");
+      }
+      return; // leave the SSR still in place
+    }
 
     const stage = document.getElementById("brain-stage");
     const ctx = canvas.getContext("2d");
@@ -377,7 +386,13 @@ export default function BrainField() {
     let rt: number | undefined;
     const onResize = () => {
       window.clearTimeout(rt);
-      rt = window.setTimeout(() => { resize(); P.forEach((s) => (s.init = false)); }, 150);
+      // iOS fires resize on every address-bar collapse with identical
+      // dimensions; only reseed the field when the stage actually changed
+      rt = window.setTimeout(() => {
+        const prevW = W, prevH = H;
+        resize();
+        if (W !== prevW || H !== prevH) P.forEach((s) => (s.init = false));
+      }, 150);
     };
     window.addEventListener("resize", onResize);
     raf = requestAnimationFrame(loop);
