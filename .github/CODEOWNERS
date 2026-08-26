@@ -1,0 +1,4 @@
+# Code owners are automatically requested for review on every pull request.
+# With branch protection set to "require review from code owners", nothing
+# merges to main without approval from an owner listed here.
+* @bridgerdavidson
