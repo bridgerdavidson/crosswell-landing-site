@@ -23,7 +23,7 @@ export default function Hero() {
       />
       <div className="relative mx-auto max-w-4xl px-6 py-20 text-center">
         <p
-          className="hero-enter type-kicker mb-5 text-fern-deep"
+          className="hero-enter type-label mb-5 text-fern-deep"
           style={{ "--enter-delay": "0.2s" } as CSSProperties}
         >
           Crosswell Core

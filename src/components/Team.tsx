@@ -78,7 +78,7 @@ export default function Team() {
     <section id="team" className="border-t border-ink/8 bg-parchment">
       <div className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
         <Reveal>
-          <p className="type-kicker mb-4 text-fern-deep">The team</p>
+          <p className="type-label mb-4 text-fern-deep">The team</p>
           <h2 className="type-h2 max-w-2xl text-ink">
             Three people. Both worlds.
           </h2>

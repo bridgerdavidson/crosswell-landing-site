@@ -28,7 +28,7 @@ export default function ProblemBand() {
               <p className="mt-2 max-w-[40ch] leading-relaxed text-ink/75">
                 {stat.body}
               </p>
-              <p className="mt-3 text-[11px] uppercase tracking-[0.14em] text-warmgray">
+              <p className="mt-3 text-xs text-warmgray">
                 {stat.source}
               </p>
             </div>

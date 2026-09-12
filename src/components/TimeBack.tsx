@@ -24,7 +24,7 @@ export default function TimeBack() {
     <section className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
       <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
         <Reveal>
-          <p className="type-kicker mb-4 text-fern-deep">The value</p>
+          <p className="type-label mb-4 text-fern-deep">The value</p>
           <h2 className="type-h2 text-ink">
             Where lean firms lose the week.
           </h2>

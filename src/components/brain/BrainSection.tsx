@@ -7,7 +7,7 @@ export default function BrainSection() {
     <section id="the-brain" className="px-6 py-24 sm:py-32">
       <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[0.62fr_1.55fr] lg:gap-16">
         <Reveal>
-          <p className="type-kicker text-fern-deep">This is the Core</p>
+          <p className="type-label text-fern-deep">This is the Core</p>
           <h2 className="type-h2 mt-3">Nothing your firm knows sits alone.</h2>
           <p className="type-body mt-5 max-w-[46ch] text-charcoal/80">
             The Core is everything your firm knows, connected. Every meeting,
@@ -19,7 +19,7 @@ export default function BrainSection() {
             Everyone runs the same models now. What a competitor can&apos;t copy
             is what your firm knows. We make that an asset you own.
           </p>
-          <p className="mt-6 text-[11px] uppercase tracking-[0.14em] text-warmgray">
+          <p className="mt-6 text-xs text-warmgray">
             Illustrative
           </p>
         </Reveal>

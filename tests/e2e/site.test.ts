@@ -32,3 +32,21 @@ describe("removals", () => {
     expect(counts).toEqual({ security: 0, tour: 0, diagram: 0 });
   });
 });
+
+describe("type", () => {
+  it("uses Instrument Sans and no uppercase text", async () => {
+    const r = await withPage(async (page) => {
+      await page.goto(site.url, { waitUntil: "networkidle" });
+      return page.evaluate(() => ({
+        font: getComputedStyle(document.body).fontFamily,
+        uppercase: [...document.querySelectorAll("header *, main *, footer *")].filter(
+          (el) => getComputedStyle(el).textTransform === "uppercase"
+        ).length,
+        kicker: document.querySelectorAll(".type-kicker").length,
+      }));
+    });
+    expect(r.font).toMatch(/Instrument Sans/);
+    expect(r.uppercase).toBe(0);
+    expect(r.kicker).toBe(0);
+  });
+});

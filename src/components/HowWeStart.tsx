@@ -23,7 +23,7 @@ export default function HowWeStart() {
     <section id="how-we-start" className="border-b border-ink/8 bg-parchment">
       <div className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
         <Reveal>
-          <p className="type-kicker mb-4 text-fern-deep">How we start</p>
+          <p className="type-label mb-4 text-fern-deep">How we start</p>
           <h2 className="type-h2 max-w-2xl text-ink">
             Start small, on purpose.
           </h2>

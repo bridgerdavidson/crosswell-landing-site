@@ -1,11 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Newsreader, Schibsted_Grotesk } from "next/font/google";
+import { Newsreader, Instrument_Sans } from "next/font/google";
 import SafeAreaTheme from "@/components/SafeAreaTheme";
 import "./globals.css";
 
-const schibsted = Schibsted_Grotesk({
+const instrument = Instrument_Sans({
   subsets: ["latin"],
-  variable: "--font-schibsted",
+  variable: "--font-instrument",
   display: "swap",
 });
 
@@ -40,7 +40,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${schibsted.variable} ${newsreader.variable}`}
+      className={`${instrument.variable} ${newsreader.variable}`}
       suppressHydrationWarning
     >
       <head>
