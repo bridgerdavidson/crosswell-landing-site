@@ -1,6 +1,7 @@
 import Reveal from "@/components/Reveal";
 import Today from "./today/Today";
 import Agenda from "./agenda/Agenda";
+import Chat from "./chat/Chat";
 
 /**
  * The product run: six chapters of the Core, each a claim plus a fragment.
@@ -28,7 +29,9 @@ export default function ProductRun() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-6 pb-24 sm:pb-32">
+      <Chat />
+
+      <section className="mx-auto max-w-6xl px-6 pt-24 pb-24 sm:pt-32 sm:pb-32">
         <div className="space-y-24 sm:space-y-32">{/* chapters 04 to 06 land here */}</div>
         <p className="mt-12 text-xs text-ink/50">
           Saguaro Capital is fictional. Every number is invented, rounded demo data.

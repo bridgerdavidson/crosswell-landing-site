@@ -113,3 +113,24 @@ describe("chapter 02", () => {
     expect(r.rocks).toBe(1);
   });
 });
+
+describe("chapter 03", () => {
+  it("renders the dark chat with the first exchange answered", async () => {
+    const r = await withPage(async (page) => {
+      await page.goto(site.url, { waitUntil: "networkidle" });
+      const dark = page.locator("section.bg-charcoal-deep").first();
+      return {
+        exists: await dark.count(),
+        question: await dark.getByText("What's at risk this week?").count(),
+        followUps: await dark.locator("button.product-chip").count(),
+        send: await dark.locator("button.product-send").count(),
+        receipts: await dark.locator(".product-chip-accent").count(),
+      };
+    });
+    expect(r.exists).toBe(1);
+    expect(r.question).toBe(1);
+    expect(r.followUps).toBe(2);
+    expect(r.send).toBe(1);
+    expect(r.receipts).toBeGreaterThanOrEqual(2);
+  });
+});

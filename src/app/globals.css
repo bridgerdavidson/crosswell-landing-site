@@ -810,6 +810,35 @@ body {
   padding: 0.5rem 0.5rem 0.5rem 0.9rem;
 }
 
+/* the user's own message in a thread */
+.product-bubble {
+  width: fit-content;
+  max-width: 85%;
+  margin-left: auto;
+  border-radius: 1rem;
+  border-bottom-right-radius: 0.4rem;
+  padding: 0.5rem 0.9rem;
+  background: var(--accent-wash);
+  color: var(--accent-deep);
+}
+
+.product-shell-dark .product-bubble {
+  background: var(--accent-dim);
+  color: var(--color-ivory);
+}
+
+.product-hr {
+  border-top: 1px solid var(--line);
+}
+
+/* phones stack the agenda track, so the right fade becomes a bottom fade */
+@media (max-width: 767px) {
+  .product-frame-right {
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
+  }
+}
+
 .product-rule > * + * {
   border-top: 1px solid var(--line);
 }
