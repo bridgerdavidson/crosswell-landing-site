@@ -26,7 +26,7 @@ export default function Agents() {
         claim="Each one has a single job. They run while you don't."
         body="Custom agents built for the work your team names: reading the inbox, chasing the silent deal, drafting the report. Each one reports what it did and waits for your yes before anything leaves the building."
       >
-        <Frame fade="corner" height="h-[520px]">
+        <Frame fade="bottom" fit height="h-[520px]">
           <Rail active="settings" />
           <div className="flex min-w-0 flex-1 flex-col">
             <TopBar />
@@ -37,7 +37,11 @@ export default function Agents() {
               </div>
               <ul className="product-rule mt-3">
                 {agents.roster.map((agent) => (
-                  <li key={agent.id} data-agent={agent.id} className="grid grid-cols-[1fr_210px] gap-6 py-3.5">
+                  <li
+                    key={agent.id}
+                    data-agent={agent.id}
+                    className="grid grid-cols-1 gap-2 py-3.5 sm:grid-cols-[1fr_210px] sm:gap-6"
+                  >
                     <div className="min-w-0">
                       <p className="font-semibold">{agent.name}</p>
                       <p className="mt-0.5 text-[12px] opacity-60">{agent.job}</p>

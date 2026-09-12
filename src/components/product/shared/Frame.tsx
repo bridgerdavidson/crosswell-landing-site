@@ -7,6 +7,8 @@ type FrameProps = {
   dark?: boolean;
   /** Tailwind height class for the frame box */
   height?: string;
+  /** fill the frame's width instead of overflowing it; for the narrow split layout */
+  fit?: boolean;
   /** scoped variable overrides, e.g. chapter 06's accent */
   style?: CSSProperties;
   className?: string;
@@ -23,12 +25,16 @@ export function Frame({
   fade = "corner",
   dark = false,
   height = "h-[480px]",
+  fit = false,
   style,
   className = "",
 }: FrameProps) {
   return (
     <div className={`product-frame product-frame-${fade} ${height} ${className}`}>
-      <div className={`product-shell ${dark ? "product-shell-dark" : ""}`} style={style}>
+      <div
+        className={`product-shell ${dark ? "product-shell-dark" : ""} ${fit ? "product-shell-fit" : ""}`}
+        style={style}
+      >
         {children}
       </div>
     </div>

@@ -669,6 +669,12 @@ body {
   }
 }
 
+/* the narrow split layout fits the product to the frame at real scale */
+.product-shell-fit {
+  min-width: 0;
+  width: 100%;
+}
+
 .product-greeting {
   font-family: var(--font-serif);
   font-size: 1.75rem;
