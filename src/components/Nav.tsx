@@ -8,8 +8,9 @@ import { setMenuInk } from "./SafeAreaTheme";
 const links = [
   { href: "#how-it-works", label: "How it works" },
   { href: "#why-crosswell", label: "Why Crosswell" },
-  { href: "#security", label: "Security" },
+  { href: "#how-we-start", label: "How we start" },
   { href: "#team", label: "Team" },
+  { href: "#insights", label: "Insights" },
 ];
 
 export default function Nav() {
@@ -128,7 +129,7 @@ export default function Nav() {
               key={link.href}
               href={link.href}
               onClick={(e) => goToSection(e, link.href)}
-              className="relative text-xs font-medium uppercase tracking-[0.15em] text-ink/75 transition-colors duration-200 hover:text-ink after:absolute after:inset-x-0 after:-bottom-1.5 after:h-px after:origin-left after:scale-x-0 after:bg-fern after:transition-transform after:duration-300 hover:after:scale-x-100"
+              className="relative text-[15px] font-medium text-ink/75 transition-colors duration-200 hover:text-ink after:absolute after:inset-x-0 after:-bottom-1.5 after:h-px after:origin-left after:scale-x-0 after:bg-fern after:transition-transform after:duration-300 hover:after:scale-x-100"
             >
               {link.label}
             </a>

@@ -50,3 +50,13 @@ describe("type", () => {
     expect(r.kicker).toBe(0);
   });
 });
+
+describe("nav", () => {
+  it("lists the five links, sentence case", async () => {
+    const labels = await withPage(async (page) => {
+      await page.goto(site.url, { waitUntil: "networkidle" });
+      return page.locator("header nav a").allTextContents();
+    });
+    expect(labels).toEqual(["How it works", "Why Crosswell", "How we start", "Team", "Insights"]);
+  });
+});
