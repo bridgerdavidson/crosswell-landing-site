@@ -20,6 +20,8 @@ This repo holds no strategy. Before writing copy or making design calls, pull co
 - No pricing, no fabricated client names or metrics. Any illustrative hero/chat copy is labeled illustrative.
 - The brand name is the **Crosswell** wordmark (the "Xwell" spelling is not used).
 - No AI prefix on files; do not mark files as AI-made.
+- No uppercase text anywhere. Section labels are sentence case.
+- No security, compliance, or hosting claims.
 
 ## Stack & run
 
@@ -29,6 +31,9 @@ Next.js 15 + React 19 + Tailwind v4 + TypeScript, static export (`output: "expor
 npm install
 npm run dev     # http://localhost:3000
 npm run build   # static production build into out/
+npm test             # unit tests
+npm run test:e2e     # build + e2e/browser tests
+npm run check:copy   # copy guard on src/
 ```
 
 ## Deploy (read before touching build config)
@@ -37,11 +42,11 @@ The Vercel project `crosswell-landing-site` auto-deploys `main` to production at
 
 **Do not add `installCommand`, `buildCommand`, or `outputDirectory` to `vercel.json`.** This is a static-export Next.js app and the Next.js preset already handles it. An earlier `outputDirectory: "out"` override made the build fail with `NEXT_NO_ROUTES_MANIFEST` (the Next builder looks for its route manifest in the overridden directory). Keep `vercel.json` to `cleanUrls` only.
 
-## Current focus: the hero
+## Current focus: the general-market redesign
 
-The hero is mid-redesign. It is currently a clean centered text composition (headline, subline, CTAs) in `src/components/Hero.tsx`. Two animation attempts were built, deployed, and scrapped as not good enough: CSS keyframes, then a GSAP knowledge-flow scene. GSAP was uninstalled; re-add an animation tool when the redesign starts.
+The site moved off funds to a general market in September 2026 and became product-led: a run of six dashboard chapters in Linear's model, restyled to this site's editorial materials. The spec is `docs/superpowers/specs/2026-09-12-general-market-redesign-design.md` and the design-system reference is `docs/design-system.md`. The plumbing plan ships every chapter's finished state; choreography and polish run through the user-level `design-loop` skill piece by piece. GSAP is installed and is the one motion library.
 
-Concept brief for the next attempt: make Core feel real and inevitable, warm and editorial, not tech-flashy. The full design record and page order are in `README.md`.
+Inside a product frame, the only text allowed is what the product would show its own user. Everything descriptive lives outside the frame.
 
 Open TODO: confirm the contact email in `src/lib/site.ts` (all CTAs are mailto links).
 

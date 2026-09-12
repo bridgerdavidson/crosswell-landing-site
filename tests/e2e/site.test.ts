@@ -329,3 +329,46 @@ describe("metadata", () => {
     expect(r.ogStatus).toBe(200);
   });
 });
+
+describe("resilience", () => {
+  it("shows every chapter finished without JavaScript", async () => {
+    const r = await withPage(
+      async (page) => {
+        await page.goto(site.url, { waitUntil: "networkidle" });
+        return {
+          greeting: await page.getByText("Good morning, Morgan.").first().isVisible(),
+          captions: await page.getByText("Interactive demo · Sample data").count(),
+          answer: await page.getByText("Four flags. The one that matters").isVisible(),
+        };
+      },
+      { js: false }
+    );
+    expect(r.greeting).toBe(true);
+    expect(r.captions).toBe(6);
+    expect(r.answer).toBe(true);
+  });
+
+  it("shows reveals immediately under reduced motion", async () => {
+    const opacity = await withPage(
+      async (page) => {
+        await page.goto(site.url, { waitUntil: "networkidle" });
+        return page.locator(".reveal").last().evaluate((el) => getComputedStyle(el).opacity);
+      },
+      { reducedMotion: true }
+    );
+    expect(opacity).toBe("1");
+  });
+
+  it("never scrolls horizontally on a phone", async () => {
+    const overflow = await withPage(
+      async (page) => {
+        await page.goto(site.url, { waitUntil: "networkidle" });
+        return page.evaluate(
+          () => document.scrollingElement!.scrollWidth - document.documentElement.clientWidth
+        );
+      },
+      { width: 390 }
+    );
+    expect(overflow).toBe(0);
+  });
+});
