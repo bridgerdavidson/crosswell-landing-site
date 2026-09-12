@@ -29,7 +29,7 @@ export function Chapter({
   const ink = dark ? "text-ivory" : "text-ink";
   const muted = dark ? "text-ivory/70" : "text-ink/70";
   const text = (
-    <Reveal>
+    <Reveal className="min-w-0">
       <p className={`type-label ${dark ? "text-fern-soft" : "text-fern-deep"}`}>
         <span className="type-label-index">{index}</span>
         {label}
@@ -39,7 +39,7 @@ export function Chapter({
     </Reveal>
   );
   const frame = (
-    <Reveal delay={120}>
+    <Reveal delay={120} className="min-w-0">
       {children}
       <p className={`mt-3 text-xs ${dark ? "text-ivory/50" : "text-ink/50"}`}>
         Interactive demo · Sample data

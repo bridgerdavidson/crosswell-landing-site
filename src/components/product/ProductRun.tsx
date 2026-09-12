@@ -42,7 +42,7 @@ export default function ProductRun() {
           Saguaro Capital is fictional. Every number is invented, rounded demo data.
         </p>
         <Reveal>
-          {/* mirrors the brain section's top padding below it, so the line
+          {/* mirrors BrainSection's top padding below it, so the line
               sits centered in the whitespace between the two sections */}
           <p className="mt-24 text-center type-accent text-charcoal sm:mt-32">
             Behind the chat is the{" "}
