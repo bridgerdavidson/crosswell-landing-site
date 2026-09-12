@@ -134,3 +134,22 @@ describe("chapter 03", () => {
     expect(r.receipts).toBeGreaterThanOrEqual(2);
   });
 });
+
+describe("chapter 04", () => {
+  it("renders the board with the selected card's detail open", async () => {
+    const r = await withPage(async (page) => {
+      await page.goto(site.url, { waitUntil: "networkidle" });
+      const run = page.locator("[data-chapter='04']");
+      return {
+        stages: await run.locator("[data-stage]").count(),
+        active: await run.locator(".product-card-active").count(),
+        who: await run.getByText("Who is this?").count(),
+        answer: await run.getByText("Ironline Builds, a repeat borrower since 2024").count(),
+      };
+    });
+    expect(r.stages).toBe(5);
+    expect(r.active).toBe(1);
+    expect(r.who).toBe(2);
+    expect(r.answer).toBe(1);
+  });
+});
