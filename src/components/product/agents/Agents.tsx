@@ -26,7 +26,7 @@ export default function Agents() {
         claim="Each one has a single job. They run while you don't."
         body="Custom agents built for the work your team names: reading the inbox, chasing the silent deal, drafting the report. Each one reports what it did and waits for your yes before anything leaves the building."
       >
-        <Frame fade="bottom" fit height="h-[680px] sm:h-[600px]">
+        <Frame fade="bottom" fit height="h-[860px] sm:h-[600px]">
           <Rail active="settings" />
           <div className="flex min-w-0 flex-1 flex-col">
             <TopBar />
