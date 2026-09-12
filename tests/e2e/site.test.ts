@@ -153,3 +153,20 @@ describe("chapter 04", () => {
     expect(r.answer).toBe(1);
   });
 });
+
+describe("chapter 05", () => {
+  it("renders five agents and the hand-off", async () => {
+    const r = await withPage(async (page) => {
+      await page.goto(site.url, { waitUntil: "networkidle" });
+      const run = page.locator("[data-chapter='05']");
+      return {
+        rows: await run.locator("[data-agent]").count(),
+        running: await run.getByText("1 running").count(),
+        handoff: await run.getByText("Hand it off").count(),
+      };
+    });
+    expect(r.rows).toBe(5);
+    expect(r.running).toBe(1);
+    expect(r.handoff).toBe(1);
+  });
+});

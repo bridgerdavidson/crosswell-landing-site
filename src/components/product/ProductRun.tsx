@@ -3,6 +3,7 @@ import Today from "./today/Today";
 import Agenda from "./agenda/Agenda";
 import Chat from "./chat/Chat";
 import Pipeline from "./pipeline/Pipeline";
+import Agents from "./agents/Agents";
 
 /**
  * The product run: six chapters of the Core, each a claim plus a fragment.
@@ -35,6 +36,7 @@ export default function ProductRun() {
       <section className="mx-auto max-w-6xl px-6 pt-24 pb-24 sm:pt-32 sm:pb-32">
         <div className="space-y-24 sm:space-y-32">
           <Pipeline />
+          <Agents />
         </div>
         <p className="mt-12 text-xs text-ink/50">
           Saguaro Capital is fictional. Every number is invented, rounded demo data.
