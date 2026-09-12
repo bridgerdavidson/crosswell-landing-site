@@ -1,13 +1,13 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import ProductRun from "@/components/product/ProductRun";
-import ProblemBand from "@/components/ProblemBand";
-import HowWeStart from "@/components/HowWeStart";
 import BrainSection from "@/components/brain/BrainSection";
-import Edge from "@/components/Edge";
-import BeyondCore from "@/components/BeyondCore";
 import WhoItsFor from "@/components/WhoItsFor";
+import Stats from "@/components/Stats";
+import Edge from "@/components/Edge";
 import TimeBack from "@/components/TimeBack";
+import HowWeStart from "@/components/HowWeStart";
+import BeyondCore from "@/components/BeyondCore";
 import Team from "@/components/Team";
 import FinalCta from "@/components/FinalCta";
 import Footer from "@/components/Footer";
@@ -18,13 +18,13 @@ export default function Home() {
       <Nav />
       <Hero />
       <ProductRun />
-      <ProblemBand />
       <BrainSection />
+      <WhoItsFor />
+      <Stats />
       <Edge />
       <TimeBack />
       <HowWeStart />
       <BeyondCore />
-      <WhoItsFor />
       <Team />
       <FinalCta />
       <Footer />

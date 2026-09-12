@@ -1,60 +1,39 @@
 import Reveal from "./Reveal";
 
-const audiences = [
-  "Hedge funds",
-  "Private equity",
+const industries = [
+  "Manufacturing",
+  "Healthcare",
+  "Logistics",
+  "Professional services",
+  "Construction",
   "Private credit",
-  "Family offices",
-  "Registered investment advisers",
-  "Wealth advisors",
 ];
-
-// The marquee scrolls one half of the track and loops at -50%. For the loop to
-// never reveal a blank edge, a single half must be wider than the viewport, so
-// we repeat the list enough times that even a large display stays covered. The
-// pr-4 trailing gap matches the flex gap, which keeps the -50% seam seamless.
-const SETS_PER_HALF = 4;
-const half = Array.from({ length: SETS_PER_HALF }, () => audiences).flat();
-const row = [...half, ...half];
 
 export default function WhoItsFor() {
   return (
-    <section className="bg-charcoal py-16 text-ivory sm:py-20">
+    <section id="who-its-for" className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
       <Reveal>
-        <h2 className="type-h2 px-6 text-center text-ivory">
-          Built for the people who manage money.
+        <p className="type-label text-fern-deep">Who it&apos;s for</p>
+        <h2 className="type-h2 mt-3 max-w-3xl text-ink">
+          Built for businesses that run on what they know.
         </h2>
-        <p className="mt-3 px-6 text-center text-ivory/65">
-          Funds first. Arizona first. If your firm runs on knowledge and
-          judgment, the Core fits.
+        <p className="type-body mt-5 max-w-2xl text-ink/70">
+          Arizona first. If your business runs on knowledge and judgment, the
+          Core fits.
         </p>
-        <p className="mx-auto mt-7 max-w-3xl px-6 text-center type-body text-ivory/75">
-          Everyone is building this for the giants, or stopping at meeting
-          notes. The ten-person firm gets skipped: too lean for the enterprise
-          platforms, too regulated to put client data into consumer AI.
-          That&apos;s exactly who we build for.
+        <p className="type-body mt-4 max-w-2xl text-ink/70">
+          The platforms built for this sell multi-year enterprise contracts with
+          no published price, no self-serve, and an implementation model that
+          assumes an internal IT function you do not have. That gap is where we
+          work.
         </p>
       </Reveal>
-
-      <Reveal delay={120} className="mt-10">
-        <div
-          className="overflow-hidden"
-          style={{
-            maskImage:
-              "linear-gradient(to right, transparent, black 12%, black 88%, transparent)",
-          }}
-        >
-          <div className="drift-slow flex w-max items-center gap-4 pr-4">
-            {row.map((audience, i) => (
-              <span
-                key={`${audience}-${i}`}
-                className="whitespace-nowrap rounded-full border border-warmgray/30 bg-parchment px-5 py-2.5 text-sm font-medium text-ink/75"
-              >
-                {audience}
-              </span>
-            ))}
-          </div>
-        </div>
+      <Reveal delay={120}>
+        <ul className="type-accent mt-12 flex flex-wrap gap-x-8 gap-y-3 border-t border-ink/8 pt-8 text-ink/80">
+          {industries.map((name) => (
+            <li key={name}>{name}</li>
+          ))}
+        </ul>
       </Reveal>
     </section>
   );

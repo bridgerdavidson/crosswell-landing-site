@@ -25,6 +25,11 @@ export default function ProductRun() {
             You&apos;re not talking to a chatbot. You&apos;re talking to your
             firm&apos;s memory.
           </h2>
+          <p className="type-body mt-5 max-w-2xl text-ink/70">
+            The Core is built on agentic AI (AI that does the work, not just
+            answers questions) and managed for you. Six things it does on a
+            Thursday morning.
+          </p>
         </Reveal>
         <div className="mt-16 space-y-24 sm:space-y-32">
           <Today />

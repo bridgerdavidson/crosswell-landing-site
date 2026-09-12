@@ -32,18 +32,17 @@ export default function Hero() {
           className="hero-enter type-display text-ink"
           style={{ "--enter-delay": "0.45s", "--enter-dur": "0.95s" } as CSSProperties}
         >
-          The operating layer for{" "}
-          <span className="italic text-fern-deep">financial stewards</span>.
+          The operating layer your business actually runs on.
         </h1>
         <p
           className="hero-enter type-body mx-auto mt-6 max-w-2xl text-ink/70"
           style={{ "--enter-delay": "0.75s" } as CSSProperties}
         >
-          Crosswell Core is your firm&apos;s institutional memory, built on
-          agentic AI (AI that does the work, not just answers questions) and
-          managed for you. Knowledge flows in, anyone can ask it anything, and
-          the busywork runs itself. Everything we build next stands on it. What
-          we sell is trust.
+          We build the{" "}
+          <span className="font-serif italic text-fern-deep">
+            workflows, automations, sales systems, financial models, and agents
+          </span>{" "}
+          that run on it.
         </p>
         <div
           className="hero-enter mt-9 flex flex-wrap items-center justify-center gap-4"
@@ -62,12 +61,6 @@ export default function Hero() {
             Set up a call
           </a>
         </div>
-        <p
-          className="hero-enter mt-6 text-sm text-ink/55"
-          style={{ "--enter-delay": "1.3s" } as CSSProperties}
-        >
-          Built by people who have worked inside funds.
-        </p>
       </div>
     </section>
   );

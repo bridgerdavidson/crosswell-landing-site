@@ -209,3 +209,36 @@ describe("chapter 06 and the whole run", () => {
     expect(r.labels).toEqual(["01", "02", "03", "04", "05", "06"]);
   });
 });
+
+describe("hero and the top of the company half", () => {
+  it("carries the new headline, static subline, industries, and stats", async () => {
+    const r = await withPage(async (page) => {
+      await page.goto(site.url, { waitUntil: "networkidle" });
+      const body = await page.locator("main").textContent();
+      return {
+        h1: await page.locator("h1").textContent(),
+        rotator: await page.locator(".swap-row").count(),
+        marquee: await page.locator(".drift-slow").count(),
+        stewards: body?.includes("financial stewards"),
+        funds: body?.includes("worked inside funds"),
+        industries: await page.locator("#who-its-for li").allTextContents(),
+        stats: await page.locator("#stats .type-h2").allTextContents(),
+        order: await page.evaluate(() =>
+          [...document.querySelectorAll("main section[id]")].map((s) => s.id)
+        ),
+      };
+    });
+    expect(r.h1).toBe("The operating layer your business actually runs on.");
+    expect(r.rotator).toBe(0);
+    expect(r.marquee).toBe(0);
+    expect(r.stewards).toBe(false);
+    expect(r.funds).toBe(false);
+    expect(r.industries).toEqual([
+      "Manufacturing", "Healthcare", "Logistics", "Professional services", "Construction", "Private credit",
+    ]);
+    expect(r.stats).toEqual(["75%", "78%"]);
+    expect(r.order.slice(0, 6)).toEqual([
+      "top", "how-it-works", "the-brain", "who-its-for", "stats", "why-crosswell",
+    ]);
+  });
+});
