@@ -75,3 +75,24 @@ describe("built css", () => {
     expect(css).toMatch(/product-frame-right\{[^}]*#000 0 74%/);
   });
 });
+
+describe("product run", () => {
+  it("renders chapter 01 with the finished morning", async () => {
+    const r = await withPage(async (page) => {
+      await page.goto(site.url, { waitUntil: "networkidle" });
+      const run = page.locator("#how-it-works");
+      return {
+        intro: await run.locator("h2").first().textContent(),
+        label: await run.locator(".type-label").nth(1).textContent(),
+        greeting: await run.getByText("Good morning, Morgan.").count(),
+        filed: await run.getByText("14 filed overnight").count(),
+        captions: await page.getByText("Interactive demo · Sample data").count(),
+      };
+    });
+    expect(r.intro).toContain("talking to your firm");
+    expect(r.label).toContain("Today");
+    expect(r.greeting).toBe(1);
+    expect(r.filed).toBe(1);
+    expect(r.captions).toBeGreaterThanOrEqual(1);
+  });
+});

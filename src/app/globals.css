@@ -685,6 +685,10 @@ body {
   border-bottom: 1px solid var(--line);
 }
 
+.product-aside {
+  border-left: 1px solid var(--line);
+}
+
 .product-avatar {
   display: flex;
   width: 28px;
@@ -694,7 +698,7 @@ body {
   border-radius: 50%;
   background: var(--accent-wash);
   color: var(--accent-deep);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
 }
 

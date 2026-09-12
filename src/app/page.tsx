@@ -1,5 +1,6 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
+import ProductRun from "@/components/product/ProductRun";
 import ProblemBand from "@/components/ProblemBand";
 import HowWeStart from "@/components/HowWeStart";
 import BrainSection from "@/components/brain/BrainSection";
@@ -16,6 +17,7 @@ export default function Home() {
     <main>
       <Nav />
       <Hero />
+      <ProductRun />
       <ProblemBand />
       <BrainSection />
       <Edge />
