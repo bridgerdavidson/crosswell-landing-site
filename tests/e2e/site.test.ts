@@ -144,7 +144,7 @@ describe("chapter 04", () => {
         stages: await run.locator("[data-stage]").count(),
         active: await run.locator(".product-card-active").count(),
         who: await run.getByText("Who is this?").count(),
-        answer: await run.getByText("Ironline Builds, a repeat borrower since 2024").count(),
+        answer: await run.getByText("Redrock Flips, a first-time borrower introduced by Canyon State Brokers").count(),
       };
     });
     expect(r.stages).toBe(5);

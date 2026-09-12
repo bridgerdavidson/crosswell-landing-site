@@ -622,6 +622,20 @@ body {
   }
 }
 
+/* phones: a bottom-fade frame is also cut at the right, so it takes the corner mask */
+@media (max-width: 767px) {
+  .product-frame-bottom {
+    -webkit-mask-image:
+      linear-gradient(to right, #000 0%, #000 74%, transparent 100%),
+      linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
+    mask-image:
+      linear-gradient(to right, #000 0%, #000 74%, transparent 100%),
+      linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
+}
+
 /* the product itself: always wider than the frame so the crop does the work */
 .product-shell {
   --accent: var(--color-fern);
