@@ -49,7 +49,7 @@ export default function Brand() {
             })}
           </ul>
 
-          <Frame fade="bottom" fit height="h-[420px]" style={vars}>
+          <Frame fade="bottom" fit height="h-[560px] sm:h-[420px]" style={vars}>
             <Rail active="home" />
             <div className="flex min-w-0 flex-1 flex-col">
               <TopBar name={active.company} />
