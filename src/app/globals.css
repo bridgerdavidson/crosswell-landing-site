@@ -614,6 +614,14 @@ body {
   mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
 }
 
+/* phones stack the agenda track, so the right fade becomes a bottom fade */
+@media (max-width: 767px) {
+  .product-frame-right {
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
+  }
+}
+
 /* the product itself: always wider than the frame so the crop does the work */
 .product-shell {
   --accent: var(--color-fern);
@@ -829,14 +837,6 @@ body {
 
 .product-hr {
   border-top: 1px solid var(--line);
-}
-
-/* phones stack the agenda track, so the right fade becomes a bottom fade */
-@media (max-width: 767px) {
-  .product-frame-right {
-    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
-    mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
-  }
 }
 
 .product-rule > * + * {
