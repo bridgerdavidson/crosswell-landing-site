@@ -18,3 +18,17 @@ describe("smoke", () => {
     expect(title).toContain("Crosswell");
   });
 });
+
+describe("removals", () => {
+  it("has no Security section and no dashboard tour", async () => {
+    const counts = await withPage(async (page) => {
+      await page.goto(site.url, { waitUntil: "networkidle" });
+      return {
+        security: await page.locator("#security").count(),
+        tour: await page.locator(".cwd-frame").count(),
+        diagram: await page.locator(".trust-diagram").count(),
+      };
+    });
+    expect(counts).toEqual({ security: 0, tour: 0, diagram: 0 });
+  });
+});
