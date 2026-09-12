@@ -30,7 +30,7 @@ export function Frame({
   className = "",
 }: FrameProps) {
   return (
-    <div className={`product-frame product-frame-${fade} ${height} ${className}`}>
+    <div className={`product-frame product-frame-${fade} ${fit ? "product-frame-fit" : ""} ${height} ${className}`}>
       <div
         className={`product-shell ${dark ? "product-shell-dark" : ""} ${fit ? "product-shell-fit" : ""}`}
         style={style}

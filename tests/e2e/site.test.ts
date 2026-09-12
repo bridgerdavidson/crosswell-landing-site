@@ -170,3 +170,42 @@ describe("chapter 05", () => {
     expect(r.handoff).toBe(1);
   });
 });
+
+describe("chapter 06 and the whole run", () => {
+  it("renders four swatches with Saguaro pressed and the accent scoped", async () => {
+    const r = await withPage(async (page) => {
+      await page.goto(site.url, { waitUntil: "networkidle" });
+      const run = page.locator("[data-chapter='06']");
+      return {
+        swatches: await run.locator("button[aria-pressed]").count(),
+        pressed: await run.locator("button[aria-pressed='true']").textContent(),
+        accent: await run.locator(".product-shell").evaluate((el) =>
+          getComputedStyle(el).getPropertyValue("--accent").trim()
+        ),
+        pageAccent: await page.locator("body").evaluate((el) =>
+          getComputedStyle(el).getPropertyValue("--accent").trim()
+        ),
+      };
+    });
+    expect(r.swatches).toBe(4);
+    expect(r.pressed).toContain("Saguaro Capital");
+    expect(r.accent).toBe("#4e7a4e");
+    expect(r.pageAccent).toBe("");
+  });
+
+  it("carries six captions and the fictional line once", async () => {
+    const r = await withPage(async (page) => {
+      await page.goto(site.url, { waitUntil: "networkidle" });
+      return {
+        captions: await page.getByText("Interactive demo · Sample data").count(),
+        fictional: await page.getByText("Saguaro Capital is fictional").count(),
+        bridge: await page.getByText("Behind the chat is the").count(),
+        labels: await page.locator(".type-label-index").allTextContents(),
+      };
+    });
+    expect(r.captions).toBe(6);
+    expect(r.fictional).toBe(1);
+    expect(r.bridge).toBe(1);
+    expect(r.labels).toEqual(["01", "02", "03", "04", "05", "06"]);
+  });
+});

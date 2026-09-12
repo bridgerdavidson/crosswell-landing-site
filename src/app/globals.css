@@ -636,6 +636,17 @@ body {
   }
 }
 
+/* a fitted shell never overflows the frame's width, so on phones it keeps
+   the bottom fade only (the corner mask above would dim real content) */
+@media (max-width: 767px) {
+  .product-frame-fit.product-frame-bottom {
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
+    -webkit-mask-composite: source-over;
+    mask-composite: add;
+  }
+}
+
 /* the product itself: always wider than the frame so the crop does the work */
 .product-shell {
   --accent: var(--color-fern);
