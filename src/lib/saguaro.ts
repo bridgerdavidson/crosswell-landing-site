@@ -1,0 +1,316 @@
+/**
+ * The one fictional world every product chapter reads from.
+ *
+ * Saguaro Capital is invented. Every person, company, number, and place is
+ * invented and rounded. Nothing here derives from a real client, even
+ * renamed. When the demo content changes (Max's pipeline reference, a new
+ * exchange), change this file, never a chapter.
+ */
+
+export type Tile = { label: string; value: string; note: string; spark?: number[] };
+export type NeedsYou = { id: string; title: string; body: string; receipts: string[]; action?: string };
+export type AgendaItem = { time: string; title: string; ref?: string; done?: boolean };
+export type TeamRow = { name: string; initials: string; items: { title: string; ref?: string; done?: boolean }[] };
+export type Rock = { title: string; pct: number; note?: string };
+export type Exchange = { id: string; question: string; working: string[]; answer: string; receipts: string[] };
+export type Card = { id: string; name: string; place: string; kind: string; amount: string; rate: string; note?: string; ref?: string };
+export type Stage = { name: string; cards: Card[] };
+export type Prompt = { label: string; answer: string; receipts: string[] };
+export type Detail = { since: string; lastTouch: string; numbers: { label: string; value: string }[]; prompts: Prompt[] };
+export type AgentStatus = { kind: "running" | "waiting" | "done" | "scheduled"; text: string };
+export type Agent = { id: string; name: string; job: string; status: AgentStatus; lastResult: string; log: string[] };
+export type Swatch = { id: string; company: string; accent: string; accentDeep: string; accentSoft: string; accentWash: string };
+
+export const company = {
+  name: "Saguaro Capital",
+  user: { name: "Morgan Gray", initials: "MG", role: "Managing Partner" },
+};
+
+export const today = {
+  greeting: "Good morning, Morgan.",
+  subline: "Thursday, 9:40 am. Three things need you today, everything else is filed.",
+  tiles: [
+    { label: "Cash to deploy", value: "$4M", note: "bank feed, 6:00 am", spark: [3.2, 3.4, 3.1, 3.6, 3.8, 3.7, 4.0] },
+    { label: "Assets under management", value: "$85M", note: "fund accounting" },
+    { label: "Active loans", value: "60", note: "servicing" },
+    { label: "Committed, undrawn", value: "$9M", note: "draw schedules" },
+  ] satisfies Tile[],
+  needsYou: [
+    {
+      id: "draw-4",
+      title: "Draw approval",
+      body: "Draw 4, the Palo Verde build. Computed and checked against budget: $130K, balance after $1.3M, LTC 79%. Inspection report attached. Ready for your yes.",
+      receipts: ["draw sheet", "inspection report"],
+      action: "Approve",
+    },
+    {
+      id: "cactus-wren",
+      title: "New deal",
+      body: "The Cactus Wren flip screened overnight. Passes borrower exposure at 4% of book, concentration inside limits. Full screen filed to the deal record.",
+      receipts: ["exposure model", "deal screen"],
+    },
+    {
+      id: "maturities",
+      title: "Maturities",
+      body: "Two loans mature inside 30 days. Payoff letters drafted for both. One borrower wants an extension, and the fee decision from August 12 is attached so nobody has to remember it.",
+      receipts: ["servicing", "partner meeting, Aug 12"],
+    },
+  ] satisfies NeedsYou[],
+  filedOvernight: 14,
+  calendar: [
+    { time: "8:30", title: "Approve Draw 4, Palo Verde" },
+    { time: "9:00", title: "Partner standup" },
+    { time: "11:00", title: "Call the borrower about the extension" },
+    { time: "1:00", title: "Review the September report draft" },
+    { time: "3:00", title: "Investor call, brief attached" },
+  ],
+};
+
+export const agenda = {
+  yourDay: [
+    { time: "8:30", title: "Approve Draw 4, Palo Verde", ref: "draw-4", done: true },
+    { time: "9:00", title: "Partner standup, notes filed as they happen" },
+    { time: "11:00", title: "Call the borrower about the extension" },
+    { time: "1:00", title: "Review the September report draft" },
+    { time: "3:00", title: "Investor call, brief already attached" },
+  ] satisfies AgendaItem[],
+  team: [
+    {
+      name: "Dana Whitfield",
+      initials: "DW",
+      items: [
+        { title: "Draw 4 site walk, Palo Verde", ref: "draw-4", done: true },
+        { title: "Two borrower calls, Tempe" },
+      ],
+    },
+    {
+      name: "Marcus Lee",
+      initials: "ML",
+      items: [{ title: "Term sheet review, Redrock Flips" }, { title: "Broker intro, Canyon State" }],
+    },
+    {
+      name: "Priya Shah",
+      initials: "PS",
+      items: [{ title: "Underwriting call, Mesa Verde" }, { title: "Servicing handoff, week two" }],
+    },
+  ] satisfies TeamRow[],
+  rocks: [
+    { title: "Deploy $6M into new loans", pct: 70, note: "on pace" },
+    { title: "Move servicing knowledge into the Core", pct: 80 },
+    { title: "Fund report drafting itself by October", pct: 60 },
+    { title: "Onboard the new loan ops hire", pct: 90 },
+  ] satisfies Rock[],
+  syncedTo: "Asana",
+};
+
+export const chat = {
+  placeholder: "Message the Core",
+  exchanges: [
+    {
+      id: "risk",
+      question: "What's at risk this week?",
+      working: ["Checking the borrower queue", "Cross-referencing draws and profiles"],
+      answer:
+        "Four flags. The one that matters: Cholla Creek matures inside 45 days with no payoff plan on file. The other three are a draw request overdue nine days, a borrower dormant at term sheet, and a builder's risk policy expiring October 2.",
+      receipts: ["servicing", "exposure model"],
+    },
+    {
+      id: "maturing",
+      question: "Which loans mature inside 60 days?",
+      working: ["Reading the servicing ledger"],
+      answer:
+        "Two. Payoff letters are drafted for both, and one borrower has already asked about an extension, brief attached.",
+      receipts: ["servicing"],
+    },
+    {
+      id: "fees",
+      question: "What did we decide about extension fees?",
+      working: ["Searching partner meeting notes", "Checking the servicing policy"],
+      answer:
+        "One point for a 90 day extension, set at the August 12 partner meeting. Second extensions go to committee, and the wider pricing review is queued for Q4.",
+      receipts: ["partner meeting, Aug 12", "servicing policy"],
+    },
+  ] satisfies Exchange[],
+};
+
+export const pipeline = {
+  stages: [
+    {
+      name: "Screened",
+      cards: [
+        { id: "agave", name: "Agave Trail Homes", place: "Phoenix", kind: "Fix and flip", amount: "$445K", rate: "12.00%", note: "New" },
+        { id: "two-palms", name: "Two Palms Development", place: "Chandler", kind: "Bridge", amount: "$520K", rate: "11.90%" },
+        { id: "palo-brea", name: "Palo Brea Homes", place: "Phoenix", kind: "Fix and flip", amount: "$515K", rate: "11.85%" },
+      ],
+    },
+    {
+      name: "Term sheet",
+      cards: [
+        { id: "redrock", name: "Redrock Flips", place: "Tempe", kind: "Fix and flip", amount: "$385K", rate: "12.25%", note: "Dormant 21 days" },
+        { id: "peoria", name: "North Peoria Duplexes", place: "Peoria", kind: "Ground-up", amount: "$1.35M", rate: "11.10%" },
+      ],
+    },
+    {
+      name: "Underwriting",
+      cards: [
+        { id: "mesa-verde", name: "Mesa Verde Devco", place: "Scottsdale", kind: "Horizontal development", amount: "$2.4M", rate: "10.50%" },
+        { id: "gila-bend", name: "Gila Bend Storage", place: "Buckeye", kind: "Bridge", amount: "$890K", rate: "11.40%" },
+      ],
+    },
+    {
+      name: "Docs out",
+      cards: [
+        { id: "sonoran", name: "Sonoran Urban Infill", place: "Phoenix", kind: "Bridge", amount: "$975K", rate: "10.95%" },
+      ],
+    },
+    {
+      name: "Funded",
+      cards: [
+        { id: "ironline", name: "Ironline Builds", place: "Phoenix", kind: "Ground-up", amount: "$1.6M", rate: "11.25%", note: "Draw 4 pending", ref: "draw-4" },
+        { id: "copper-sky", name: "Copper Sky Homes", place: "Mesa", kind: "Fix and flip", amount: "$640K", rate: "11.75%", note: "2 of 4 draws" },
+        { id: "cholla", name: "Cholla Creek Partners", place: "Gilbert", kind: "Ground-up", amount: "$1.22M", rate: "11.50%", note: "6 of 8 draws" },
+      ],
+    },
+  ] satisfies Stage[],
+  selected: "ironline",
+  details: {
+    ironline: {
+      since: "Repeat borrower since 2024",
+      lastTouch: "Draw 4 inspection, Tuesday",
+      numbers: [
+        { label: "Loan amount", value: "$1.6M" },
+        { label: "Loan to cost", value: "80%" },
+        { label: "Borrower exposure", value: "3%" },
+      ],
+      prompts: [
+        {
+          label: "Who is this?",
+          answer:
+            "Ironline Builds, a repeat borrower since 2024. Three loans with us, all current. The principal is Sam Ortega, and the last touch was Tuesday's Draw 4 inspection.",
+          receipts: ["borrower history", "inspection report"],
+        },
+        {
+          label: "What's outstanding?",
+          answer: "Draw 4 is computed and waiting on your approval. Nothing else is open.",
+          receipts: ["draw sheet"],
+        },
+        {
+          label: "Draft an update",
+          answer: "Drafted a two-paragraph update on Draw 4 timing in the fund's voice. It is in your drafts, not sent.",
+          receipts: ["drafts"],
+        },
+      ],
+    },
+    redrock: {
+      since: "First-time borrower, term sheet out August 20",
+      lastTouch: "Email from the borrower, 21 days ago",
+      numbers: [
+        { label: "Loan amount", value: "$385K" },
+        { label: "Rate", value: "12.25%" },
+        { label: "Days at stage", value: "21" },
+      ],
+      prompts: [
+        {
+          label: "Who is this?",
+          answer: "Redrock Flips, a first-time borrower introduced by Canyon State Brokers. The term sheet went out August 20 and has not been countersigned.",
+          receipts: ["broker intro", "term sheet"],
+        },
+        {
+          label: "What's outstanding?",
+          answer: "The signed term sheet and the entity documents. The follow-up agent has a nudge drafted and waiting for your yes.",
+          receipts: ["follow-up draft"],
+        },
+        {
+          label: "Draft an update",
+          answer: "Drafted a short check-in that references the August 20 terms and asks for a decision by Friday. In your drafts.",
+          receipts: ["drafts"],
+        },
+      ],
+    },
+    "mesa-verde": {
+      since: "In underwriting since August 28",
+      lastTouch: "Underwriting call scheduled Tuesday",
+      numbers: [
+        { label: "Loan amount", value: "$2.4M" },
+        { label: "Loan to cost", value: "72%" },
+        { label: "Concentration after", value: "41%" },
+      ],
+      prompts: [
+        {
+          label: "Who is this?",
+          answer: "Mesa Verde Devco, a horizontal development in Scottsdale. Second deal with this sponsor; the first paid off on schedule in 2025.",
+          receipts: ["sponsor history", "payoff record"],
+        },
+        {
+          label: "What's outstanding?",
+          answer: "The appraisal and the updated budget. Construction concentration would land at 41% after funding, inside the 50% limit.",
+          receipts: ["exposure model", "appraisal request"],
+        },
+        {
+          label: "Draft an update",
+          answer: "Drafted a note to the sponsor listing the two open items ahead of Tuesday's call. In your drafts.",
+          receipts: ["drafts"],
+        },
+      ],
+    },
+  } satisfies Record<string, Detail>,
+};
+
+export const agents = {
+  roster: [
+    {
+      id: "inbox",
+      name: "Inbox agent",
+      job: "Reads the shared inbox, files the routine, drafts replies for approval",
+      status: { kind: "done", text: "3 drafts ready for your yes" },
+      lastResult: "14 messages read, 11 filed, 3 drafted",
+      log: ["6:02 am  Read 14 new messages", "6:05 am  Filed 11 to their loans", "6:09 am  Drafted 3 replies, waiting"],
+    },
+    {
+      id: "follow-up",
+      name: "Follow-up agent",
+      job: "Watches deals for silence and drafts the nudge",
+      status: { kind: "waiting", text: "1 draft waiting" },
+      lastResult: "Redrock Flips, dormant 21 days at term sheet",
+      log: ["6:10 am  Checked 11 open deals", "6:10 am  One past the 14 day mark", "6:12 am  Drafted a check-in, waiting"],
+    },
+    {
+      id: "report",
+      name: "Report agent",
+      job: "Assembles the monthly report overnight, every line sourced",
+      status: { kind: "scheduled", text: "Runs tonight, 11:00 pm" },
+      lastResult: "August report, 41 lines, 41 sources",
+      log: ["Aug 31  Pulled servicing and accounting", "Aug 31  Drafted 41 lines with sources", "Sep 1  Delivered for review"],
+    },
+    {
+      id: "screening",
+      name: "Screening agent",
+      job: "Runs every new deal against the limits before anyone is in",
+      status: { kind: "done", text: "Cactus Wren screened, 6:12 am" },
+      lastResult: "Passes exposure at 4% of book",
+      log: ["6:11 am  New application received", "6:11 am  Ran exposure and concentration", "6:12 am  Filed the screen to the deal"],
+    },
+    {
+      id: "filing",
+      name: "Filing agent",
+      job: "Sweeps chat decisions and call notes into the Core nightly",
+      status: { kind: "running", text: "Filing 9 decisions" },
+      lastResult: "Last night: 12 decisions, 4 call notes",
+      log: ["11:00 pm  Read the loan channels", "11:04 pm  Found 9 decisions", "11:05 pm  Filing to their loans"],
+    },
+  ] satisfies Agent[],
+  handoff: {
+    placeholder: "Give an agent a task",
+    task: "Research Two Palms Development's track record",
+    button: "Hand it off",
+  },
+};
+
+export const brand = {
+  swatches: [
+    { id: "saguaro", company: "Saguaro Capital", accent: "#4e7a4e", accentDeep: "#3d633d", accentSoft: "#93b393", accentWash: "#e4ead8" },
+    { id: "bellwether", company: "Bellwether Logistics", accent: "#4f6d8a", accentDeep: "#3e5770", accentSoft: "#9db2c4", accentWash: "#dfe6ec" },
+    { id: "northline", company: "Northline Health", accent: "#3f7a78", accentDeep: "#325f5e", accentSoft: "#8fb8b6", accentWash: "#dbe8e7" },
+    { id: "copperfield", company: "Copperfield Construction", accent: "#9c5a3c", accentDeep: "#7e4630", accentSoft: "#c9a08d", accentWash: "#efe0d6" },
+  ] satisfies Swatch[],
+};
