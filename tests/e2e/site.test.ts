@@ -301,3 +301,31 @@ describe("company half, bottom", () => {
     ]);
   });
 });
+
+describe("metadata", () => {
+  it("ships canonical, Open Graph, Twitter, JSON-LD, robots, and sitemap", async () => {
+    const r = await withPage(async (page) => {
+      await page.goto(site.url, { waitUntil: "networkidle" });
+      const head = await page.evaluate(() => ({
+        canonical: document.querySelector('link[rel="canonical"]')?.getAttribute("href"),
+        ogTitle: document.querySelector('meta[property="og:title"]')?.getAttribute("content"),
+        ogImage: document.querySelector('meta[property="og:image"]')?.getAttribute("content"),
+        twitter: document.querySelector('meta[name="twitter:card"]')?.getAttribute("content"),
+        ld: document.querySelector('script[type="application/ld+json"]')?.textContent,
+      }));
+      const robots = await (await page.request.get(`${site.url}/robots.txt`)).text();
+      const sitemap = await (await page.request.get(`${site.url}/sitemap.xml`)).text();
+      const og = await page.request.get(`${site.url}/og-image.jpg`);
+      return { ...head, robots, sitemap, ogStatus: og.status() };
+    });
+    expect(r.canonical).toBe("https://crosswellconsulting.com/");
+    expect(r.ogTitle).toContain("The operating layer your business actually runs on");
+    expect(r.ogImage).toContain("/og-image.jpg");
+    expect(r.twitter).toBe("summary_large_image");
+    expect(JSON.parse(r.ld ?? "{}")["@type"]).toBe("Organization");
+    expect(r.robots).toMatch(/Allow: \//);
+    expect(r.robots).toContain("sitemap.xml");
+    expect(r.sitemap).toContain("https://crosswellconsulting.com");
+    expect(r.ogStatus).toBe(200);
+  });
+});
