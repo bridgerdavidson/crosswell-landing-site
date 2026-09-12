@@ -242,3 +242,27 @@ describe("hero and the top of the company half", () => {
     ]);
   });
 });
+
+describe("company half, middle", () => {
+  it("carries the Gen 6 copy in the right order", async () => {
+    const r = await withPage(async (page) => {
+      await page.goto(site.url, { waitUntil: "networkidle" });
+      return {
+        why: await page.locator("#why-crosswell h2").textContent(),
+        cards: await page.locator("#why-crosswell h3").allTextContents(),
+        loses: await page.locator("#what-you-lose h2").textContent(),
+        firstSink: await page.locator("#what-you-lose .type-accent").first().textContent(),
+        worthMore: await page.getByText("And a firm that keeps its memory is worth more").count(),
+        audit: await page.getByText("Where every firm starts").count(),
+        beyond: await page.locator("#beyond-core h3").allTextContents(),
+      };
+    });
+    expect(r.why).toContain("Off the shelf fits nobody");
+    expect(r.cards).toEqual(["Built around your work", "We sell trust", "You work directly with us"]);
+    expect(r.loses).toContain("What a business actually loses");
+    expect(r.firstSink).toContain("departing employee");
+    expect(r.worthMore).toBe(1);
+    expect(r.audit).toBe(1);
+    expect(r.beyond).toEqual(["Custom tools and automations", "The support layer"]);
+  });
+});

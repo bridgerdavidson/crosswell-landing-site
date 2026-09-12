@@ -7,6 +7,7 @@ const engagements = [
   {
     title: "The knowledge audit",
     body: "Two weeks, fixed scope. We map where your firm's information gets dropped and what it costs you. You keep the map either way.",
+    note: "Where every firm starts",
   },
   {
     title: "The Core install",
@@ -37,6 +38,9 @@ export default function HowWeStart() {
                 <p className="mt-2.5 leading-relaxed text-ink/70">
                   {engagement.body}
                 </p>
+                {engagement.note && (
+                  <p className="mt-4 text-xs font-medium text-fern-deep">{engagement.note}</p>
+                )}
               </div>
             </Reveal>
           ))}

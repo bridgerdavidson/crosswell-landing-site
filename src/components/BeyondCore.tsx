@@ -3,7 +3,7 @@ import Reveal from "./Reveal";
 const offerings = [
   {
     title: "Custom tools and automations",
-    body: "Deal screening, diligence reading, memo and report drafting, dashboards. Whatever painful workflow your firm names, we build it on top of the Core so it runs with full firm context.",
+    body: "Instant answers, document review, report drafting, dashboards. Whatever painful workflow your team names, we build it on top of the Core so it runs with full firm context.",
   },
   {
     title: "The support layer",
@@ -13,7 +13,7 @@ const offerings = [
 
 export default function BeyondCore() {
   return (
-    <section className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
+    <section id="beyond-core" className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
       <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
         <Reveal>
           <p className="type-label mb-4 text-fern-deep">Beyond Core</p>
@@ -22,9 +22,7 @@ export default function BeyondCore() {
           </h2>
           <p className="type-body mt-5 text-ink/70">
             Lean firms stay lean on purpose. You will never hire an in-house
-            engineering team, and you should not have to. The Core is where most
-            engagements start; the tools and automations built on it are where
-            the hours come back.
+            engineering team, and you should not have to.
           </p>
         </Reveal>
 

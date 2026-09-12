@@ -2,8 +2,8 @@ import Reveal from "./Reveal";
 
 const points = [
   {
-    title: "We know the workflow",
-    body: "Deal flow, investor reporting, diligence, committee decisions. We have run these from the inside, so we name the problems before you say them and build for how the work actually happens.",
+    title: "Built around your work",
+    body: "We start by learning how your team actually operates, then build the Core and the tools around that. No forcing your business through someone else's template, and no features nobody asked for.",
   },
   {
     title: "We sell trust",
@@ -22,7 +22,7 @@ export default function Edge() {
         <Reveal>
           <p className="type-label mb-4 text-fern-deep">Why Crosswell</p>
           <h2 className="type-h2 max-w-3xl text-ink">
-            We have worked inside funds. Most technology firms have not.
+            Off the shelf fits nobody. So we do not sell it.
           </h2>
         </Reveal>
 
