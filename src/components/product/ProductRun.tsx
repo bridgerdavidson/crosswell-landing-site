@@ -1,5 +1,6 @@
 import Reveal from "@/components/Reveal";
 import Today from "./today/Today";
+import Agenda from "./agenda/Agenda";
 
 /**
  * The product run: six chapters of the Core, each a claim plus a fragment.
@@ -23,6 +24,7 @@ export default function ProductRun() {
         </Reveal>
         <div className="mt-16 space-y-24 sm:space-y-32">
           <Today />
+          <Agenda />
         </div>
       </section>
 

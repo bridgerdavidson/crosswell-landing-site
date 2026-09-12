@@ -96,3 +96,20 @@ describe("product run", () => {
     expect(r.captions).toBeGreaterThanOrEqual(1);
   });
 });
+
+describe("chapter 02", () => {
+  it("renders the agenda with Draw 4 checked and synced", async () => {
+    const r = await withPage(async (page) => {
+      await page.goto(site.url, { waitUntil: "networkidle" });
+      const run = page.locator("#how-it-works");
+      return {
+        panels: await run.locator(".product-track > section").count(),
+        synced: await run.getByText("synced to Asana").count(),
+        rocks: await run.getByText("Deploy $6M into new loans").count(),
+      };
+    });
+    expect(r.panels).toBe(3);
+    expect(r.synced).toBe(1);
+    expect(r.rocks).toBe(1);
+  });
+});
