@@ -19,7 +19,38 @@ const rules = [
   { name: "uppercase", re: /\buppercase\b|text-transform:\s*uppercase/, scope: "all" },
 ];
 const NOT_COPY = /^\s*import\s|\bfrom\s+"|^\s*\/\/|^\s*\/\*|^\s*\*/;
-const CLASS_NAME_ATTR = /className=(?:"[^"]*"|\{[^{}]*\})/g;
+
+// A single-level regex (`\{[^{}]*\}`) can't find the matching close brace
+// when the className expression itself contains braces (template-literal
+// `${...}` interpolation, object literals), so walk brace depth instead.
+function stripClassNameAttrs(line) {
+  let out = "";
+  let i = 0;
+  while (i < line.length) {
+    const at = line.indexOf("className=", i);
+    if (at === -1) {
+      out += line.slice(i);
+      break;
+    }
+    out += line.slice(i, at);
+    let j = at + "className=".length;
+    if (line[j] === '"') {
+      const end = line.indexOf('"', j + 1);
+      j = end === -1 ? line.length : end + 1;
+    } else if (line[j] === "{") {
+      let depth = 0;
+      for (; j < line.length; j++) {
+        if (line[j] === "{") depth++;
+        else if (line[j] === "}" && --depth === 0) {
+          j++;
+          break;
+        }
+      }
+    }
+    i = j;
+  }
+  return out;
+}
 
 function walk(dir, acc = []) {
   for (const name of readdirSync(dir)) {
@@ -36,7 +67,7 @@ for (const file of walk(root)) {
   const isTsx = file.endsWith(".tsx");
   const skipCopy = SKIP_COPY_DIRS.some((d) => rel.startsWith(d));
   readFileSync(file, "utf8").split("\n").forEach((line, i) => {
-    const copyLine = line.replace(CLASS_NAME_ATTR, "");
+    const copyLine = stripClassNameAttrs(line);
     for (const rule of rules) {
       if (rule.scope === "copy") {
         if (!isTsx || skipCopy || NOT_COPY.test(line)) continue;
