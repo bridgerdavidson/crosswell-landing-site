@@ -266,3 +266,38 @@ describe("company half, middle", () => {
     expect(r.beyond).toEqual(["Custom tools and automations", "The support layer"]);
   });
 });
+
+describe("company half, bottom", () => {
+  it("carries the values, the new bios, the Insights slot, and the footer line", async () => {
+    const r = await withPage(async (page) => {
+      await page.goto(site.url, { waitUntil: "networkidle" });
+      return {
+        vision: await page.getByText("To become the most sought after name in agentic AI").count(),
+        values: await page.locator("#values h3").allTextContents(),
+        costs: await page.locator("#values").getByText("What it costs").count(),
+        headings: await page.locator("#values h2").count(),
+        stewardship: await page.getByText("leaves with you in open files on the day you go").count(),
+        roles: await page.locator("#team .text-fern-deep.text-sm").allTextContents(),
+        insights: await page.locator("#insights h2").textContent(),
+        posts: await page.locator("#insights article").count(),
+        footer: await page.locator("footer").textContent(),
+        order: await page.evaluate(() =>
+          [...document.querySelectorAll("main section[id]")].map((s) => s.id)
+        ),
+      };
+    });
+    expect(r.vision).toBe(1);
+    expect(r.values).toEqual(["Trust", "Stewardship", "Continuity"]);
+    expect(r.costs).toBe(3);
+    expect(r.headings).toBe(0);
+    expect(r.stewardship).toBe(1);
+    expect(r.roles).toEqual(["Business & Strategy", "Software & Engineering", "Finance & Operations"]);
+    expect(r.insights).toBe("Insights");
+    expect(r.posts).toBe(0);
+    expect(r.footer).toContain("Custom agentic AI, built around how your team actually works. Arizona.");
+    expect(r.order).toEqual([
+      "top", "how-it-works", "the-brain", "who-its-for", "stats", "why-crosswell",
+      "what-you-lose", "how-we-start", "beyond-core", "values", "team", "insights",
+    ]);
+  });
+});

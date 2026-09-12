@@ -13,7 +13,7 @@ const team = [
     role: "Business & Strategy",
     photo: "/team-max.jpg",
     altPhoto: "/team-max-alt.jpg",
-    line: "Runs operations inside a private credit fund. Finds the problem, owns the relationship, and speaks fund fluently because he lives there.",
+    line: "Finds the problem, owns the relationship, and makes sure what we build actually solves it. Your first call and your last one.",
   },
   {
     name: "Bridger Davidson",
@@ -24,10 +24,10 @@ const team = [
   },
   {
     name: "Michael Zamora",
-    role: "Finance & Fund Operations",
+    role: "Finance & Operations",
     photo: "/team-michael.jpg",
     altPhoto: "/team-michael-alt.jpg",
-    line: "Fund and family-office finance. Knows deal flow, investor reporting, and how a fund actually runs from the inside.",
+    line: "Runs the numbers and the operations behind Crosswell, and keeps every build honest about what it costs and what it returns.",
   },
 ];
 
@@ -79,17 +79,11 @@ export default function Team() {
       <div className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
         <Reveal>
           <p className="type-label mb-4 text-fern-deep">The team</p>
-          <h2 className="type-h2 max-w-2xl text-ink">
-            Three people. Both worlds.
-          </h2>
+          <h2 className="type-h2 max-w-2xl text-ink">Three people. One team.</h2>
           <p className="type-body mt-5 max-w-2xl text-ink/70">
-            Crosswell lives in finance and technology at the same time. That is
-            the whole point.
-          </p>
-          <p className="type-body mt-4 max-w-2xl text-ink/70">
-            Small is deliberate: you work directly with the three people who
-            build and run your Core, and because your knowledge lives in open,
-            portable files, nothing about your firm ever depends on ours.
+            Small is deliberate. You work directly with the three people who
+            build and run your Core, not an account manager standing between
+            you and the work.
           </p>
         </Reveal>
 

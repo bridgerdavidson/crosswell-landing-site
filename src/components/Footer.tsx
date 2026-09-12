@@ -14,7 +14,7 @@ export default function Footer() {
             className="h-6 w-auto"
           />
           <p className="max-w-xs text-xs text-ivory/50">
-            The technology arm for the people who manage money. Arizona.
+            Custom agentic AI, built around how your team actually works. Arizona.
           </p>
         </div>
         <div className="flex flex-col items-start gap-1.5 text-sm sm:items-end">
