@@ -1,3 +1,5 @@
+import { readdirSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { serveOut } from "../helpers/serve";
 import { withPage } from "../helpers/browser";
@@ -58,5 +60,18 @@ describe("nav", () => {
       return page.locator("header nav a").allTextContents();
     });
     expect(labels).toEqual(["How it works", "Why Crosswell", "How we start", "Team", "Insights"]);
+  });
+});
+
+describe("built css", () => {
+  it("keeps the double stops in the product masks", () => {
+    const dir = join("out", "_next", "static", "css");
+    const css = readdirSync(dir).map((f) => readFileSync(join(dir, f), "utf8")).join("\n");
+    // the minifier writes the double stop as the two-position shorthand #000 0 74%
+    // (same as the hero mask's #000 0 55% in production); a lone "#000 0" with no
+    // second position would mean the stop collapsed.
+    expect(css).toMatch(/product-frame-corner\{[^}]*#000 0 74%/);
+    expect(css).toMatch(/product-frame-corner\{[^}]*#000 0 72%/);
+    expect(css).toMatch(/product-frame-right\{[^}]*#000 0 74%/);
   });
 });

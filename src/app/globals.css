@@ -579,3 +579,260 @@ body {
 
 .nav-burger-open span:first-child { transform: translateY(3.25px) rotate(45deg); }
 .nav-burger-open span:last-child { transform: translateY(-3.25px) rotate(-45deg); }
+
+/* ---------- Product run: the fragments ----------
+   Six chapters of the Core, each a real component cut by a frame. The
+   product is parchment on ivory, one accent (--accent, so chapter 06 can
+   retint a scoped copy), and never a shadow. Cut edges dissolve into the
+   page with masks; the content edge stays crisp. Double stops in every
+   mask on purpose: the production minifier collapses a single stop to 0
+   and fades the whole frame (see the hero mask above). */
+
+.product-frame {
+  position: relative;
+  overflow: hidden;
+}
+
+.product-frame-corner {
+  -webkit-mask-image:
+    linear-gradient(to right, #000 0%, #000 74%, transparent 100%),
+    linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
+  mask-image:
+    linear-gradient(to right, #000 0%, #000 74%, transparent 100%),
+    linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+.product-frame-right {
+  -webkit-mask-image: linear-gradient(to right, #000 0%, #000 74%, transparent 100%);
+  mask-image: linear-gradient(to right, #000 0%, #000 74%, transparent 100%);
+}
+
+.product-frame-bottom {
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
+}
+
+/* the product itself: always wider than the frame so the crop does the work */
+.product-shell {
+  --accent: var(--color-fern);
+  --accent-deep: var(--color-fern-deep);
+  --accent-soft: var(--color-fern-soft);
+  --accent-wash: var(--color-fern-wash);
+  --line: rgba(184, 178, 167, 0.3);
+  --accent-dim: rgba(78, 122, 78, 0.28);
+  display: flex;
+  min-width: 960px;
+  min-height: 100%;
+  background: var(--color-parchment);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  color: var(--color-ink);
+  font-size: 13px;
+  line-height: 1.45;
+  font-variant-numeric: tabular-nums;
+}
+
+.product-shell-dark {
+  --line: rgba(241, 238, 230, 0.1);
+  background: var(--color-charcoal);
+  color: var(--color-ivory);
+}
+
+/* phones crop to a single column at real scale */
+@media (max-width: 767px) {
+  .product-shell {
+    min-width: 640px;
+  }
+}
+
+.product-greeting {
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.product-title {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+
+.product-num {
+  font-size: 1.625rem;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+}
+
+.product-rail {
+  border-right: 1px solid var(--line);
+}
+
+.product-rail-active {
+  background: var(--accent-wash);
+  color: var(--accent-deep);
+}
+
+.product-shell-dark .product-rail-active {
+  background: var(--accent-dim);
+  color: var(--color-fern-soft);
+}
+
+.product-topbar {
+  border-bottom: 1px solid var(--line);
+}
+
+.product-avatar {
+  display: flex;
+  width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--accent-wash);
+  color: var(--accent-deep);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.product-shell-dark .product-avatar {
+  background: var(--accent-dim);
+  color: var(--color-fern-soft);
+}
+
+.product-tile {
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  background: rgba(241, 238, 230, 0.6);
+}
+
+.product-shell-dark .product-tile {
+  background: rgba(241, 238, 230, 0.04);
+}
+
+.product-card {
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  padding: 0.75rem 0.85rem;
+  background: rgba(241, 238, 230, 0.6);
+}
+
+.product-card-active {
+  border-color: var(--accent);
+}
+
+.product-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  font-size: 12px;
+  line-height: 1.3;
+  border: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.product-chip-accent {
+  border-color: transparent;
+  background: var(--accent-wash);
+  color: var(--accent-deep);
+}
+
+.product-shell-dark .product-chip-accent {
+  background: var(--accent-dim);
+  color: var(--color-fern-soft);
+}
+
+.product-dot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.product-dot-accent {
+  background: var(--accent);
+}
+
+.product-dot-watch {
+  background: var(--color-warmgray);
+}
+
+.product-dot-ink {
+  background: currentColor;
+}
+
+.product-button {
+  border-radius: 0.5rem;
+  background: var(--accent);
+  color: var(--color-ivory);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 0.45rem 0.8rem;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.product-button-quiet {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: inherit;
+  font-weight: 500;
+}
+
+.product-send {
+  display: flex;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--color-ivory);
+}
+
+.product-input {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  padding: 0.5rem 0.5rem 0.5rem 0.9rem;
+}
+
+.product-rule > * + * {
+  border-top: 1px solid var(--line);
+}
+
+.product-bar {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.product-bar > span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+/* the agenda's horizontal track: three panels wider than the frame on
+   desktop; stacked on phones (no pinning, no scrub below 768px) */
+.product-track {
+  display: flex;
+  gap: 1.5rem;
+}
+
+@media (max-width: 767px) {
+  .product-track {
+    flex-direction: column;
+  }
+}
