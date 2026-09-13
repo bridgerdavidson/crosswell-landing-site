@@ -338,9 +338,13 @@ carries them). Nothing else on the page is amber, red, or blue.
   stack. Why Crosswell's right column holds its pull quote in the lede's
   place, its words on the column line and its rule hanging in the gap; how
   we start's right column is empty (cards follow its title); who it's
-  for's running text follows its lede in the lede's column. At 1440 and
-  1728 titles run one or two lines (the values' vision line four), wrapped
-  balanced, and ledes two or three. What a band introduces (the
+  for's running text follows its lede in the lede's column. The band sets
+  the measures, not the line counts: the copy is locked, so a band's
+  height follows its words. At 1440 and 1728 a company title runs one or
+  two lines (the values' vision line four) and a company lede two or
+  three; a chapter's claim runs one to three lines and its lede three or
+  four, the lengths the run was judged at. Titles wrap balanced, ledes
+  wrap pretty, and no line ends on a single word. What a band introduces (the
   industries row, the cards, the values' columns) hangs from it by the
   section's hang at the container's full width.
 - The split form (`Split`) carries the three sections whose words sit
