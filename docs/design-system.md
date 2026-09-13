@@ -298,7 +298,10 @@ carries them). Nothing else on the page is amber, red, or blue.
   complete with its chips, the input on its placeholder, the board dealt
   with Redrock open and "Who is this?" answered, the roster settled with
   the inbox log open and the composer holding its task, Saguaro's colors.
-- Nothing loops except the hero rotation and a running agent's ring.
+- Nothing loops except the hero rotation, a running agent's ring, and the
+  brain section's live field, whose nodes keep a slow ambient drift after
+  its sequence (the brain animation's motion is kept as built and out of
+  the redesign's scope, spec section 13).
 - Two kept exceptions to the band and the curve, both out of the
   redesign's scope: the hero's page-load entrance (the display's 0.95s
   rise and the woven core's 1.2s decode-gated fade) and the brain
