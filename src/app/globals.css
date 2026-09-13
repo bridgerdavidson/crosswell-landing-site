@@ -1035,6 +1035,14 @@ body {
   white-space: nowrap;
 }
 
+/* on phones a long chip wraps instead of being cut by its panel's edge */
+@media (max-width: 767px) {
+  .product-chip {
+    white-space: normal;
+    text-align: left;
+  }
+}
+
 /* a receipt is quiet by default and carries the accent only inside the lit
    element, so one set of receipts is green, not every set */
 .product-chip-accent {
