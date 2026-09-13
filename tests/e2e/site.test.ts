@@ -315,7 +315,7 @@ describe("company half, bottom", () => {
     expect(r.heading).toContain("To become the most sought after name");
     expect(r.valuesText).not.toMatch(/\b(Mission|Vision)\b/);
     expect(r.stewardship).toBe(1);
-    expect(r.roles).toEqual(["Business & Strategy", "Software & Engineering", "Finance & Operations"]);
+    expect(r.roles).toEqual(["Business & strategy", "Software & engineering", "Finance & operations"]);
     expect(r.insights).toBe("Insights");
     expect(r.posts).toBe(0);
     expect(r.footer).toContain("Custom agentic AI, built around how your team actually works. Arizona.");

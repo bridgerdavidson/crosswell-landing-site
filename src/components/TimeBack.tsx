@@ -34,13 +34,14 @@ export default function TimeBack() {
         aside={
           <div className="flex flex-col divide-y divide-ink/8">
             {/* each row sits alone in its reveal, so first: and last: would
-                match every row; the first row's top padding is dropped by
-                index, and every row keeps 24 on each side of its hairline.
+                match every row; the first row's top padding and the last
+                row's bottom padding are dropped by index, and every row
+                keeps 24 on each side of its hairline.
                 The fix clause carries the page's one emphasis, the serif
                 italic in the accent colour */}
             {sinks.map((sink, i) => (
               <Reveal key={sink.pain} delay={i * 80}>
-                <div className={i === 0 ? "pb-6" : "py-6"}>
+                <div className={i === 0 ? "pb-6" : i === sinks.length - 1 ? "pt-6" : "py-6"}>
                   <p className="type-accent text-ink">
                     {sink.pain}{" "}
                     <span className="italic text-fern-deep">{sink.fix}</span>
@@ -48,22 +49,13 @@ export default function TimeBack() {
                 </div>
               </Reveal>
             ))}
-            <Reveal delay={320}>
-              <p className="type-text max-w-md pt-6 text-ink/70">
-                The hours aren&apos;t the point. They go back where trust gets
-                built: your people, in front of your customers.
-              </p>
-              <p className="type-text mt-4 max-w-md text-ink/70">
-                And a firm that keeps its memory is worth more. When an acquirer,
-                investor, or auditor looks in, everything is in one place: every
-                project, every decision, every reason why.
-              </p>
-            </Reveal>
           </div>
         }
       >
         {/* the lede is the first sentence; the rest follows as running
-            text, so the lede lands in two lines */}
+            text, so the lede lands in two lines. Every word of the section
+            stacks here, the two closing paragraphs included, so the words
+            and the ledger end near each other */}
         <p className="type-body mt-5 max-w-xl text-ink/80">
           Almost everything your business knows never gets written down.
         </p>
@@ -72,6 +64,15 @@ export default function TimeBack() {
           again, and a few people&apos;s heads. You paid for all of it once.
           Most of it you never use twice. We take that whole pile, connect
           it, and put it back to work.
+        </p>
+        <p className="type-text mt-4 max-w-md text-ink/70">
+          The hours aren&apos;t the point. They go back where trust gets
+          built: your people, in front of your customers.
+        </p>
+        <p className="type-text mt-4 max-w-md text-ink/70">
+          And a firm that keeps its memory is worth more. When an acquirer,
+          investor, or auditor looks in, everything is in one place: every
+          project, every decision, every reason why.
         </p>
       </Split>
     </section>

@@ -11,21 +11,21 @@ const SECRET = "turtleneck";
 const team = [
   {
     name: "Max Marohn",
-    role: "Business & Strategy",
+    role: "Business & strategy",
     photo: "/team-max.jpg",
     altPhoto: "/team-max-alt.jpg",
     line: "Finds the problem, owns the relationship, and makes sure what we build actually solves it. Your first call and your last one.",
   },
   {
     name: "Bridger Davidson",
-    role: "Software & Engineering",
+    role: "Software & engineering",
     photo: "/team-bridger.jpg",
     altPhoto: "/team-bridger-alt.jpg",
     line: "Builds the Core and everything that runs on it: the tools, the integrations, the automations. The engineering arm of the operation.",
   },
   {
     name: "Michael Zamora",
-    role: "Finance & Operations",
+    role: "Finance & operations",
     photo: "/team-michael.jpg",
     altPhoto: "/team-michael-alt.jpg",
     line: "Runs the numbers and the operations behind Crosswell, and keeps every build honest about what it costs and what it returns.",
