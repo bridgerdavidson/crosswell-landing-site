@@ -406,14 +406,24 @@ carries them). Nothing else on the page is amber, red, or blue.
   beyond the Core's two cards stack in the right column; the stats' two
   figures sit on the two column lines (x 48 and 816 at 1440); the
   industries row runs the container under its hairline.
-- Bands: the stats open the parchment band why Crosswell sits in (one
-  band, the beat between the stats' sources and the label); how we start
-  and the team are parchment bands; the closing is the charcoal band and
-  the footer charcoal-deep. Every light band's edge carries exactly one
-  hairline (ink 8). A dark band's edge carries none: the change of ground
-  from ivory or parchment to charcoal is the edge (the chat chapter's
-  band, the closing band's top). The footer's top, charcoal-deep against
-  the closing band's charcoal, carries one ivory 10 hairline.
+- Bands and seams: the stats and why Crosswell share one parchment
+  ground, how we start and the team are parchment bands, the rest of the
+  company half sits on ivory, the closing is the charcoal band, and the
+  footer charcoal-deep. Every seam from the run's end (the fictional line
+  into the brain section's lead-in) to the closing band is marked the same
+  way, so every company section is bounded on both sides and no two
+  sections read as one band: each light seam carries exactly one ink 8
+  hairline across the full width at the section boundary, 128 under the
+  previous section's content and 160 over the next's (96 and 96 on
+  phones), inside the beat's own space. Where the ground changes (a
+  parchment band's edges) the hairline is that edge; where neighbours
+  share a ground (the run's end into the brain section, the brain section
+  into who it's for, the stats into why Crosswell, beyond the Core into
+  the values) the later section's top edge carries it. No seam carries
+  two. A dark band's edge carries none: the change to charcoal is the edge
+  (the chat chapter's band, the closing band's top). The footer's top,
+  charcoal-deep against the closing band's charcoal, carries one ivory 10
+  hairline.
 - Cards are one object across the page: why Crosswell's three points, how
   we start's three engagements, beyond the Core's two, the team's three.
   Rounded-2xl, a warm gray 40 hairline, shadow-whisper, 32 inside (28 on
