@@ -282,7 +282,8 @@ describe("company half, bottom", () => {
         vision: await page.getByText("To become the most sought after name in agentic AI").count(),
         values: await page.locator("#values h3").allTextContents(),
         costs: await page.locator("#values").getByText("What it costs").count(),
-        headings: await page.locator("#values h2").count(),
+        heading: await page.locator("#values h2").textContent(),
+        valuesText: await page.locator("#values").textContent(),
         stewardship: await page.getByText("leaves with you in open files on the day you go").count(),
         roles: await page.locator("#team h3 + p").allTextContents(),
         insights: await page.locator("#insights h2").textContent(),
@@ -296,7 +297,9 @@ describe("company half, bottom", () => {
     expect(r.vision).toBe(1);
     expect(r.values).toEqual(["Trust", "Stewardship", "Continuity"]);
     expect(r.costs).toBe(3);
-    expect(r.headings).toBe(0);
+    // the vision line is the section's own title; no "Mission" or "Vision" heading
+    expect(r.heading).toContain("To become the most sought after name");
+    expect(r.valuesText).not.toMatch(/\b(Mission|Vision)\b/);
     expect(r.stewardship).toBe(1);
     expect(r.roles).toEqual(["Business & Strategy", "Software & Engineering", "Finance & Operations"]);
     expect(r.insights).toBe("Insights");

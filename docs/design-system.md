@@ -27,8 +27,12 @@ else on the page is amber, red, or blue.
 
 ## Type
 
-- Serif: Newsreader. Display, h2, accent lines, the closing bookend, and
-  inside the product for the greeting and panel titles only.
+- Serif: Newsreader, in exactly these places: the display, section titles
+  and chapter claims (and the phone menu's links, which carry the title
+  role), accent lines, the closing bookend, the hero subline's emphasis
+  span (italic at the body size, fern-deep), the stat numerals (48,
+  fern-deep), and inside the product the greeting and panel titles.
+  Nowhere else.
 - Sans: Instrument Sans. Everything else, page and product. Tabular
   numerals on inside the product.
 - Section label: 13px, medium, sentence case, fern-deep, optional two-digit
@@ -51,11 +55,11 @@ else on the page is amber, red, or blue.
 | Size | Line-height | Roles (class, family, weight, tracking, color) |
 |---|---|---|
 | 72 (52 at 768) | 1.0 | display: type-display, Newsreader, 400, -0.025em, ink; balanced wrap |
-| 48 (36 at 768) | 1.05 | section title and chapter claim: type-h2, Newsreader, 400, -0.02em, ink; balanced wrap. Also the phone menu's link text |
-| 28 | 1.3 | accent line: type-accent, Newsreader, 400, -0.01em, ink. Product greeting: product-greeting, Newsreader, 400, -0.01em |
+| 48 (36 at 768) | 1.05 | section title and chapter claim: type-h2, Newsreader, 400, -0.02em, ink; balanced wrap. Also the phone menu's link text. Stat numerals: type-h2 in fern-deep |
+| 28 | 1.3 | accent line: type-accent, Newsreader, 400, -0.01em, ink; may carry one emphasized word at 600, fern-deep (the bridge line's "Core"). Product greeting: product-greeting, Newsreader, 400, -0.01em |
 | 24 | 1.3 | lede: type-body, Instrument Sans, 400, -0.01em, ink 80%; pretty wrap. Product number: product-num, Instrument Sans, 500, -0.01em |
 | 20 | 1.3 | card and person title: type-h3, Instrument Sans, 600, -0.01em, ink. Product panel title: product-title, Newsreader, 400. Product detail number: product-num-sm, Instrument Sans, 500, -0.01em |
-| 15 | 1.6 | body: type-text, Instrument Sans, 400, 0, ink 70%. The nav links (500, ink 75%), every page button (600), the hero subline (ink 70%), the footer |
+| 15 | 1.6 | body: type-text, Instrument Sans, 400, 0, ink 70%. The nav links (500, ink 75%), every page button (600), the hero subline (ink 70%; its emphasis span is Newsreader italic, fern-deep), the footer |
 | 13 | 1.5 | label: type-label, Instrument Sans, 500, 0, fern-deep. Caption and source: type-caption, 400, ink 60%. Product UI: product-shell, 400. Product buttons (600). The note card's lines, title, and summary |
 | 12 | 1.4 | product label and note: product-label, Instrument Sans, 400, opacity 60% to 70%. Product chips, receipts, avatars. The note card's badge, tags, context, and Replay |
 
@@ -76,7 +80,9 @@ else on the page is amber, red, or blue.
 ## Materials
 
 - Content cards: rounded-2xl, border warm gray 40%, shadow-whisper, hover
-  shadow-lifted. These are the only shadows on the page.
+  shadow-lifted. The two primary buttons (the hero's and how-we-start's
+  "Start with the audit") carry shadow-whisper. Content cards and primary
+  buttons are the only shadows on the page.
 - Product fragments: parchment shell on ivory, hairline warm gray 30%,
   radius 1rem, no shadow inside or around, one accent per panel. The dark
   chapter: charcoal shell on charcoal-deep, ivory text, fern-soft accent.

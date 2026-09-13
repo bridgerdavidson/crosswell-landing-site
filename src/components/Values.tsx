@@ -1,8 +1,9 @@
 import Reveal from "./Reveal";
 
-/* The locked foundation, in business language, without a "Mission" or
-   "Vision" heading. Each value names what it costs; that line is the
-   whole reason it reads as true rather than as marketing. */
+/* The locked foundation, in business language. The vision line is the
+   section's title itself; there is no "Mission" or "Vision" heading. Each
+   value names what it costs; that line is the whole reason it reads as
+   true rather than as marketing. */
 const values = [
   {
     name: "Trust",
@@ -25,11 +26,12 @@ export default function Values() {
   return (
     <section id="values" className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
       <Reveal>
-        <p className="type-accent max-w-3xl text-ink">
+        <p className="type-label mb-3 text-fern-deep">Values</p>
+        <h2 className="type-h2 max-w-3xl text-ink">
           To become the most sought after name in agentic AI by setting the
           standard for what a partner should be.
-        </p>
-        <p className="type-text mt-5 max-w-2xl text-ink/70">
+        </h2>
+        <p className="type-body mt-5 max-w-2xl text-ink/80">
           That is what we are building toward. What we do every day is simpler:
           we help businesses become AI native.
         </p>
