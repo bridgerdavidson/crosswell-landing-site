@@ -1,3 +1,4 @@
+import Band from "./Band";
 import Reveal from "./Reveal";
 
 /* The locked foundation, in business language. The vision line is the
@@ -25,17 +26,11 @@ const values = [
 export default function Values() {
   return (
     <section id="values" className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
-      <Reveal>
-        <p className="type-label mb-3 text-fern-deep">Values</p>
-        <h2 className="type-h2 max-w-3xl text-ink">
-          To become the most sought after name in agentic AI by setting the
-          standard for what a partner should be.
-        </h2>
-        <p className="type-body mt-5 max-w-2xl text-ink/80">
-          That is what we are building toward. What we do every day is simpler:
-          we help businesses become AI native.
-        </p>
-      </Reveal>
+      <Band
+        label="Values"
+        title="To become the most sought after name in agentic AI by setting the standard for what a partner should be."
+        lede="That is what we are building toward. What we do every day is simpler: we help businesses become AI native."
+      />
 
       {/* three columns on five shared rows (rule, name, line, "What it
           costs", cost), so the labels sit on one line across the row

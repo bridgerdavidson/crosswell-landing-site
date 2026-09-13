@@ -1,3 +1,4 @@
+import Band from "./Band";
 import Reveal from "./Reveal";
 
 const points = [
@@ -22,12 +23,19 @@ export default function Edge() {
   return (
     <section id="why-crosswell" className="border-b border-ink/8 bg-parchment">
       <div className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
-        <Reveal>
-          <p className="type-label mb-3 text-fern-deep">Why Crosswell</p>
-          <h2 className="type-h2 max-w-3xl text-ink">
-            Off the shelf fits nobody. So we do not sell it.
-          </h2>
-        </Reveal>
+        {/* the page's title band; no lede, so its right column stays empty
+            and the pull quote hangs below at the section's width. The second
+            sentence holds together, so the balanced wrap breaks between the
+            phrases instead of leaving "So" at a line's end */}
+        <Band
+          label="Why Crosswell"
+          title={
+            <>
+              Off the shelf fits nobody.{" "}
+              <span className="whitespace-nowrap">So we do not sell it.</span>
+            </>
+          }
+        />
 
         <Reveal delay={80}>
           <blockquote className="mt-12 max-w-3xl border-l-2 border-fern pl-6 sm:mt-16 sm:pl-8">

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, type CSSProperties } from "react";
+import Band from "./Band";
 import Reveal from "./Reveal";
 
 /* Type this anywhere on the page and the headshots flip to the golden-hour
@@ -77,15 +78,11 @@ export default function Team() {
   return (
     <section id="team" className="border-t border-ink/8 bg-parchment">
       <div className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
-        <Reveal>
-          <p className="type-label mb-3 text-fern-deep">The team</p>
-          <h2 className="type-h2 max-w-2xl text-ink">Three people. One team.</h2>
-          <p className="type-body mt-5 max-w-2xl text-ink/80">
-            Small is deliberate. You work directly with the three people who
-            build and run your Core, not an account manager standing between
-            you and the work.
-          </p>
-        </Reveal>
+        <Band
+          label="The team"
+          title="Three people. One team."
+          lede="Small is deliberate. You work directly with the three people who build and run your Core, not an account manager standing between you and the work."
+        />
 
         <div className="mt-12 grid gap-6 sm:mt-16 sm:grid-cols-3">
           {team.map((person, i) => (
