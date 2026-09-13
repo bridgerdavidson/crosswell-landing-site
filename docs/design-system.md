@@ -41,23 +41,23 @@ else on the page is amber, red, or blue.
   labels or kickers, no wide-tracked small caps. Acronyms and initials
   that are data (AI, LTC, the avatar initials MG, DW, ML, PS) are not
   styled uppercase and are allowed.
-- Eight sizes carry the page at 1440 and above (72, 48, 28, 24, 20, 15,
-  13, 12) and every size has exactly one line-height, so two roles that
-  share a size share their leading. One body size (15) carries running
-  text, card text, bios, the nav, and the buttons; one label size (13)
-  carries section labels, captions, sources, and the product's UI text;
-  the lede (24) is half the title and 1.6 times the body. The product's
-  numbers (24) and labels (12) are its own two sizes. Below 768px the
-  display and h2 scale with the viewport (52 and 36 at 767), the accent
-  sits on 24 and the lede on 20, so the phone ladder at 390 is 42.5,
-  30.8, 28, 24, 20, 15, 13, 12.
+- Seven sizes carry the page at 1440 and above (72, 48, 24, 20, 15, 13,
+  12) and every size has exactly one line-height, so two roles that
+  share a size share their leading. The display tier is three rungs, 72 /
+  48 / 24. One body size (15) carries running text, card text, bios, the
+  nav, and the buttons; one label size (13) carries section labels,
+  captions, sources, and the product's UI text; the lede (24) is half the
+  title and 1.6 times the body, and the serif accent lines and the
+  product's greeting sit on that same rung. The product's numbers (24)
+  and labels (12) are its own two sizes. Below 768px the display and h2
+  scale with the viewport (52 and 36 at 767) and the lede sits on 20, so
+  the phone ladder at 390 is 42.5, 30.8, 24, 20, 15, 13, 12.
 
 | Size | Line-height | Roles (class, family, weight, tracking, color) |
 |---|---|---|
 | 72 (52 at 768) | 1.0 | display: type-display, Newsreader, 400, -0.025em, ink; balanced wrap |
 | 48 (36 at 768) | 1.05 | section title and chapter claim: type-h2, Newsreader, 400, -0.02em, ink; balanced wrap. Also the phone menu's link text. Stat numerals: type-h2 in fern-deep |
-| 28 | 1.3 | accent line: type-accent, Newsreader, 400, -0.01em, ink; may carry one emphasized word at 600, fern-deep (the bridge line's "Core"). Product greeting: product-greeting, Newsreader, 400, -0.01em |
-| 24 | 1.3 | lede: type-body, Instrument Sans, 400, -0.01em, ink 80%; pretty wrap. Product number: product-num, Instrument Sans, 500, -0.01em |
+| 24 | 1.3 | lede: type-body, Instrument Sans, 400, -0.01em, ink 80%; pretty wrap. Accent line: type-accent, Newsreader, 400, -0.01em, ink; may carry one emphasized word at 600, fern-deep (the bridge line's "Core"). Product greeting: product-greeting, Newsreader, 400, -0.01em. Product number: product-num, Instrument Sans, 500, -0.01em |
 | 20 | 1.3 | card and person title: type-h3, Instrument Sans, 600, -0.01em, ink. Product panel title: product-title, Newsreader, 400. Product detail number: product-num-sm, Instrument Sans, 500, -0.01em |
 | 15 | 1.6 | body: type-text, Instrument Sans, 400, 0, ink 70%. The nav links (500, ink 75%), every page button (600), the hero subline (ink 70%; its emphasis span is Newsreader italic, fern-deep), the footer |
 | 13 | 1.5 | label: type-label, Instrument Sans, 500, 0, fern-deep. Caption and source: type-caption, 400, ink 60%. Product UI: product-shell, 400. Product buttons (600). The note card's lines, title, and summary |
@@ -80,9 +80,9 @@ else on the page is amber, red, or blue.
 ## Materials
 
 - Content cards: rounded-2xl, border warm gray 40%, shadow-whisper, hover
-  shadow-lifted. The two primary buttons (the hero's and how-we-start's
-  "Start with the audit") carry shadow-whisper. Content cards and primary
-  buttons are the only shadows on the page.
+  shadow-lifted. The primary buttons (the hero's and how-we-start's "Start
+  with the audit" and the nav's "Set up a call") carry shadow-whisper.
+  Content cards and primary buttons are the only shadows on the page.
 - Product fragments: parchment shell on ivory, hairline warm gray 30%,
   radius 1rem, no shadow inside or around, one accent per panel. The dark
   chapter: charcoal shell on charcoal-deep, ivory text, fern-soft accent.

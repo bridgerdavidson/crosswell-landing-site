@@ -39,7 +39,7 @@ export default function Chat() {
                 <div className="product-aside flex w-full flex-none flex-col md:w-[440px]">
                   <div className="product-topbar flex h-11 flex-none items-center gap-2 px-5">
                     <Dot tone="accent" />
-                    <span className="font-medium">Core</span>
+                    <span className="font-medium">The Core</span>
                   </div>
                   <div className="flex-1 space-y-4 overflow-hidden px-5 py-4">
                     <p className="product-bubble">{first.question}</p>

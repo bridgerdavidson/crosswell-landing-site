@@ -83,10 +83,10 @@ export default function Nav() {
   };
 
   // Open sits the header on the ink overlay, so it goes see-through with a
-  // light logo; otherwise the scrolled state gets the ivory blur bar. The
-  // bar is nearly opaque (97) over the widest blur: at 85 over a 12px blur
-  // the product frames' tile edges and numbers ghosted through it, and at
-  // 95 they still read as letterforms at 4x.
+  // light logo; otherwise the scrolled state gets the opaque ivory bar. It
+  // was a frosted bar (ivory at 85 over a 12px blur, then 97 over 40px),
+  // but the product frames' tile seams and numbers ghosted through it at
+  // every translucency, so it is solid ivory with the hairline and no blur.
   // The literal rgba, not bg-transparent or bg-ivory/0: both of those
   // compute to zero-alpha BLACK, and Safari derives its status-bar color
   // from fixed elements at the viewport edges, so the see-through state
@@ -94,7 +94,7 @@ export default function Nav() {
   const headerChrome = open
     ? "border-transparent bg-[rgba(241,238,230,0)]"
     : scrolled
-      ? "border-ink/10 bg-ivory/97 backdrop-blur-2xl"
+      ? "border-ink/10 bg-ivory"
       : "border-transparent bg-[rgba(241,238,230,0)]";
 
   return (

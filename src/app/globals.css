@@ -70,9 +70,11 @@ body {
 }
 
 /* ---------- Type roles ----------
-   Eight sizes carry the page at 1440 and above: 72, 48, 28, 24, 20, 15,
-   13, 12. Every size has exactly one line-height (1.0, 1.05, 1.3, 1.3,
-   1.3, 1.6, 1.5, 1.4), so two roles that share a size share their leading.
+   Seven sizes carry the page at 1440 and above: 72, 48, 24, 20, 15, 13,
+   12. Every size has exactly one line-height (1.0, 1.05, 1.3, 1.3, 1.6,
+   1.5, 1.4), so two roles that share a size share their leading. The
+   display tier is 72 / 48 / 24; the serif accent lines and the product's
+   greeting sit on the lede's rung rather than a rung of their own.
    Serif for display, titles, claims, accent lines, and the product's
    greeting and panel titles; sans for everything else. Color, spacing,
    and width stay in utilities; these classes own family, size, weight,
@@ -98,11 +100,12 @@ body {
   text-wrap: balance;
 }
 
-/* the serif line that carries a section without a title (values, the
-   sinks, the industries, the pull quote, the bridge into the Core) */
+/* the serif line that carries a section without a title (the sinks, the
+   industries, the pull quote, the bridge into the Core); the lede's size
+   and leading in the serif voice */
 .type-accent {
   font-family: var(--font-serif);
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   line-height: 1.3;
   letter-spacing: -0.01em;
 }
@@ -152,18 +155,15 @@ body {
 
 /* Mobile: the desktop clamps bottom out at 768px, so nothing in the type
    scale adapts across 320-430px phones. The display and h2 scale within
-   that range and meet the desktop floor exactly at 768px; the accent sits
-   on the product-number size and the lede on the h3 size, so the phone
-   ladder is 42.5, 30.8, 28, 24, 20, 15, 13, 12 at 390. */
+   that range and meet the desktop floor exactly at 768px; the lede sits
+   on the h3 size, so the phone ladder is 42.5, 30.8, 24, 20, 15, 13, 12
+   at 390. */
 @media (max-width: 767px) {
   .type-display {
     font-size: clamp(2.375rem, 1rem + 6.8vw, 3.25rem);
   }
   .type-h2 {
     font-size: clamp(1.75rem, 1rem + 3.8vw, 2.25rem);
-  }
-  .type-accent {
-    font-size: 1.5rem;
   }
   .type-body {
     font-size: 1.25rem;
@@ -735,9 +735,10 @@ body {
   width: 100%;
 }
 
+/* the greeting shares the lede's size and leading, in the serif */
 .product-greeting {
   font-family: var(--font-serif);
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   line-height: 1.3;
   letter-spacing: -0.01em;
 }
