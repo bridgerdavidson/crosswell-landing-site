@@ -55,7 +55,12 @@ function build(frame: HTMLDivElement) {
  * dissolves in it; below lg the product is one column that
  * fits the frame at its own height, with the tiles two-up; the calendar
  * column shows from 1360 up, where the main column has the room for the
- * list to stay above the fade beside it.
+ * list to stay above the fade beside it. From lg to 1360 the main column
+ * runs on into the right fade with no calendar beside it, so the lit draw
+ * approval row is inset instead: its right margin is 240 (the fade's 160,
+ * the shell's 80 of overhang, less the column's own 24, plus 24 of air),
+ * so its parchment surface and its Approve button end 24 before the fade
+ * while the field rows beside it dissolve in it.
  */
 export default function Today() {
   const frame = useRef<HTMLDivElement>(null);
@@ -99,7 +104,7 @@ export default function Today() {
                     key={item.id}
                     data-seq="item"
                     className={`grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 py-2.5 md:grid-cols-[auto_minmax(0,1fr)_auto] ${
-                      i === 0 ? "product-lit -mx-3 rounded-xl px-3" : ""
+                      i === 0 ? "product-lit -mx-3 rounded-xl px-3 lg:max-[1360px]:mr-60" : ""
                     }`}
                   >
                     <Dot tone="ink" className="mt-2" />
