@@ -22,7 +22,7 @@ export const AREAS: Area[] = [
 ];
 
 export const SEED = 424242;
-export const STILL_W = 1000;
+export const STILL_W = 800; // the stage's own aspect at lg (5:4); the disc is sized by min(W, H), so only its centre moves
 export const STILL_H = 640;
 export const RING = 0.235; // cluster ring radius as a fraction of MIN(W,H)
 export const SPREAD = 0.165; // satellite spread as a fraction of MIN(W,H)
