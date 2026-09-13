@@ -203,9 +203,12 @@ carries them). Nothing else on the page is amber, red, or blue.
 ## Motion
 
 - Curve: cubic-bezier(0.22, 1, 0.36, 1). Entrances 0.6 to 0.9s. Staggers
-  60 to 90ms. Nothing under 300ms except hover (150 to 200ms) and one
-  site control: chapter 06's swatch press, whose pressed border crosses
-  over 0.2s (the same transition carries the press the cycle moves).
+  60 to 90ms. Nothing under 300ms except hover (150 to 200ms: card
+  shadows, link colours, the nav links' underline) and one site control:
+  chapter 06's swatch press, whose pressed border crosses over 0.2s (the
+  same transition carries the press the cycle moves). The header is
+  chrome: its bar's height steps from 80 to 64 when the page scrolls, over
+  300ms on the site curve.
 - Scroll reveals trigger with the block's top at about 70% of the viewport,
   once, and every reveal group on the page steps by the site's one 80ms
   step (a chapter's frame follows its band by 80; a row of cards steps 0,
@@ -307,7 +310,8 @@ carries them). Nothing else on the page is amber, red, or blue.
   rise and the woven core's 1.2s decode-gated fade) and the brain
   section's own transitions (its phrase highlights and Replay on ease;
   the highlight's colours are the palette's, ivory text on fern at 50
-  percent).
+  percent, and its Replay takes the chapter Replays' light-ground
+  treatment, 12 / 600 in fern-deep).
 
 ## Layout
 
@@ -356,8 +360,8 @@ carries them). Nothing else on the page is amber, red, or blue.
   with its cap height on the title's (the lede's top margin 9 where the
   title's is 12), nothing stacked under the title; below lg the three
   stack. Why Crosswell's right column holds its pull quote in the lede's
-  place, its words on the column line and its rule hanging in the gap,
-  wrapped balanced so its break falls between its two sentences; how
+  place, its words on the column line like every lede and no rule of its
+  own, wrapped balanced so its break falls between its two sentences; how
   we start's right column is empty (cards follow its title); who it's
   for's running text follows its lede in the lede's column. The band sets
   the measures, not the line counts: the copy is locked, so a band's
@@ -389,9 +393,14 @@ carries them). Nothing else on the page is amber, red, or blue.
   (the words set the row) and is lifted 3.5 percent of its own height, so
   in every phase of the sequence the drawing lies between the label's top
   and the words' last line; the section's first ink is its lead-in, the
-  split's first is its label, and the section's last is the caption. Below lg it hangs 128 under the words, square on
-  phones, its margins cancelling the drawing's inset in its box (13
-  percent above, 15 below).
+  split's first is its label, and the section's last is the caption.
+  Once the sequence ends its Replay shows at the stage's lower right, its
+  word's right edge on the column's right edge and its box's bottom on the
+  words' last line (6 percent of the stage above its bottom), so the last
+  ink stays on the beat. Below lg the stage hangs 128 under the words,
+  square on phones, its margins cancelling the drawing's inset in its box
+  (13 percent above, 15 below), and Replay's box ends on the drawing's
+  bottom (15 percent above the stage's).
 - No 15px line runs past 448, about 65 characters, at any width. Running
   text holds that measure wherever it sits (who it's for, the three
   splits, how we start's closing line), and so does every card body, team
@@ -405,7 +414,8 @@ carries them). Nothing else on the page is amber, red, or blue.
   1440, 528 at 1728); the values' three columns take the same lines;
   beyond the Core's two cards stack in the right column; the stats' two
   figures sit on the two column lines (x 48 and 816 at 1440); the
-  industries row runs the container under its hairline.
+  industries row runs the container under its hairline, its six names
+  spread from edge to edge of it at xl (48 to 1392 at 1440).
 - Bands and seams: the stats and why Crosswell share one parchment
   ground, how we start and the team are parchment bands, the rest of the
   company half sits on ivory, the closing is the charcoal band, and the
