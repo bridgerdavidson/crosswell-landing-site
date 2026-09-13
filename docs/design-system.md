@@ -88,8 +88,8 @@ carries them). Nothing else on the page is amber, red, or blue.
 
 ## Materials
 
-- Content cards: rounded-2xl, border warm gray 40%, shadow-whisper, hover
-  shadow-lifted. The primary buttons (the hero's and how-we-start's "Start
+- Content cards (why Crosswell, how we start, beyond the Core, the team):
+  rounded-2xl, border warm gray 40%, shadow-whisper, hover shadow-lifted. The primary buttons (the hero's and how-we-start's "Start
   with the audit" and the nav's "Set up a call") carry shadow-whisper.
   Content cards and primary buttons are the only shadows on the page.
 - Product fragments: parchment panels on ivory. The product has no
@@ -285,9 +285,45 @@ carries them). Nothing else on the page is amber, red, or blue.
 
 ## Layout
 
-- Content width max-w-6xl (1152px), gutters px-6. Split sections in the
-  company half use the 0.9fr / 1.1fr grid. Section rhythm py-24 (sm:
-  py-32).
+- Content width max-w-6xl (1152px), gutters px-6, so text sits at x 168 at
+  1440. The company half's split sections (the brain section, what a
+  business loses, beyond the Core) share one grid: two equal columns 64
+  apart at lg (520 / 64 / 520 at 1440 and 1728; the brain section's text
+  centers on its stage, the other two top-align), stacked 48 apart below.
+  The text column is the lede's measure. Stacked section heads set the
+  title at max-w-3xl (768) and the lede at max-w-2xl (672): every title
+  holds to two lines except the values' vision line (three), every lede to
+  two or three lines with a last line of several words; a split lede runs
+  as long as its copy asks (six lines for the brain section and what a
+  business loses at 1440) and its last line still lands.
+- The beat, hero to footer, is one unit of 32. Every section, the run's
+  included, pads 128 above and below its content (96 on phones), so
+  neighbours' content sits 256 apart. Inside a section the title block
+  hangs its content by 64 (48 on phones): the cards, the columns, the
+  industries row under its hairline, the pull quote, the closing line
+  under a card row, the stage. The run's frames hang 192 because a frame
+  is a picture, and its chapters sit 288 apart. The hero at lg is not the
+  viewport's height: 80 under the fixed nav, 128 to the eyebrow, the words
+  (the display 168 under the nav), 128 to its edge, then the run's own
+  128, so the buttons sit one section beat above the run intro's label and
+  the sphere dissolves under the buttons; below lg the hero keeps the
+  viewport's height. The footer is chrome, not a section: 64 above and
+  below its one row.
+- Bands: the stats open the parchment band why Crosswell sits in (one
+  band, 256 between the stats and the label like any two sections); how
+  we start and the team are parchment bands; the closing is the charcoal
+  band and the footer charcoal-deep, both inside the page's gutters. Every
+  band edge carries exactly one hairline (ink 8 on the light bands, ivory
+  10 on the footer).
+- Cards are one object across the page: why Crosswell's three points, how
+  we start's three engagements, beyond the Core's two, the team's three.
+  Rounded-2xl, a warm gray 40 hairline, shadow-whisper, 32 inside (28 on
+  phones), 24 between cards, the title on the card's first line and the
+  body 10 under it; ivory cards on a parchment band, parchment cards on
+  ivory; a row of cards shares its top edge and its bottom edge (h-full).
+  The values are a ledger, not cards: three columns on five shared rows
+  (subgrid: rule, name, line, "What it costs", cost), so the labels sit on
+  one line across the row whatever the lines above them wrap to.
 - The product run (its intro, the six chapters, the fictional line)
   follows the viewport inside fixed 48px gutters at lg (1344 wide at 1440,
   93 percent; 1632 at 1728), so the product runs gutter to gutter at every

@@ -1,13 +1,15 @@
 import Reveal from "./Reveal";
 import { AUDIT_MAILTO, CALL_MAILTO } from "@/lib/site";
 
+/* The closing bookend: the hero's display, subline and two buttons again,
+   on the hero's own margins, in the page's gutters on the page's beat. */
 export default function FinalCta() {
   return (
     <section className="bg-charcoal text-ivory">
-      <div className="mx-auto max-w-4xl px-6 py-24 text-center sm:py-32">
+      <div className="mx-auto max-w-6xl px-6 py-24 text-center sm:py-32">
         <Reveal>
           {/* deliberate reuse of the hero display scale as a closing bookend */}
-          <h2 className="type-display">
+          <h2 className="type-display mx-auto max-w-4xl">
             Your firm already knows the answers.{" "}
             <span className="italic text-fern-soft">Give it a memory.</span>
           </h2>
@@ -17,7 +19,7 @@ export default function FinalCta() {
           </p>
         </Reveal>
         <Reveal delay={80}>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+          <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
             <a
               href={AUDIT_MAILTO}
               className="type-text rounded-lg bg-fern px-7 py-3.5 font-semibold text-ivory transition-colors hover:bg-fern-deep"

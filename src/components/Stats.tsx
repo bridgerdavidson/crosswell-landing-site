@@ -17,10 +17,13 @@ const stats = [
   },
 ];
 
+/* The quiet parchment band that sets up Why Crosswell (spec 6.5): it opens
+   the band Why Crosswell sits in, on the page's beat, with the two figures
+   in the first two columns of the three the cards below take. */
 export default function Stats() {
   return (
-    <section id="stats" className="border-y border-ink/8">
-      <div className="mx-auto grid max-w-4xl gap-10 px-6 py-14 sm:grid-cols-2 sm:gap-14 sm:py-16">
+    <section id="stats" className="border-t border-ink/8 bg-parchment">
+      <div className="mx-auto grid max-w-6xl gap-10 px-6 py-24 sm:grid-cols-2 sm:gap-6 sm:py-32 lg:grid-cols-3">
         {stats.map((stat, i) => (
           <Reveal key={stat.figure} delay={i * 80}>
             <div>

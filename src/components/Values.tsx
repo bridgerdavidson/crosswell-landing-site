@@ -37,16 +37,22 @@ export default function Values() {
         </p>
       </Reveal>
 
-      <div className="mt-16 grid gap-10 sm:grid-cols-3">
+      {/* three columns on five shared rows (rule, name, line, "What it
+          costs", cost), so the labels sit on one line across the row
+          whatever the lines above them wrap to; the rows' spacing lives on
+          the elements, not in the grid's gap */}
+      <div className="mt-12 grid gap-y-12 sm:mt-16 sm:grid-cols-3 sm:gap-x-10 sm:gap-y-0">
         {values.map((value, i) => (
-          <Reveal key={value.name} delay={i * 80}>
-            <div>
-              <div className="mb-4 h-px w-10 bg-fern" />
-              <h3 className="type-h3 text-ink">{value.name}</h3>
-              <p className="type-text mt-2.5 text-ink/80">{value.line}</p>
-              <p className="type-caption mt-4 font-medium text-fern-deep">What it costs</p>
-              <p className="type-text mt-1 text-ink/70">{value.cost}</p>
-            </div>
+          <Reveal
+            key={value.name}
+            delay={i * 80}
+            className="sm:grid sm:grid-rows-subgrid sm:row-span-5"
+          >
+            <div className="h-px w-10 bg-fern" />
+            <h3 className="type-h3 mt-4 text-ink">{value.name}</h3>
+            <p className="type-text mt-2.5 text-ink/80">{value.line}</p>
+            <p className="type-caption mt-4 font-medium text-fern-deep">What it costs</p>
+            <p className="type-text mt-1 text-ink/70">{value.cost}</p>
           </Reveal>
         ))}
       </div>

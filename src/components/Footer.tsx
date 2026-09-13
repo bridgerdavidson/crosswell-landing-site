@@ -1,16 +1,21 @@
 import Image from "next/image";
 import { CONTACT_EMAIL } from "@/lib/site";
 
+/* Chrome under the closing band, on half the page's beat (64) inside the
+   page's gutters. The lockup loads eagerly: next/image defaults to lazy,
+   which left the footer without its mark in any capture that never
+   scrolled there. */
 export default function Footer() {
   return (
     <footer className="border-t border-ivory/10 bg-charcoal-deep pb-[env(safe-area-inset-bottom)] text-ivory">
-      <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-8 px-6 py-12 sm:flex-row sm:items-center">
+      <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-8 px-6 py-16 sm:flex-row sm:items-center">
         <div className="flex flex-col items-start gap-2.5">
           <Image
             src="/xw-h-lockup-light.svg"
             alt="Crosswell"
             width={295}
             height={36}
+            loading="eager"
             className="h-6 w-auto"
           />
           <p className="type-caption max-w-xs text-ivory/60">

@@ -15,9 +15,12 @@ const points = [
   },
 ];
 
+/* The parchment band opens with the stats above; this section carries the
+   band's bottom edge. The three points are content cards (spec 4.7), the
+   same object as how-we-start's and the team's. */
 export default function Edge() {
   return (
-    <section id="why-crosswell" className="border-y border-ink/8 bg-parchment">
+    <section id="why-crosswell" className="border-b border-ink/8 bg-parchment">
       <div className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
         <Reveal>
           <p className="type-label mb-3 text-fern-deep">Why Crosswell</p>
@@ -27,7 +30,7 @@ export default function Edge() {
         </Reveal>
 
         <Reveal delay={80}>
-          <blockquote className="mt-14 max-w-3xl border-l-2 border-fern pl-6 sm:pl-8">
+          <blockquote className="mt-12 max-w-3xl border-l-2 border-fern pl-6 sm:mt-16 sm:pl-8">
             <p className="type-accent italic text-ink/85">
               When someone leaves, their knowledge does not. Every meeting,
               decision, and deal, remembered.
@@ -35,11 +38,10 @@ export default function Edge() {
           </blockquote>
         </Reveal>
 
-        <div className="mt-16 grid gap-10 sm:grid-cols-3">
+        <div className="mt-12 grid gap-6 sm:mt-16 sm:grid-cols-3">
           {points.map((point, i) => (
             <Reveal key={point.title} delay={i * 80}>
-              <div>
-                <div className="mb-4 h-px w-10 bg-fern" />
+              <div className="flex h-full flex-col rounded-2xl border border-warmgray/40 bg-ivory p-7 shadow-whisper transition-shadow hover:shadow-lifted sm:p-8">
                 <h3 className="type-h3 text-ink">{point.title}</h3>
                 <p className="type-text mt-2.5 text-ink/70">
                   {point.body}

@@ -87,7 +87,7 @@ export default function Team() {
           </p>
         </Reveal>
 
-        <div className="mt-14 grid gap-8 sm:grid-cols-3">
+        <div className="mt-12 grid gap-6 sm:mt-16 sm:grid-cols-3">
           {team.map((person, i) => (
             <Reveal key={person.name} delay={i * 80}>
               <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-warmgray/40 bg-ivory shadow-whisper transition-shadow hover:shadow-lifted">
@@ -97,13 +97,17 @@ export default function Team() {
                   style={{ "--flip-delay": `${i * 90}ms` } as CSSProperties}
                 >
                   <div className="team-flip-inner">
+                    {/* the real photos load with the page (not lazily): the
+                        nav's Team link lands here faster than a lazy image
+                        can arrive, the page is a live pitch aid, and a
+                        capture that never scrolls showed three empty
+                        frames. The joke set stays on demand below. */}
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={person.photo}
                       alt={person.name}
                       width={760}
                       height={760}
-                      loading="lazy"
                       decoding="async"
                       className="team-flip-face"
                     />
@@ -121,7 +125,7 @@ export default function Team() {
                     )}
                   </div>
                 </div>
-                <div className="flex flex-1 flex-col p-7">
+                <div className="flex flex-1 flex-col p-7 sm:p-8">
                   <h3 className="type-h3 text-ink">{person.name}</h3>
                   <p className="type-label mt-0.5 text-fern-deep">
                     {person.role}

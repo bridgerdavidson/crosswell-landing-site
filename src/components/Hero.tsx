@@ -4,9 +4,14 @@ import HeroCore from "./HeroCore";
 
 export default function Hero() {
   return (
+    /* Below lg the hero is the viewport's height. At lg it is the words'
+       height on the page's beat: 80 under the fixed nav, 128 to the eyebrow,
+       the words, 128 to the hero's edge, and the run's own 128 after that,
+       so the buttons sit one section beat (256) above the run intro and the
+       sphere dissolves under them instead of filling a band of its own. */
     <section
       id="top"
-      className="relative flex min-h-svh flex-col justify-center overflow-hidden pt-20"
+      className="relative flex min-h-svh flex-col justify-center overflow-hidden pt-20 lg:min-h-0"
     >
       <HeroCore />
       <div
@@ -21,7 +26,7 @@ export default function Hero() {
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-ivory via-ivory/70 to-transparent"
       />
-      <div className="relative mx-auto max-w-4xl px-6 py-20 text-center">
+      <div className="relative mx-auto max-w-4xl px-6 py-20 text-center lg:py-32">
         <p
           className="hero-enter type-label mb-5 text-fern-deep"
           style={{ "--enter-delay": "0.2s" } as CSSProperties}

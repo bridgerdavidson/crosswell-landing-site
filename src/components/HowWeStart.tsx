@@ -21,7 +21,7 @@ const engagements = [
 
 export default function HowWeStart() {
   return (
-    <section id="how-we-start" className="border-b border-ink/8 bg-parchment">
+    <section id="how-we-start" className="border-y border-ink/8 bg-parchment">
       <div className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
         <Reveal>
           <p className="type-label mb-3 text-fern-deep">How we start</p>
@@ -30,7 +30,7 @@ export default function HowWeStart() {
           </h2>
         </Reveal>
 
-        <div className="mt-14 grid gap-6 sm:grid-cols-3">
+        <div className="mt-12 grid gap-6 sm:mt-16 sm:grid-cols-3">
           {engagements.map((engagement, i) => (
             <Reveal key={engagement.title} delay={i * 80}>
               <div className="flex h-full flex-col rounded-2xl border border-warmgray/40 bg-ivory p-7 shadow-whisper transition-shadow hover:shadow-lifted sm:p-8">
@@ -47,7 +47,7 @@ export default function HowWeStart() {
         </div>
 
         <Reveal delay={80}>
-          <div className="mt-10 flex flex-col items-start gap-5">
+          <div className="mt-12 flex flex-col items-start gap-5 sm:mt-16">
             <p className="type-text text-ink/70">
               The first call is thirty minutes. We ask how your firm handles
               knowledge today, and we tell you straight whether the audit is
