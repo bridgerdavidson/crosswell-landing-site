@@ -25,7 +25,7 @@ export default function ProductRun() {
             You&apos;re not talking to a chatbot. You&apos;re talking to your
             firm&apos;s memory.
           </h2>
-          <p className="type-body mt-5 max-w-2xl text-ink/70">
+          <p className="type-body mt-5 max-w-2xl text-ink/80">
             The Core is built on agentic AI (AI that does the work, not just
             answers questions) and managed for you. Six things it does on a
             Thursday morning.
@@ -45,7 +45,7 @@ export default function ProductRun() {
           <Agents />
           <Brand />
         </div>
-        <p className="mt-12 text-xs text-ink/50">
+        <p className="type-caption mt-12 text-ink/60">
           Saguaro Capital is fictional. Every number is invented, rounded demo data.
         </p>
         <Reveal>

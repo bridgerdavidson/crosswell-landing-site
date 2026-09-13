@@ -11,7 +11,7 @@ export default function FinalCta() {
             Your firm already knows the answers.{" "}
             <span className="italic text-fern-soft">Give it a memory.</span>
           </h2>
-          <p className="type-body mx-auto mt-6 max-w-xl text-ivory/70">
+          <p className="type-body mx-auto mt-6 max-w-xl text-ivory/80">
             The Core is built alongside the firms it serves. Start with the
             two-week knowledge audit, or talk to us directly.
           </p>

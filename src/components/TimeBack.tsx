@@ -25,9 +25,9 @@ export default function TimeBack() {
     <section id="what-you-lose" className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
       <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
         <Reveal>
-          <p className="type-label mb-4 text-fern-deep">The value</p>
+          <p className="type-label mb-3 text-fern-deep">The value</p>
           <h2 className="type-h2 text-ink">What a business actually loses.</h2>
-          <p className="type-body mt-5 text-ink/70">
+          <p className="type-body mt-5 text-ink/80">
             Almost everything your business knows never gets written down. It
             is scattered across inboxes, call recordings, files nobody opens
             again, and a few people&apos;s heads. You paid for all of it once.
@@ -48,11 +48,11 @@ export default function TimeBack() {
             </Reveal>
           ))}
           <Reveal delay={480}>
-            <p className="pt-6 leading-relaxed text-ink/70">
+            <p className="type-text pt-6 text-ink/70">
               The hours aren&apos;t the point. They go back where trust gets
               built: your people, in front of your customers.
             </p>
-            <p className="mt-4 leading-relaxed text-ink/70">
+            <p className="type-text mt-4 text-ink/70">
               And a firm that keeps its memory is worth more. When an acquirer,
               investor, or auditor looks in, everything is in one place: every
               project, every decision, every reason why.

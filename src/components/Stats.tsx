@@ -25,8 +25,8 @@ export default function Stats() {
           <Reveal key={stat.figure} delay={i * 120}>
             <div>
               <p className="type-h2 text-fern-deep">{stat.figure}</p>
-              <p className="mt-2 max-w-[40ch] leading-relaxed text-ink/75">{stat.body}</p>
-              <p className="mt-3 text-xs text-warmgray">{stat.source}</p>
+              <p className="type-text mt-2 max-w-[40ch] text-ink/75">{stat.body}</p>
+              <p className="type-caption mt-3 text-ink/60">{stat.source}</p>
             </div>
           </Reveal>
         ))}

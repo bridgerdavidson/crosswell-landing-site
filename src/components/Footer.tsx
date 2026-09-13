@@ -13,7 +13,7 @@ export default function Footer() {
             height={36}
             className="h-6 w-auto"
           />
-          <p className="max-w-xs text-xs text-ivory/50">
+          <p className="type-caption max-w-xs text-ivory/60">
             Custom agentic AI, built around how your team actually works. Arizona.
           </p>
         </div>
@@ -26,7 +26,7 @@ export default function Footer() {
           >
             {CONTACT_EMAIL}
           </a>
-          <p className="text-xs text-ivory/45">
+          <p className="type-caption text-ivory/60">
             © 2026 Crosswell. All rights reserved.
           </p>
         </div>

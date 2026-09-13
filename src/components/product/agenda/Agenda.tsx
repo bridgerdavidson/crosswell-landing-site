@@ -27,8 +27,8 @@ export default function Agenda() {
               <ul className="product-rule">
                 {agenda.yourDay.map((item) => (
                   <li key={item.time} className="flex items-center gap-3 py-3">
-                    <span className="w-10 flex-none opacity-55">{item.time}</span>
-                    <span className={`flex-1 ${item.done ? "opacity-55" : ""}`}>{item.title}</span>
+                    <span className="w-10 flex-none opacity-60">{item.time}</span>
+                    <span className={`flex-1 ${item.done ? "opacity-60" : ""}`}>{item.title}</span>
                     {item.done ? <Check /> : <Dot tone="watch" />}
                   </li>
                 ))}
@@ -49,7 +49,7 @@ export default function Agenda() {
                         {row.items.map((it) => (
                           <li key={it.title} className="flex items-center gap-2">
                             {it.done ? <Check /> : <Dot tone="watch" />}
-                            <span className={it.done ? "opacity-55" : "opacity-80"}>{it.title}</span>
+                            <span className={it.done ? "opacity-60" : "opacity-80"}>{it.title}</span>
                           </li>
                         ))}
                       </ul>
@@ -65,7 +65,7 @@ export default function Agenda() {
                   <li key={rock.title}>
                     <div className="flex items-baseline justify-between gap-3">
                       <span>{rock.title}</span>
-                      <span className="flex-none opacity-55">
+                      <span className="flex-none opacity-60">
                         {rock.pct}%{rock.note ? `, ${rock.note}` : ""}
                       </span>
                     </div>

@@ -36,7 +36,7 @@ export default function Pipeline() {
                   <section key={stage.name} data-stage={stage.name} className="w-[200px] flex-none">
                     <div className="flex items-baseline justify-between">
                       <p className="font-semibold">{stage.name}</p>
-                      <span className="opacity-50">{stage.cards.length}</span>
+                      <span className="opacity-60">{stage.cards.length}</span>
                     </div>
                     <ul className="mt-3 space-y-2">
                       {stage.cards.map((card) => (
@@ -47,14 +47,14 @@ export default function Pipeline() {
                           }`}
                         >
                           <p className="font-medium">{card.name}</p>
-                          <p className="text-[12px] opacity-55">
+                          <p className="product-label opacity-60">
                             {card.place} · {card.kind}
                           </p>
                           <div className="mt-2 flex items-baseline justify-between">
                             <span>{card.amount}</span>
-                            <span className="opacity-55">{card.rate}</span>
+                            <span className="opacity-60">{card.rate}</span>
                           </div>
-                          {card.note && <p className="mt-1 text-[12px] opacity-70">{card.note}</p>}
+                          {card.note && <p className="product-label mt-1 opacity-70">{card.note}</p>}
                         </li>
                       ))}
                     </ul>
@@ -68,12 +68,12 @@ export default function Pipeline() {
                 <div className="mt-4 grid grid-cols-3 gap-2">
                   {detail.numbers.map((n) => (
                     <div key={n.label} className="product-tile p-3">
-                      <p className="text-[12px] opacity-60">{n.label}</p>
-                      <p className="mt-1 text-[18px] font-medium">{n.value}</p>
+                      <p className="product-label opacity-60">{n.label}</p>
+                      <p className="product-num-sm mt-1">{n.value}</p>
                     </div>
                   ))}
                 </div>
-                <p className="mt-4 text-[12px] opacity-55">Last touch: {detail.lastTouch}</p>
+                <p className="product-label mt-4 opacity-60">Last touch: {detail.lastTouch}</p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   <button type="button" className="product-button">
                     {who.label}

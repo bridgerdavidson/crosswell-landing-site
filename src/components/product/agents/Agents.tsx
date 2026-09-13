@@ -33,7 +33,7 @@ export default function Agents() {
             <div className="flex flex-1 flex-col p-6">
               <div className="flex items-baseline gap-3">
                 <p className="product-title">Agents</p>
-                <span className="opacity-55">{running} running</span>
+                <span className="opacity-60">{running} running</span>
               </div>
               <ul className="product-rule mt-3">
                 {agents.roster.map((agent) => (
@@ -44,14 +44,14 @@ export default function Agents() {
                   >
                     <div className="min-w-0">
                       <p className="font-semibold">{agent.name}</p>
-                      <p className="mt-0.5 text-[12px] opacity-60">{agent.job}</p>
+                      <p className="product-label mt-0.5 opacity-60">{agent.job}</p>
                     </div>
                     <div className="min-w-0">
                       <p className="flex items-center gap-2">
                         <Dot tone={TONE[agent.status.kind]} />
                         <span className="truncate">{agent.status.text}</span>
                       </p>
-                      <p className="mt-0.5 truncate text-[12px] opacity-55">{agent.lastResult}</p>
+                      <p className="product-label mt-0.5 truncate opacity-60">{agent.lastResult}</p>
                     </div>
                   </li>
                 ))}

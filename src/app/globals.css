@@ -67,67 +67,101 @@ body {
 }
 
 /* ---------- Type roles ----------
-   The typographic hierarchy for the whole site. Color, spacing, and width
-   stay in utilities; these classes own family, size, weight, and rhythm.
-   Small text uses plain utilities by convention: text-sm captions,
-   text-xs labels. */
+   The typographic hierarchy for the whole site. Eight sizes carry the page
+   (72, 48, 28, 20, 16, 15, 14, 13 at 1440) and the product adds 26 and 12;
+   see docs/design-system.md for the table. Serif for display, titles,
+   claims, and accent lines; sans for everything else. Color, spacing, and
+   width stay in utilities; these classes own family, size, weight,
+   line-height, and tracking. Titles run tight (1.0 and 1.05), the lede
+   sits between (1.45), running text opens up (1.6). The only 14px text
+   outside these roles is small running text on cards (text-sm
+   leading-normal) and the nav. */
 
+.type-display {
+  font-family: var(--font-serif);
+  /* 52 at 768, 72 at 1440 and above */
+  font-size: clamp(3.25rem, 1.82rem + 2.98vw, 4.5rem);
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+
+/* section titles and the chapter claims */
+.type-h2 {
+  font-family: var(--font-serif);
+  /* 36 at 768, 48 at 1440 and above */
+  font-size: clamp(2.25rem, 1.39rem + 1.79vw, 3rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+/* the serif line that carries a section without a title (values, the
+   sinks, the bridge into the Core) */
+.type-accent {
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+/* card and person titles */
+.type-h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+/* the lede: the sentence or two under a title or claim, its companion,
+   never a paragraph. Color is ink at 80 percent in the markup. */
+.type-body {
+  font-size: 1.25rem;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+}
+
+/* running text: card paragraphs and any paragraph after the lede */
+.type-text {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* section labels: sentence case, fern-deep in the markup */
 .type-label {
   font-size: 0.875rem;
   font-weight: 500;
   line-height: 1.4;
 }
 
-/* the two-digit chapter prefix in the product run */
+/* the two-digit chapter prefix in the product run; color in the markup */
 .type-label-index {
   font-variant-numeric: tabular-nums;
   margin-right: 0.5em;
-  color: var(--color-warmgray);
 }
 
-.type-display {
-  font-family: var(--font-serif);
-  font-size: clamp(3rem, 2.35rem + 2.2vw, 4.5rem);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
+/* captions, sources, and the demo lines under frames. Never below ink at
+   60 percent (or ivory at 60 on dark ground). */
+.type-caption {
+  font-size: 0.8125rem;
+  line-height: 1.5;
 }
 
-.type-h2 {
-  font-family: var(--font-serif);
-  font-size: clamp(2.25rem, 1.95rem + 1vw, 3rem);
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-}
-
-.type-h3 {
-  font-size: 1.125rem;
-  font-weight: 600;
-  line-height: 1.4;
-}
-
-.type-accent {
-  font-family: var(--font-serif);
-  font-size: clamp(1.5rem, 1.35rem + 0.5vw, 1.875rem);
-  line-height: 1.35;
-}
-
-.type-body {
-  font-size: 1.125rem;
-  line-height: 1.75;
-}
-
-/* Mobile: the desktop clamps bottom out around a 473px viewport, so nothing
-   in the type scale adapts across 320-430px phones. These overrides scale
-   within that range and meet the desktop floor exactly at 768px. */
+/* Mobile: the desktop clamps bottom out at 768px, so nothing in the type
+   scale adapts across 320-430px phones. These overrides scale within that
+   range and meet the desktop floor exactly at 768px. The lede and h3 step
+   down one size so a phone column holds a line of the lede. */
 @media (max-width: 767px) {
   .type-display {
-    font-size: clamp(2.375rem, 1rem + 6.8vw, 3rem);
+    font-size: clamp(2.375rem, 1rem + 6.8vw, 3.25rem);
   }
   .type-h2 {
     font-size: clamp(1.75rem, 1rem + 3.8vw, 2.25rem);
   }
   .type-accent {
-    font-size: clamp(1.25rem, 0.9rem + 1.8vw, 1.5rem);
+    font-size: clamp(1.25rem, 0.9rem + 1.8vw, 1.75rem);
+  }
+  .type-h3,
+  .type-body {
+    font-size: 1.125rem;
   }
 }
 
@@ -716,6 +750,21 @@ body {
   line-height: 1.1;
   letter-spacing: -0.01em;
   font-weight: 500;
+}
+
+/* the smaller number in a detail panel's tiles */
+.product-num-sm {
+  font-size: 1.25rem;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+}
+
+/* the product's smallest text: tile labels, notes, the line under a row.
+   Dimmed with opacity in the markup, never under 60 percent. */
+.product-label {
+  font-size: 12px;
+  line-height: 1.4;
 }
 
 .product-rail {

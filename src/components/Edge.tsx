@@ -20,7 +20,7 @@ export default function Edge() {
     <section id="why-crosswell" className="border-y border-ink/8 bg-parchment">
       <div className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
         <Reveal>
-          <p className="type-label mb-4 text-fern-deep">Why Crosswell</p>
+          <p className="type-label mb-3 text-fern-deep">Why Crosswell</p>
           <h2 className="type-h2 max-w-3xl text-ink">
             Off the shelf fits nobody. So we do not sell it.
           </h2>
@@ -41,7 +41,7 @@ export default function Edge() {
               <div>
                 <div className="mb-4 h-px w-10 bg-fern" />
                 <h3 className="type-h3 text-ink">{point.title}</h3>
-                <p className="mt-2.5 leading-relaxed text-ink/70">
+                <p className="type-text mt-2.5 text-ink/70">
                   {point.body}
                 </p>
               </div>

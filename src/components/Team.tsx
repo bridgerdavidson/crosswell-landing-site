@@ -78,9 +78,9 @@ export default function Team() {
     <section id="team" className="border-t border-ink/8 bg-parchment">
       <div className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
         <Reveal>
-          <p className="type-label mb-4 text-fern-deep">The team</p>
+          <p className="type-label mb-3 text-fern-deep">The team</p>
           <h2 className="type-h2 max-w-2xl text-ink">Three people. One team.</h2>
-          <p className="type-body mt-5 max-w-2xl text-ink/70">
+          <p className="type-body mt-5 max-w-2xl text-ink/80">
             Small is deliberate. You work directly with the three people who
             build and run your Core, not an account manager standing between
             you and the work.
@@ -126,7 +126,7 @@ export default function Team() {
                   <p className="mt-0.5 text-sm font-medium text-fern-deep">
                     {person.role}
                   </p>
-                  <p className="mt-3 text-sm leading-relaxed text-ink/70">
+                  <p className="mt-3 text-sm leading-normal text-ink/70">
                     {person.line}
                   </p>
                 </div>

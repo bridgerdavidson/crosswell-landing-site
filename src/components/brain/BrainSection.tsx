@@ -9,17 +9,17 @@ export default function BrainSection() {
         <Reveal>
           <p className="type-label text-fern-deep">This is the Core</p>
           <h2 className="type-h2 mt-3">Nothing your firm knows sits alone.</h2>
-          <p className="type-body mt-5 max-w-[46ch] text-charcoal/80">
+          <p className="type-body mt-5 max-w-[46ch] text-ink/80">
             The Core is everything your firm knows, connected. Every meeting,
             email, and file becomes a memory linked to the people, deals, and
             decisions it touches. Your questions search this, and it&apos;s
             yours, compounding over time instead of walking out the door.
           </p>
-          <p className="type-body mt-4 max-w-[46ch] text-charcoal/80">
+          <p className="type-text mt-4 max-w-[46ch] text-ink/70">
             Everyone runs the same models now. What a competitor can&apos;t copy
             is what your firm knows. We make that an asset you own.
           </p>
-          <p className="mt-6 text-xs text-warmgray">
+          <p className="type-caption mt-6 text-ink/60">
             Illustrative
           </p>
         </Reveal>

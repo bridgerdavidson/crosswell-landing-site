@@ -24,7 +24,7 @@ export default function HowWeStart() {
     <section id="how-we-start" className="border-b border-ink/8 bg-parchment">
       <div className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
         <Reveal>
-          <p className="type-label mb-4 text-fern-deep">How we start</p>
+          <p className="type-label mb-3 text-fern-deep">How we start</p>
           <h2 className="type-h2 max-w-2xl text-ink">
             Start small, on purpose.
           </h2>
@@ -35,11 +35,11 @@ export default function HowWeStart() {
             <Reveal key={engagement.title} delay={i * 120}>
               <div className="flex h-full flex-col rounded-2xl border border-warmgray/40 bg-ivory p-7 shadow-whisper transition-shadow hover:shadow-lifted sm:p-8">
                 <h3 className="type-h3 text-ink">{engagement.title}</h3>
-                <p className="mt-2.5 leading-relaxed text-ink/70">
+                <p className="type-text mt-2.5 text-ink/70">
                   {engagement.body}
                 </p>
                 {engagement.note && (
-                  <p className="mt-4 text-xs font-medium text-fern-deep">{engagement.note}</p>
+                  <p className="type-caption mt-4 font-medium text-fern-deep">{engagement.note}</p>
                 )}
               </div>
             </Reveal>
@@ -48,7 +48,7 @@ export default function HowWeStart() {
 
         <Reveal delay={150}>
           <div className="mt-10 flex flex-col items-start gap-5">
-            <p className="text-sm text-ink/60">
+            <p className="text-sm leading-normal text-ink/60">
               The first call is thirty minutes. We ask how your firm handles
               knowledge today, and we tell you straight whether the audit is
               worth it.

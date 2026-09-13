@@ -67,7 +67,7 @@ export default function Chat() {
                   </div>
                   <div className="flex-none px-4 pb-4">
                     <div className="product-input">
-                      <span className="flex-1 opacity-45">{chat.placeholder}</span>
+                      <span className="flex-1 opacity-60">{chat.placeholder}</span>
                       <SendButton />
                     </div>
                   </div>

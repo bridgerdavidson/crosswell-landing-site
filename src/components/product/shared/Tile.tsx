@@ -3,10 +3,10 @@ import type { Tile as TileData } from "@/lib/saguaro";
 export function Tile({ label, value, note, spark }: TileData) {
   return (
     <div className="product-tile">
-      <p className="text-[12px] opacity-60">{label}</p>
+      <p className="product-label opacity-60">{label}</p>
       <p className="product-num mt-2">{value}</p>
       <div className="mt-2 flex items-end justify-between gap-3">
-        <p className="text-[12px] opacity-55">{note}</p>
+        <p className="product-label opacity-60">{note}</p>
         {spark && <Sparkline points={spark} />}
       </div>
     </div>

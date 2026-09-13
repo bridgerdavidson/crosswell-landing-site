@@ -35,7 +35,7 @@ export default function Hero() {
           The operating layer your business actually runs on.
         </h1>
         <p
-          className="hero-enter type-body mx-auto mt-6 max-w-2xl text-ink/70"
+          className="hero-enter type-body mx-auto mt-6 max-w-2xl text-ink/80"
           style={{ "--enter-delay": "0.75s" } as CSSProperties}
         >
           We build the{" "}

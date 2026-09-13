@@ -32,12 +32,43 @@ else on the page is amber, red, or blue.
 - Sans: Instrument Sans. Everything else, page and product. Tabular
   numerals on inside the product.
 - Section label: 14px, medium, sentence case, fern-deep, optional two-digit
-  index in the product run. No uppercase anywhere on the page. The two-letter
-  avatar initials inside the product (MG, DW, ML, PS) are data, not styled
-  text, and are the one exception.
-- Scale: type-display, type-h2, type-h3, type-accent, type-body as defined
-  in globals.css. Inside the product: numbers 26px, UI 13px, labels 12px,
-  panel titles 20px serif. Nothing below 12px.
+  index (ink at 60 percent) in the product run. No uppercase anywhere on
+  the page. The two-letter avatar initials inside the product (MG, DW, ML,
+  PS) are data, not styled text, and are the one exception.
+- Ten sizes carry the page at 1440 and above (72, 48, 28, 26, 20, 16, 15,
+  14, 13, 12); the roles are the classes in globals.css. Titles run tight,
+  the lede sits between, running text opens up. Below 768px the display,
+  h2, and accent scale with the viewport (52, 36, and 28 at 767) and the
+  lede and h3 step down to 18px.
+
+| Role | Class | Family | Size | Line-height | Weight | Tracking | Color |
+|---|---|---|---|---|---|---|---|
+| display | type-display | Newsreader | 72 (52 at 768) | 1.0 | 400 | -0.025em | ink |
+| section title, chapter claim | type-h2 | Newsreader | 48 (36 at 768) | 1.05 | 400 | -0.02em | ink |
+| accent line | type-accent | Newsreader | 28 | 1.3 | 400 | -0.01em | ink |
+| lede | type-body | Instrument Sans | 20 | 1.45 | 400 | -0.01em | ink 80% |
+| card title | type-h3 | Instrument Sans | 20 | 1.3 | 600 | -0.01em | ink |
+| running text | type-text | Instrument Sans | 16 | 1.6 | 400 | 0 | ink 70% |
+| nav link | Nav.tsx | Instrument Sans | 15 | 1.5 | 500 | 0 | ink 75% |
+| section label | type-label | Instrument Sans | 14 | 1.4 | 500 | 0 | fern-deep |
+| small text | text-sm leading-normal | Instrument Sans | 14 | 1.5 | 400 | 0 | ink 70% |
+| caption, source | type-caption | Instrument Sans | 13 | 1.5 | 400 | 0 | ink 60% |
+| product greeting | product-greeting | Newsreader | 28 | 1.15 | 400 | -0.01em | ink |
+| product panel title | product-title | Newsreader | 20 | 1.3 | 400 | 0 | ink |
+| product number | product-num | Instrument Sans | 26 | 1.1 | 500 | -0.01em | ink |
+| product detail number | product-num-sm | Instrument Sans | 20 | 1.15 | 500 | -0.01em | ink |
+| product UI | product-shell | Instrument Sans | 13 | 1.45 | 400 | 0 | ink |
+| product label | product-label | Instrument Sans | 12 | 1.4 | 400 | 0 | opacity 60% |
+
+- The lede follows every title and claim as its companion: one size up
+  from running text, tighter, one shade dimmer than the title. A second
+  paragraph after a lede is running text (type-text).
+- Secondary text never drops below ink at 60 percent (ivory at 60 on dark
+  ground): captions, sources, the fictional-company line, the footer, and
+  the label index included. Inside the product, dimming is opacity and
+  never below 60 percent; the chat chapter's dimmed dashboard (40 percent,
+  so one thing is lit) is the exception.
+- Nothing below 12px.
 
 ## Materials
 

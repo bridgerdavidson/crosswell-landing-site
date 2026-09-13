@@ -27,21 +27,21 @@ export function Chapter({
   children,
 }: ChapterProps) {
   const ink = dark ? "text-ivory" : "text-ink";
-  const muted = dark ? "text-ivory/70" : "text-ink/70";
+  const muted = dark ? "text-ivory/80" : "text-ink/80";
   const text = (
     <Reveal className="min-w-0">
       <p className={`type-label ${dark ? "text-fern-soft" : "text-fern-deep"}`}>
-        <span className="type-label-index">{index}</span>
+        <span className={`type-label-index ${dark ? "text-ivory/60" : "text-ink/60"}`}>{index}</span>
         {label}
       </p>
       <h3 className={`type-h2 mt-3 max-w-2xl ${ink}`}>{claim}</h3>
-      <p className={`type-body mt-4 max-w-xl ${muted}`}>{body}</p>
+      <p className={`type-body mt-5 max-w-xl ${muted}`}>{body}</p>
     </Reveal>
   );
   const frame = (
     <Reveal delay={120} className="min-w-0">
       {children}
-      <p className={`mt-3 text-xs ${dark ? "text-ivory/50" : "text-ink/50"}`}>
+      <p className={`type-caption mt-3 ${dark ? "text-ivory/60" : "text-ink/60"}`}>
         Interactive demo · Sample data
       </p>
     </Reveal>

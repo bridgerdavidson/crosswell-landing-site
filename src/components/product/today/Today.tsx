@@ -50,14 +50,14 @@ export default function Today() {
                   </li>
                 ))}
               </ul>
-              <p className="mt-3 text-[12px] opacity-55">{today.filedOvernight} filed overnight</p>
+              <p className="product-label mt-3 opacity-60">{today.filedOvernight} filed overnight</p>
             </div>
             <aside className="product-aside pl-6">
-              <p className="text-[12px] font-medium opacity-60">Today</p>
+              <p className="product-label font-medium opacity-60">Today</p>
               <ul className="mt-3 space-y-3">
                 {today.calendar.map((slot) => (
                   <li key={slot.time} className="flex gap-3">
-                    <span className="w-10 flex-none opacity-55">{slot.time}</span>
+                    <span className="w-10 flex-none opacity-60">{slot.time}</span>
                     <span className="min-w-0">{slot.title}</span>
                   </li>
                 ))}
