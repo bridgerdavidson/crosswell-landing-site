@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, type CSSProperties } from "react";
-import Band, { CONTAINER, HANG, SECTION } from "./Band";
+import Band, { CONTAINER, HANG, ROW_LG, ROW_XL, SECTION } from "./Band";
 import Reveal from "./Reveal";
 
 /* Type this anywhere on the page and the headshots flip to the golden-hour
@@ -85,13 +85,23 @@ export default function Team() {
         />
 
         {/* three across from md (the names hold one line in the 28 padding
-            there), stacked below */}
-        <div className={`${HANG} grid gap-6 md:grid-cols-3`}>
+            there), stacked below; from lg on the page's three tracks, the
+            third card under the lede. The cards share two rows (subgrid):
+            the portraits' row is as tall as a narrow track is wide, so the
+            first two portraits are square and the third fills the same
+            height, and the names share one line */}
+        <div className={`${HANG} grid gap-6 md:grid-cols-3 ${ROW_LG} ${ROW_XL}`}>
           {team.map((person, i) => (
-            <Reveal key={person.name} delay={i * 80}>
-              <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-warmgray/40 bg-ivory shadow-whisper transition-shadow hover:shadow-lifted">
+            <Reveal
+              key={person.name}
+              delay={i * 80}
+              className="lg:row-span-2 lg:grid lg:grid-rows-subgrid"
+            >
+              <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-warmgray/40 bg-ivory shadow-whisper transition-shadow hover:shadow-lifted lg:row-span-2 lg:grid lg:grid-rows-subgrid lg:gap-0">
                 <div
-                  className="team-flip relative aspect-square w-full bg-warmgray/20 md:aspect-4/5 lg:aspect-square"
+                  className={`team-flip relative aspect-square w-full bg-warmgray/20 md:aspect-4/5 ${
+                    i === 2 ? "lg:aspect-auto" : "lg:aspect-square"
+                  }`}
                   data-flipped={flipped}
                   style={{ "--flip-delay": `${i * 90}ms` } as CSSProperties}
                 >
