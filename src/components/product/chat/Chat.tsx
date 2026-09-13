@@ -7,10 +7,10 @@ import { Chapter, Check, Dot, Frame, Rail, Receipt, SendButton, Tile, TopBar, in
  * input empty. The dashboard sits dimmed at the left edge so the panel
  * reads as docked over the product, not floating. The send mechanic
  * (pre-composed message, click to send, streamed answer) is design-loop
- * work; nothing here accepts typing. The panel is the lit element, a
- * charcoal surface on the band; the dashboard behind it is periphery at 40.
- * The frame takes the panel's own height, so nothing is cut at the bottom
- * and the composer reads in full.
+ * work; nothing here accepts typing. The panel is the lit element: at lg a
+ * charcoal card floating inset over the morning dashboard, which is
+ * periphery at 40 and runs past the frame's right and bottom cuts; below
+ * lg the panel takes the whole frame. The composer reads in full.
  */
 export default function Chat() {
   const [first, ...followUps] = chat.exchanges;
@@ -24,22 +24,56 @@ export default function Chat() {
           claim="Ask it anything the business has written down. It answers with receipts."
           body="Decisions, meetings, files, and six years of loans. Every answer shows its work: ask where a number came from and the Core cites the meeting, the email, or the file it lives in."
         >
-          <Frame dark fade="none" fit height="h-auto">
+          <Frame dark fade="corner" fitNarrow height="h-auto lg:h-[800px]">
             <Rail active="chat" />
-            <div className="flex min-w-0 flex-1 flex-col">
+            <div className="relative flex min-w-0 flex-1 flex-col">
               <TopBar />
               <div className="flex min-h-0 flex-1">
-                <div className="product-periphery hidden min-w-0 flex-1 p-6 md:block" aria-hidden>
-                  <p className="product-greeting">{today.greeting}</p>
-                  <p className="product-t2 mt-1.5">{today.subline}</p>
-                  <div className="mt-6 grid grid-cols-2 gap-3">
-                    {today.tiles.slice(0, 2).map((tile) => (
-                      <Tile key={tile.label} {...tile} />
-                    ))}
+                <div
+                  className="product-periphery hidden min-w-0 flex-1 grid-cols-[minmax(0,1fr)_280px] gap-8 p-6 lg:grid"
+                  aria-hidden
+                >
+                  <div className="min-w-0">
+                    <p className="product-greeting">{today.greeting}</p>
+                    <p className="product-t2 mt-1.5">{today.subline}</p>
+                    <div className="mt-6 grid grid-cols-4 gap-3">
+                      {today.tiles.map((tile) => (
+                        <Tile key={tile.label} {...tile} />
+                      ))}
+                    </div>
+                    <p className="product-title mt-8">Needs you today</p>
+                    <ul className="product-rule mt-3">
+                      {today.needsYou.map((item) => (
+                        <li key={item.id} className="py-4">
+                          <p className="product-strong">{item.title}</p>
+                          <p className="product-t2 mt-1">{item.body}</p>
+                        </li>
+                      ))}
+                    </ul>
+                    <p className="product-label mt-3">{today.filedOvernight} filed overnight</p>
+                    <ul className="product-rule mt-4">
+                      {today.filed.map((f) => (
+                        <li key={f.title} className="flex items-center justify-between gap-4 py-3">
+                          <span>{f.title}</span>
+                          <span className="product-t3 flex-none">{f.to}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
+                  <aside className="product-aside pl-6">
+                    <p className="product-label">Today</p>
+                    <ul className="mt-3 space-y-3">
+                      {today.calendar.map((slot) => (
+                        <li key={slot.time} className="flex gap-3">
+                          <span className="product-t3 w-10 flex-none">{slot.time}</span>
+                          <span className="min-w-0">{slot.title}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </aside>
                 </div>
 
-                <div className="product-aside product-lit flex w-full flex-none flex-col md:w-[440px]">
+                <div className="product-float product-lit flex w-full flex-none flex-col lg:w-[440px]">
                   <div className="product-topbar flex h-11 flex-none items-center gap-2 px-5">
                     <Dot tone="accent" />
                     <span className="product-strong">The Core</span>

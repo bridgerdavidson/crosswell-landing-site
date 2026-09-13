@@ -101,13 +101,23 @@ else on the page is amber, red, or blue.
 - Fragments are cut by a frame; cut edges dissolve into the page with a
   mask gradient (double stops). The content edge stays crisp. The dissolve
   is written in pixels so every frame fades over the same distance: 280 at
-  the right, 160 at the bottom, 120 both ways on phones. A frame ends where
-  its payload ends: it never shows a fade over nothing, and a frame whose
-  product fits it has no fade at all. An overflowing shell runs 80px past
-  the frame's right edge so the app's top-right corner (the avatar) is out
-  of frame, never half-faded; a fitted shell shows it crisp. Fragments
-  render at real scale; nothing is scaled down. Below 768px a frame crops
-  to a single column.
+  the right, 120 at the bottom, 120 both ways on phones. Every frame is
+  800 tall at lg and above (its product's own height below), so the run
+  keeps one beat; a product shorter than that shows more of itself (the
+  next rows, the panel below, the list under the buttons) and is cut, never
+  scaled or padded. Where the frame cuts the product, no fill or hairline
+  ends on the cut: it dissolves in the fade, or the surface is inset with
+  its own rounded edge inside the frame. A wide frame's shell runs 80px
+  past the right edge and is cut at the right and the bottom (the top bar's
+  rule and the avatar go out with it, never half-faded); a split frame's
+  product fits its width, its top bar's rule stops 24 inside the right
+  edge with the avatar inside it, and it is cut only at the bottom. A lit
+  surface never sits inside a fade: the chat and detail panels float as
+  inset cards over their fields, above the fades, and chapter 06's top bar
+  is an inset card. Fragments render at real scale; nothing is scaled
+  down. Below 768px a frame crops to a single column; chapter 04's column
+  is the selected card's stage, with the panel out of the crop and the
+  card lit.
 - Inside every frame exactly one element is lit, and the eye lands on it
   under a blur. The lit element carries the frame's one parchment surface,
   full ink, its own secondary text at 75, its labels at 60, weight 600 on
@@ -166,8 +176,8 @@ else on the page is amber, red, or blue.
   dark band (its padding is 160 against the run sections' 128). A split chapter keeps the family: two
   equal columns, the lede under the claim in the left one and the frame in
   the right one reaching the run's right edge, its top on the label's.
-  Every frame takes its product's own height, so it ends where the
-  payload ends.
+  Every frame is 800 tall at lg and above, the split frames included, and
+  takes its product's own height below.
 - Two dark moments only: the chat chapter and the closing CTA.
 - Verify at 1440, 1728, and 390 before calling a piece done.
 

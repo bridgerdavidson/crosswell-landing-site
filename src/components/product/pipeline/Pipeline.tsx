@@ -3,13 +3,14 @@ import { Chapter, Frame, Rail, Receipt, TopBar, inert } from "../shared";
 
 /**
  * Chapter 04, finished state: the board with every stage, one card
- * highlighted, and its detail panel open at the right with "Who is this?"
- * already asked and answered. The deal-in, the click-to-open, and the
- * other prompts firing are design-loop work. The board area carries its
- * own right fade so the columns dissolve under the panel instead of
- * hitting a hard edge; the frame takes the product's own height, so
- * nothing else is cut and the panel, the lit element and the one parchment
- * surface, stays fully readable.
+ * highlighted, and its detail panel open with "Who is this?" already asked
+ * and answered. The deal-in, the click-to-open, and the other prompts
+ * firing are design-loop work. At lg the panel is the lit element, a
+ * parchment card floating inset over the board, which runs past the
+ * frame's right and bottom cuts and dissolves there. Below lg the board
+ * is one column (the selected card's stage) at real scale, the panel is
+ * out of the crop, and the selected card is the lit element; piece 4's
+ * phone mechanic builds on that.
  */
 export default function Pipeline() {
   const selected = pipeline.stages
@@ -27,14 +28,20 @@ export default function Pipeline() {
         claim="Every client, every stage, and the whole history one click away."
         body="Every deal the team is working, in the stage it is actually in, synced from the tool they already track it in. Open one and ask the Core about it in a click."
       >
-        <Frame fade="none" height="h-auto">
+        <Frame fade="corner" fitNarrow height="h-auto lg:h-[800px]">
           <Rail active="folder" />
-          <div className="flex min-w-0 flex-1 flex-col">
+          <div className="relative flex min-w-0 flex-1 flex-col">
             <TopBar />
             <div className="flex min-h-0 flex-1">
-              <div className="product-board-fade flex min-w-0 flex-1 gap-4 overflow-hidden p-6">
+              <div className="flex min-w-0 flex-1 gap-4 p-6">
                 {pipeline.stages.map((stage) => (
-                  <section key={stage.name} data-stage={stage.name} className="w-[200px] flex-none">
+                  <section
+                    key={stage.name}
+                    data-stage={stage.name}
+                    className={`w-[200px] max-w-full flex-none ${
+                      stage.cards.some((c) => c.id === pipeline.selected) ? "" : "hidden lg:block"
+                    }`}
+                  >
                     <div className="flex items-baseline justify-between">
                       <p className="product-strong">{stage.name}</p>
                       <span className="product-t3">{stage.cards.length}</span>
@@ -44,7 +51,7 @@ export default function Pipeline() {
                         <li
                           key={card.id}
                           className={`product-card ${
-                            card.id === pipeline.selected ? "product-card-active" : ""
+                            card.id === pipeline.selected ? "product-card-active product-lit-narrow" : ""
                           }`}
                         >
                           <p className="product-strong">{card.name}</p>
@@ -63,7 +70,7 @@ export default function Pipeline() {
                 ))}
               </div>
 
-              <aside className="product-aside product-lit flex w-[360px] flex-none flex-col p-6">
+              <aside className="product-float product-lit hidden w-[360px] flex-none flex-col p-6 lg:flex">
                 <p className="product-title">{selected.name}</p>
                 <p className="product-t2 mt-1">{detail.since}</p>
                 <div className="mt-4 grid grid-cols-3 gap-2">

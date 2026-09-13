@@ -57,6 +57,14 @@ export const today = {
     },
   ] satisfies NeedsYou[],
   filedOvernight: 14,
+  /* what the morning page lists under the status line; chapter 03 shows it behind the chat panel */
+  filed: [
+    { title: "Bank statement, Palo Verde", to: "loan file" },
+    { title: "Insurance certificate, Redrock Flips", to: "deal record" },
+    { title: "Draw 3 lien waivers, Ironline", to: "servicing" },
+    { title: "Broker email, Canyon State", to: "deal record" },
+    { title: "Appraisal invoice, Mesa Verde", to: "accounting" },
+  ] satisfies { title: string; to: string }[],
   calendar: [
     { time: "8:30", title: "Approve Draw 4, Palo Verde" },
     { time: "9:00", title: "Partner standup" },
@@ -73,6 +81,14 @@ export const agenda = {
     { time: "11:00", title: "Call the borrower about the extension" },
     { time: "1:00", title: "Review the September report draft" },
     { time: "3:00", title: "Investor call, brief already attached" },
+    { time: "4:30", title: "Cholla Creek payoff letter, sign and send" },
+    { time: "5:30", title: "Read the September report, second pass" },
+  ] satisfies AgendaItem[],
+  tomorrow: [
+    { time: "8:30", title: "Partner standup" },
+    { time: "10:00", title: "Cholla Creek payoff call" },
+    { time: "1:00", title: "Underwriting call, Mesa Verde Devco" },
+    { time: "3:30", title: "Sign the September report" },
   ] satisfies AgendaItem[],
   team: [
     {
@@ -81,24 +97,48 @@ export const agenda = {
       items: [
         { title: "Draw 4 site walk, Palo Verde", ref: "draw-4", done: true },
         { title: "Two borrower calls, Tempe" },
+        { title: "Palo Verde inspection report, filed" },
       ],
     },
     {
       name: "Marcus Lee",
       initials: "ML",
-      items: [{ title: "Term sheet review, Redrock Flips" }, { title: "Broker intro, Canyon State" }],
+      items: [
+        { title: "Term sheet review, Redrock Flips" },
+        { title: "Broker intro, Canyon State" },
+        { title: "Screen the Cactus Wren flip" },
+      ],
     },
     {
       name: "Priya Shah",
       initials: "PS",
-      items: [{ title: "Underwriting call, Mesa Verde" }, { title: "Servicing handoff, week two" }],
+      items: [
+        { title: "Underwriting call, Mesa Verde" },
+        { title: "Servicing handoff, week two" },
+        { title: "Order the Two Palms appraisal" },
+      ],
+    },
+    {
+      name: "Jordan Reyes",
+      initials: "JR",
+      items: [{ title: "Builder's risk renewals, October" }, { title: "Investor brief, Thursday" }],
     },
   ] satisfies TeamRow[],
+  unassigned: [
+    { title: "Countersign the Ocotillo Commons term sheet" },
+    { title: "Confirm the Sedona survey date" },
+  ] satisfies { title: string }[],
   rocks: [
     { title: "Deploy $6M into new loans", pct: 70, note: "on pace" },
     { title: "Move servicing knowledge into the Core", pct: 80 },
     { title: "Fund report drafting itself by October", pct: 60 },
     { title: "Onboard the new loan ops hire", pct: 90 },
+    { title: "Every loan file in the Core by December", pct: 45 },
+  ] satisfies Rock[],
+  lastQuarter: [
+    { title: "Move servicing to the new platform", pct: 100 },
+    { title: "Close the Ironline construction loan", pct: 100 },
+    { title: "Hire the loan ops lead", pct: 100 },
   ] satisfies Rock[],
   syncedTo: "Asana",
 };
@@ -141,6 +181,10 @@ export const pipeline = {
         { id: "agave", name: "Agave Trail Homes", place: "Phoenix", kind: "Fix and flip", amount: "$445K", rate: "12.00%", note: "New" },
         { id: "two-palms", name: "Two Palms Development", place: "Chandler", kind: "Bridge", amount: "$520K", rate: "11.90%" },
         { id: "palo-brea", name: "Palo Brea Homes", place: "Phoenix", kind: "Fix and flip", amount: "$515K", rate: "11.85%" },
+        { id: "yucca", name: "Yucca Flats Storage", place: "Casa Grande", kind: "Bridge", amount: "$780K", rate: "11.60%" },
+        { id: "mesquite", name: "Mesquite Court", place: "Glendale", kind: "Fix and flip", amount: "$410K", rate: "12.10%", note: "New" },
+        { id: "dove-valley", name: "Dove Valley Duplexes", place: "Phoenix", kind: "Fix and flip", amount: "$470K", rate: "12.05%" },
+        { id: "salt-river", name: "Salt River Lofts", place: "Tempe", kind: "Bridge", amount: "$1.05M", rate: "11.45%" },
       ],
     },
     {
@@ -148,6 +192,10 @@ export const pipeline = {
       cards: [
         { id: "redrock", name: "Redrock Flips", place: "Tempe", kind: "Fix and flip", amount: "$385K", rate: "12.25%", note: "Dormant 21 days" },
         { id: "peoria", name: "North Peoria Duplexes", place: "Peoria", kind: "Ground-up", amount: "$1.35M", rate: "11.10%" },
+        { id: "ocotillo", name: "Ocotillo Commons", place: "Chandler", kind: "Bridge", amount: "$1.1M", rate: "11.30%" },
+        { id: "camelback", name: "Camelback Duplexes", place: "Phoenix", kind: "Fix and flip", amount: "$560K", rate: "11.95%" },
+        { id: "sunset-bluff", name: "Sunset Bluff Homes", place: "Surprise", kind: "Ground-up", amount: "$1.2M", rate: "11.05%" },
+        { id: "ironwood", name: "Ironwood Crossing", place: "Queen Creek", kind: "Bridge", amount: "$830K", rate: "11.55%" },
       ],
     },
     {
@@ -155,12 +203,18 @@ export const pipeline = {
       cards: [
         { id: "mesa-verde", name: "Mesa Verde Devco", place: "Scottsdale", kind: "Horizontal development", amount: "$2.4M", rate: "10.50%" },
         { id: "gila-bend", name: "Gila Bend Storage", place: "Buckeye", kind: "Bridge", amount: "$890K", rate: "11.40%" },
+        { id: "pinnacle", name: "Pinnacle Peak Custom", place: "Scottsdale", kind: "Ground-up", amount: "$1.9M", rate: "10.80%" },
+        { id: "verde-valley", name: "Verde Valley Lots", place: "Cottonwood", kind: "Land", amount: "$650K", rate: "11.70%" },
+        { id: "prickly-pear", name: "Prickly Pear Storage", place: "Goodyear", kind: "Bridge", amount: "$940K", rate: "11.20%" },
+        { id: "granite-reef", name: "Granite Reef Custom", place: "Scottsdale", kind: "Ground-up", amount: "$2.1M", rate: "10.75%" },
       ],
     },
     {
       name: "Docs out",
       cards: [
         { id: "sonoran", name: "Sonoran Urban Infill", place: "Phoenix", kind: "Bridge", amount: "$975K", rate: "10.95%" },
+        { id: "sandstone", name: "Sandstone Villas", place: "Sedona", kind: "Ground-up", amount: "$1.45M", rate: "10.90%" },
+        { id: "superstition", name: "Superstition Flats", place: "Apache Junction", kind: "Bridge", amount: "$720K", rate: "11.35%" },
       ],
     },
     {
@@ -169,6 +223,7 @@ export const pipeline = {
         { id: "ironline", name: "Ironline Builds", place: "Phoenix", kind: "Ground-up", amount: "$1.6M", rate: "11.25%", note: "Draw 4 pending", ref: "draw-4" },
         { id: "copper-sky", name: "Copper Sky Homes", place: "Mesa", kind: "Fix and flip", amount: "$640K", rate: "11.75%", note: "2 of 4 draws" },
         { id: "cholla", name: "Cholla Creek Partners", place: "Gilbert", kind: "Ground-up", amount: "$1.22M", rate: "11.50%", note: "6 of 8 draws" },
+        { id: "saguaro-ridge", name: "Saguaro Ridge Townhomes", place: "Mesa", kind: "Ground-up", amount: "$1.3M", rate: "11.15%", note: "1 of 6 draws" },
       ],
     },
   ] satisfies Stage[],
@@ -299,6 +354,11 @@ export const agents = {
       log: ["11:00 pm  Read the loan channels", "11:04 pm  Found 9 decisions", "11:05 pm  Filing to their loans"],
     },
   ] satisfies Agent[],
+  /* the spec's two spares: on the roster page below the composer, not yet running */
+  spares: [
+    { id: "meeting-prep", name: "Meeting-prep agent", job: "Pulls the file, the last notes, and the open items before every call" },
+    { id: "expiry", name: "Expiry watcher", job: "Watches insurance, permits, and rate locks for the dates about to pass" },
+  ] satisfies { id: string; name: string; job: string }[],
   handoff: {
     placeholder: "Give an agent a task",
     task: "Research Two Palms Development's track record",

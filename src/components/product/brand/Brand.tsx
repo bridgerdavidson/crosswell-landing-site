@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 import { brand, today } from "@/lib/saguaro";
-import { Chapter, Frame, Rail, Tile, TopBar, inert } from "../shared";
+import { Chapter, Dot, Frame, Rail, Receipt, Tile, TopBar, inert } from "../shared";
 
 /**
  * Chapter 06, finished state: a small copy of the morning dashboard in the
@@ -11,7 +11,9 @@ import { Chapter, Frame, Rail, Tile, TopBar, inert } from "../shared";
  * the page. Cycling and retinting on click are design-loop work. The lit
  * element is the top bar, where the company name lives; the field carries
  * no accent, so the swatch's color shows in the bar until the retint piece
- * moves the light. The frame takes the mini dashboard's own height.
+ * moves the light, and the bar is an inset card so no edge of it lands on
+ * the frame. The frame is 800 at lg like every frame, so the dashboard
+ * continues into the needs-you list and is cut at the bottom.
  */
 export default function Brand() {
   const active = brand.swatches[0];
@@ -32,7 +34,7 @@ export default function Brand() {
         body="Your name, your colors, every screen. The Core is set up to look like it was always yours, because to your team it was."
       >
         <div>
-          <Frame fade="none" fit height="h-auto" style={vars}>
+          <Frame fade="bottom" fit height="h-auto lg:h-[800px]" style={vars}>
             <Rail active="home" />
             <div className="flex min-w-0 flex-1 flex-col">
               <TopBar name={active.company} lit />
@@ -52,9 +54,23 @@ export default function Brand() {
                     Ask the Core
                   </button>
                 </div>
-                <div className="product-bar mt-6">
-                  <span style={{ width: "70%" }} />
-                </div>
+                <p className="product-title mt-8">Needs you today</p>
+                <ul className="product-rule mt-2">
+                  {today.needsYou.map((item) => (
+                    <li key={item.id} className="flex gap-4 py-3">
+                      <Dot tone="ink" className="mt-2" />
+                      <div className="min-w-0 flex-1">
+                        <p className="product-strong">{item.title}</p>
+                        <p className="product-t2 mt-0.5">{item.body}</p>
+                        <div className="mt-1.5 flex flex-wrap gap-1.5">
+                          {item.receipts.map((r) => (
+                            <Receipt key={r}>{r}</Receipt>
+                          ))}
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </Frame>

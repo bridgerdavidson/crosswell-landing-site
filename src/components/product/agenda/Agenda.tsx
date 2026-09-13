@@ -10,8 +10,9 @@ import { Chapter, Check, Chip, Dot, Frame, Rail, TopBar } from "../shared";
  * track is wider than the frame on desktop and fades at the right; on
  * phones it stacks, fitted to the frame. The lit element is the Draw 4 row;
  * the scroll piece may move the light to the synced chip as the moment
- * plays. The frame takes the product's own height and is cut only at the
- * right, where the rocks dissolve.
+ * plays. The frame is 800 at lg like every frame, so the panels run on
+ * (tomorrow's agenda, the unassigned items, last quarter's rocks) and are
+ * cut at the right, where the rocks dissolve, and at the bottom.
  */
 export default function Agenda() {
   return (
@@ -21,7 +22,7 @@ export default function Agenda() {
       claim="One list, and the whole team is on it."
       body="Your day, the team's week, and the quarter's rocks, kept in one place and synced with the task tool the team already uses. Finish something anywhere and it checks off everywhere."
     >
-      <Frame fade="right" fitPhone height="h-auto">
+      <Frame fade="corner" fitPhone height="h-auto lg:h-[800px]">
         <Rail active="list" />
         <div className="flex min-w-0 flex-1 flex-col">
           <TopBar />
@@ -31,7 +32,7 @@ export default function Agenda() {
                 {agenda.yourDay.map((item) => (
                   <li
                     key={item.time}
-                    className={`flex items-center gap-3 py-3 ${item.ref === "draw-4" ? "product-lit -mx-4 rounded-xl px-4" : ""}`}
+                    className={`flex items-center gap-3 py-3 ${item.ref === "draw-4" ? "product-lit -mx-3 rounded-xl px-3" : ""}`}
                   >
                     <span className="product-t3 w-10 flex-none">{item.time}</span>
                     <span className={`flex-1 ${item.done ? "product-t2" : ""}`}>{item.title}</span>
@@ -42,6 +43,16 @@ export default function Agenda() {
               <div className="mt-4">
                 <Chip accent>synced to {agenda.syncedTo}</Chip>
               </div>
+              <p className="product-title mt-8">Tomorrow</p>
+              <ul className="product-rule mt-3">
+                {agenda.tomorrow.map((item) => (
+                  <li key={item.time} className="flex items-center gap-3 py-3">
+                    <span className="product-t3 w-10 flex-none">{item.time}</span>
+                    <span className="flex-1">{item.title}</span>
+                    <Dot tone="watch" />
+                  </li>
+                ))}
+              </ul>
             </Panel>
 
             <Panel title="The team this week">
@@ -63,6 +74,15 @@ export default function Agenda() {
                   </li>
                 ))}
               </ul>
+              <p className="product-title mt-8">Unassigned</p>
+              <ul className="product-rule mt-3">
+                {agenda.unassigned.map((it) => (
+                  <li key={it.title} className="flex items-center gap-2 py-3">
+                    <Dot tone="watch" />
+                    <span className="product-t2">{it.title}</span>
+                  </li>
+                ))}
+              </ul>
             </Panel>
 
             <Panel title="Quarterly rocks">
@@ -74,6 +94,20 @@ export default function Agenda() {
                       <span className="product-t3 flex-none">
                         {rock.pct}%{rock.note ? `, ${rock.note}` : ""}
                       </span>
+                    </div>
+                    <div className="product-bar mt-2">
+                      <span style={{ width: `${rock.pct}%` }} />
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <p className="product-title mt-8">Last quarter</p>
+              <ul className="mt-4 space-y-4">
+                {agenda.lastQuarter.map((rock) => (
+                  <li key={rock.title}>
+                    <div className="flex items-baseline justify-between gap-3">
+                      <span className="product-t2">{rock.title}</span>
+                      <span className="product-t3 flex-none">{rock.pct}%</span>
                     </div>
                     <div className="product-bar mt-2">
                       <span style={{ width: `${rock.pct}%` }} />

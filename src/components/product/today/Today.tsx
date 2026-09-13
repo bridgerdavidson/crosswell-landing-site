@@ -48,9 +48,12 @@ function build(frame: HTMLDivElement) {
  * Chapter 01. The top-left of the dashboard: the greeting, the numbers, the
  * three things that need a person with the draw approval lit, the status
  * line, and the calendar column fading at the right edge. The whole payload
- * sets the frame's height, so the only cut is the calendar column
- * dissolving at the right; below lg the product is one column that fits the
- * frame, with the tiles two-up and the calendar out of the crop.
+ * clears the frame's bottom fade at 800 (the list is set tighter than the
+ * other chapters' rows for it), so the only content cut is the calendar
+ * column dissolving at the right; below lg the product is one column that
+ * fits the frame at its own height, with the tiles two-up; the calendar
+ * column shows from 1360 up, where the main column has the room for the
+ * list to stay above the fade beside it.
  */
 export default function Today() {
   const frame = useRef<HTMLDivElement>(null);
@@ -68,40 +71,40 @@ export default function Today() {
         </button>
       }
     >
-      <Frame ref={frame} fade="right" fitNarrow height="h-auto">
+      <Frame ref={frame} fade="corner" fitNarrow height="h-auto lg:h-[800px]">
         <Rail active="home" />
         <div className="flex min-w-0 flex-1 flex-col">
           <TopBar />
-          <div className="grid flex-1 gap-8 p-5 md:p-6 lg:grid-cols-[minmax(0,1fr)_280px]">
+          <div className="grid flex-1 gap-8 p-5 pt-5 md:p-6 md:pt-5 min-[1360px]:grid-cols-[minmax(0,1fr)_280px]">
             <div className="min-w-0">
               <p className="product-greeting" data-seq="greeting">
                 {today.greeting}
               </p>
-              <p className="product-t2 mt-1" data-seq="subline">
+              <p className="product-t2 mt-0.5" data-seq="subline">
                 {today.subline}
               </p>
-              <div className="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
+              <div className="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-4">
                 {today.tiles.map((tile) => (
                   <Tile key={tile.label} data-seq="tile" {...tile} />
                 ))}
               </div>
-              <p className="product-title mt-6" data-seq="title">
+              <p className="product-title mt-5" data-seq="title">
                 Needs you today
               </p>
-              <ul className="product-rule mt-2">
+              <ul className="product-rule mt-1.5">
                 {today.needsYou.map((item, i) => (
                   <li
                     key={item.id}
                     data-seq="item"
-                    className={`grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 py-3 md:grid-cols-[auto_minmax(0,1fr)_auto] ${
-                      i === 0 ? "product-lit -mx-4 rounded-xl px-4" : ""
+                    className={`grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 py-2.5 md:grid-cols-[auto_minmax(0,1fr)_auto] ${
+                      i === 0 ? "product-lit -mx-3 rounded-xl px-3" : ""
                     }`}
                   >
                     <Dot tone="ink" className="mt-2" />
                     <div className="min-w-0">
                       <p className="product-strong">{item.title}</p>
-                      <p className="product-t2 mt-1">{item.body}</p>
-                      <div className="mt-2 flex flex-wrap gap-1.5">
+                      <p className="product-t2 mt-0.5">{item.body}</p>
+                      <div className="mt-1.5 flex flex-wrap gap-1.5">
                         {item.receipts.map((r) => (
                           <Receipt key={r}>{r}</Receipt>
                         ))}
@@ -119,11 +122,11 @@ export default function Today() {
                   </li>
                 ))}
               </ul>
-              <p className="product-label mt-3" data-seq="status">
+              <p className="product-label mt-2" data-seq="status">
                 {today.filedOvernight} filed overnight
               </p>
             </div>
-            <aside className="product-aside product-periphery hidden pl-6 lg:block">
+            <aside className="product-aside product-periphery hidden pl-6 min-[1360px]:block">
               <p className="product-label">Today</p>
               <ul className="mt-3 space-y-3">
                 {today.calendar.map((slot) => (

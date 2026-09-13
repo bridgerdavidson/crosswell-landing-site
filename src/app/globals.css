@@ -620,19 +620,22 @@ body {
 /* ---------- Product run: the fragments ----------
    Six chapters of the Core, each a real component cut by a frame. The
    product has no container of its own: its canvas is the page's ivory,
-   and parchment goes to its panels (tiles, cards, the docked panels), so
-   nothing on the page reads as a rectangle placed on it. The rail's and
-   top bar's hairlines carry the app's structure. One accent (--accent, so
-   chapter 06 can retint a scoped copy), and never a shadow. Cut edges
-   dissolve into the page with masks written in pixels so every frame
-   dissolves over the same distance (280 to the right, 160 at the bottom;
-   120 on phones). Double stops in every mask on purpose: the production
-   minifier collapses a single stop to 0 and fades the whole frame (see the
-   hero mask above). */
+   and parchment goes to the one lit surface in a frame, so nothing on the
+   page reads as a rectangle placed on it. The rail's and top bar's
+   hairlines carry the app's structure. One accent (--accent, so chapter
+   06 can retint a scoped copy), and never a shadow. Every frame is 800
+   tall at lg and above so the run keeps one beat; a product shorter than
+   that runs on and is cut. Cut edges dissolve into the page with masks
+   written in pixels so every frame dissolves over the same distance (280
+   to the right, 120 at the bottom and both ways on phones), and where
+   the frame cuts the product no fill or hairline ends on the cut: it
+   dissolves, or the surface is inset. Double stops in every mask on
+   purpose: the production minifier collapses a single stop to 0 and
+   fades the whole frame (see the hero mask above). */
 
 .product-frame {
   --fade-x: 280px;
-  --fade-y: 160px;
+  --fade-y: 120px;
   /* how far an overflowing shell runs past the frame's right edge, so the
      app's top-right corner (the avatar) is out of frame, never half-faded */
   --overhang: 80px;
@@ -661,18 +664,9 @@ body {
   mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--fade-y)), transparent 100%);
 }
 
-/* the pipeline board's own right fade under its detail panel, shorter than
-   a frame's because the board is narrower; no mobile override */
-.product-board-fade {
-  --fade-x: 200px;
-  -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - var(--fade-x)), transparent 100%);
-  mask-image: linear-gradient(to right, #000 0, #000 calc(100% - var(--fade-x)), transparent 100%);
-}
-
-/* phones: shorter dissolves, and every overflowing shell is cut at the right
-   as well as the bottom, so cut-right and cut-bottom frames take the corner
-   mask and an uncut frame whose shell still overflows takes the right fade;
-   a shell that fits the phone keeps only the bottom fade */
+/* phones: every overflowing shell is cut at the right as well as the
+   bottom, so cut-right and cut-bottom frames take the corner mask; a shell
+   that fits the phone keeps only the bottom fade */
 @media (max-width: 767px) {
   .product-frame {
     --fade-x: 120px;
@@ -688,10 +682,6 @@ body {
       linear-gradient(to bottom, #000 0, #000 calc(100% - var(--fade-y)), transparent 100%);
     -webkit-mask-composite: source-in;
     mask-composite: intersect;
-  }
-  .product-frame-none:not(.product-frame-fit) {
-    -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - var(--fade-x)), transparent 100%);
-    mask-image: linear-gradient(to right, #000 0, #000 calc(100% - var(--fade-x)), transparent 100%);
   }
   .product-frame-fit.product-frame-bottom {
     -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--fade-y)), transparent 100%);
@@ -782,6 +772,34 @@ body {
   --t1: var(--color-ivory);
   --t2: rgba(241, 238, 230, 0.75);
   --t3: rgba(241, 238, 230, 0.6);
+}
+
+/* chapter 04 below lg: the detail panel is out of the crop and the selected
+   card is the lit element instead */
+@media (max-width: 1023px) {
+  .product-lit-narrow {
+    --t1: var(--color-ink);
+    --t2: rgba(26, 25, 21, 0.75);
+    --t3: rgba(26, 25, 21, 0.6);
+    --mark: var(--accent);
+    --w-strong: 600;
+    --w-num: 500;
+    background: var(--panel);
+    color: var(--t1);
+  }
+}
+
+/* a lit panel floating over its field at lg: inset below the top bar and
+   from the frame's right cut, so it never sits inside a fade and no edge of
+   it lands on the frame */
+@media (min-width: 1024px) {
+  .product-float {
+    position: absolute;
+    top: 24px;
+    right: calc(var(--fade-x) + var(--overhang) + 24px);
+    border-radius: 0.75rem;
+    overflow: hidden;
+  }
 }
 
 /* product periphery that is not the chapter's payload (a calendar column
@@ -896,6 +914,39 @@ body {
 
 .product-topbar {
   border-bottom: 1px solid var(--line);
+}
+
+/* in a fitted (split) frame the top bar's rule stops 24 short of the frame's
+   right edge, with the avatar inside it, so no hairline ends on the cut;
+   below lg every shell fits its frame, so every rule stops short, the
+   rail's hairline ends 24 above the frame's bottom, and a floating panel
+   becomes an inset card in flow */
+.product-topbar-inset {
+  margin-right: 24px;
+}
+
+@media (max-width: 1023px) {
+  .product-topbar:not(.product-lit) {
+    margin-right: 24px;
+  }
+  .product-rail {
+    margin-bottom: 24px;
+  }
+  .product-float {
+    flex: 1 1 auto;
+    width: auto;
+    margin: 16px 24px 24px;
+    border-radius: 0.75rem;
+    overflow: hidden;
+  }
+}
+
+/* the lit top bar (chapter 06) is an inset card with no rule */
+.product-topbar.product-lit {
+  margin: 16px 24px 0;
+  padding: 0 16px;
+  border-bottom: 0;
+  border-radius: 0.75rem;
 }
 
 .product-aside {

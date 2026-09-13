@@ -14,8 +14,10 @@ const TONE: Record<AgentStatus["kind"], "accent" | "watch" | "ink"> = {
  * the filing agent still running), and the hand-off composer with its
  * task ready. The ticking statuses, the row expand, and the hand-off
  * adding a row are design-loop work. The lit element is the inbox agent's
- * row, the one the live sequence lands on. The frame takes the roster's own
- * height, so the composer reads in full and nothing is cut.
+ * row, the one the live sequence lands on. The frame is 800 at lg like
+ * every frame, so the roster runs on below the composer (the spec's two
+ * spares, not yet running) and is cut at the bottom; the top bar's rule
+ * stops inside the frame's right edge.
  */
 export default function Agents() {
   const running = agents.roster.filter((a) => a.status.kind === "running").length;
@@ -28,10 +30,10 @@ export default function Agents() {
         claim="Each one has a single job. They run while you don't."
         body="Custom agents built for the work your team names: reading the inbox, chasing the silent deal, drafting the report. Each one reports what it did and waits for your yes before anything leaves the building."
       >
-        <Frame fade="none" fit height="h-auto">
+        <Frame fade="bottom" fit height="h-auto lg:h-[800px]">
           <Rail active="settings" />
           <div className="flex min-w-0 flex-1 flex-col">
-            <TopBar />
+            <TopBar inset />
             <div className="flex flex-1 flex-col p-6">
               <div className="flex items-baseline gap-3">
                 <p className="product-title">Agents</p>
@@ -42,8 +44,8 @@ export default function Agents() {
                   <li
                     key={agent.id}
                     data-agent={agent.id}
-                    className={`grid grid-cols-1 gap-2 py-3.5 sm:grid-cols-[1fr_210px] sm:gap-6 ${
-                      agent.id === agents.roster[0].id ? "product-lit -mx-4 rounded-xl px-4" : ""
+                    className={`grid grid-cols-1 gap-2 py-3.5 sm:grid-cols-[1fr_260px] sm:gap-6 ${
+                      agent.id === agents.roster[0].id ? "product-lit -mx-3 rounded-xl px-3" : ""
                     }`}
                   >
                     <div className="min-w-0">
@@ -53,9 +55,9 @@ export default function Agents() {
                     <div className="min-w-0">
                       <p className="flex items-center gap-2">
                         <Dot tone={TONE[agent.status.kind]} />
-                        <span className="truncate">{agent.status.text}</span>
+                        <span>{agent.status.text}</span>
                       </p>
-                      <p className="product-label mt-0.5 truncate">{agent.lastResult}</p>
+                      <p className="product-label mt-0.5">{agent.lastResult}</p>
                     </div>
                   </li>
                 ))}
@@ -66,6 +68,25 @@ export default function Agents() {
                   {agents.handoff.button}
                 </button>
               </div>
+              <p className="product-title mt-8">Available</p>
+              <ul className="product-rule mt-3">
+                {agents.spares.map((spare) => (
+                  <li
+                    key={spare.id}
+                    data-spare={spare.id}
+                    className="grid grid-cols-1 gap-2 py-3.5 sm:grid-cols-[1fr_260px] sm:gap-6"
+                  >
+                    <div className="min-w-0">
+                      <p className="product-strong">{spare.name}</p>
+                      <p className="product-label mt-0.5">{spare.job}</p>
+                    </div>
+                    <p className="flex items-center gap-2">
+                      <Dot tone="watch" />
+                      <span>Not running</span>
+                    </p>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </Frame>

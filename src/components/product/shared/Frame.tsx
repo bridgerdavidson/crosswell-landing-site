@@ -2,10 +2,10 @@ import type { CSSProperties, ReactNode, Ref } from "react";
 
 type FrameProps = {
   children: ReactNode;
-  /** which edges are cut and dissolve into the page; none when the frame ends where the product ends */
-  fade?: "corner" | "right" | "bottom" | "none";
+  /** which edges are cut and dissolve into the page */
+  fade?: "corner" | "right" | "bottom";
   dark?: boolean;
-  /** Tailwind height class for the frame box; h-auto when the product sets it */
+  /** Tailwind height class for the frame box: 800 at lg, the product's own height below */
   height?: string;
   /** fill the frame's width instead of overflowing it; for the narrow split layout */
   fit?: boolean;
@@ -21,11 +21,11 @@ type FrameProps = {
 };
 
 /**
- * The cropping frame: a box that cuts a full-size product shell and
- * dissolves the cut edges into the page. The shell has no fill of its own,
- * so the frame has no edges but the ones the product's chrome and its cuts
- * make; a shell wider than the frame reads as a corner of something larger,
- * never as a screenshot scaled to fit.
+ * The cropping frame: a fixed-height box (800 at lg and above) that cuts a
+ * full-size product shell and dissolves the cut edges into the page. The
+ * shell has no fill of its own, so the frame has no edges but the ones the
+ * product's chrome and its cuts make; a shell wider than the frame reads as
+ * a corner of something larger, never as a screenshot scaled to fit.
  */
 export function Frame({
   children,

@@ -80,12 +80,10 @@ describe("built css", () => {
     has("product-frame-right", "x");
     has("product-frame-bottom", "y");
     has("product-frame-fit\\.product-frame-bottom", "y");
-    has("product-frame-none:not\\(\\.product-frame-fit\\)", "x");
-    has("product-board-fade[^{}]*", "x");
     // on phones the cut-right and cut-bottom frames take the corner mask (the
     // minifier merges them into one selector list ending in .product-frame-right)
     has("product-frame-right", "y");
-    expect(css).toMatch(/product-frame\{--fade-x:280px;--fade-y:160px;/);
+    expect(css).toMatch(/product-frame\{--fade-x:280px;--fade-y:120px;/);
     expect(css).toMatch(/product-frame\{--fade-x:120px;--fade-y:120px\}/);
   });
 });
