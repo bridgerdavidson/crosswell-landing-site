@@ -89,6 +89,9 @@ export const agenda = {
     { time: "10:00", title: "Cholla Creek payoff call" },
     { time: "1:00", title: "Underwriting call, Mesa Verde Devco" },
     { time: "3:30", title: "Sign the September report" },
+    { time: "5:00", title: "Screen the Verde Valley lots" },
+    { time: "6:00", title: "Draft the investor note" },
+    { time: "6:30", title: "Cactus Wren site visit, confirm" },
   ] satisfies AgendaItem[],
   team: [
     {
@@ -121,12 +124,19 @@ export const agenda = {
     {
       name: "Jordan Reyes",
       initials: "JR",
-      items: [{ title: "Builder's risk renewals, October" }, { title: "Investor brief, Thursday" }],
+      items: [
+        { title: "Builder's risk renewals, October" },
+        { title: "Investor brief, Thursday" },
+        { title: "Rate lock review, Sandstone Villas" },
+      ],
     },
   ] satisfies TeamRow[],
   unassigned: [
     { title: "Countersign the Ocotillo Commons term sheet" },
     { title: "Confirm the Sedona survey date" },
+    { title: "Renew the Yucca Flats insurance" },
+    { title: "Book the Pinnacle Peak appraisal" },
+    { title: "File the Camelback title report" },
   ] satisfies { title: string }[],
   rocks: [
     { title: "Deploy $6M into new loans", pct: 70, note: "on pace" },
@@ -139,6 +149,8 @@ export const agenda = {
     { title: "Move servicing to the new platform", pct: 100 },
     { title: "Close the Ironline construction loan", pct: 100 },
     { title: "Hire the loan ops lead", pct: 100 },
+    { title: "Close the Copper Sky loan", pct: 100 },
+    { title: "Finish the servicing handbook", pct: 100 },
   ] satisfies Rock[],
   syncedTo: "Asana",
 };
