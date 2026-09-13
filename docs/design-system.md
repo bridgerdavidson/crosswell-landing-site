@@ -36,8 +36,8 @@ carries them). Nothing else on the page is amber, red, or blue.
 - One emphasis on the whole page: Newsreader italic, 400, in the accent
   colour (fern-deep on light ground, fern-soft on dark), over a word or a
   clause. It appears in four places: the hero subline's span (at the body
-  size), what a business loses' four fix clauses and the run's closing
-  line's "Core" (on the accent rung), and the closing bookend's "Give it
+  size), what a business loses' four fix clauses and the brain section's
+  lead-in's "Core" (on the accent rung), and the closing bookend's "Give it
   a memory." (on the display). Nothing else on the page's own text is
   italic or emphasized; an accent line is otherwise roman, 400, full ink.
 - Sans: Instrument Sans. Everything else, page and product. Tabular
@@ -64,7 +64,7 @@ carries them). Nothing else on the page is amber, red, or blue.
 |---|---|---|
 | 72 (52 at 768) | 1.0 | display: type-display, Newsreader, 400, -0.025em, ink; balanced wrap |
 | 48 (36 at 768) | 1.05 | section title and chapter claim: type-h2, Newsreader, 400, -0.02em, ink; balanced wrap. Also the phone menu's link text. Stat numerals: type-h2 in fern-deep |
-| 24 | 1.3 | lede: type-body, Instrument Sans, 400, -0.01em, ink 80%; pretty wrap. Accent line: type-accent, Newsreader, 400, -0.01em, roman, full ink: why Crosswell's pull quote, the industries row, what a business loses' ledger lines, the run's closing line; its only emphasis is the page's one emphasis (italic, fern-deep). Product greeting: product-greeting, Newsreader, 400, -0.01em. Product number: product-num, Instrument Sans, 500, -0.01em |
+| 24 | 1.3 | lede: type-body, Instrument Sans, 400, -0.01em, ink 80%; pretty wrap. Accent line: type-accent, Newsreader, 400, -0.01em, roman, full ink: why Crosswell's pull quote, the industries row, what a business loses' ledger lines, the brain section's lead-in ("Behind the chat is the Core."); its only emphasis is the page's one emphasis (italic, fern-deep). Product greeting: product-greeting, Newsreader, 400, -0.01em. Product number: product-num, Instrument Sans, 500, -0.01em |
 | 20 | 1.3 | card and person title: type-h3, Instrument Sans, 600, -0.01em, ink. Product panel title: product-title, Newsreader, 400. Product detail number: product-num-sm, Instrument Sans, 500, -0.01em |
 | 15 | 1.6 | body: type-text, Instrument Sans, 400, 0, ink 70%, everywhere running text, card text, bios, the stats' lines, and the values' lines sit. The nav links (500, ink 75%), every page button (600), the hero subline (ink 70%; its emphasis span is the page's one emphasis), the footer |
 | 13 | 1.5 | label: type-label, Instrument Sans, 500, 0, fern-deep. Caption and source: type-caption, 400, ink 60%. Product UI: product-shell, 400. Product buttons (600). The note card's lines, title, and summary |
@@ -203,7 +203,9 @@ carries them). Nothing else on the page is amber, red, or blue.
 ## Motion
 
 - Curve: cubic-bezier(0.22, 1, 0.36, 1). Entrances 0.6 to 0.9s. Staggers
-  60 to 90ms. Nothing under 300ms except hover (150 to 200ms).
+  60 to 90ms. Nothing under 300ms except hover (150 to 200ms) and one
+  site control: chapter 06's swatch press, whose pressed border crosses
+  over 0.2s (the same transition carries the press the cycle moves).
 - Scroll reveals trigger with the block's top at about 70% of the viewport,
   once, and every reveal group on the page steps by the site's one 80ms
   step (a chapter's frame follows its band by 80; a row of cards steps 0,
@@ -326,11 +328,15 @@ carries them). Nothing else on the page is amber, red, or blue.
   128 below (96 and 96 on phones); the run's light sections pad 128 and
   the two dark bands (the chat chapter's and the closing) 160 on both
   sides (96 on phones), so every pair of neighbours adds up to 288. The
-  run's closing line ("Behind the chat is the Core.") sits the beat below
-  the fictional-company line and the beat above the brain section's label.
-  Every other space inside a section is smaller than the hang: 64 from a
-  card row to how we start's closing line, 32 from the industries' hairline
-  to their row, 24 on each side of a ledger hairline. The hero at lg is
+  brain section opens with a lead-in, the line "Behind the chat is the
+  Core." (an accent line at x 48): the beat (288, 192 on phones) under the
+  run's last content, the fictional-company line, and 64 (48 on phones)
+  over the section's label, a space inside the section, so the line and
+  the section read as one block. Every other space inside a section is
+  smaller than the hang: 64 from the lead-in to the brain section's label
+  and from a card row to how we start's closing line (48 on phones for
+  both), 32 from the industries' hairline to their row, 24 on each side of
+  a ledger hairline. The hero at lg is
   not the viewport's height, and it shares the first frame with the run
   intro: 80 under the fixed nav, 128 to the eyebrow, the words (the display
   168 under the nav), the hero's edge at the buttons set 32 into the run's
@@ -376,17 +382,21 @@ carries them). Nothing else on the page is amber, red, or blue.
   business loses' ledger rows sit 24 above and below each hairline.
 - The brain stage at lg is the right column's width at 5:4, the still's
   own viewBox aspect, so the still and the live field draw the same disc.
-  It hangs from the section's top without adding to the section's height
+  It hangs from the split's top without adding to the section's height
   (the words set the row) and is lifted 3.5 percent of its own height, so
   in every phase of the sequence the drawing lies between the label's top
-  and the words' last line; the section's first ink is its label and its
-  last is the caption. Below lg it hangs 128 under the words, square on
+  and the words' last line; the section's first ink is its lead-in, the
+  split's first is its label, and the section's last is the caption. Below lg it hangs 128 under the words, square on
   phones, its margins cancelling the drawing's inset in its box (13
   percent above, 15 below).
-- Running text (15) holds a measure of at most 448, about 65 characters,
-  wherever it sits (who it's for, the three splits, how we start's closing
-  line); card bodies, the values' columns, and the stats' lines (40ch) are
-  held narrower by their own boxes.
+- No 15px line runs past 448, about 65 characters, at any width. Running
+  text holds that measure wherever it sits (who it's for, the three
+  splits, how we start's closing line), and so does every card body, team
+  bio, and values column, capped inside its box, so the boxes keep their
+  widths and edges on the grid while their text stops at 448 (at 1728 a
+  card is 528 wide and its body still 448); the stats' lines hold 40ch.
+  The one 15px line allowed past it is the hero's subline, a single line
+  by the bar's mechanism 6 (582 wide).
 - Cards and ledgers on the grid: why Crosswell's, how we start's, and the
   team's card rows run three across the container, 24 apart (432 wide at
   1440, 528 at 1728); the values' three columns take the same lines;
@@ -396,8 +406,11 @@ carries them). Nothing else on the page is amber, red, or blue.
 - Bands: the stats open the parchment band why Crosswell sits in (one
   band, the beat between the stats' sources and the label); how we start
   and the team are parchment bands; the closing is the charcoal band and
-  the footer charcoal-deep. Every band edge carries exactly one hairline
-  (ink 8 on the light bands, ivory 10 on the footer).
+  the footer charcoal-deep. Every light band's edge carries exactly one
+  hairline (ink 8). A dark band's edge carries none: the change of ground
+  from ivory or parchment to charcoal is the edge (the chat chapter's
+  band, the closing band's top). The footer's top, charcoal-deep against
+  the closing band's charcoal, carries one ivory 10 hairline.
 - Cards are one object across the page: why Crosswell's three points, how
   we start's three engagements, beyond the Core's two, the team's three.
   Rounded-2xl, a warm gray 40 hairline, shadow-whisper, 32 inside (28 on
