@@ -22,8 +22,9 @@ checkable by looking at rendered output. Source of truth for tokens is
 
 No other hue on the page, with one exception: chapter 06's swatch picker
 shows the fictional brands' own colors as small dots, and its alternate
-accent colors live as variables scoped to that fragment's shell. Nothing
-else on the page is amber, red, or blue.
+accent colors live as variables scoped to that fragment's shell (set and
+tweened inline on the shell from the dataset, so the built CSS never
+carries them). Nothing else on the page is amber, red, or blue.
 
 ## Type
 
@@ -140,7 +141,16 @@ else on the page is amber, red, or blue.
   element. Lit per chapter: 01 the draw
   approval, 02 the Draw 4 row, 03 the chat panel (the dashboard behind it
   is periphery at 40), 04 the detail panel, 05 the inbox agent's row, 06
-  the top bar.
+  the whole mini dashboard (the carve-out below).
+- Chapter 06's carve-out, the run's one exception to one lit element: the
+  chapter is about whose product it is, so its lit element is the entire
+  mini dashboard, the shell's content as one lit region (full ink, the
+  weights, and the accent on every mark: the buttons, the sparkline, the
+  receipts, the avatar, the rail's current box), and a swatch retints all
+  of it. The region has no surface of its own (a parchment shell would read
+  as a box on the page); its one parchment surface stays the top bar's
+  inset card, where the name lives. The calendar column inside the right
+  fade stays periphery at 40. Every other chapter keeps one lit element.
 - Chrome inside the product: a 48px rail (16px icons in 32px boxes, 12
   apart, the active one in accent wash, the rest on the label tone) and a
   48px top bar (company name left, 28px avatar right), so the top bar's
@@ -152,6 +162,26 @@ else on the page is amber, red, or blue.
   at the row's left, on the label size, above the bar, so every number
   reads before the frame's right fade whatever the width; only the bars'
   tails dissolve.
+- Chapter 04's detail panel floats over the board at lg (360 wide, inset
+  24 from the top, ending 24 before the right fade, at most 632 tall so its
+  bottom stays 24 above the bottom fade; its thread scrolls past that) and
+  lives in the selected card's list item, out of the flow, so below lg the
+  same panel sits in the flow beneath the card, under a hairline, inside
+  the lit card. Below lg the board is a snap scroller: columns at real
+  scale (200 wide, three across where the width allows, one and the next
+  peeking at 390), opened on the selected card's stage, the previous
+  column's tail dissolving in the scroller's 24 of padding and the next
+  column's peek over the scroller's own 40 fade (the product's cut, not
+  the frame's; double stops). A card with no full detail on file shows its
+  own fields (place and kind, loan amount and rate) and every prompt on it
+  gets the dataset's one generic answer.
+- Chapter 05's rows are controls that open their last run's log (three
+  lines, one row open at a time; the inbox's open in the finished state).
+  A status mark's slot holds the faces the live moment plays through: a
+  turning ring while an agent runs (the one loop the run allows, 1.2s a
+  turn, linear), a drawn check when it is done, a dot otherwise. The
+  hand-off row the composer adds is in the markup, hidden, until "Hand it
+  off" lands it.
 - Inside a frame the only text is what the product would show its own
   user. No informational pills, headers, captions, or feature labels
   inside a frame. Every description sits outside: the claim, the body, the
@@ -202,14 +232,52 @@ else on the page is amber, red, or blue.
   moves. The input is never a field: nothing accepts typing, and it reads
   as the composer with a message ready. Replay collapses the thread and
   composes the first question again.
+- Chapter 04 deals in: the stage headers rise 90ms apart from 0.3, the
+  cards rise column by column (column i from 0.4 + 0.15 i, 60ms apart
+  within a column, on their faces so the item never carries a transform),
+  the selected card's highlight arrives at 1.2, the detail panel slides in
+  from the right at 1.3 (0.8s; below lg it expands in place beneath the
+  card), and "Who is this?" fires on its own at 2.3: the chat mechanic's
+  pieces (the prompt lifts into the mini thread as a bubble, the answer's
+  row opens and the answer streams in word chunks every 300ms, the receipts
+  rise 80ms apart), done at about 6.7. Any card opens its panel (0.35 out,
+  0.7 back) and asks "Who is this?" after a 0.5s beat; any button fires its
+  prompt into the thread; a click while an exchange runs waits its turn
+  and plays 0.4s after. Replay resets the board to Redrock and deals again.
+- Chapter 05's live moment, about six seconds: the title rises at 0.3, the
+  rows slide in 80ms apart from 0.45, the inbox agent's "Reading 14 new"
+  ticks down to 1 (13 steps over 2.4s from 0.9), the follow-up agent goes
+  scheduled to running at 1.6 (its dot becomes a turning ring, its status
+  swaps under a 0.3s fade) and the count reads 3 running, the screening
+  agent's check pops in at 2.7 (scale 0.4 to 1 as it draws), the inbox
+  settles at 3.4 (ring to drawn check, "3 drafts ready for your yes", its
+  last result rises, 2 running), the follow-up agent settles at 4.2 (ring
+  to dot, "1 draft waiting", 1 running), and the inbox row's log opens at
+  4.8 with its lines rising 80ms apart; still at 5.8. "Hand it off" clears
+  the composer to its placeholder under a fade, lands the running row for
+  the task under the roster (0.6 open, 0.7 slide), and ticks the count up;
+  the button is then presentation only. Replay resets the roster and plays
+  the moment again. The filing agent's ring, and any ring an agent is
+  running on, keeps turning after the moment resolves.
+- Chapter 06 cycles once: from the frame reaching the unified depth the
+  swatches take turns every 2.5s (Bellwether at 2.5, Northline at 5.0,
+  Copperfield at 7.5) and stop back on Saguaro at 10.0, Replay following.
+  A swatch retints: the shell's four accent variables cross-fade over
+  0.5s (GSAP tweens them inline on the shell, so nothing outside the frame
+  can read them), the company name, the initials and the greeting swap
+  under a 0.3s fade, and the picker's pressed state moves; a click during
+  the cycle stops it. Under reduced motion a swatch sets instantly (a site
+  control still works); no-JS shows Saguaro.
 - A mark a sequence turns (a watch dot into a drawn check) lives in one
   14px slot (product-mark): the dot exists only under the .js gate with
   motion, the check carries data-seq, so no-JS and reduced motion show the
   check and nothing shifts when it draws.
 - Reduced motion and no-JS both get the finished state of everything:
   no pin, no hold, every check drawn, 70, the chip, the first exchange
-  complete with its chips, the input on its placeholder.
-- Nothing loops except the hero rotation and a running agent's progress.
+  complete with its chips, the input on its placeholder, the board dealt
+  with Redrock open and "Who is this?" answered, the roster settled with
+  the inbox log open and the composer holding its task, Saguaro's colors.
+- Nothing loops except the hero rotation and a running agent's ring.
 - Two kept exceptions to the band and the curve, both out of the
   redesign's scope: the hero's page-load entrance (the display's 0.95s
   rise and the woven core's 1.2s decode-gated fade) and the brain

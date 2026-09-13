@@ -1231,6 +1231,107 @@ body {
   border-radius: 50%;
 }
 
+/* chapter 04's board. At lg five columns grow across the overflowing
+   shell and the detail panel floats over them (it lives in the selected
+   card's list item, out of the flow, and that item sits above the other
+   cards so the panel is never under a later column). Below lg the board is
+   a snap scroller: columns at real scale, three across where the width
+   allows, one and the next peeking at 390, the peek dissolving over the
+   scroller's own short fade and the previous column's tail dissolving in
+   the padding (the frame cuts nothing here, the product does); the detail
+   sits in the flow beneath the selected card. */
+.product-card-face {
+  display: block;
+  width: 100%;
+  padding: 0;
+  text-align: left;
+}
+
+.product-card-face:not([aria-hidden]),
+.product-button:not([aria-hidden]),
+.product-row:not([aria-hidden]),
+.product-swatch {
+  cursor: pointer;
+}
+
+.product-card-face:focus-visible,
+.product-button:focus-visible,
+.product-row:focus-visible {
+  outline: 2px solid var(--accent-deep);
+  outline-offset: 2px;
+  border-radius: 0.5rem;
+}
+
+@media (min-width: 1024px) {
+  /* the open card is a flex item, so z-index lifts it above the other
+     cards without positioning it (the panel keeps the content column as
+     its containing block) */
+  .product-card-open {
+    z-index: 1;
+  }
+  .product-detail {
+    display: flex;
+    width: 360px;
+    max-height: calc(800px - 24px - var(--fade-y) - 24px);
+    flex-direction: column;
+    padding: 24px;
+  }
+  .product-detail [data-tiles="2"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1023px) {
+  .product-board {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 24px;
+    scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 24px, #000 calc(100% - 40px), transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0, #000 24px, #000 calc(100% - 40px), transparent 100%);
+  }
+  .product-board::-webkit-scrollbar {
+    display: none;
+  }
+  .product-board > section {
+    flex: 0 0 auto;
+    width: max(200px, calc((100% - 32px) / 3));
+    scroll-snap-align: start;
+  }
+  .product-detail {
+    flex: none;
+    width: auto;
+    margin: 12px 0 0;
+    padding: 12px 0 0;
+    border-top: 1px solid var(--line);
+    border-radius: 0;
+    overflow: visible;
+  }
+}
+
+/* a thread on the light ground */
+.product-shell:not(.product-shell-dark) .product-thread {
+  scrollbar-color: rgba(26, 25, 21, 0.15) transparent;
+}
+
+/* chapter 05's rows are controls that open their logs */
+.product-row {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* chapter 06's carve-out: the whole mini dashboard is the lit region (full
+   ink, the accent on every mark), with no surface of its own, so the frame
+   never reads as a box; its one parchment surface stays the top bar's */
+.product-lit-region {
+  background: transparent;
+}
+
+.product-lit .product-rail-active {
+  background: var(--accent-wash);
+  color: var(--accent-deep);
+}
+
 /* ---------- Product run: choreography ----------
    A chapter's sequence plays once on scroll-in and then holds still. The
    elements that play in are hidden only when JS is present (the head
@@ -1341,6 +1442,26 @@ body {
   display: flex;
 }
 
+/* chapter 05's status marks: the faces a live moment plays through share
+   the mark's 14px slot. Without JavaScript only the settled face shows;
+   under the .js gate the first live face shows and the settled face,
+   carrying data-seq, waits for the sequence. */
+.product-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-face:not(.product-face-final) {
+  opacity: 0;
+}
+
+.js .product-face-first {
+  opacity: 1;
+}
+
 /* chapter 03's thread grows piece by piece under its sequence (the panel
    hugs it); at lg it stops before the frame's bottom fade and scrolls, so
    the lit panel never reaches the cut */
@@ -1381,6 +1502,9 @@ body {
     top: auto;
   }
   .js .product-mark-pre {
+    opacity: 0;
+  }
+  .js .product-face-first {
     opacity: 0;
   }
 }

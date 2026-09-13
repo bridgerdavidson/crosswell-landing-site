@@ -18,8 +18,17 @@ export type Stage = { name: string; cards: Card[] };
 export type Prompt = { label: string; answer: string; receipts: string[] };
 export type Detail = { since: string; lastTouch: string; numbers: { label: string; value: string }[]; prompts: Prompt[] };
 export type AgentStatus = { kind: "running" | "waiting" | "done" | "scheduled"; text: string };
-export type Agent = { id: string; name: string; job: string; status: AgentStatus; lastResult: string; log: string[] };
-export type Swatch = { id: string; company: string; accent: string; accentDeep: string; accentSoft: string; accentWash: string };
+/* `live` is what the roster showed before the status settled, in order: chapter 05's six-second moment plays through it */
+export type Agent = { id: string; name: string; job: string; status: AgentStatus; lastResult: string; log: string[]; live?: AgentStatus[] };
+export type Swatch = {
+  id: string;
+  company: string;
+  user: { name: string; initials: string; greeting: string };
+  accent: string;
+  accentDeep: string;
+  accentSoft: string;
+  accentWash: string;
+};
 
 export const company = {
   name: "Saguaro Capital",
@@ -322,6 +331,12 @@ export const pipeline = {
       ],
     },
   } satisfies Record<string, Detail>,
+  /* a card with no full detail on file: its panel is built from the card's
+     own fields, and every prompt gets this one answer */
+  generic: {
+    answer: "Only the deal record so far: the basics on the card, and no touches logged yet.",
+    receipts: ["deal record"],
+  },
 };
 
 export const agents = {
@@ -333,6 +348,7 @@ export const agents = {
       status: { kind: "done", text: "3 drafts ready for your yes" },
       lastResult: "14 messages read, 11 filed, 3 drafted",
       log: ["6:02 am  Read 14 new messages", "6:05 am  Filed 11 to their loans", "6:09 am  Drafted 3 replies, waiting"],
+      live: [{ kind: "running", text: "Reading 14 new" }],
     },
     {
       id: "follow-up",
@@ -341,6 +357,10 @@ export const agents = {
       status: { kind: "waiting", text: "1 draft waiting" },
       lastResult: "Redrock Flips, dormant 21 days at term sheet",
       log: ["6:10 am  Checked 11 open deals", "6:10 am  One past the 14 day mark", "6:12 am  Drafted a check-in, waiting"],
+      live: [
+        { kind: "scheduled", text: "Runs at 6:10 am" },
+        { kind: "running", text: "Checking 11 open deals" },
+      ],
     },
     {
       id: "report",
@@ -376,14 +396,49 @@ export const agents = {
     placeholder: "Give an agent a task",
     task: "Research Two Palms Development's track record",
     button: "Hand it off",
+    /* the row the hand-off adds to the roster, running from the moment it lands */
+    status: { kind: "running", text: "Started just now" } satisfies AgentStatus,
   },
 };
 
 export const brand = {
   swatches: [
-    { id: "saguaro", company: "Saguaro Capital", accent: "#4e7a4e", accentDeep: "#3d633d", accentSoft: "#93b393", accentWash: "#e4ead8" },
-    { id: "bellwether", company: "Bellwether Logistics", accent: "#4f6d8a", accentDeep: "#3e5770", accentSoft: "#9db2c4", accentWash: "#dfe6ec" },
-    { id: "northline", company: "Northline Health", accent: "#3f7a78", accentDeep: "#325f5e", accentSoft: "#8fb8b6", accentWash: "#dbe8e7" },
-    { id: "copperfield", company: "Copperfield Construction", accent: "#9c5a3c", accentDeep: "#7e4630", accentSoft: "#c9a08d", accentWash: "#efe0d6" },
+    /* each fictional company has its own person at the top of the morning page */
+    {
+      id: "saguaro",
+      company: "Saguaro Capital",
+      user: { name: "Morgan Gray", initials: "MG", greeting: "Good morning, Morgan." },
+      accent: "#4e7a4e",
+      accentDeep: "#3d633d",
+      accentSoft: "#93b393",
+      accentWash: "#e4ead8",
+    },
+    {
+      id: "bellwether",
+      company: "Bellwether Logistics",
+      user: { name: "Elena Marsh", initials: "EM", greeting: "Good morning, Elena." },
+      accent: "#4f6d8a",
+      accentDeep: "#3e5770",
+      accentSoft: "#9db2c4",
+      accentWash: "#dfe6ec",
+    },
+    {
+      id: "northline",
+      company: "Northline Health",
+      user: { name: "Owen Castellano", initials: "OC", greeting: "Good morning, Owen." },
+      accent: "#3f7a78",
+      accentDeep: "#325f5e",
+      accentSoft: "#8fb8b6",
+      accentWash: "#dbe8e7",
+    },
+    {
+      id: "copperfield",
+      company: "Copperfield Construction",
+      user: { name: "Ray Holloway", initials: "RH", greeting: "Good morning, Ray." },
+      accent: "#9c5a3c",
+      accentDeep: "#7e4630",
+      accentSoft: "#c9a08d",
+      accentWash: "#efe0d6",
+    },
   ] satisfies Swatch[],
 };

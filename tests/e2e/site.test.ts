@@ -82,6 +82,9 @@ describe("built css", () => {
     // below lg a frame takes its product's height, so the only mask is the
     // right fade on a shell that still overflows the frame
     has("product-frame", "x");
+    // chapter 04's phone scroller fades its own two edges; the minifier
+    // keeps both black positions as one double-position stop
+    expect(css).toMatch(/product-board\{[^}]*#000 24px calc\(100% - 40px\)/);
     expect(css).toMatch(/product-frame\{--fade-x:160px;--fade-y:120px;/);
     expect(css).toMatch(/product-frame\{--fade-x:120px;--fade-y:120px\}/);
   });
@@ -169,15 +172,20 @@ describe("chapter 04", () => {
 
 describe("chapter 05", () => {
   it("renders five agents and the hand-off", async () => {
-    const r = await withPage(async (page) => {
-      await page.goto(site.url, { waitUntil: "networkidle" });
-      const run = page.locator("[data-chapter='05']");
-      return {
-        rows: await run.locator("[data-agent]").count(),
-        running: await run.getByText("1 running").count(),
-        handoff: await run.getByText("Hand it off").count(),
-      };
-    });
+    // the settled roster; under motion the count opens on the live
+    // moment's value and ticks down to this one
+    const r = await withPage(
+      async (page) => {
+        await page.goto(site.url, { waitUntil: "networkidle" });
+        const run = page.locator("[data-chapter='05']");
+        return {
+          rows: await run.locator("[data-agent]").count(),
+          running: await run.getByText("1 running").count(),
+          handoff: await run.getByText("Hand it off").count(),
+        };
+      },
+      { reducedMotion: true }
+    );
     expect(r.rows).toBe(5);
     expect(r.running).toBe(1);
     expect(r.handoff).toBe(1);
@@ -400,6 +408,56 @@ describe("resilience", () => {
     expect(motion.checks).toEqual(["0", "0"]);
     expect(motion.input).toBe("What's at risk this week?");
     expect(motion.send).toBe(0);
+  });
+
+  it("holds chapters 04 to 06 finished under reduced motion, and composes them under motion", async () => {
+    const read = () => {
+      const detail = document.querySelector("[data-chapter='04'] [data-detail]")!;
+      const roster = document.querySelector("[data-chapter='05']")!;
+      return {
+        panel: getComputedStyle(detail).opacity,
+        rows: [...detail.querySelectorAll("[data-grow]")].map((g) => g.getBoundingClientRect().height > 0),
+        prompt: (detail.querySelector("[data-prompt]") as HTMLButtonElement).tabIndex,
+        card: (document.querySelector("[data-chapter='04'] .product-card-face") as HTMLButtonElement).tabIndex,
+        count: roster.querySelector("[data-running]")!.textContent,
+        inbox: roster.querySelector("[data-agent='inbox'] [data-status]")!.textContent,
+        inboxLog: getComputedStyle(roster.querySelector("[data-agent='inbox'] [data-log]")!).display,
+        handoffRow: getComputedStyle(roster.querySelector("[data-handoff-row]")!).display,
+        accent: getComputedStyle(document.querySelector("[data-chapter='06'] .product-shell")!).getPropertyValue("--accent").trim(),
+        pressed: document.querySelector("[data-chapter='06'] button[aria-pressed='true']")!.textContent,
+      };
+    };
+    const reduced = await withPage(
+      async (page) => {
+        await page.goto(site.url, { waitUntil: "networkidle" });
+        return page.evaluate(read);
+      },
+      { reducedMotion: true }
+    );
+    expect(reduced.panel).toBe("1");
+    expect(reduced.rows).toEqual([true, true, true]);
+    expect(reduced.prompt).toBe(-1);
+    expect(reduced.card).toBe(-1);
+    expect(reduced.count).toBe("1");
+    expect(reduced.inbox).toBe("3 drafts ready for your yes");
+    expect(reduced.inboxLog).toBe("grid");
+    expect(reduced.handoffRow).toBe("none");
+    expect(reduced.accent).toBe("#4e7a4e");
+    expect(reduced.pressed).toContain("Saguaro Capital");
+    const motion = await withPage(async (page) => {
+      await page.goto(site.url, { waitUntil: "networkidle" });
+      return page.evaluate(read);
+    });
+    expect(motion.panel).toBe("0");
+    expect(motion.rows).toEqual([false, false, false]);
+    expect(motion.prompt).toBe(-1);
+    expect(motion.card).toBe(0);
+    expect(motion.count).toBe("2");
+    expect(motion.inbox).toBe("Reading 14 new");
+    expect(motion.inboxLog).toBe("none");
+    expect(motion.handoffRow).toBe("none");
+    expect(motion.accent).toBe("#4e7a4e");
+    expect(motion.pressed).toContain("Saguaro Capital");
   });
 
   it("shows reveals immediately under reduced motion", async () => {
