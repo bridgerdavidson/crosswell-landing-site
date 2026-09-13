@@ -286,19 +286,35 @@ carries them). Nothing else on the page is amber, red, or blue.
 ## Layout
 
 - Content width max-w-6xl (1152px), gutters px-6, so text sits at x 168 at
-  1440. The company half's split sections (the brain section, what a
-  business loses, beyond the Core) share one grid: two equal columns 64
-  apart at lg (520 / 64 / 520 at 1440 and 1728; the brain section's text
-  centers on its stage, the other two top-align), stacked 48 apart below.
-  The text column is the lede's measure. Stacked section heads set the
-  title at max-w-3xl (768) and the lede at max-w-2xl (672): every title
-  holds to two lines except the values' vision line (three), every lede to
-  two or three lines with a last line of several words; a split lede runs
-  as long as its copy asks (six lines for the brain section and what a
-  business loses at 1440) and its last line still lands.
+  1440.
+- One title band carries every titled section on the page, the run's six
+  chapters and the company half's heads alike, built once (`Band`) so the
+  two halves cannot drift: the label and the title on the left (the title
+  at most 672 wide), the lede on the right with its cap height on the
+  title's, two equal columns 80 apart at lg and a 576 lede column at the
+  container's right edge at xl, nothing stacked under the title; below lg
+  the three stack. In the run the band spans 1344 (688 / 80 / 576 at
+  1440); on the company half's container it is 448 / 80 / 576 at 1440 and
+  1728. Who it's for, why Crosswell, how we start, the values, the team,
+  and insights take it. A head with no lede (why Crosswell, how we start)
+  leaves the right column empty; running text after a lede (who it's for)
+  follows the lede in its column. In the 448 column titles run one to
+  three lines (the values' vision line five), wrapped balanced, and ledes
+  two or three. What the band introduces (the industries row, the pull
+  quote, the cards, the values' columns) hangs 64 below the band at the
+  container's full width.
+- The company half's three split sections (the brain section, what a
+  business loses, beyond the Core) keep a split instead, on one grid: two
+  equal columns 64 apart at lg (520 / 64 / 520 at 1440 and 1728; the brain
+  section's text centers on its stage, the other two top-align), stacked
+  48 apart below, the label, title, and lede stacked in the text column. A
+  split lede is the paragraph's first sentence, two or three lines (two
+  for the brain section and what a business loses, three for beyond the
+  Core), and the rest of the paragraph follows it as running text. What a
+  business loses' ledger rows sit 24 above and below each hairline.
 - The beat, hero to footer, is one unit of 32. Every section, the run's
   included, pads 128 above and below its content (96 on phones), so
-  neighbours' content sits 256 apart. Inside a section the title block
+  neighbours' content sits 256 apart. Inside a section the title band
   hangs its content by 64 (48 on phones): the cards, the columns, the
   industries row under its hairline, the pull quote, the closing line
   under a card row, the stage. The run's frames hang 192 because a frame
@@ -328,9 +344,10 @@ carries them). Nothing else on the page is amber, red, or blue.
   follows the viewport inside fixed 48px gutters at lg (1344 wide at 1440,
   93 percent; 1632 at 1728), so the product runs gutter to gutter at every
   width. A chapter is a band and a frame that share both edges. The band
-  is one row in two columns spanning the run: label and claim on the left
-  (the claim at most 672 wide), the lede in a 576 column at the run's
-  right edge with its cap height on the claim's, nothing stacked under the
+  (the page's one title band) is one row in two columns spanning the run:
+  label and claim on the left (the claim at most 672 wide), the lede in a
+  576 column at the run's right edge with its cap height on the claim's,
+  nothing stacked under the
   claim. 192 from the band to the frame (128 below lg, at least half the
   band), 16 from the frame
   to the caption row, 288 between chapters (192
