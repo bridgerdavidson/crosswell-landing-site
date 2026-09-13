@@ -5,30 +5,11 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { chat, today } from "@/lib/saguaro";
 import { Chapter, Dot, Frame, Mark, Rail, Receipt, SendButton, Tile, TopBar, inert } from "../shared";
-import { ease, primeDraw, readyReplay } from "../shared/useSequence";
+import { CHUNK_EVERY, chunk, ease, grow, primeDraw, readyReplay, rise, tick } from "../shared/useSequence";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const MOTION = "(prefers-reduced-motion: no-preference)";
-/** the answer arrives in chunks of two to four words, one every 300ms */
-const CHUNK_EVERY = 0.3;
-
-/** splits an answer into word chunks, breaking after punctuation when it can */
-function chunk(text: string) {
-  const words = text.split(" ");
-  const out: string[] = [];
-  let cur: string[] = [];
-  words.forEach((w, i) => {
-    cur.push(w);
-    const last = i === words.length - 1;
-    const stop = /[.,;:]$/.test(w);
-    if (last || cur.length >= 4 || (stop && cur.length >= 2)) {
-      out.push(cur.join(" ") + (last ? "" : " "));
-      cur = [];
-    }
-  });
-  return out;
-}
 
 type Ex = {
   root: HTMLElement;
@@ -169,17 +150,6 @@ function useChatMotion(frame: RefObject<HTMLDivElement | null>, replay: RefObjec
         used.clear();
         live(send, false);
         setInput(chat.placeholder, false);
-      };
-
-      const grow = (tl: gsap.core.Timeline, wrap: HTMLElement, at: number) =>
-        tl.to(wrap, { height: "auto", duration: 0.6, onComplete: () => gsap.set(wrap, { clearProps: "height" }) }, at);
-      const rise = (tl: gsap.core.Timeline, els: HTMLElement | HTMLElement[], at: number, y: number, stagger = 0) =>
-        tl.fromTo(els, { opacity: 0, y }, { opacity: 1, y: 0, duration: 0.7, stagger }, at);
-      const tick = (tl: gsap.core.Timeline, mark: HTMLElement, path: SVGPathElement, len: number, at: number) => {
-        const pre = mark.parentElement!.querySelector(".product-mark-pre");
-        tl.to(pre, { opacity: 0, scale: 0.6, duration: 0.3 }, at);
-        tl.set(mark, { opacity: 1 }, at + 0.1);
-        tl.fromTo(path, { strokeDashoffset: len }, { strokeDashoffset: 0, duration: 0.45 }, at + 0.1);
       };
 
       const finish = () => {
