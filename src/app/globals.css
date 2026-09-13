@@ -433,12 +433,22 @@ body {
 .brain-card-context { font-size: 12px; line-height: 1.4; color: rgba(241, 238, 230, 0.6); margin: 8px 0 0; }
 .brain-card-tags { position: absolute; left: 0; bottom: 0; display: flex; gap: 6px; }
 .brain-card-tag { font-size: 12px; line-height: 1.4; font-weight: 600; padding: 2px 9px; border-radius: 6px; background: rgba(78, 122, 78, 0.28); color: rgba(241, 238, 230, 0.92); opacity: 0; }
+/* Replay takes the chapter Replays' light-ground treatment (12 / 600,
+   fern-deep). Its box sits inside the section's content: its right edge's
+   ink on the column's right edge, its bottom on the words' last line at lg
+   (the stage hangs 96.5 percent of its height below the split's top, the
+   words end 27 above that at 1440 and 1728) and on the drawing's bottom
+   below lg (the stage's -15 percent margin), so the section's last ink is
+   still where the beat says */
 .brain-replay {
-  position: absolute; right: 8px; bottom: 8px;
-  font-size: 12px; line-height: 1.4; font-weight: 600; color: var(--color-fern-soft);
+  position: absolute; right: -8px; bottom: 15%;
+  font-size: 12px; line-height: 1.4; font-weight: 600; color: var(--color-fern-deep);
   background: transparent; border: 0; cursor: pointer; padding: 6px 8px; opacity: 0;
   transition: opacity 0.4s ease;
   pointer-events: none;
+}
+@media (min-width: 1024px) {
+  .brain-replay { bottom: 6%; }
 }
 .brain-stage[data-mode="live"] .brain-replay { opacity: 1; pointer-events: auto; }
 .brain-replay:focus-visible { outline: 2px solid var(--color-fern-deep); outline-offset: 2px; border-radius: 6px; }
@@ -448,8 +458,7 @@ body {
   .brain-card-raw,
   .brain-card-sorted { inset: 0 0 32px; }
   .brain-replay {
-    right: 2px;
-    bottom: 0;
+    right: -14px;
     padding: 15px 14px;
   }
 }
