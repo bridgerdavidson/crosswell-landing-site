@@ -92,9 +92,10 @@ carries them). Nothing else on the page is amber, red, or blue.
   1728, and 1920. Card rows go three across only from a width where every
   title holds its line and every body stays within six lines, found by a
   sweep in 4px steps from 640 to 1920: why Crosswell's from 1040 (its first
-  body runs seven from 1024 to 1032), how we start's from lg (1024), the
-  team's and the values' from md (768, the team's text block padding 20
-  from md to lg).
+  body runs seven from 1024 to 1032), how we start's from 1200 ("The Core
+  plus the custom layer" runs two lines up to 1192), the team's and the
+  values' from md (768, the team's text block padding 20 from md to lg).
+  Every title here holds one line wherever its row runs three across.
 - Secondary text never drops below ink at 60 percent (ivory at 60 on dark
   ground): captions, sources, the fictional-company line, the footer, and
   the label index included. Inside the product, dimming is a tone (a
@@ -439,7 +440,7 @@ carries them). Nothing else on the page is amber, red, or blue.
   by the bar's mechanism 6 (582 wide).
 - Cards and ledgers on the grid: why Crosswell's, how we start's, and the
   team's card rows run three across the container, 24 apart (432 wide at
-  1440, 528 at 1728), why Crosswell's from 1040, how we start's from lg,
+  1440, 528 at 1728), why Crosswell's from 1040, how we start's from 1200,
   the team's from md; below that they stack;
   the values' three columns take the same lines from md and stack below
   it, as the card rows do;
