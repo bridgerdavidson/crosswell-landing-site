@@ -207,7 +207,13 @@ carries them). Nothing else on the page is amber, red, or blue.
 - Scroll reveals trigger with the block's top at about 70% of the viewport,
   once, and every reveal group on the page steps by the site's one 80ms
   step (a chapter's frame follows its band by 80; a row of cards steps 0,
-  80, 160). Sequences play once and offer a small "Replay" outside the frame,
+  80, 160).
+- The first frame is complete on arrival: a reveal group whose top is
+  already inside the viewport when the page loads does not wait for the
+  70% line but enters with the page-load entrance, one site step (80ms)
+  after the hero's buttons (at 1.08s from navigation, plus its own step),
+  so nothing on screen at load waits for a scroll at any viewport.
+  Everything below the first frame reveals at the 70% line as above. Sequences play once and offer a small "Replay" outside the frame,
   beside the demo caption, revealed once the sequence has finished.
 - A chapter's sequence is a paused GSAP timeline built over the frame by
   the shared useSequence hook, played once when the frame's top reaches
@@ -294,7 +300,9 @@ carries them). Nothing else on the page is amber, red, or blue.
 - Two kept exceptions to the band and the curve, both out of the
   redesign's scope: the hero's page-load entrance (the display's 0.95s
   rise and the woven core's 1.2s decode-gated fade) and the brain
-  section's own transitions (its phrase highlights and Replay on ease).
+  section's own transitions (its phrase highlights and Replay on ease;
+  the highlight's colours are the palette's, ivory text on fern at 50
+  percent).
 
 ## Layout
 
@@ -323,11 +331,14 @@ carries them). Nothing else on the page is amber, red, or blue.
   Every other space inside a section is smaller than the hang: 64 from a
   card row to how we start's closing line, 32 from the industries' hairline
   to their row, 24 on each side of a ledger hairline. The hero at lg is
-  not the viewport's height: 80 under the fixed nav, 128 to the eyebrow,
-  the words (the display 168 under the nav), 128 to its edge, then the
-  run's own 128, so the buttons sit 256 above the run intro's label and
-  the sphere dissolves under them; below lg the hero keeps the viewport's
-  height. The footer is chrome, not a section: 64 above and below its one
+  not the viewport's height, and it shares the first frame with the run
+  intro: 80 under the fixed nav, 128 to the eyebrow, the words (the display
+  168 under the nav), the hero's edge at the buttons set 32 into the run's
+  own 128, so the run intro's label sits 96 under the buttons and the
+  sphere dissolves under them. At 1440x900 the intro's last line ends 31
+  above the fold, and at 1728x1117 (and 1512x982, 1920x1080) the fold
+  falls in the beat between the intro and chapter 01, so no line of words
+  is cut; below lg the hero keeps the viewport's height. The footer is chrome, not a section: 64 above and below its one
   row.
 - The title band (`Band`) carries every titled section: the run's six
   chapters and who it's for, why Crosswell, how we start, the values, the
@@ -336,7 +347,8 @@ carries them). Nothing else on the page is amber, red, or blue.
   with its cap height on the title's (the lede's top margin 9 where the
   title's is 12), nothing stacked under the title; below lg the three
   stack. Why Crosswell's right column holds its pull quote in the lede's
-  place, its words on the column line and its rule hanging in the gap; how
+  place, its words on the column line and its rule hanging in the gap,
+  wrapped balanced so its break falls between its two sentences; how
   we start's right column is empty (cards follow its title); who it's
   for's running text follows its lede in the lede's column. The band sets
   the measures, not the line counts: the copy is locked, so a band's
@@ -349,8 +361,10 @@ carries them). Nothing else on the page is amber, red, or blue.
   section's hang at the container's full width.
 - The split form (`Split`) carries the three sections whose words sit
   beside what they introduce: the brain section, what a business loses,
-  and beyond the Core. The label, title, lede, and running text stack in
-  the left column (the title at most 672, the lede at most 576); the
+  and beyond the Core. The label, title, lede, and every paragraph of
+  running text stack in the left column (the title at most 672, the lede
+  at most 576; what a business loses' two closing paragraphs included, so
+  its words end within 2 of its ledger at 1440); the
   section's content takes the right column from the title's row: the
   ledger's first line on the title's cap height, beyond's first card's top
   edge on the title's cap height, and the brain stage (below). Below lg
