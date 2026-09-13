@@ -23,7 +23,7 @@ export default function BrainSection() {
             Illustrative
           </p>
         </Reveal>
-        <Reveal delay={150}>
+        <Reveal delay={80}>
           <div id="brain-stage" className="brain-stage" data-mode="still">
             <p className="sr-only">
               Illustrative: a meeting transcript is captured, sorted into a tagged

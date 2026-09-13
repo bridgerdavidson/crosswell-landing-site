@@ -26,7 +26,7 @@ export default function Edge() {
           </h2>
         </Reveal>
 
-        <Reveal delay={120}>
+        <Reveal delay={80}>
           <blockquote className="mt-14 max-w-3xl border-l-2 border-fern pl-6 sm:pl-8">
             <p className="type-accent italic text-ink/85">
               When someone leaves, their knowledge does not. Every meeting,
@@ -37,7 +37,7 @@ export default function Edge() {
 
         <div className="mt-16 grid gap-10 sm:grid-cols-3">
           {points.map((point, i) => (
-            <Reveal key={point.title} delay={i * 120}>
+            <Reveal key={point.title} delay={i * 80}>
               <div>
                 <div className="mb-4 h-px w-10 bg-fern" />
                 <h3 className="type-h3 text-ink">{point.title}</h3>

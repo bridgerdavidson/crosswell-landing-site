@@ -49,8 +49,9 @@ function build(frame: HTMLDivElement) {
  * three things that need a person with the draw approval lit, the status
  * line, and the calendar column fading at the right edge. The whole payload
  * clears the frame's bottom fade at 800 (the list is set tighter than the
- * other chapters' rows for it), so the only content cut is the calendar
- * column dissolving at the right; below lg the product is one column that
+ * other chapters' rows for it); below the status line the page's filed
+ * rows run on as periphery into the bottom fade, and the calendar column
+ * dissolves at the right; below lg the product is one column that
  * fits the frame at its own height, with the tiles two-up; the calendar
  * column shows from 1360 up, where the main column has the room for the
  * list to stay above the fade beside it.
@@ -125,6 +126,14 @@ export default function Today() {
               <p className="product-label mt-2" data-seq="status">
                 {today.filedOvernight} filed overnight
               </p>
+              <ul className="product-periphery product-rule mt-3" aria-hidden>
+                {today.filed.map((f) => (
+                  <li key={f.title} className="flex items-center justify-between gap-4 py-3">
+                    <span>{f.title}</span>
+                    <span className="product-t3 flex-none">{f.to}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
             <aside className="product-aside product-periphery hidden pl-6 min-[1360px]:block">
               <p className="product-label">Today</p>

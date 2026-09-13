@@ -16,7 +16,7 @@ export default function FinalCta() {
             two-week knowledge audit, or talk to us directly.
           </p>
         </Reveal>
-        <Reveal delay={150}>
+        <Reveal delay={80}>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <a
               href={AUDIT_MAILTO}

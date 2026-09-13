@@ -89,7 +89,7 @@ export default function Team() {
 
         <div className="mt-14 grid gap-8 sm:grid-cols-3">
           {team.map((person, i) => (
-            <Reveal key={person.name} delay={i * 120}>
+            <Reveal key={person.name} delay={i * 80}>
               <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-warmgray/40 bg-ivory shadow-whisper transition-shadow hover:shadow-lifted">
                 <div
                   className="team-flip relative aspect-square w-full bg-warmgray/20 sm:aspect-4/5"

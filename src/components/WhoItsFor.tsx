@@ -28,7 +28,7 @@ export default function WhoItsFor() {
           work.
         </p>
       </Reveal>
-      <Reveal delay={120}>
+      <Reveal delay={80}>
         <ul className="type-accent mt-12 flex flex-wrap gap-x-8 gap-y-3 border-t border-ink/8 pt-8 text-ink/80">
           {industries.map((name) => (
             <li key={name}>{name}</li>

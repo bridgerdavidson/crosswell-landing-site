@@ -6,7 +6,6 @@ type ChapterProps = {
   label: string;
   claim: ReactNode;
   body: string;
-  layout?: "wide" | "split";
   dark?: boolean;
   /** a small site control that belongs beside the demo caption, e.g. Replay */
   controls?: ReactNode;
@@ -14,28 +13,25 @@ type ChapterProps = {
 };
 
 /**
- * One chapter of the product run. The band is one row in two columns that
- * span the run: the label and the claim on the left (the claim at most
- * 672 wide, so most claims hold to one or two lines), the lede in a 576
- * column at the run's right edge with its cap height on the claim's (the
- * lede's top margin is 9 where the claim's is 12), and nothing stacked
- * under the claim. The frame hangs from the band by the chapter's biggest
- * gap (192 at lg, 96 below) and is the band's full width, so band and
- * frame share both edges. Everything that describes the product lives
- * here, outside the frame; the frame only ever shows the product. The demo
- * caption and any control sit under the frame, outside it, per the demo
- * rules.
- *
- * The split layout keeps the family: the claim column on the left (label,
- * claim, then the lede beneath it at the same measure) and the frame in
- * the right column reaching the run's right edge, its top on the label's.
+ * One chapter of the product run, the one skeleton all six share. The band
+ * is one row in two columns that span the run: the label and the claim on
+ * the left (the claim at most 672 wide, so most claims hold to one or two
+ * lines), the lede in a 576 column at the run's right edge with its cap
+ * height on the claim's (the lede's top margin is 9 where the claim's is
+ * 12), and nothing stacked under the claim. The frame hangs from the band
+ * by the chapter's biggest gap (192 at lg, 128 below) and is the band's
+ * full width, so band and frame share both edges; its reveal follows the
+ * band's by the site's one 80ms step. Everything that describes the
+ * product lives here, outside the frame; the frame only ever shows the
+ * product. The demo caption and any site control (Replay, chapter 06's
+ * swatches) sit under the frame in the caption row, outside it, per the
+ * demo rules.
  */
 export function Chapter({
   index,
   label,
   claim,
   body,
-  layout = "wide",
   dark = false,
   controls,
   children,
@@ -56,22 +52,6 @@ export function Chapter({
     </div>
   );
 
-  if (layout === "split") {
-    return (
-      <div className="grid gap-24 lg:grid-cols-2 lg:items-start lg:gap-x-20">
-        <Reveal className="min-w-0">
-          {labelEl}
-          <h3 className={`type-h2 mt-3 max-w-2xl ${ink}`}>{claim}</h3>
-          <p className={`type-body mt-5 max-w-xl ${muted}`}>{body}</p>
-        </Reveal>
-        <Reveal delay={120} className="min-w-0">
-          {children}
-          {caption}
-        </Reveal>
-      </div>
-    );
-  }
-
   return (
     <div>
       <Reveal className="grid min-w-0 lg:grid-cols-2 lg:gap-x-20 xl:grid-cols-[minmax(0,1fr)_36rem]">
@@ -83,7 +63,7 @@ export function Chapter({
           {body}
         </p>
       </Reveal>
-      <Reveal delay={120} className="mt-24 min-w-0 lg:mt-48">
+      <Reveal delay={80} className="mt-32 min-w-0 lg:mt-48">
         {children}
         {caption}
       </Reveal>

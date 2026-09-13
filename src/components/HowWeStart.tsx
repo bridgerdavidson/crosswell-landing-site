@@ -32,7 +32,7 @@ export default function HowWeStart() {
 
         <div className="mt-14 grid gap-6 sm:grid-cols-3">
           {engagements.map((engagement, i) => (
-            <Reveal key={engagement.title} delay={i * 120}>
+            <Reveal key={engagement.title} delay={i * 80}>
               <div className="flex h-full flex-col rounded-2xl border border-warmgray/40 bg-ivory p-7 shadow-whisper transition-shadow hover:shadow-lifted sm:p-8">
                 <h3 className="type-h3 text-ink">{engagement.title}</h3>
                 <p className="type-text mt-2.5 text-ink/70">
@@ -46,7 +46,7 @@ export default function HowWeStart() {
           ))}
         </div>
 
-        <Reveal delay={150}>
+        <Reveal delay={80}>
           <div className="mt-10 flex flex-col items-start gap-5">
             <p className="type-text text-ink/70">
               The first call is thirty minutes. We ask how your firm handles

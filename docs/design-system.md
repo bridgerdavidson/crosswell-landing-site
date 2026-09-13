@@ -100,8 +100,9 @@ else on the page is amber, red, or blue.
   the charcoal-deep band, ivory text, fern-soft accent.
 - Fragments are cut by a frame; cut edges dissolve into the page with a
   mask gradient (double stops). The content edge stays crisp. The dissolve
-  is written in pixels so every frame fades over the same distance: 280 at
-  the right, 120 at the bottom, 120 both ways on phones. Every frame is
+  is written in pixels so every frame fades over the same distance: 160 at
+  the right, 120 at the bottom, 120 both ways on phones, so the product
+  reaches the gutter. Every frame is
   800 tall at lg and above (its product's own height below), so the run
   keeps one beat; a product shorter than that shows more of itself (the
   next rows, the panel below, the list under the buttons) and is cut, never
@@ -109,12 +110,13 @@ else on the page is amber, red, or blue.
   ends on the cut: it dissolves in the fade, or the surface is inset with
   its own rounded edge inside the frame. A wide frame's shell runs 80px
   past the right edge and is cut at the right and the bottom (the top bar's
-  rule and the avatar go out with it, never half-faded); a split frame's
-  product fits its width, its top bar's rule stops 24 inside the right
-  edge with the avatar inside it, and it is cut only at the bottom. A lit
+  rule and the avatar go out with it, never half-faded); a fitted frame's
+  product (chapter 05) fits its width, its top bar's rule stops 24 inside
+  the right edge with the avatar inside it, and it is cut only at the
+  bottom. A lit
   surface never sits inside a fade: the chat and detail panels float as
   inset cards over their fields, above the fades, and chapter 06's top bar
-  is an inset card. Fragments render at real scale; nothing is scaled
+  is an inset card ending before the fade. Fragments render at real scale; nothing is scaled
   down. Below 768px a frame crops to a single column; chapter 04's column
   is the selected card's stage, with the panel out of the crop and the
   card lit.
@@ -125,8 +127,11 @@ else on the page is amber, red, or blue.
   its check, its bar, its button, its receipts, its avatar). The field, everything else, sits at exactly
   the floor: text at ink 60, weight 400, and no accent anywhere in it:
   dots, bars, sparklines, checks, the rail's current box, buttons and
-  receipts outside the lit element take warm gray or hairline forms. Fern
-  lives only inside the lit element. Lit per chapter: 01 the draw
+  receipts outside the lit element take warm gray or hairline forms. Text
+  of 20px and larger in the field (the greeting, the tile numbers, the
+  panel titles) reads strong even at 60, so it sits at the periphery tone,
+  40; text under 20px never drops below 60. Fern lives only inside the lit
+  element. Lit per chapter: 01 the draw
   approval, 02 the Draw 4 row, 03 the chat panel (the dashboard behind it
   is periphery at 40), 04 the detail panel, 05 the inbox agent's row, 06
   the top bar.
@@ -145,7 +150,9 @@ else on the page is amber, red, or blue.
 - Curve: cubic-bezier(0.22, 1, 0.36, 1). Entrances 0.6 to 0.9s. Staggers
   60 to 90ms. Nothing under 300ms except hover (150 to 200ms).
 - Scroll reveals trigger with the block's top at about 70% of the viewport,
-  once. Sequences play once and offer a small "Replay" outside the frame,
+  once, and every reveal group on the page steps by the site's one 80ms
+  step (a chapter's frame follows its band by 80; a row of cards steps 0,
+  80, 160). Sequences play once and offer a small "Replay" outside the frame,
   beside the demo caption, revealed once the sequence has finished.
 - A chapter's sequence is a paused GSAP timeline built over the frame by
   the shared useSequence hook, played once when the frame's top reaches
@@ -171,13 +178,15 @@ else on the page is amber, red, or blue.
   is one row in two columns spanning the run: label and claim on the left
   (the claim at most 672 wide), the lede in a 576 column at the run's
   right edge with its cap height on the claim's, nothing stacked under the
-  claim. 192 from the band to the frame (96 below lg), 16 from the frame
-  to the caption row, 288 between chapters (176 on phones) and across the
-  dark band (its padding is 160 against the run sections' 128). A split chapter keeps the family: two
-  equal columns, the lede under the claim in the left one and the frame in
-  the right one reaching the run's right edge, its top on the label's.
-  Every frame is 800 tall at lg and above, the split frames included, and
-  takes its product's own height below.
+  claim. 192 from the band to the frame (128 below lg, at least half the
+  band), 16 from the frame
+  to the caption row, 288 between chapters (192
+  on phones) and across the
+  dark band (its padding is 160 against the run sections' 128). One skeleton for six chapters: chapters 05 and 06 take
+  it too (the spec's split rhythm was withdrawn in the design loop's run
+  2), chapter 06's swatch row sitting in the caption row as a site
+  control. Every frame is 800 tall at lg and above and takes its product's
+  own height below.
 - Two dark moments only: the chat chapter and the closing CTA.
 - Verify at 1440, 1728, and 390 before calling a piece done.
 

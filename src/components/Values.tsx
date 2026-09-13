@@ -39,7 +39,7 @@ export default function Values() {
 
       <div className="mt-16 grid gap-10 sm:grid-cols-3">
         {values.map((value, i) => (
-          <Reveal key={value.name} delay={i * 120}>
+          <Reveal key={value.name} delay={i * 80}>
             <div>
               <div className="mb-4 h-px w-10 bg-fern" />
               <h3 className="type-h3 text-ink">{value.name}</h3>

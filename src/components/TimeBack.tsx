@@ -38,7 +38,7 @@ export default function TimeBack() {
 
         <div className="flex flex-col divide-y divide-ink/8">
           {sinks.map((sink, i) => (
-            <Reveal key={sink.pain} delay={i * 110}>
+            <Reveal key={sink.pain} delay={i * 80}>
               <div className="py-6 first:pt-0 last:pb-0">
                 <p className="type-accent text-ink">
                   {sink.pain}{" "}
@@ -47,7 +47,7 @@ export default function TimeBack() {
               </div>
             </Reveal>
           ))}
-          <Reveal delay={480}>
+          <Reveal delay={320}>
             <p className="type-text pt-6 text-ink/70">
               The hours aren&apos;t the point. They go back where trust gets
               built: your people, in front of your customers.

@@ -626,7 +626,7 @@ body {
    06 can retint a scoped copy), and never a shadow. Every frame is 800
    tall at lg and above so the run keeps one beat; a product shorter than
    that runs on and is cut. Cut edges dissolve into the page with masks
-   written in pixels so every frame dissolves over the same distance (280
+   written in pixels so every frame dissolves over the same distance (160
    to the right, 120 at the bottom and both ways on phones), and where
    the frame cuts the product no fill or hairline ends on the cut: it
    dissolves, or the surface is inset. Double stops in every mask on
@@ -634,7 +634,7 @@ body {
    fades the whole frame (see the hero mask above). */
 
 .product-frame {
-  --fade-x: 280px;
+  --fade-x: 160px;
   --fade-y: 120px;
   /* how far an overflowing shell runs past the frame's right edge, so the
      app's top-right corner (the avatar) is out of frame, never half-faded */
@@ -732,6 +732,10 @@ body {
   --t1: rgba(26, 25, 21, 0.6);
   --t2: rgba(26, 25, 21, 0.6);
   --t3: rgba(26, 25, 21, 0.6);
+  /* text of 20px and larger in the field (the greeting, the numbers, the
+     panel titles) reads strong even at 60, so it sits at the periphery
+     tone and the lit element wins the blur; nothing under 20px goes below 60 */
+  --t0: rgba(26, 25, 21, 0.4);
   --mark: var(--color-warmgray);
   --w-strong: 400;
   --w-num: 400;
@@ -751,6 +755,7 @@ body {
   --t1: rgba(241, 238, 230, 0.6);
   --t2: rgba(241, 238, 230, 0.6);
   --t3: rgba(241, 238, 230, 0.6);
+  --t0: rgba(241, 238, 230, 0.4);
   --mark: rgba(241, 238, 230, 0.35);
 }
 
@@ -759,6 +764,7 @@ body {
    of the chapter's accent marks */
 .product-lit {
   --t1: var(--color-ink);
+  --t0: var(--color-ink);
   --t2: rgba(26, 25, 21, 0.75);
   --t3: rgba(26, 25, 21, 0.6);
   --mark: var(--accent);
@@ -770,6 +776,7 @@ body {
 
 .product-shell-dark .product-lit {
   --t1: var(--color-ivory);
+  --t0: var(--color-ivory);
   --t2: rgba(241, 238, 230, 0.75);
   --t3: rgba(241, 238, 230, 0.6);
 }
@@ -779,6 +786,7 @@ body {
 @media (max-width: 1023px) {
   .product-lit-narrow {
     --t1: var(--color-ink);
+    --t0: var(--color-ink);
     --t2: rgba(26, 25, 21, 0.75);
     --t3: rgba(26, 25, 21, 0.6);
     --mark: var(--accent);
@@ -866,12 +874,14 @@ body {
   font-size: 1.5rem;
   line-height: 1.3;
   letter-spacing: -0.01em;
+  color: var(--t0);
 }
 
 .product-title {
   font-family: var(--font-serif);
   font-size: 1.25rem;
   line-height: 1.3;
+  color: var(--t0);
 }
 
 /* the product's numbers share the lede's size and leading */
@@ -880,6 +890,7 @@ body {
   line-height: 1.3;
   letter-spacing: -0.01em;
   font-weight: var(--w-num);
+  color: var(--t0);
 }
 
 /* the smaller number in a detail panel's tiles, on the panel-title size */
@@ -888,6 +899,7 @@ body {
   line-height: 1.3;
   letter-spacing: -0.01em;
   font-weight: var(--w-num);
+  color: var(--t0);
 }
 
 /* the product's smallest text: tile labels, notes, the line under a row.
@@ -947,6 +959,13 @@ body {
   padding: 0 16px;
   border-bottom: 0;
   border-radius: 0.75rem;
+}
+
+/* a lit bar in a cut-right frame ends before the fade, where the floating panels do */
+@media (min-width: 1024px) {
+  .product-topbar.product-lit.product-topbar-cut {
+    margin-right: calc(var(--fade-x) + var(--overhang) + 24px);
+  }
 }
 
 .product-aside {

@@ -8,16 +8,18 @@ const TONE: Record<AgentStatus["kind"], "accent" | "watch" | "ink"> = {
   scheduled: "watch",
 };
 
+const ROW = "grid grid-cols-1 gap-2 py-3.5 sm:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)_minmax(0,1fr)] sm:gap-6";
+
 /**
- * Chapter 05, finished state: the roster after the six-second live
- * sequence has played (the inbox agent done, the follow-up agent waiting,
- * the filing agent still running), and the hand-off composer with its
- * task ready. The ticking statuses, the row expand, and the hand-off
- * adding a row are design-loop work. The lit element is the inbox agent's
- * row, the one the live sequence lands on. The frame is 800 at lg like
- * every frame, so the roster runs on below the composer (the spec's two
- * spares, not yet running) and is cut at the bottom; the top bar's rule
- * stops inside the frame's right edge.
+ * Chapter 05, finished state, on the run's one skeleton: the roster after
+ * the six-second live sequence has played (the inbox agent done, the
+ * follow-up agent waiting, the filing agent still running), each row with
+ * its last run's log, and the hand-off composer with its task ready; below
+ * the composer the spec's two spares, not yet running, run into the bottom
+ * fade. The ticking statuses, the row expand, and the hand-off adding a
+ * row are design-loop work. The lit element is the inbox agent's row, the
+ * one the live sequence lands on. The product fits the frame's width, so
+ * the top bar's rule stops inside the right edge.
  */
 export default function Agents() {
   const running = agents.roster.filter((a) => a.status.kind === "running").length;
@@ -26,7 +28,6 @@ export default function Agents() {
       <Chapter
         index="05"
         label="Agents"
-        layout="split"
         claim="Each one has a single job. They run while you don't."
         body="Custom agents built for the work your team names: reading the inbox, chasing the silent deal, drafting the report. Each one reports what it did and waits for your yes before anything leaves the building."
       >
@@ -44,7 +45,7 @@ export default function Agents() {
                   <li
                     key={agent.id}
                     data-agent={agent.id}
-                    className={`grid grid-cols-1 gap-2 py-3.5 sm:grid-cols-[1fr_260px] sm:gap-6 ${
+                    className={`${ROW} ${
                       agent.id === agents.roster[0].id ? "product-lit -mx-3 rounded-xl px-3" : ""
                     }`}
                   >
@@ -59,6 +60,11 @@ export default function Agents() {
                       </p>
                       <p className="product-label mt-0.5">{agent.lastResult}</p>
                     </div>
+                    <ul className="product-label min-w-0 space-y-0.5">
+                      {agent.log.map((line) => (
+                        <li key={line}>{line}</li>
+                      ))}
+                    </ul>
                   </li>
                 ))}
               </ul>
@@ -71,11 +77,7 @@ export default function Agents() {
               <p className="product-title mt-8">Available</p>
               <ul className="product-rule mt-3">
                 {agents.spares.map((spare) => (
-                  <li
-                    key={spare.id}
-                    data-spare={spare.id}
-                    className="grid grid-cols-1 gap-2 py-3.5 sm:grid-cols-[1fr_260px] sm:gap-6"
-                  >
+                  <li key={spare.id} data-spare={spare.id} className={ROW}>
                     <div className="min-w-0">
                       <p className="product-strong">{spare.name}</p>
                       <p className="product-label mt-0.5">{spare.job}</p>

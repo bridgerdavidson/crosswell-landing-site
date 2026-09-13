@@ -13,7 +13,7 @@ import Brand from "./brand/Brand";
  * line and the bridge into the brain section. The run's width follows the
  * viewport inside fixed 48px gutters at lg (1344 at 1440, 1632 at 1728), so
  * the product runs gutter to gutter at every width; the chapters fall on
- * one beat, 288 apart (176 on phones), with the dark band padded to match.
+ * one beat, 288 apart (192 on phones), with the dark band padded to match.
  */
 export default function ProductRun() {
   return (
@@ -34,7 +34,7 @@ export default function ProductRun() {
             Thursday morning.
           </p>
         </Reveal>
-        <div className="mt-44 space-y-44 sm:mt-72 sm:space-y-72">
+        <div className="mt-48 space-y-48 sm:mt-72 sm:space-y-72">
           <Today />
           <Agenda />
         </div>
@@ -43,7 +43,7 @@ export default function ProductRun() {
       <Chat />
 
       <section className="px-6 pt-24 pb-24 sm:pt-32 sm:pb-32 lg:px-12">
-        <div className="space-y-44 sm:space-y-72">
+        <div className="space-y-48 sm:space-y-72">
           <Pipeline />
           <Agents />
           <Brand />

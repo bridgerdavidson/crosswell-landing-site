@@ -22,7 +22,7 @@ export default function Stats() {
     <section id="stats" className="border-y border-ink/8">
       <div className="mx-auto grid max-w-4xl gap-10 px-6 py-14 sm:grid-cols-2 sm:gap-14 sm:py-16">
         {stats.map((stat, i) => (
-          <Reveal key={stat.figure} delay={i * 120}>
+          <Reveal key={stat.figure} delay={i * 80}>
             <div>
               <p className="type-h2 text-fern-deep">{stat.figure}</p>
               <p className="type-text mt-2 max-w-[40ch] text-ink/75">{stat.body}</p>
