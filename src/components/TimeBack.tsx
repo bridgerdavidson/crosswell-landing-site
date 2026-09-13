@@ -42,9 +42,13 @@ export default function TimeBack() {
             {sinks.map((sink, i) => (
               <Reveal key={sink.pain} delay={i * 80}>
                 <div className={i === 0 ? "pb-6" : i === sinks.length - 1 ? "pt-6" : "py-6"}>
+                  {/* each clause is its own inline block, so a row breaks
+                      between the ink clause and the fern clause wherever it
+                      runs to more than one line, and each clause balances
+                      within itself when it wraps */}
                   <p className="type-accent text-ink">
-                    {sink.pain}{" "}
-                    <span className="italic text-fern-deep">{sink.fix}</span>
+                    <span className="inline-block">{sink.pain}</span>{" "}
+                    <span className="inline-block italic text-fern-deep">{sink.fix}</span>
                   </p>
                 </div>
               </Reveal>

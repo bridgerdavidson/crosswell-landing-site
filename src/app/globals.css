@@ -121,7 +121,9 @@ body {
   font-size: 1.5rem;
   line-height: 1.3;
   letter-spacing: -0.01em;
-  text-wrap: pretty;
+  /* balanced, like the titles: a lede's last line carries weight instead of
+     leaving a two-word runt under full lines */
+  text-wrap: balance;
 }
 
 /* card and person titles; shares 20 with the product's panel titles */
@@ -138,6 +140,13 @@ body {
   font-size: 0.9375rem;
   line-height: 1.6;
   text-wrap: pretty;
+}
+
+/* card bodies, bios, and the values' lines: short blocks in narrow boxes,
+   balanced so their last lines carry weight too. A class of its own, since
+   type-text sits outside the utilities layer and a utility would lose */
+.type-text-balanced {
+  text-wrap: balance;
 }
 
 /* the label size: section labels (sentence case, fern-deep in the

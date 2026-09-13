@@ -46,9 +46,9 @@ export default function Values() {
           >
             <div className="h-px w-10 bg-fern" />
             <h3 className="type-h3 mt-4 text-ink">{value.name}</h3>
-            <p className="type-text mt-2.5 max-w-md text-ink/70">{value.line}</p>
+            <p className="type-text mt-2.5 max-w-md type-text-balanced text-ink/70">{value.line}</p>
             <p className="type-caption mt-4 font-medium text-fern-deep">What it costs</p>
-            <p className="type-text mt-1 max-w-md text-ink/70">{value.cost}</p>
+            <p className="type-text mt-1 max-w-md type-text-balanced text-ink/70">{value.cost}</p>
           </Reveal>
         ))}
       </div>

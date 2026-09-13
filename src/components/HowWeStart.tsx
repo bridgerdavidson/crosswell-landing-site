@@ -24,15 +24,16 @@ export default function HowWeStart() {
   return (
     <section id="how-we-start" className="border-y border-ink/8 bg-parchment">
       <div className={`${CONTAINER} ${SECTION}`}>
-        {/* the page's title band. Its right column holds the first call and
-            the audit button in the lede's place, the paragraph's cap height
-            on the title's, so the section runs band, hang, cards */}
+        {/* the page's title band. Its right column holds the first call, the
+            sentence that follows the title and so its lede (24, ink 80), and
+            the audit button under it, the lede's cap height on the title's,
+            so the section runs band, hang, cards */}
         <Band
           label="How we start"
           title="Start small, on purpose."
           aside={
             <div className="flex flex-col items-start gap-5">
-              <p className="type-text max-w-md text-ink/70">
+              <p className="type-body text-ink/80">
                 The first call is thirty minutes. We ask how your firm handles
                 knowledge today, and we tell you straight whether the audit is
                 worth it.
@@ -54,7 +55,7 @@ export default function HowWeStart() {
             <Reveal key={engagement.title} delay={i * 80}>
               <div className="flex h-full flex-col rounded-2xl border border-warmgray/40 bg-ivory p-7 shadow-whisper transition-shadow hover:shadow-lifted sm:p-8">
                 <h3 className="type-h3 text-ink">{engagement.title}</h3>
-                <p className="type-text mt-2.5 max-w-md text-ink/70">
+                <p className="type-text mt-2.5 max-w-md type-text-balanced text-ink/70">
                   {engagement.body}
                 </p>
                 {engagement.note && (

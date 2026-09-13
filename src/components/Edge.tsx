@@ -55,7 +55,7 @@ export default function Edge() {
             <Reveal key={point.title} delay={i * 80}>
               <div className="flex h-full flex-col rounded-2xl border border-warmgray/40 bg-ivory p-7 shadow-whisper transition-shadow hover:shadow-lifted sm:p-8">
                 <h3 className="type-h3 text-ink">{point.title}</h3>
-                <p className="type-text mt-2.5 max-w-md text-ink/70">
+                <p className="type-text mt-2.5 max-w-md type-text-balanced text-ink/70">
                   {point.body}
                 </p>
               </div>
