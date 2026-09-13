@@ -48,7 +48,7 @@ export default function Brand() {
           <Rail active="home" />
           <div className="flex min-w-0 flex-1 flex-col">
             <TopBar name={active.company} lit cut />
-            <div className="grid flex-1 gap-8 p-5 pt-5 md:p-6 md:pt-5 min-[1360px]:grid-cols-[minmax(0,1fr)_280px]">
+            <div className="grid flex-1 gap-8 p-5 pt-5 md:p-6 md:pt-5 min-[1360px]:grid-cols-[minmax(0,1fr)_240px]">
               <div className="min-w-0">
                 <p className="product-greeting">{today.greeting}</p>
                 <p className="product-t2 mt-0.5">{today.subline}</p>
@@ -83,7 +83,7 @@ export default function Brand() {
                   ))}
                 </ul>
                 <p className="product-label mt-2">{today.filedOvernight} filed overnight</p>
-                <ul className="product-periphery product-rule mt-3" aria-hidden>
+                <ul className="product-rule mt-3">
                   {today.filed.map((f) => (
                     <li key={f.title} className="flex items-center justify-between gap-4 py-3">
                       <span>{f.title}</span>

@@ -76,10 +76,13 @@ else on the page is amber, red, or blue.
   ground): captions, sources, the fictional-company line, the footer, and
   the label index included. Inside the product, dimming is a tone (a
   color variable, never a stacked opacity). The chapter's payload (what
-  the spec names for it) never drops under 60 percent; product periphery
-  that is not the payload (the calendar column inside chapter 01's fade,
-  the dashboard behind chapter 03's panel) may sit at 40, so one thing is
-  lit.
+  the spec names for it) never drops under 60 percent. Product periphery
+  that is not the payload may sit at 40 only where a fade or the lit panel
+  covers it (the calendar columns starting inside chapter 01's and 06's
+  right fade, the page behind chapter 03's panel); periphery that is fully
+  visible takes the field tone, and below lg, where no frame fades an
+  edge, every periphery region renders at the field tone, so no readable
+  text under 20px is ever below 60 in the open.
 - Nothing below 12px.
 
 ## Materials

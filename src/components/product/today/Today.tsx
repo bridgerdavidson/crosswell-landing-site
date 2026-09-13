@@ -50,8 +50,9 @@ function build(frame: HTMLDivElement) {
  * line, and the calendar column fading at the right edge. The whole payload
  * clears the frame's bottom fade at 800 (the list is set tighter than the
  * other chapters' rows for it); below the status line the page's filed
- * rows run on as periphery into the bottom fade, and the calendar column
- * dissolves at the right; below lg the product is one column that
+ * rows run on at the field tone into the bottom fade, and the calendar
+ * column, periphery at 40, starts where the right fade starts and
+ * dissolves in it; below lg the product is one column that
  * fits the frame at its own height, with the tiles two-up; the calendar
  * column shows from 1360 up, where the main column has the room for the
  * list to stay above the fade beside it.
@@ -76,7 +77,7 @@ export default function Today() {
         <Rail active="home" />
         <div className="flex min-w-0 flex-1 flex-col">
           <TopBar />
-          <div className="grid flex-1 gap-8 p-5 pt-5 md:p-6 md:pt-5 min-[1360px]:grid-cols-[minmax(0,1fr)_280px]">
+          <div className="grid flex-1 gap-8 p-5 pt-5 md:p-6 md:pt-5 min-[1360px]:grid-cols-[minmax(0,1fr)_240px]">
             <div className="min-w-0">
               <p className="product-greeting" data-seq="greeting">
                 {today.greeting}
@@ -126,7 +127,7 @@ export default function Today() {
               <p className="product-label mt-2" data-seq="status">
                 {today.filedOvernight} filed overnight
               </p>
-              <ul className="product-periphery product-rule mt-3" aria-hidden>
+              <ul className="product-rule mt-3">
                 {today.filed.map((f) => (
                   <li key={f.title} className="flex items-center justify-between gap-4 py-3">
                     <span>{f.title}</span>

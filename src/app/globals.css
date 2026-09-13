@@ -804,7 +804,8 @@ body {
 }
 
 /* product periphery that is not the chapter's payload (a calendar column
-   inside a fade, the dashboard behind the chat panel) sits at 40 */
+   inside a fade, the dashboard behind the chat panel) sits at 40 where a
+   fade or the lit panel covers it */
 .product-periphery {
   --t1: rgba(26, 25, 21, 0.4);
   --t2: rgba(26, 25, 21, 0.4);
@@ -818,6 +819,26 @@ body {
   --t2: rgba(241, 238, 230, 0.4);
   --t3: rgba(241, 238, 230, 0.4);
   --mark: rgba(241, 238, 230, 0.25);
+}
+
+/* periphery takes 40 only under a fade or the lit panel; below lg no frame
+   fades an edge, so any periphery still visible renders at the field tone
+   and no readable text under 20px sits below 60 in the open */
+@media (max-width: 1023px) {
+  .product-periphery {
+    --t1: rgba(26, 25, 21, 0.6);
+    --t2: rgba(26, 25, 21, 0.6);
+    --t3: rgba(26, 25, 21, 0.6);
+    --t0: rgba(26, 25, 21, 0.4);
+    --mark: var(--color-warmgray);
+  }
+  .product-shell-dark .product-periphery {
+    --t1: rgba(241, 238, 230, 0.6);
+    --t2: rgba(241, 238, 230, 0.6);
+    --t3: rgba(241, 238, 230, 0.6);
+    --t0: rgba(241, 238, 230, 0.4);
+    --mark: rgba(241, 238, 230, 0.35);
+  }
 }
 
 /* secondary text (sublines, notes, a row's second line) and the floor
