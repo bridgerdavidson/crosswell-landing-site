@@ -82,8 +82,8 @@ carries them). Nothing else on the page is amber, red, or blue.
   accent lines wrap balanced, ledes wrap pretty, and a lede's measure is
   set so the rag lands. Checked at 390, 430, 640, 700, 768, 820, 900, 1024,
   1180, 1280, 1366, 1440, 1512, 1728, and 1920. Card rows go three across
-  only where their titles hold (why Crosswell's and how we start's at xl;
-  the team's from md, in the text block's 28 padding).
+  only where their titles hold (at lg; the team's from md, in the text
+  block's 28 padding).
 - Secondary text never drops below ink at 60 percent (ivory at 60 on dark
   ground): captions, sources, the fictional-company line, the footer, and
   the label index included. Inside the product, dimming is a tone (a
@@ -105,15 +105,11 @@ carries them). Nothing else on the page is amber, red, or blue.
   audit" and the nav's "Set up a call") carry shadow-whisper. Content
   cards and primary buttons are the only shadows on the page.
 - The team card is the one card whose picture bleeds: the portrait fills
-  the card's top edge to edge, with no padding around it (4:5 from md to
-  lg, square below md), and the text block under it pads 32 (28 below lg).
-  From lg the three cards share two rows (subgrid): the portraits' row is
-  as tall as a narrow track is wide, so the first two portraits are square
-  and the third, on the lede's wider track, fills the same height (cropped
-  to cover), and the names share one line. In the text block the name
-  sits on the block's first line, the discipline label 2 under the name,
-  the bio 12 under the label. Every other card holds the card rule below
-  (32 inside, the body 10 under the title).
+  the card's top edge to edge, with no padding around it (square at lg
+  and below md, 4:5 between), and the text block under it pads 32 (28
+  below lg), the name on the block's first line, the discipline label 2
+  under the name, the bio 12 under the label. Every other card holds the
+  card rule below (32 inside, the body 10 under the title).
 - Product fragments: parchment panels on ivory. The product has no
   container of its own: its canvas is the page's ivory, and the one
   parchment surface in a frame is the lit element's (the chat panel, the
@@ -330,25 +326,14 @@ carries them). Nothing else on the page is amber, red, or blue.
 - One container and one grid, hero to footer. Every section, the nav, the
   closing band, and the footer sit in the run's container: 48 gutters at
   lg (1344 wide at 1440, 1632 at 1728), 24 below lg, so the page has one
-  left edge, x 48, at lg and above. The grid is three tracks, 24 apart:
-  two equal tracks and a third that is the lede column, 576 at the
-  container's right edge at xl and the right half less 40 at lg. Its lines:
-  48 to 408, 432 to 792, 816 to 1392 at 1440; 48 to 552, 576 to 1080, 1104
-  to 1680 at 1728; 48 to 648, 672 to 1272, 1296 to 1872 at 1920; 48 to 328,
-  352 to 632, 656 to 1232 at 1280; 48 to 276, 300 to 528, 552 to 976 at
-  1024. A two-column arrangement (a band, a split, the stats) joins the
-  first two tracks into its left column and takes the third as its right
-  column, keeping 80 between them by stopping its left column's content 56
-  short of the second track's end, so the lede line is the third track's
-  left edge (816 at 1440, 1104 at 1728, 552 at 1024). A row of three takes
-  the three tracks themselves, so a band and the row it hangs share every
-  vertical edge: the row's first item starts on the title's line, its
-  third on the lede's line, and both end on the container's edges. The
-  chapters' band is the same band; a chapter hangs a full-width frame, not
-  a row, so it never divides its left column. The hero's words and the
-  closing bookend centre in the container. The shared code is
-  `src/components/Band.tsx` (the container, the tracks, the beat, the band,
-  and its split form).
+  left edge, x 48, at lg and above. The grid has two column lines: two
+  equal columns 80 apart at lg, and at xl a 576 right column at the
+  container's right edge with the left column taking the rest (48 to 736
+  and 816 to 1392 at 1440; 48 to 1024 and 1104 to 1680 at 1728; 48 to 472
+  and 552 to 976 at 1024). Every two-column arrangement on the page lands
+  on those lines; the hero's words and the closing bookend centre in the
+  container. The shared code is `src/components/Band.tsx` (the container,
+  the grid, the beat, the band, and its split form).
 - The beat, in one sentence: neighbouring sections' content sits 288
   apart (192 on phones) and a band hangs what it introduces by 192 (128
   below lg), so inside any section the hang is the largest space and a
@@ -429,18 +414,13 @@ carries them). Nothing else on the page is amber, red, or blue.
   text holds that measure wherever it sits (who it's for, the three
   splits, how we start's first-call paragraph), and so does every card body, team
   bio, and values column, capped inside its box, so the boxes keep their
-  widths and edges on the grid while their text stops at 448 (at 1728 the
-  third card is 576 wide and its body still 448); the stats' lines hold 40ch.
+  widths and edges on the grid while their text stops at 448 (at 1728 a
+  card is 528 wide and its body still 448); the stats' lines hold 40ch.
   The one 15px line allowed past it is the hero's subline, a single line
   by the bar's mechanism 6 (582 wide).
 - Cards and ledgers on the grid: why Crosswell's, how we start's, and the
-  team's card rows and the values' three columns run on the three tracks
-  (360, 360, 576 at 1440; 504, 504, 576 at 1728; 600, 600, 576 at 1920),
-  the third item under the lede. Why Crosswell's and how we start's rows
-  take the tracks at xl and stack below it; the team's and the values'
-  take them from lg (228, 228, 424 at 1024) and run equal thirds below lg
-  (the team from md, the values from sm), since no band sits beside a row
-  below lg;
+  team's card rows run three across the container, 24 apart (432 wide at
+  1440, 528 at 1728), at lg (the team's from md); below that they stack; the values' three columns take the same lines;
   beyond the Core's two cards stack in the right column; the stats' two
   figures sit on the two column lines (x 48 and 816 at 1440); the
   industries row runs the container under its hairline, its six names

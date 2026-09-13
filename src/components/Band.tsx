@@ -30,20 +30,6 @@ export const SECTION = "pt-24 pb-24 sm:pt-40 sm:pb-32";
  */
 export const SEAM = "border-t border-ink/8";
 export const HANG = "mt-32 lg:mt-48";
-/**
- * The page's three tracks, 24 apart, that a row of three hangs on: two equal
- * tracks and a third that is exactly the band's lede column (576 at the
- * container's right edge at xl; at lg, the band's right half, 80 from its
- * left). So a row's third item starts on the lede's line, its first item on
- * the title's, and both end on the container's edges: a band and the row
- * it hangs share their vertical edges at every width at lg and above. The
- * band's own two columns are these tracks with the first two joined (its
- * title column stops 56 short of the second track's end, keeping 80 before
- * the lede), which is why the band keeps GRID below.
- */
-export const ROW_LG =
-  "lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_calc((100%_-_80px)/2)]";
-export const ROW_XL = "xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_36rem]";
 export const GRID =
   "grid min-w-0 lg:grid-cols-2 lg:gap-x-20 xl:grid-cols-[minmax(0,1fr)_36rem]";
 

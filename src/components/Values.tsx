@@ -1,4 +1,4 @@
-import Band, { CONTAINER, HANG, ROW_LG, ROW_XL, SEAM, SECTION } from "./Band";
+import Band, { CONTAINER, HANG, SEAM, SECTION } from "./Band";
 import Reveal from "./Reveal";
 
 /* The locked foundation, in business language. The vision line is the
@@ -37,7 +37,7 @@ export default function Values() {
           whatever the lines above them wrap to; the rows' spacing lives on
           the elements, not in the grid's gap. The columns share the card
           rows' lines (three across the container, 24 apart) */}
-      <div className={`${HANG} grid gap-y-12 sm:grid-cols-3 sm:gap-x-6 sm:gap-y-0 ${ROW_LG} ${ROW_XL}`}>
+      <div className={`${HANG} grid gap-y-12 sm:grid-cols-3 sm:gap-x-6 sm:gap-y-0`}>
         {values.map((value, i) => (
           <Reveal
             key={value.name}

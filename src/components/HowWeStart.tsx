@@ -1,4 +1,4 @@
-import Band, { CONTAINER, HANG, ROW_XL, SECTION } from "./Band";
+import Band, { CONTAINER, HANG, SECTION } from "./Band";
 import Reveal from "./Reveal";
 import { AUDIT_MAILTO } from "@/lib/site";
 
@@ -47,10 +47,9 @@ export default function HowWeStart() {
           }
         />
 
-        {/* three across at xl on the page's three tracks, the third card under
-            the lede; below xl the cards stack, so no card title is squeezed
-            onto a line of its own */}
-        <div className={`${HANG} grid gap-6 ${ROW_XL}`}>
+        {/* three across at lg; below lg the cards stack, as the bands do, so
+            no card title is squeezed onto a line of its own */}
+        <div className={`${HANG} grid gap-6 lg:grid-cols-3`}>
           {engagements.map((engagement, i) => (
             <Reveal key={engagement.title} delay={i * 80}>
               <div className="flex h-full flex-col rounded-2xl border border-warmgray/40 bg-ivory p-7 shadow-whisper transition-shadow hover:shadow-lifted sm:p-8">

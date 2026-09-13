@@ -1,4 +1,4 @@
-import Band, { CONTAINER, HANG, ROW_XL, SECTION } from "./Band";
+import Band, { CONTAINER, HANG, SECTION } from "./Band";
 import Reveal from "./Reveal";
 
 const points = [
@@ -48,10 +48,9 @@ export default function Edge() {
           }
         />
 
-        {/* three across at xl on the page's three tracks, the third card under
-            the lede; below xl the cards stack, so no card title is squeezed
-            onto a line of its own */}
-        <div className={`${HANG} grid gap-6 ${ROW_XL}`}>
+        {/* three across at lg; below lg the cards stack, as the bands do, so
+            no card title is squeezed onto a line of its own */}
+        <div className={`${HANG} grid gap-6 lg:grid-cols-3`}>
           {points.map((point, i) => (
             <Reveal key={point.title} delay={i * 80}>
               <div className="flex h-full flex-col rounded-2xl border border-warmgray/40 bg-ivory p-7 shadow-whisper transition-shadow hover:shadow-lifted sm:p-8">
