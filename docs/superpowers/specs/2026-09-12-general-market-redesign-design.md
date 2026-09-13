@@ -279,3 +279,19 @@ The design loop (user-level skill) runs after the plumbing lands, so critics onl
 ## 13. Out of scope
 
 The blog and its posts. Privacy and Terms (gated on counsel; the `legal-pages` branch is untouched). Any change to the hero composition, the woven core asset, or the brain animation's motion. Security, compliance, or hosting claims of any kind.
+
+## 14. As-built amendments (plumbing, 2026-09-12)
+
+Decisions made while executing the plan, recorded so the design loop starts from what is actually on the branch. Each keeps the spec's intent; where one bends a rule, the reason is given.
+
+- **Fitted shells.** `Frame` gained a `fit` prop (`product-shell-fit`: no minimum width, fills the frame at real scale). The split chapters (05, 06) and the dark chat chapter (03) use it with `fade="bottom"`, because a 960px-minimum shell in a 572px split frame pushed the roster's status column and the composer entirely off-frame. Text stays 13px at 1x; the product reads as a narrow window rather than a cut corner. Chapters 01, 02, and 04 keep the overflowing shell and the cut edges.
+- **Mobile masks.** Below 768px: cut-right frames (`product-frame-right`) and bottom-fade frames (`product-frame-bottom`) both use the corner mask, since the shell is still wider than a phone; fitted frames keep only the bottom fade. The pipeline board's inner fade has its own class (`product-board-fade`) with no mobile override.
+- **Chapter 03 on phones** hides the dimmed dashboard and gives the chat panel the whole frame.
+- **Frame heights.** Chapter 05 is `h-[860px] sm:h-[600px]`, chapter 06 `h-[560px] sm:h-[420px]`, chapter 01 `h-[540px]`, chapter 04 `h-[600px]`; the fitted roster and the wrapped tiles needed the room on phones. Chapter 01's tiles are two-up below `md`.
+- **Pipeline opens on Redrock**, the second column, because at 1440 only about three of five columns fit beside the detail panel and the Ironline card sat off-frame. Ironline keeps its Draw 4 reference for the loop's click interaction.
+- **The run intro** carries one sentence under its heading defining agentic AI, the page's first use.
+- **Section 5.1 "cropped, never shrunk"** is read as a rule about scale, not about overflow: a fitted shell at 1x satisfies it.
+- **Finished-state payload past the crop.** In the no-JS state, chapter 01 shows one needs-you item and not the "filed overnight" line, chapter 02's rock percentages sit past the right fade, chapter 04 shows about three columns, and chapter 05's composer sits in the bottom fade. The design loop decides heights and crops with the spec's payload visible.
+- **Stats** ship on the branch with both chips; the second citation stays on Max's checklist and gates the merge (section 6.5).
+- **Screenshots** of this site need `--reduced-motion` on full-page captures (scroll reveals never fire in a headless full-page capture), and the loop's preflight should shoot the built export, not the dev server.
+- **The copy guard** strips `className` attribute regions by brace depth before checking copy lines, exempts `src/components/brain/` from the "brain" rule (component names), and is run on `src/` as a gate.
