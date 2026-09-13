@@ -1,3 +1,4 @@
+import { CONTAINER, SECTION, Split } from "./Band";
 import Reveal from "./Reveal";
 
 const offerings = [
@@ -13,33 +14,35 @@ const offerings = [
 
 export default function BeyondCore() {
   return (
-    <section id="beyond-core" className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
-      {/* the company half's one split grid: two equal columns 64 apart */}
-      <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
-        <Reveal>
-          <p className="type-label mb-3 text-fern-deep">Beyond the Core</p>
-          <h2 className="type-h2 text-ink">
-            Your outsourced technology arm.
-          </h2>
-          <p className="type-body mt-5 text-ink/80">
-            Lean firms stay lean on purpose. You will never hire an in-house
-            engineering team, and you should not have to.
-          </p>
-        </Reveal>
-
-        <div className="flex flex-col gap-6">
-          {offerings.map((offering, i) => (
-            <Reveal key={offering.title} delay={i * 80}>
-              <div className="rounded-2xl border border-warmgray/40 bg-parchment p-7 shadow-whisper transition-shadow hover:shadow-lifted sm:p-8">
-                <h3 className="type-h3 text-ink">{offering.title}</h3>
-                <p className="type-text mt-2.5 text-ink/70">
-                  {offering.body}
-                </p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </div>
+    <section id="beyond-core" className={`${CONTAINER} ${SECTION}`}>
+      {/* the band's split form: the words in the title column, the two cards
+          in the lede column, the first card's top edge on the title's cap
+          height */}
+      <Split
+        label="Beyond the Core"
+        title="Your outsourced technology arm."
+        asideClassName="lg:pt-[35px]"
+        aside={
+          <div className="flex flex-col gap-6">
+            {offerings.map((offering, i) => (
+              <Reveal key={offering.title} delay={i * 80}>
+                <div className="rounded-2xl border border-warmgray/40 bg-parchment p-7 shadow-whisper transition-shadow hover:shadow-lifted sm:p-8">
+                  <h3 className="type-h3 text-ink">{offering.title}</h3>
+                  <p className="type-text mt-2.5 text-ink/70">
+                    {offering.body}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        }
+      >
+        {/* the lede is the first two sentences, the first alone being short */}
+        <p className="type-body mt-5 max-w-xl text-ink/80">
+          Lean firms stay lean on purpose. You will never hire an in-house
+          engineering team, and you should not have to.
+        </p>
+      </Split>
     </section>
   );
 }

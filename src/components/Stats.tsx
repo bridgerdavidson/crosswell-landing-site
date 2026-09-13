@@ -1,3 +1,4 @@
+import { CONTAINER, GRID, SECTION } from "./Band";
 import Reveal from "./Reveal";
 
 /* Both figures come from Max's fact-check ledger. The second citation is
@@ -19,20 +20,23 @@ const stats = [
 
 /* The quiet parchment band that sets up Why Crosswell (spec 6.5): it opens
    the band Why Crosswell sits in, on the page's beat, with the two figures
-   in the first two columns of the three the cards below take. */
+   on the grid's two column lines (the band's title column and its lede
+   column). */
 export default function Stats() {
   return (
     <section id="stats" className="border-t border-ink/8 bg-parchment">
-      <div className="mx-auto grid max-w-6xl gap-10 px-6 py-24 sm:grid-cols-2 sm:gap-6 sm:py-32 lg:grid-cols-3">
-        {stats.map((stat, i) => (
-          <Reveal key={stat.figure} delay={i * 80}>
-            <div>
-              <p className="type-h2 text-fern-deep">{stat.figure}</p>
-              <p className="type-text mt-2 max-w-[40ch] text-ink/75">{stat.body}</p>
-              <p className="type-caption mt-3 text-ink/60">{stat.source}</p>
-            </div>
-          </Reveal>
-        ))}
+      <div className={`${CONTAINER} ${SECTION}`}>
+        <div className={`${GRID} gap-y-10 sm:max-lg:grid-cols-2 sm:max-lg:gap-x-6`}>
+          {stats.map((stat, i) => (
+            <Reveal key={stat.figure} delay={i * 80}>
+              <div>
+                <p className="type-h2 text-fern-deep">{stat.figure}</p>
+                <p className="type-text mt-2 max-w-[40ch] text-ink/70">{stat.body}</p>
+                <p className="type-caption mt-3 text-ink/60">{stat.source}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   );

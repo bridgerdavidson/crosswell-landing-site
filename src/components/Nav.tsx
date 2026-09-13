@@ -107,7 +107,7 @@ export default function Nav() {
       className={`nav-enter fixed inset-x-0 top-0 z-50 border-b pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] pt-[env(safe-area-inset-top)] ${headerChrome}`}
     >
       <div
-        className={`mx-auto flex max-w-6xl items-center justify-between px-6 transition-[height] duration-300 ${
+        className={`flex items-center justify-between px-6 transition-[height] duration-300 lg:px-12 ${
           scrolled ? "h-16" : "h-20"
         }`}
       >

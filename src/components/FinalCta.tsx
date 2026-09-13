@@ -1,12 +1,15 @@
+import { CONTAINER } from "./Band";
 import Reveal from "./Reveal";
 import { AUDIT_MAILTO, CALL_MAILTO } from "@/lib/site";
 
 /* The closing bookend: the hero's display, subline and two buttons again,
-   on the hero's own margins, in the page's gutters on the page's beat. */
+   on the hero's own margins, centred in the page's container. A dark band,
+   it pads 160 on both sides like the run's (96 on phones), so it sits the
+   beat (288) under the insights' content. */
 export default function FinalCta() {
   return (
     <section className="bg-charcoal text-ivory">
-      <div className="mx-auto max-w-6xl px-6 py-24 text-center sm:py-32">
+      <div className={`${CONTAINER} py-24 text-center sm:py-40`}>
         <Reveal>
           {/* deliberate reuse of the hero display scale as a closing bookend */}
           <h2 className="type-display mx-auto max-w-4xl">

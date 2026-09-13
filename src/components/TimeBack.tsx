@@ -1,3 +1,4 @@
+import { CONTAINER, SECTION, Split } from "./Band";
 import Reveal from "./Reveal";
 
 /* Retention leads, hours land last (Website Direction v6, section 7). */
@@ -22,52 +23,57 @@ const sinks = [
 
 export default function TimeBack() {
   return (
-    <section id="what-you-lose" className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
-      {/* the company half's one split grid: two equal columns 64 apart */}
-      <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
-        <Reveal>
-          <p className="type-label mb-3 text-fern-deep">The value</p>
-          <h2 className="type-h2 text-ink">What a business actually loses.</h2>
-          {/* the lede is the first sentence; the rest follows as running
-              text, so the lede lands in two lines */}
-          <p className="type-body mt-5 text-ink/80">
-            Almost everything your business knows never gets written down.
-          </p>
-          <p className="type-text mt-4 text-ink/70">
-            It is scattered across inboxes, call recordings, files nobody opens
-            again, and a few people&apos;s heads. You paid for all of it once.
-            Most of it you never use twice. We take that whole pile, connect
-            it, and put it back to work.
-          </p>
-        </Reveal>
-
-        <div className="flex flex-col divide-y divide-ink/8">
-          {/* each row sits alone in its reveal, so first: and last: would
-              match every row; the first row's top padding is dropped by
-              index, and every row keeps 24 on each side of its hairline */}
-          {sinks.map((sink, i) => (
-            <Reveal key={sink.pain} delay={i * 80}>
-              <div className={i === 0 ? "pb-6" : "py-6"}>
-                <p className="type-accent text-ink">
-                  {sink.pain}{" "}
-                  <span className="italic text-fern-deep">{sink.fix}</span>
-                </p>
-              </div>
+    <section id="what-you-lose" className={`${CONTAINER} ${SECTION}`}>
+      {/* the band's split form: the words in the title column, the ledger in
+          the lede column from the title's row, its first line's cap height
+          on the title's */}
+      <Split
+        label="The value"
+        title="What a business actually loses."
+        asideClassName="lg:pt-[30px]"
+        aside={
+          <div className="flex flex-col divide-y divide-ink/8">
+            {/* each row sits alone in its reveal, so first: and last: would
+                match every row; the first row's top padding is dropped by
+                index, and every row keeps 24 on each side of its hairline.
+                The fix clause carries the page's one emphasis, the serif
+                italic in the accent colour */}
+            {sinks.map((sink, i) => (
+              <Reveal key={sink.pain} delay={i * 80}>
+                <div className={i === 0 ? "pb-6" : "py-6"}>
+                  <p className="type-accent text-ink">
+                    {sink.pain}{" "}
+                    <span className="italic text-fern-deep">{sink.fix}</span>
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+            <Reveal delay={320}>
+              <p className="type-text max-w-md pt-6 text-ink/70">
+                The hours aren&apos;t the point. They go back where trust gets
+                built: your people, in front of your customers.
+              </p>
+              <p className="type-text mt-4 max-w-md text-ink/70">
+                And a firm that keeps its memory is worth more. When an acquirer,
+                investor, or auditor looks in, everything is in one place: every
+                project, every decision, every reason why.
+              </p>
             </Reveal>
-          ))}
-          <Reveal delay={320}>
-            <p className="type-text pt-6 text-ink/70">
-              The hours aren&apos;t the point. They go back where trust gets
-              built: your people, in front of your customers.
-            </p>
-            <p className="type-text mt-4 text-ink/70">
-              And a firm that keeps its memory is worth more. When an acquirer,
-              investor, or auditor looks in, everything is in one place: every
-              project, every decision, every reason why.
-            </p>
-          </Reveal>
-        </div>
-      </div>
+          </div>
+        }
+      >
+        {/* the lede is the first sentence; the rest follows as running
+            text, so the lede lands in two lines */}
+        <p className="type-body mt-5 max-w-xl text-ink/80">
+          Almost everything your business knows never gets written down.
+        </p>
+        <p className="type-text mt-4 max-w-md text-ink/70">
+          It is scattered across inboxes, call recordings, files nobody opens
+          again, and a few people&apos;s heads. You paid for all of it once.
+          Most of it you never use twice. We take that whole pile, connect
+          it, and put it back to work.
+        </p>
+      </Split>
     </section>
   );
 }

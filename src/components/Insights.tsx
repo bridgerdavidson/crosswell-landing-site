@@ -1,11 +1,11 @@
-import Band from "./Band";
+import Band, { CONTAINER, SECTION } from "./Band";
 
 /* A held slot. The blog and its post cards are a separate brief; nothing
    here links anywhere yet. */
 export default function Insights() {
   return (
     <section id="insights" className="border-t border-ink/8">
-      <div className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
+      <div className={`${CONTAINER} ${SECTION}`}>
         <Band
           label="From the desk"
           title="Insights"

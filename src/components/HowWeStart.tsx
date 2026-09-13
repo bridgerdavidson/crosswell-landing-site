@@ -1,4 +1,4 @@
-import Band from "./Band";
+import Band, { CONTAINER, HANG, SECTION } from "./Band";
 import Reveal from "./Reveal";
 import { AUDIT_MAILTO } from "@/lib/site";
 
@@ -23,12 +23,12 @@ const engagements = [
 export default function HowWeStart() {
   return (
     <section id="how-we-start" className="border-y border-ink/8 bg-parchment">
-      <div className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
+      <div className={`${CONTAINER} ${SECTION}`}>
         {/* the page's title band; cards follow the title, so no lede and the
             right column stays empty */}
         <Band label="How we start" title="Start small, on purpose." />
 
-        <div className="mt-12 grid gap-6 sm:mt-16 sm:grid-cols-3">
+        <div className={`${HANG} grid gap-6 sm:grid-cols-3`}>
           {engagements.map((engagement, i) => (
             <Reveal key={engagement.title} delay={i * 80}>
               <div className="flex h-full flex-col rounded-2xl border border-warmgray/40 bg-ivory p-7 shadow-whisper transition-shadow hover:shadow-lifted sm:p-8">
@@ -46,7 +46,7 @@ export default function HowWeStart() {
 
         <Reveal delay={80}>
           <div className="mt-12 flex flex-col items-start gap-5 sm:mt-16">
-            <p className="type-text text-ink/70">
+            <p className="type-text max-w-md text-ink/70">
               The first call is thirty minutes. We ask how your firm handles
               knowledge today, and we tell you straight whether the audit is
               worth it.

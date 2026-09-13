@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, type CSSProperties } from "react";
-import Band from "./Band";
+import Band, { CONTAINER, HANG, SECTION } from "./Band";
 import Reveal from "./Reveal";
 
 /* Type this anywhere on the page and the headshots flip to the golden-hour
@@ -77,19 +77,19 @@ export default function Team() {
 
   return (
     <section id="team" className="border-t border-ink/8 bg-parchment">
-      <div className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
+      <div className={`${CONTAINER} ${SECTION}`}>
         <Band
           label="The team"
           title="Three people. One team."
           lede="Small is deliberate. You work directly with the three people who build and run your Core, not an account manager standing between you and the work."
         />
 
-        <div className="mt-12 grid gap-6 sm:mt-16 sm:grid-cols-3">
+        <div className={`${HANG} grid gap-6 sm:grid-cols-3`}>
           {team.map((person, i) => (
             <Reveal key={person.name} delay={i * 80}>
               <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-warmgray/40 bg-ivory shadow-whisper transition-shadow hover:shadow-lifted">
                 <div
-                  className="team-flip relative aspect-square w-full bg-warmgray/20 sm:aspect-4/5"
+                  className="team-flip relative aspect-square w-full bg-warmgray/20 sm:aspect-4/5 lg:aspect-square"
                   data-flipped={flipped}
                   style={{ "--flip-delay": `${i * 90}ms` } as CSSProperties}
                 >

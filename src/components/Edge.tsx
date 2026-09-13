@@ -1,4 +1,4 @@
-import Band from "./Band";
+import Band, { CONTAINER, HANG, SECTION } from "./Band";
 import Reveal from "./Reveal";
 
 const points = [
@@ -22,11 +22,12 @@ const points = [
 export default function Edge() {
   return (
     <section id="why-crosswell" className="border-b border-ink/8 bg-parchment">
-      <div className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
-        {/* the page's title band; no lede, so its right column stays empty
-            and the pull quote hangs below at the section's width. The second
-            sentence holds together, so the balanced wrap breaks between the
-            phrases instead of leaving "So" at a line's end */}
+      <div className={`${CONTAINER} ${SECTION}`}>
+        {/* the page's title band. The pull quote, an accent line (roman, full
+            ink), takes the lede's place in the right column; its rule hangs in
+            the columns' gap so the words sit on the column line. The second
+            sentence of the title holds together, so the balanced wrap breaks
+            between the phrases instead of leaving "So" at a line's end */}
         <Band
           label="Why Crosswell"
           title={
@@ -35,18 +36,17 @@ export default function Edge() {
               <span className="whitespace-nowrap">So we do not sell it.</span>
             </>
           }
+          aside={
+            <blockquote className="border-l-2 border-fern pl-6 lg:-ml-8 lg:mt-[1px] lg:pl-[30px]">
+              <p className="type-accent text-ink">
+                When someone leaves, their knowledge does not. Every meeting,
+                decision, and deal, remembered.
+              </p>
+            </blockquote>
+          }
         />
 
-        <Reveal delay={80}>
-          <blockquote className="mt-12 max-w-3xl border-l-2 border-fern pl-6 sm:mt-16 sm:pl-8">
-            <p className="type-accent italic text-ink/85">
-              When someone leaves, their knowledge does not. Every meeting,
-              decision, and deal, remembered.
-            </p>
-          </blockquote>
-        </Reveal>
-
-        <div className="mt-12 grid gap-6 sm:mt-16 sm:grid-cols-3">
+        <div className={`${HANG} grid gap-6 sm:grid-cols-3`}>
           {points.map((point, i) => (
             <Reveal key={point.title} delay={i * 80}>
               <div className="flex h-full flex-col rounded-2xl border border-warmgray/40 bg-ivory p-7 shadow-whisper transition-shadow hover:shadow-lifted sm:p-8">
