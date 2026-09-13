@@ -85,10 +85,13 @@ carries them). Nothing else on the page is amber, red, or blue.
   1280, 1440, or 1728 (the shortest is 0.78). What a business loses'
   ledger rows set their ink clause and their fern clause as two inline
   blocks, so a row that runs past one line breaks between the clauses,
-  and each clause balances within itself when it wraps. Checked at 390, 430, 640, 700, 768, 820, 900, 1024,
-  1180, 1280, 1366, 1440, 1512, 1728, and 1920. Card rows go three across
-  only where their titles hold (at lg; the team's from md, in the text
-  block's 28 padding).
+  and each clause balances within itself when it wraps. Balance applies
+  to a block of at most six lines, so no card body, bio, or values line
+  runs past six where it balances. Checked, card bodies and bios included,
+  at 390, 430, 640, 700, 768, 820, 900, 1024, 1180, 1280, 1366, 1440, 1512,
+  1728, and 1920. Card rows go three across only where their titles and
+  bodies hold (at lg; the team's and the values' from md, the team's text
+  block padding 20 from md to lg).
 - Secondary text never drops below ink at 60 percent (ivory at 60 on dark
   ground): captions, sources, the fictional-company line, the footer, and
   the label index included. Inside the product, dimming is a tone (a
@@ -112,7 +115,8 @@ carries them). Nothing else on the page is amber, red, or blue.
 - The team card is the one card whose picture bleeds: the portrait fills
   the card's top edge to edge, with no padding around it (square at lg
   and below md, 4:5 between), and the text block under it pads 32 (28
-  below lg), the name on the block's first line, the discipline label 2
+  below md, 20 from md to lg, where three cards share 720 to 976), the
+  name on the block's first line, the discipline label 2
   under the name, the bio 12 under the label. Every other card holds the
   card rule below (32 inside, the body 10 under the title).
 - Product fragments: parchment panels on ivory. The product has no
@@ -355,15 +359,21 @@ carries them). Nothing else on the page is amber, red, or blue.
   the section read as one block. Every other space inside a section is
   smaller than the hang: 64 from the lead-in to the brain section's label
   (48 on phones), 32 from the industries' hairline to their row, 24 on
-  each side of a ledger hairline. The hero at lg is
-  not the viewport's height, and it shares the first frame with the run
-  intro: 80 under the fixed nav, 128 to the eyebrow, the words (the display
-  168 under the nav), the hero's edge at the buttons set 32 into the run's
-  own 128, so the run intro's label sits 96 under the buttons and the
-  sphere dissolves under them. At 1440x900 the intro's last line ends 31
-  above the fold, and at 1728x1117 (and 1512x982, 1920x1080) the fold
-  falls in the beat between the intro and chapter 01, so no line of words
-  is cut; below lg the hero keeps the viewport's height. The footer is chrome, not a section: 64 above and below its one
+  each side of a ledger hairline. The hero at lg shares the first frame
+  with the run intro, and the fold always falls 31 under the intro's last
+  line. Its words take 80 under the fixed nav, 128 to the eyebrow (the
+  display 168 under the nav), and the hero's edge at the buttons, set 32
+  into the run's own 128, so the intro's label sits 96 under the buttons:
+  that is the hero at 1440x900 and on any shorter viewport (1366x768,
+  1280x800), where the words' own height is the larger. On a taller
+  viewport the hero takes the extra height (its least height is the
+  viewport less 373, the intro's share and the 31), and its words stay
+  centred in it on the woven core, the composition's centre, so the
+  core's air splits above and below them: 609 tall at 1512x982, 744 at
+  1728x1117, 707 at 1920x1080, the display 207, 275, and 256 under the
+  nav and the buttons 137, 204, and 186 over the intro's label, every
+  frame ending 31 under the intro. Below lg the hero keeps the viewport's
+  height. The footer is chrome, not a section: 64 above and below its one
   row.
 - The title band (`Band`) carries every titled section: the run's six
   chapters and who it's for, why Crosswell, how we start, the values, the
@@ -425,7 +435,9 @@ carries them). Nothing else on the page is amber, red, or blue.
   by the bar's mechanism 6 (582 wide).
 - Cards and ledgers on the grid: why Crosswell's, how we start's, and the
   team's card rows run three across the container, 24 apart (432 wide at
-  1440, 528 at 1728), at lg (the team's from md); below that they stack; the values' three columns take the same lines;
+  1440, 528 at 1728), at lg (the team's from md); below that they stack;
+  the values' three columns take the same lines from md and stack below
+  it, as the card rows do;
   beyond the Core's two cards stack in the right column; the stats' two
   figures sit on the two column lines (x 48 and 816 at 1440); the
   industries row runs the container under its hairline, its six names
