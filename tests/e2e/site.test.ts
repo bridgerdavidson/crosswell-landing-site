@@ -79,10 +79,9 @@ describe("built css", () => {
     has("product-frame-corner", "y");
     has("product-frame-right", "x");
     has("product-frame-bottom", "y");
-    has("product-frame-fit\\.product-frame-bottom", "y");
-    // on phones the cut-right and cut-bottom frames take the corner mask (the
-    // minifier merges them into one selector list ending in .product-frame-right)
-    has("product-frame-right", "y");
+    // below lg a frame takes its product's height, so the only mask is the
+    // right fade on a shell that still overflows the frame
+    has("product-frame", "x");
     expect(css).toMatch(/product-frame\{--fade-x:160px;--fade-y:120px;/);
     expect(css).toMatch(/product-frame\{--fade-x:120px;--fade-y:120px\}/);
   });

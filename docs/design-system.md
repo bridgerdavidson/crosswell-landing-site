@@ -101,8 +101,11 @@ else on the page is amber, red, or blue.
 - Fragments are cut by a frame; cut edges dissolve into the page with a
   mask gradient (double stops). The content edge stays crisp. The dissolve
   is written in pixels so every frame fades over the same distance: 160 at
-  the right, 120 at the bottom, 120 both ways on phones, so the product
-  reaches the gutter. Every frame is
+  the right, 120 at the bottom (120 both ways on phones), so the product
+  reaches the gutter. A mask exists only where the frame cuts the product:
+  below lg a frame takes its product's own height and carries no bottom
+  mask, and a shell that fits its frame carries none at all; only a shell
+  that still overflows the frame's width keeps the right fade. Every frame is
   800 tall at lg and above (its product's own height below), so the run
   keeps one beat; a product shorter than that shows more of itself (the
   next rows, the panel below, the list under the buttons) and is cut, never
