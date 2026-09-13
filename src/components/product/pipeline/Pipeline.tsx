@@ -86,7 +86,7 @@ export default function Pipeline() {
                 </div>
                 <div className="product-hr mt-5 pt-4">
                   <p className="product-bubble">{who.label}</p>
-                  <p className="mt-3 leading-relaxed">{who.answer}</p>
+                  <p className="mt-3">{who.answer}</p>
                   <div className="mt-2 flex flex-wrap gap-1.5">
                     {who.receipts.map((r) => (
                       <Receipt key={r}>{r}</Receipt>

@@ -29,7 +29,7 @@ export default function Values() {
           To become the most sought after name in agentic AI by setting the
           standard for what a partner should be.
         </p>
-        <p className="type-body mt-5 max-w-2xl text-ink/80">
+        <p className="type-text mt-5 max-w-2xl text-ink/70">
           That is what we are building toward. What we do every day is simpler:
           we help businesses become AI native.
         </p>
@@ -43,7 +43,7 @@ export default function Values() {
               <h3 className="type-h3 text-ink">{value.name}</h3>
               <p className="type-text mt-2.5 text-ink/80">{value.line}</p>
               <p className="type-caption mt-4 font-medium text-fern-deep">What it costs</p>
-              <p className="mt-1 text-sm leading-normal text-ink/70">{value.cost}</p>
+              <p className="type-text mt-1 text-ink/70">{value.cost}</p>
             </div>
           </Reveal>
         ))}

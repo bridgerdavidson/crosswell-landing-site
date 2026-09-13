@@ -132,7 +132,7 @@ export default function Nav() {
               key={link.href}
               href={link.href}
               onClick={(e) => goToSection(e, link.href)}
-              className="relative text-[15px] font-medium text-ink/75 transition-colors duration-200 hover:text-ink after:absolute after:inset-x-0 after:-bottom-1.5 after:h-px after:origin-left after:scale-x-0 after:bg-fern after:transition-transform after:duration-300 hover:after:scale-x-100"
+              className="type-text relative font-medium text-ink/75 transition-colors duration-200 hover:text-ink after:absolute after:inset-x-0 after:-bottom-1.5 after:h-px after:origin-left after:scale-x-0 after:bg-fern after:transition-transform after:duration-300 hover:after:scale-x-100"
             >
               {link.label}
             </a>
@@ -142,7 +142,7 @@ export default function Nav() {
         <div className="flex items-center gap-3">
           <a
             href={CALL_MAILTO}
-            className="hidden rounded-lg bg-fern px-4 py-2 text-sm font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep md:inline-block"
+            className="type-text hidden rounded-lg bg-fern px-4 py-1.5 font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep md:inline-block"
           >
             Set up a call
           </a>
@@ -188,7 +188,7 @@ export default function Nav() {
             style={{ "--i": i } as CSSProperties}
           >
             <span className="menu-idx">{String(i + 1).padStart(2, "0")}</span>
-            <span className="menu-txt">{link.label}</span>
+            <span className="menu-txt type-h2">{link.label}</span>
           </a>
         ))}
       </nav>
@@ -199,7 +199,7 @@ export default function Nav() {
         <a
           href={CALL_MAILTO}
           onClick={() => setOpen(false)}
-          className="block rounded-[10px] bg-fern px-4 py-4 text-center text-[15px] font-semibold text-ivory"
+          className="type-text block rounded-[10px] bg-fern px-4 py-4 text-center font-semibold text-ivory"
         >
           Set up a call
         </a>

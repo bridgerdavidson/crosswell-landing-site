@@ -11,7 +11,7 @@ export default function FinalCta() {
             Your firm already knows the answers.{" "}
             <span className="italic text-fern-soft">Give it a memory.</span>
           </h2>
-          <p className="type-body mx-auto mt-6 max-w-xl text-ivory/80">
+          <p className="type-body mx-auto mt-6 max-w-2xl text-ivory/80">
             The Core is built alongside the firms it serves. Start with the
             two-week knowledge audit, or talk to us directly.
           </p>
@@ -20,13 +20,13 @@ export default function FinalCta() {
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <a
               href={AUDIT_MAILTO}
-              className="rounded-lg bg-fern px-7 py-4 text-sm font-semibold text-ivory transition-colors hover:bg-fern-deep"
+              className="type-text rounded-lg bg-fern px-7 py-3.5 font-semibold text-ivory transition-colors hover:bg-fern-deep"
             >
               Start with the audit
             </a>
             <a
               href={CALL_MAILTO}
-              className="rounded-lg border border-ivory/25 px-7 py-4 text-sm font-semibold text-ivory transition-colors hover:border-fern-soft hover:text-fern-soft"
+              className="type-text rounded-lg border border-ivory/25 px-7 py-3.5 font-semibold text-ivory transition-colors hover:border-fern-soft hover:text-fern-soft"
             >
               Set up a call
             </a>

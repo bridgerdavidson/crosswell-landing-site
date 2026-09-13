@@ -123,10 +123,10 @@ export default function Team() {
                 </div>
                 <div className="flex flex-1 flex-col p-7">
                   <h3 className="type-h3 text-ink">{person.name}</h3>
-                  <p className="mt-0.5 text-sm font-medium text-fern-deep">
+                  <p className="type-label mt-0.5 text-fern-deep">
                     {person.role}
                   </p>
-                  <p className="mt-3 text-sm leading-normal text-ink/70">
+                  <p className="type-text mt-3 text-ink/70">
                     {person.line}
                   </p>
                 </div>

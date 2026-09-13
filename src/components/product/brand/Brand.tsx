@@ -37,7 +37,7 @@ export default function Brand() {
                   <button
                     type="button"
                     aria-pressed={pressed}
-                    className={`flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm transition-colors ${
+                    className={`type-caption flex items-center gap-2 rounded-full border px-3 py-1.5 transition-colors ${
                       pressed ? "border-ink/30 text-ink" : "border-ink/10 text-ink/60 hover:text-ink"
                     }`}
                   >

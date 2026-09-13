@@ -276,8 +276,7 @@ export default function BrainField() {
         const q = easeInOut(seg(T.convA, T.convB));
         sc = 1 - (1 - scaleMin) * q;
         rad = 14 + (cardW0 - 14) * q; // round all the way to a disc
-        card!.style.background = lerpColor([36, 34, 28], [61, 99, 61], q); // -> fern
-        card!.style.boxShadow = `0 ${(26 * (1 - q)).toFixed(1)}px ${(54 * (1 - q)).toFixed(1)}px -30px rgba(26,25,21,${(0.85 * (1 - q)).toFixed(3)})`;
+        card!.style.background = lerpColor([52, 49, 44], [61, 99, 61], q); // charcoal-deep -> fern
         if (inner) inner.style.opacity = String(1 - easeOut(Math.min(1, q / 0.5))); // text gone by mid-convert
         op = 1 - easeIn(Math.max(0, (q - 0.8) / 0.2)); // hand the shell off to the canvas node in the last 20%
       } else {

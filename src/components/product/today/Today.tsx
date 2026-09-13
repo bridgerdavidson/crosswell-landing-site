@@ -35,7 +35,7 @@ export default function Today() {
                     <Dot tone="ink" className="mt-2" />
                     <div className="min-w-0 flex-1">
                       <p className="font-semibold">{item.title}</p>
-                      <p className="mt-1 leading-relaxed opacity-75">{item.body}</p>
+                      <p className="mt-1 opacity-75">{item.body}</p>
                       <div className="mt-2 flex flex-wrap gap-1.5">
                         {item.receipts.map((r) => (
                           <Receipt key={r}>{r}</Receipt>

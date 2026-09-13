@@ -5,7 +5,7 @@ import Reveal from "../Reveal";
 export default function BrainSection() {
   return (
     <section id="the-brain" className="px-6 py-24 sm:py-32">
-      <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[0.62fr_1.55fr] lg:gap-16">
+      <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
         <Reveal>
           <p className="type-label text-fern-deep">This is the Core</p>
           <h2 className="type-h2 mt-3">Nothing your firm knows sits alone.</h2>

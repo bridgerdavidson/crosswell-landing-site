@@ -16,7 +16,7 @@ export default function BeyondCore() {
     <section id="beyond-core" className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
       <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
         <Reveal>
-          <p className="type-label mb-3 text-fern-deep">Beyond Core</p>
+          <p className="type-label mb-3 text-fern-deep">Beyond the Core</p>
           <h2 className="type-h2 text-ink">
             Your outsourced technology arm.
           </h2>

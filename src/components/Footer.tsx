@@ -17,7 +17,7 @@ export default function Footer() {
             Custom agentic AI, built around how your team actually works. Arizona.
           </p>
         </div>
-        <div className="flex flex-col items-start gap-1.5 text-sm sm:items-end">
+        <div className="type-text flex flex-col items-start gap-1.5 sm:items-end">
           {/* phones: negative margins cancel the padding in layout, so the
               44px hit box comes free without moving anything visually */}
           <a

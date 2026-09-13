@@ -51,7 +51,7 @@ export default function Chat() {
                         </li>
                       ))}
                     </ul>
-                    <p className="leading-relaxed">{first.answer}</p>
+                    <p>{first.answer}</p>
                     <div className="flex flex-wrap gap-1.5">
                       {first.receipts.map((r) => (
                         <Receipt key={r}>{r}</Receipt>

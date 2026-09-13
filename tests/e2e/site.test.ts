@@ -284,7 +284,7 @@ describe("company half, bottom", () => {
         costs: await page.locator("#values").getByText("What it costs").count(),
         headings: await page.locator("#values h2").count(),
         stewardship: await page.getByText("leaves with you in open files on the day you go").count(),
-        roles: await page.locator("#team .text-fern-deep.text-sm").allTextContents(),
+        roles: await page.locator("#team h3 + p").allTextContents(),
         insights: await page.locator("#insights h2").textContent(),
         posts: await page.locator("#insights article").count(),
         footer: await page.locator("footer").textContent(),

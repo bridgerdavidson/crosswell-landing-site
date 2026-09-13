@@ -35,7 +35,7 @@ export default function Hero() {
           The operating layer your business actually runs on.
         </h1>
         <p
-          className="hero-enter type-body mx-auto mt-6 max-w-2xl text-ink/80"
+          className="hero-enter type-text mx-auto mt-6 max-w-3xl text-balance text-ink/70"
           style={{ "--enter-delay": "0.75s" } as CSSProperties}
         >
           We build the{" "}
@@ -50,13 +50,13 @@ export default function Hero() {
         >
           <a
             href={AUDIT_MAILTO}
-            className="rounded-lg bg-fern px-6 py-3.5 text-sm font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep"
+            className="type-text rounded-lg bg-fern px-6 py-3 font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep"
           >
             Start with the audit
           </a>
           <a
             href={CALL_MAILTO}
-            className="rounded-lg border border-ink/15 px-6 py-3.5 text-sm font-semibold text-ink transition-colors hover:border-fern hover:text-fern-deep"
+            className="type-text rounded-lg border border-ink/15 px-6 py-3 font-semibold text-ink transition-colors hover:border-fern hover:text-fern-deep"
           >
             Set up a call
           </a>

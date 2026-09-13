@@ -36,6 +36,9 @@ body {
   background: var(--color-ivory);
   color: var(--color-ink);
   font-family: var(--font-sans);
+  /* the body size; anything without a role inherits it */
+  font-size: 0.9375rem;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   /* viewport-fit=cover draws edge to edge; keep flow content clear of the
@@ -67,15 +70,14 @@ body {
 }
 
 /* ---------- Type roles ----------
-   The typographic hierarchy for the whole site. Eight sizes carry the page
-   (72, 48, 28, 20, 16, 15, 14, 13 at 1440) and the product adds 26 and 12;
-   see docs/design-system.md for the table. Serif for display, titles,
-   claims, and accent lines; sans for everything else. Color, spacing, and
-   width stay in utilities; these classes own family, size, weight,
-   line-height, and tracking. Titles run tight (1.0 and 1.05), the lede
-   sits between (1.45), running text opens up (1.6). The only 14px text
-   outside these roles is small running text on cards (text-sm
-   leading-normal) and the nav. */
+   Eight sizes carry the page at 1440 and above: 72, 48, 28, 24, 20, 15,
+   13, 12. Every size has exactly one line-height (1.0, 1.05, 1.3, 1.3,
+   1.3, 1.6, 1.5, 1.4), so two roles that share a size share their leading.
+   Serif for display, titles, claims, accent lines, and the product's
+   greeting and panel titles; sans for everything else. Color, spacing,
+   and width stay in utilities; these classes own family, size, weight,
+   line-height, tracking, and wrapping. Titles balance, the lede rags
+   pretty. See docs/design-system.md for the table. */
 
 .type-display {
   font-family: var(--font-serif);
@@ -83,6 +85,7 @@ body {
   font-size: clamp(3.25rem, 1.82rem + 2.98vw, 4.5rem);
   line-height: 1;
   letter-spacing: -0.025em;
+  text-wrap: balance;
 }
 
 /* section titles and the chapter claims */
@@ -92,10 +95,11 @@ body {
   font-size: clamp(2.25rem, 1.39rem + 1.79vw, 3rem);
   line-height: 1.05;
   letter-spacing: -0.02em;
+  text-wrap: balance;
 }
 
 /* the serif line that carries a section without a title (values, the
-   sinks, the bridge into the Core) */
+   sinks, the industries, the pull quote, the bridge into the Core) */
 .type-accent {
   font-family: var(--font-serif);
   font-size: 1.75rem;
@@ -103,7 +107,16 @@ body {
   letter-spacing: -0.01em;
 }
 
-/* card and person titles */
+/* the lede: the sentence or two under a title or claim, its companion.
+   Half the title, 1.6 times the body. Ink at 80 percent in the markup. */
+.type-body {
+  font-size: 1.5rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  text-wrap: pretty;
+}
+
+/* card and person titles; shares 20 with the product's panel titles */
 .type-h3 {
   font-size: 1.25rem;
   font-weight: 600;
@@ -111,25 +124,24 @@ body {
   letter-spacing: -0.01em;
 }
 
-/* the lede: the sentence or two under a title or claim, its companion,
-   never a paragraph. Color is ink at 80 percent in the markup. */
-.type-body {
-  font-size: 1.25rem;
-  line-height: 1.45;
-  letter-spacing: -0.01em;
-}
-
-/* running text: card paragraphs and any paragraph after the lede */
+/* the body size: running text, card text, bios, the nav, the buttons */
 .type-text {
-  font-size: 1rem;
+  font-size: 0.9375rem;
   line-height: 1.6;
+  text-wrap: pretty;
 }
 
-/* section labels: sentence case, fern-deep in the markup */
+/* the label size: section labels (sentence case, fern-deep in the
+   markup), captions, sources, and the product's UI text */
 .type-label {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 500;
-  line-height: 1.4;
+  line-height: 1.5;
+}
+
+.type-caption {
+  font-size: 0.8125rem;
+  line-height: 1.5;
 }
 
 /* the two-digit chapter prefix in the product run; color in the markup */
@@ -138,17 +150,11 @@ body {
   margin-right: 0.5em;
 }
 
-/* captions, sources, and the demo lines under frames. Never below ink at
-   60 percent (or ivory at 60 on dark ground). */
-.type-caption {
-  font-size: 0.8125rem;
-  line-height: 1.5;
-}
-
 /* Mobile: the desktop clamps bottom out at 768px, so nothing in the type
-   scale adapts across 320-430px phones. These overrides scale within that
-   range and meet the desktop floor exactly at 768px. The lede and h3 step
-   down one size so a phone column holds a line of the lede. */
+   scale adapts across 320-430px phones. The display and h2 scale within
+   that range and meet the desktop floor exactly at 768px; the accent sits
+   on the product-number size and the lede on the h3 size, so the phone
+   ladder is 42.5, 30.8, 28, 24, 20, 15, 13, 12 at 390. */
 @media (max-width: 767px) {
   .type-display {
     font-size: clamp(2.375rem, 1rem + 6.8vw, 3.25rem);
@@ -157,11 +163,10 @@ body {
     font-size: clamp(1.75rem, 1rem + 3.8vw, 2.25rem);
   }
   .type-accent {
-    font-size: clamp(1.25rem, 0.9rem + 1.8vw, 1.75rem);
+    font-size: 1.5rem;
   }
-  .type-h3,
   .type-body {
-    font-size: 1.125rem;
+    font-size: 1.25rem;
   }
 }
 
@@ -382,32 +387,31 @@ body {
 .brain-card {
   position: absolute; left: 0; top: 0;
   width: min(340px, 84%); transform-origin: center center;
-  background: #24221c; color: var(--color-ivory);
+  background: var(--color-charcoal-deep); color: var(--color-ivory);
   border: 1px solid rgba(241, 238, 230, 0.08);
   border-radius: 14px; padding: 16px;
-  box-shadow: 0 26px 54px -30px rgba(26, 25, 21, 0.85);
   display: flex; flex-direction: column; overflow: hidden;
   opacity: 0; pointer-events: none;
 }
 .brain-card-inner { display: flex; flex-direction: column; flex: 1; min-height: 0; width: 100%; }
-.brain-card-head { display: flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600; flex: none; }
+.brain-card-head { display: flex; align-items: center; gap: 8px; font-size: 13px; line-height: 1.5; font-weight: 600; flex: none; }
 .brain-card-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-fern-soft); flex: none; }
 .brain-card-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.brain-card-badge { flex: none; font-size: 9.5px; font-weight: 700; letter-spacing: 0.02em; color: var(--color-fern-soft); background: rgba(78, 122, 78, 0.22); padding: 3px 8px; border-radius: 6px; }
+.brain-card-badge { flex: none; font-size: 12px; line-height: 1.4; font-weight: 600; color: var(--color-fern-soft); background: rgba(78, 122, 78, 0.22); padding: 2px 8px; border-radius: 6px; }
 .brain-card-body { position: relative; flex: 1; min-height: 176px; margin-top: 12px; }
 .brain-card-raw { position: absolute; inset: 0; }
-.brain-card-line { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 11.5px; line-height: 1.75; color: rgba(241, 238, 230, 0.62); margin: 0; }
+.brain-card-line { font-size: 13px; line-height: 1.5; color: rgba(241, 238, 230, 0.62); margin: 0; }
 .brain-card-line + .brain-card-line { margin-top: 8px; }
 .brain-ph { border-radius: 3px; padding: 0 2px; transition: background 0.35s ease, color 0.35s ease; }
 .brain-ph.hot { background: rgba(78, 122, 78, 0.5); color: #eef4ee; }
 .brain-card-sorted { position: absolute; inset: 0; opacity: 0; display: flex; flex-direction: column; }
-.brain-card-summary { font-size: 13.5px; line-height: 1.5; color: rgba(241, 238, 230, 0.96); margin: 0; }
-.brain-card-context { font-size: 12px; line-height: 1.5; color: rgba(241, 238, 230, 0.6); margin: 8px 0 0; }
+.brain-card-summary { font-size: 13px; line-height: 1.5; color: rgba(241, 238, 230, 0.96); margin: 0; }
+.brain-card-context { font-size: 12px; line-height: 1.4; color: rgba(241, 238, 230, 0.6); margin: 8px 0 0; }
 .brain-card-tags { position: absolute; left: 0; bottom: 0; display: flex; gap: 6px; }
-.brain-card-tag { font-size: 10.5px; font-weight: 600; padding: 3px 9px; border-radius: 6px; background: rgba(78, 122, 78, 0.28); color: rgba(241, 238, 230, 0.92); opacity: 0; }
+.brain-card-tag { font-size: 12px; line-height: 1.4; font-weight: 600; padding: 2px 9px; border-radius: 6px; background: rgba(78, 122, 78, 0.28); color: rgba(241, 238, 230, 0.92); opacity: 0; }
 .brain-replay {
   position: absolute; right: 8px; bottom: 8px;
-  font-size: 12px; font-weight: 600; color: var(--color-fern-soft);
+  font-size: 12px; line-height: 1.4; font-weight: 600; color: var(--color-fern-soft);
   background: transparent; border: 0; cursor: pointer; padding: 6px 8px; opacity: 0;
   transition: opacity 0.4s ease;
   pointer-events: none;
@@ -417,7 +421,6 @@ body {
 /* phones: readable transcript, the raw/sorted layers stop above the tag row
    instead of colliding with it, and Replay gets a 44px hit box */
 @media (max-width: 767px) {
-  .brain-card-line { font-size: 12.5px; }
   .brain-card-raw,
   .brain-card-sorted { inset: 0 0 32px; }
   .brain-replay {
@@ -563,17 +566,16 @@ body {
   border-bottom: 1px solid rgba(241, 238, 230, 0.12);
 }
 
+/* the index sits on the label size; the link text carries type-h2 in the
+   markup, so it is the phone's title size */
 .menu-idx {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
+  font-size: 13px;
+  line-height: 1.5;
+  font-weight: 500;
   color: var(--color-fern-soft);
 }
 
 .menu-txt {
-  font-family: var(--font-serif);
-  font-size: 32px;
-  letter-spacing: -0.01em;
   color: var(--color-ivory);
 }
 
@@ -586,7 +588,8 @@ body {
   margin-top: 14px;
   text-align: center;
   font-size: 13px;
-  color: rgba(241, 238, 230, 0.5);
+  line-height: 1.5;
+  color: rgba(241, 238, 230, 0.6);
 }
 
 /* the two-line burger that morphs into an X */
@@ -709,7 +712,7 @@ body {
   border-radius: 1rem;
   color: var(--color-ink);
   font-size: 13px;
-  line-height: 1.45;
+  line-height: 1.5;
   font-variant-numeric: tabular-nums;
 }
 
@@ -735,7 +738,7 @@ body {
 .product-greeting {
   font-family: var(--font-serif);
   font-size: 1.75rem;
-  line-height: 1.15;
+  line-height: 1.3;
   letter-spacing: -0.01em;
 }
 
@@ -745,17 +748,18 @@ body {
   line-height: 1.3;
 }
 
+/* the product's numbers share the lede's size and leading */
 .product-num {
-  font-size: 1.625rem;
-  line-height: 1.1;
+  font-size: 1.5rem;
+  line-height: 1.3;
   letter-spacing: -0.01em;
   font-weight: 500;
 }
 
-/* the smaller number in a detail panel's tiles */
+/* the smaller number in a detail panel's tiles, on the panel-title size */
 .product-num-sm {
   font-size: 1.25rem;
-  line-height: 1.15;
+  line-height: 1.3;
   letter-spacing: -0.01em;
   font-weight: 500;
 }
@@ -799,6 +803,7 @@ body {
   background: var(--accent-wash);
   color: var(--accent-deep);
   font-size: 12px;
+  line-height: 1.4;
   font-weight: 600;
 }
 
@@ -836,7 +841,7 @@ body {
   border-radius: 999px;
   padding: 0.2rem 0.6rem;
   font-size: 12px;
-  line-height: 1.3;
+  line-height: 1.4;
   border: 1px solid var(--line);
   white-space: nowrap;
 }
@@ -877,8 +882,8 @@ body {
   color: var(--color-ivory);
   font-size: 13px;
   font-weight: 600;
-  padding: 0.45rem 0.8rem;
-  line-height: 1.2;
+  padding: 0.4rem 0.8rem;
+  line-height: 1.5;
   white-space: nowrap;
 }
 

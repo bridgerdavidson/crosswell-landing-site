@@ -31,38 +31,41 @@ else on the page is amber, red, or blue.
   inside the product for the greeting and panel titles only.
 - Sans: Instrument Sans. Everything else, page and product. Tabular
   numerals on inside the product.
-- Section label: 14px, medium, sentence case, fern-deep, optional two-digit
-  index (ink at 60 percent) in the product run. No uppercase anywhere on
-  the page. The two-letter avatar initials inside the product (MG, DW, ML,
-  PS) are data, not styled text, and are the one exception.
-- Ten sizes carry the page at 1440 and above (72, 48, 28, 26, 20, 16, 15,
-  14, 13, 12); the roles are the classes in globals.css. Titles run tight,
-  the lede sits between, running text opens up. Below 768px the display,
-  h2, and accent scale with the viewport (52, 36, and 28 at 767) and the
-  lede and h3 step down to 18px.
+- Section label: 13px, medium, sentence case, fern-deep, optional two-digit
+  index (ink at 60 percent) in the product run. No styled uppercase
+  anywhere on the page: no text-transform, no all-caps strings set as
+  labels or kickers, no wide-tracked small caps. Acronyms and initials
+  that are data (AI, LTC, the avatar initials MG, DW, ML, PS) are not
+  styled uppercase and are allowed.
+- Eight sizes carry the page at 1440 and above (72, 48, 28, 24, 20, 15,
+  13, 12) and every size has exactly one line-height, so two roles that
+  share a size share their leading. One body size (15) carries running
+  text, card text, bios, the nav, and the buttons; one label size (13)
+  carries section labels, captions, sources, and the product's UI text;
+  the lede (24) is half the title and 1.6 times the body. The product's
+  numbers (24) and labels (12) are its own two sizes. Below 768px the
+  display and h2 scale with the viewport (52 and 36 at 767), the accent
+  sits on 24 and the lede on 20, so the phone ladder at 390 is 42.5,
+  30.8, 28, 24, 20, 15, 13, 12.
 
-| Role | Class | Family | Size | Line-height | Weight | Tracking | Color |
-|---|---|---|---|---|---|---|---|
-| display | type-display | Newsreader | 72 (52 at 768) | 1.0 | 400 | -0.025em | ink |
-| section title, chapter claim | type-h2 | Newsreader | 48 (36 at 768) | 1.05 | 400 | -0.02em | ink |
-| accent line | type-accent | Newsreader | 28 | 1.3 | 400 | -0.01em | ink |
-| lede | type-body | Instrument Sans | 20 | 1.45 | 400 | -0.01em | ink 80% |
-| card title | type-h3 | Instrument Sans | 20 | 1.3 | 600 | -0.01em | ink |
-| running text | type-text | Instrument Sans | 16 | 1.6 | 400 | 0 | ink 70% |
-| nav link | Nav.tsx | Instrument Sans | 15 | 1.5 | 500 | 0 | ink 75% |
-| section label | type-label | Instrument Sans | 14 | 1.4 | 500 | 0 | fern-deep |
-| small text | text-sm leading-normal | Instrument Sans | 14 | 1.5 | 400 | 0 | ink 70% |
-| caption, source | type-caption | Instrument Sans | 13 | 1.5 | 400 | 0 | ink 60% |
-| product greeting | product-greeting | Newsreader | 28 | 1.15 | 400 | -0.01em | ink |
-| product panel title | product-title | Newsreader | 20 | 1.3 | 400 | 0 | ink |
-| product number | product-num | Instrument Sans | 26 | 1.1 | 500 | -0.01em | ink |
-| product detail number | product-num-sm | Instrument Sans | 20 | 1.15 | 500 | -0.01em | ink |
-| product UI | product-shell | Instrument Sans | 13 | 1.45 | 400 | 0 | ink |
-| product label | product-label | Instrument Sans | 12 | 1.4 | 400 | 0 | opacity 60% |
+| Size | Line-height | Roles (class, family, weight, tracking, color) |
+|---|---|---|
+| 72 (52 at 768) | 1.0 | display: type-display, Newsreader, 400, -0.025em, ink; balanced wrap |
+| 48 (36 at 768) | 1.05 | section title and chapter claim: type-h2, Newsreader, 400, -0.02em, ink; balanced wrap. Also the phone menu's link text |
+| 28 | 1.3 | accent line: type-accent, Newsreader, 400, -0.01em, ink. Product greeting: product-greeting, Newsreader, 400, -0.01em |
+| 24 | 1.3 | lede: type-body, Instrument Sans, 400, -0.01em, ink 80%; pretty wrap. Product number: product-num, Instrument Sans, 500, -0.01em |
+| 20 | 1.3 | card and person title: type-h3, Instrument Sans, 600, -0.01em, ink. Product panel title: product-title, Newsreader, 400. Product detail number: product-num-sm, Instrument Sans, 500, -0.01em |
+| 15 | 1.6 | body: type-text, Instrument Sans, 400, 0, ink 70%. The nav links (500, ink 75%), every page button (600), the hero subline (ink 70%), the footer |
+| 13 | 1.5 | label: type-label, Instrument Sans, 500, 0, fern-deep. Caption and source: type-caption, 400, ink 60%. Product UI: product-shell, 400. Product buttons (600). The note card's lines, title, and summary |
+| 12 | 1.4 | product label and note: product-label, Instrument Sans, 400, opacity 60% to 70%. Product chips, receipts, avatars. The note card's badge, tags, context, and Replay |
 
-- The lede follows every title and claim as its companion: one size up
-  from running text, tighter, one shade dimmer than the title. A second
-  paragraph after a lede is running text (type-text).
+- The lede follows every title and claim as its companion: half the
+  title, 1.6 times the body, one shade dimmer than the title. A second
+  paragraph after a lede is body text (type-text). The hero's subline is
+  body text on one line, directly under the display, per the bar's
+  mechanism 6.
+- No title or lede line ends on a single word: titles wrap balanced,
+  ledes wrap pretty, and a lede's measure is set so the rag lands.
 - Secondary text never drops below ink at 60 percent (ivory at 60 on dark
   ground): captions, sources, the fictional-company line, the footer, and
   the label index included. Inside the product, dimming is opacity and

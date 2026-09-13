@@ -11,10 +11,10 @@ const engagements = [
   },
   {
     title: "The Core install",
-    body: "Your firm's memory, provisioned, secured, and handed over running, your team onboarded.",
+    body: "Your firm's memory, provisioned and handed over running, your team onboarded.",
   },
   {
-    title: "Core plus the custom layer",
+    title: "The Core plus the custom layer",
     body: "We design, build, and run the agentic tools your firm names, on top of the Core.",
   },
 ];
@@ -48,14 +48,14 @@ export default function HowWeStart() {
 
         <Reveal delay={150}>
           <div className="mt-10 flex flex-col items-start gap-5">
-            <p className="text-sm leading-normal text-ink/60">
+            <p className="type-text text-ink/70">
               The first call is thirty minutes. We ask how your firm handles
               knowledge today, and we tell you straight whether the audit is
               worth it.
             </p>
             <a
               href={AUDIT_MAILTO}
-              className="rounded-lg bg-fern px-6 py-3.5 text-sm font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep"
+              className="type-text rounded-lg bg-fern px-6 py-3 font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep"
             >
               Start with the audit
             </a>
