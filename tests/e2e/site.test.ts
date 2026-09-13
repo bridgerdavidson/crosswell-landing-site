@@ -80,7 +80,7 @@ describe("built css", () => {
     has("product-frame-right", "x");
     has("product-frame-bottom", "y");
     has("product-frame-fit\\.product-frame-bottom", "y");
-    has("product-frame-fitnarrow", "y");
+    has("product-frame-none:not\\(\\.product-frame-fit\\)", "x");
     has("product-board-fade[^{}]*", "x");
     // on phones the cut-right and cut-bottom frames take the corner mask (the
     // minifier merges them into one selector list ending in .product-frame-right)

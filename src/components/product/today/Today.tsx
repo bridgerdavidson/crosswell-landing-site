@@ -48,8 +48,8 @@ function build(frame: HTMLDivElement) {
  * Chapter 01. The top-left of the dashboard: the greeting, the numbers, the
  * three things that need a person with the draw approval lit, the status
  * line, and the calendar column fading at the right edge. The whole payload
- * sits above the bottom fade at every width (860 at xl, 910 at lg, 1010 at
- * md, 1380 on phones); below lg the product is one column that fits the
+ * sets the frame's height, so the only cut is the calendar column
+ * dissolving at the right; below lg the product is one column that fits the
  * frame, with the tiles two-up and the calendar out of the crop.
  */
 export default function Today() {
@@ -68,7 +68,7 @@ export default function Today() {
         </button>
       }
     >
-      <Frame ref={frame} fade="corner" fitNarrow height="h-[1380px] md:h-[1010px] lg:h-[910px] xl:h-[860px]">
+      <Frame ref={frame} fade="right" fitNarrow height="h-auto">
         <Rail active="home" />
         <div className="flex min-w-0 flex-1 flex-col">
           <TopBar />
@@ -94,12 +94,12 @@ export default function Today() {
                     key={item.id}
                     data-seq="item"
                     className={`grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 py-3 md:grid-cols-[auto_minmax(0,1fr)_auto] ${
-                      i === 0 ? "product-lit" : ""
+                      i === 0 ? "product-lit -mx-4 rounded-xl px-4" : ""
                     }`}
                   >
                     <Dot tone="ink" className="mt-2" />
                     <div className="min-w-0">
-                      <p className="font-semibold">{item.title}</p>
+                      <p className="product-strong">{item.title}</p>
                       <p className="product-t2 mt-1">{item.body}</p>
                       <div className="mt-2 flex flex-wrap gap-1.5">
                         {item.receipts.map((r) => (
@@ -123,8 +123,8 @@ export default function Today() {
                 {today.filedOvernight} filed overnight
               </p>
             </div>
-            <aside className="product-aside hidden pl-6 lg:block">
-              <p className="product-label font-medium">Today</p>
+            <aside className="product-aside product-periphery hidden pl-6 lg:block">
+              <p className="product-label">Today</p>
               <ul className="mt-3 space-y-3">
                 {today.calendar.map((slot) => (
                   <li key={slot.time} className="flex gap-3">

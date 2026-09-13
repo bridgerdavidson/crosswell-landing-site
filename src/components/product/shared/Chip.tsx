@@ -26,7 +26,7 @@ export function Dot({
   return <span aria-hidden className={`product-dot product-dot-${tone} ${className}`} />;
 }
 
-/** A done mark in the accent color. */
+/** A done mark: the region's mark, accent only inside the lit element. */
 export function Check() {
   return (
     <svg
@@ -34,7 +34,7 @@ export function Check() {
       height="14"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--accent)"
+      stroke="var(--mark)"
       strokeWidth="2.2"
       strokeLinecap="round"
       strokeLinejoin="round"

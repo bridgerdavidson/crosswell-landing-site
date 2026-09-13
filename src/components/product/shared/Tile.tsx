@@ -40,7 +40,7 @@ function Sparkline({ points }: { points: number[] }) {
         data-spark
         points={d}
         fill="none"
-        stroke="var(--accent)"
+        stroke="var(--mark)"
         strokeWidth="1.5"
         strokeLinejoin="round"
         strokeLinecap="round"

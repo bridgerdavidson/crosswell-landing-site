@@ -7,14 +7,16 @@ import { Chapter, Check, Dot, Frame, Rail, Receipt, SendButton, Tile, TopBar, in
  * input empty. The dashboard sits dimmed at the left edge so the panel
  * reads as docked over the product, not floating. The send mechanic
  * (pre-composed message, click to send, streamed answer) is design-loop
- * work; nothing here accepts typing. The panel is the lit element; the
- * dashboard behind it sits at 40.
+ * work; nothing here accepts typing. The panel is the lit element, a
+ * charcoal surface on the band; the dashboard behind it is periphery at 40.
+ * The frame takes the panel's own height, so nothing is cut at the bottom
+ * and the composer reads in full.
  */
 export default function Chat() {
   const [first, ...followUps] = chat.exchanges;
   return (
     <section className="bg-charcoal-deep text-ivory">
-      <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32">
+      <div className="px-6 py-24 sm:py-40 lg:px-12">
         <Chapter
           index="03"
           label="The Core"
@@ -22,12 +24,12 @@ export default function Chat() {
           claim="Ask it anything the business has written down. It answers with receipts."
           body="Decisions, meetings, files, and six years of loans. Every answer shows its work: ask where a number came from and the Core cites the meeting, the email, or the file it lives in."
         >
-          <Frame dark fade="bottom" fit height="h-[600px]">
+          <Frame dark fade="none" fit height="h-auto">
             <Rail active="chat" />
             <div className="flex min-w-0 flex-1 flex-col">
               <TopBar />
               <div className="flex min-h-0 flex-1">
-                <div className="product-backdrop hidden min-w-0 flex-1 p-6 md:block" aria-hidden>
+                <div className="product-periphery hidden min-w-0 flex-1 p-6 md:block" aria-hidden>
                   <p className="product-greeting">{today.greeting}</p>
                   <p className="product-t2 mt-1.5">{today.subline}</p>
                   <div className="mt-6 grid grid-cols-2 gap-3">
@@ -40,9 +42,9 @@ export default function Chat() {
                 <div className="product-aside product-lit flex w-full flex-none flex-col md:w-[440px]">
                   <div className="product-topbar flex h-11 flex-none items-center gap-2 px-5">
                     <Dot tone="accent" />
-                    <span className="font-medium">The Core</span>
+                    <span className="product-strong">The Core</span>
                   </div>
-                  <div className="flex-1 space-y-4 overflow-hidden px-5 py-4">
+                  <div className="space-y-4 px-5 py-4">
                     <p className="product-bubble">{first.question}</p>
                     <ul className="product-t3 space-y-1">
                       {first.working.map((line) => (
@@ -66,7 +68,7 @@ export default function Chat() {
                       ))}
                     </div>
                   </div>
-                  <div className="flex-none px-4 pb-4">
+                  <div className="px-4 pb-4 pt-2">
                     <div className="product-input">
                       <span className="product-t3 flex-1">{chat.placeholder}</span>
                       <SendButton />

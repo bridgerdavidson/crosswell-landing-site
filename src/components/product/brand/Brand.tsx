@@ -4,12 +4,14 @@ import { Chapter, Frame, Rail, Tile, TopBar, inert } from "../shared";
 
 /**
  * Chapter 06, finished state: a small copy of the morning dashboard in the
- * first swatch's colors, with the swatch picker above the frame. The
- * picker is a site control, so it lives outside the frame; the product
- * inside only ever shows one brand. The accent variables are set inline on
+ * first swatch's colors, with the swatch picker under the frame, quiet, so
+ * it does not fight the product. The picker is a site control, so it lives
+ * outside the frame; the product inside only ever shows one brand. The accent variables are set inline on
  * the shell, so they override the shell's defaults and can never leak into
  * the page. Cycling and retinting on click are design-loop work. The lit
- * element is the top bar, where the company name lives.
+ * element is the top bar, where the company name lives; the field carries
+ * no accent, so the swatch's color shows in the bar until the retint piece
+ * moves the light. The frame takes the mini dashboard's own height.
  */
 export default function Brand() {
   const active = brand.swatches[0];
@@ -30,27 +32,7 @@ export default function Brand() {
         body="Your name, your colors, every screen. The Core is set up to look like it was always yours, because to your team it was."
       >
         <div>
-          <ul className="mb-4 flex flex-wrap gap-2">
-            {brand.swatches.map((s) => {
-              const pressed = s.id === active.id;
-              return (
-                <li key={s.id}>
-                  <button
-                    type="button"
-                    aria-pressed={pressed}
-                    className={`type-caption flex items-center gap-2 rounded-full border px-3 py-1.5 transition-colors ${
-                      pressed ? "border-ink/30 text-ink" : "border-ink/10 text-ink/60 hover:text-ink"
-                    }`}
-                  >
-                    <span aria-hidden className="h-3 w-3 rounded-full" style={{ background: s.accent }} />
-                    {s.company}
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-
-          <Frame fade="bottom" fit height="h-[600px] sm:h-[480px]" style={vars}>
+          <Frame fade="none" fit height="h-auto" style={vars}>
             <Rail active="home" />
             <div className="flex min-w-0 flex-1 flex-col">
               <TopBar name={active.company} lit />
@@ -76,6 +58,16 @@ export default function Brand() {
               </div>
             </div>
           </Frame>
+          <ul className="mt-4 flex flex-wrap gap-2">
+            {brand.swatches.map((s) => (
+              <li key={s.id}>
+                <button type="button" aria-pressed={s.id === active.id} className="product-swatch">
+                  <span aria-hidden style={{ background: s.accent }} />
+                  {s.company}
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
       </Chapter>
     </div>

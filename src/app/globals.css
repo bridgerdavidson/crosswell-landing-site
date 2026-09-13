@@ -619,14 +619,16 @@ body {
 
 /* ---------- Product run: the fragments ----------
    Six chapters of the Core, each a real component cut by a frame. The
-   product is parchment on ivory, one accent (--accent, so chapter 06 can
-   retint a scoped copy), and never a shadow. A frame is a window onto a
-   larger app: its crisp edges are cuts, with no radius, border, or
-   shadow, and its cut edges dissolve into the page with masks written
-   in pixels so every frame dissolves over the same distance (280 to the
-   right, 160 at the bottom; 120 on phones). Double stops in every mask
-   on purpose: the production minifier collapses a single stop to 0 and
-   fades the whole frame (see the hero mask above). */
+   product has no container of its own: its canvas is the page's ivory,
+   and parchment goes to its panels (tiles, cards, the docked panels), so
+   nothing on the page reads as a rectangle placed on it. The rail's and
+   top bar's hairlines carry the app's structure. One accent (--accent, so
+   chapter 06 can retint a scoped copy), and never a shadow. Cut edges
+   dissolve into the page with masks written in pixels so every frame
+   dissolves over the same distance (280 to the right, 160 at the bottom;
+   120 on phones). Double stops in every mask on purpose: the production
+   minifier collapses a single stop to 0 and fades the whole frame (see the
+   hero mask above). */
 
 .product-frame {
   --fade-x: 280px;
@@ -668,8 +670,9 @@ body {
 }
 
 /* phones: shorter dissolves, and every overflowing shell is cut at the right
-   as well as the bottom, so cut-right and cut-bottom frames both take the
-   corner mask; a shell that fits the phone keeps only the bottom fade */
+   as well as the bottom, so cut-right and cut-bottom frames take the corner
+   mask and an uncut frame whose shell still overflows takes the right fade;
+   a shell that fits the phone keeps only the bottom fade */
 @media (max-width: 767px) {
   .product-frame {
     --fade-x: 120px;
@@ -686,22 +689,33 @@ body {
     -webkit-mask-composite: source-in;
     mask-composite: intersect;
   }
+  .product-frame-none:not(.product-frame-fit) {
+    -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - var(--fade-x)), transparent 100%);
+    mask-image: linear-gradient(to right, #000 0, #000 calc(100% - var(--fade-x)), transparent 100%);
+  }
   .product-frame-fit.product-frame-bottom {
     -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--fade-y)), transparent 100%);
     mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--fade-y)), transparent 100%);
     -webkit-mask-composite: source-over;
     mask-composite: add;
   }
+  /* a chapter whose phone layout is one column that fits the frame cuts nothing */
+  .product-frame-fitphone {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .product-frame-fitphone > .product-shell {
+    min-width: 0;
+    width: 100%;
+  }
 }
 
 /* below lg a fit-narrow chapter lays its product out as one column that
-   fits the frame, so only the bottom is a cut */
+   fits the frame and cuts nothing */
 @media (max-width: 1023px) {
   .product-frame-fitnarrow {
-    -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--fade-y)), transparent 100%);
-    mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--fade-y)), transparent 100%);
-    -webkit-mask-composite: source-over;
-    mask-composite: add;
+    -webkit-mask-image: none;
+    mask-image: none;
   }
   .product-frame-fitnarrow > .product-shell {
     min-width: 0;
@@ -709,13 +723,14 @@ body {
   }
 }
 
-/* the product itself. Wider than the frame so the crop does the work, with
-   no radius or border of its own: the frame's crisp edges are cuts through
-   the app, and the rail's and top bar's hairlines carry its structure.
-   Text tones are three variables so a region can be dimmed without
-   compounding opacities: the shell's default is the secondary level
-   (ink 70 / 60 / 60) and .product-lit restores the full tones for the one
-   element the eye should land on. Nothing meant to be read sits under 60. */
+/* the product itself: no fill of its own, so the page is its canvas and
+   the frame has no edges but the ones its content and its cuts make.
+   Text tones and marks are variables so a region can be dimmed without
+   compounding opacities: the shell's default is the field, everything
+   readable at exactly the floor (ink 60, weight 400, no accent: dots,
+   bars, sparklines, checks, buttons and receipts take warm gray or
+   hairline forms), and .product-lit gives the one element the eye should
+   land on its parchment surface, full ink, the weights, and the accent. */
 .product-shell {
   --accent: var(--color-fern);
   --accent-deep: var(--color-fern-deep);
@@ -723,13 +738,17 @@ body {
   --accent-wash: var(--color-fern-wash);
   --line: rgba(184, 178, 167, 0.3);
   --accent-dim: rgba(78, 122, 78, 0.28);
-  --t1: rgba(26, 25, 21, 0.7);
+  --panel: var(--color-parchment);
+  --t1: rgba(26, 25, 21, 0.6);
   --t2: rgba(26, 25, 21, 0.6);
   --t3: rgba(26, 25, 21, 0.6);
+  --mark: var(--color-warmgray);
+  --w-strong: 400;
+  --w-num: 400;
   display: flex;
   min-width: 960px;
   min-height: 100%;
-  background: var(--color-parchment);
+  background: transparent;
   color: var(--t1);
   font-size: 13px;
   line-height: 1.5;
@@ -738,17 +757,24 @@ body {
 
 .product-shell-dark {
   --line: rgba(241, 238, 230, 0.1);
-  --t1: rgba(241, 238, 230, 0.7);
+  --panel: var(--color-charcoal);
+  --t1: rgba(241, 238, 230, 0.6);
   --t2: rgba(241, 238, 230, 0.6);
   --t3: rgba(241, 238, 230, 0.6);
-  background: var(--color-charcoal);
+  --mark: rgba(241, 238, 230, 0.35);
 }
 
-/* the lit element: full ink, its own secondary text at 75, its labels at 60 */
+/* the lit element: the one parchment surface in the frame, full ink, its
+   own secondary text at 75, its labels at 60, its weights, and every one
+   of the chapter's accent marks */
 .product-lit {
   --t1: var(--color-ink);
   --t2: rgba(26, 25, 21, 0.75);
   --t3: rgba(26, 25, 21, 0.6);
+  --mark: var(--accent);
+  --w-strong: 600;
+  --w-num: 500;
+  background: var(--panel);
   color: var(--t1);
 }
 
@@ -758,27 +784,35 @@ body {
   --t3: rgba(241, 238, 230, 0.6);
 }
 
-/* the chat chapter's dashboard behind the docked panel: the one region
-   allowed under the floor (40, so the panel is the only lit thing) */
-.product-shell-dark .product-backdrop {
-  --t1: rgba(241, 238, 230, 0.4);
-  --t2: rgba(241, 238, 230, 0.4);
-  --t3: rgba(241, 238, 230, 0.4);
+/* product periphery that is not the chapter's payload (a calendar column
+   inside a fade, the dashboard behind the chat panel) sits at 40 */
+.product-periphery {
+  --t1: rgba(26, 25, 21, 0.4);
+  --t2: rgba(26, 25, 21, 0.4);
+  --t3: rgba(26, 25, 21, 0.4);
+  --mark: rgba(184, 178, 167, 0.6);
   color: var(--t1);
 }
 
-.product-shell-dark .product-backdrop svg {
-  opacity: 0.4;
+.product-shell-dark .product-periphery {
+  --t1: rgba(241, 238, 230, 0.4);
+  --t2: rgba(241, 238, 230, 0.4);
+  --t3: rgba(241, 238, 230, 0.4);
+  --mark: rgba(241, 238, 230, 0.25);
 }
 
 /* secondary text (sublines, notes, a row's second line) and the floor
-   (labels, times, counts) */
+   (labels, times, counts); a strong word or name */
 .product-t2 {
   color: var(--t2);
 }
 
 .product-t3 {
   color: var(--t3);
+}
+
+.product-strong {
+  font-weight: var(--w-strong);
 }
 
 /* at lg and above an overflowing shell runs past the frame's right edge by
@@ -827,7 +861,7 @@ body {
   font-size: 1.5rem;
   line-height: 1.3;
   letter-spacing: -0.01em;
-  font-weight: 500;
+  font-weight: var(--w-num);
 }
 
 /* the smaller number in a detail panel's tiles, on the panel-title size */
@@ -835,7 +869,7 @@ body {
   font-size: 1.25rem;
   line-height: 1.3;
   letter-spacing: -0.01em;
-  font-weight: 500;
+  font-weight: var(--w-num);
 }
 
 /* the product's smallest text: tile labels, notes, the line under a row.
@@ -854,14 +888,10 @@ body {
   color: var(--t3);
 }
 
+/* the current view: a hairline-toned box, no accent in the field */
 .product-rail-active {
-  background: var(--accent-wash);
-  color: var(--accent-deep);
-}
-
-.product-shell-dark .product-rail-active {
-  background: var(--accent-dim);
-  color: var(--color-fern-soft);
+  background: var(--line);
+  color: var(--t1);
 }
 
 .product-topbar {
@@ -879,23 +909,30 @@ body {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: var(--accent-wash);
-  color: var(--accent-deep);
+  background: var(--line);
+  color: var(--t1);
   font-size: 12px;
   line-height: 1.4;
-  font-weight: 600;
+  font-weight: var(--w-strong);
 }
 
-.product-shell-dark .product-avatar {
+.product-lit .product-avatar {
+  background: var(--accent-wash);
+  color: var(--accent-deep);
+}
+
+.product-shell-dark .product-lit .product-avatar {
   background: var(--accent-dim);
   color: var(--color-fern-soft);
 }
 
+/* tiles and cards are hairline boxes on the canvas; only the lit element
+   has a surface */
 .product-tile {
   border: 1px solid var(--line);
   border-radius: 0.75rem;
   padding: 1rem;
-  background: rgba(241, 238, 230, 0.6);
+  background: transparent;
 }
 
 .product-shell-dark .product-tile {
@@ -906,11 +943,11 @@ body {
   border: 1px solid var(--line);
   border-radius: 0.75rem;
   padding: 0.75rem 0.85rem;
-  background: rgba(241, 238, 230, 0.6);
+  background: transparent;
 }
 
 .product-card-active {
-  border-color: var(--accent);
+  border-color: var(--mark);
 }
 
 .product-chip {
@@ -950,7 +987,7 @@ body {
 }
 
 .product-dot-accent {
-  background: var(--accent);
+  background: var(--mark);
 }
 
 .product-dot-watch {
@@ -961,20 +998,29 @@ body {
   background: currentColor;
 }
 
+/* a button is a hairline control in the field and a fern block only inside
+   the lit element */
 .product-button {
+  border: 1px solid var(--line);
   border-radius: 0.5rem;
-  background: var(--accent);
-  color: var(--color-ivory);
+  background: transparent;
+  color: var(--t1);
   font-size: 13px;
-  font-weight: 600;
-  padding: 0.4rem 0.8rem;
+  font-weight: var(--w-strong);
+  padding: calc(0.4rem - 1px) calc(0.8rem - 1px);
   line-height: 1.5;
   white-space: nowrap;
 }
 
-.product-button-quiet {
+.product-lit .product-button {
+  border-color: transparent;
+  background: var(--accent);
+  color: var(--color-ivory);
+}
+
+.product-lit .product-button-quiet {
+  border-color: var(--line);
   background: transparent;
-  border: 1px solid var(--line);
   color: inherit;
   font-weight: 500;
 }
@@ -987,6 +1033,13 @@ body {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--t1);
+}
+
+.product-lit .product-send {
+  border-color: transparent;
   background: var(--accent);
   color: var(--color-ivory);
 }
@@ -1036,7 +1089,7 @@ body {
   display: block;
   height: 100%;
   border-radius: 999px;
-  background: var(--accent);
+  background: var(--mark);
 }
 
 /* the agenda's horizontal track: three panels wider than the frame on
@@ -1050,6 +1103,34 @@ body {
   .product-track {
     flex-direction: column;
   }
+}
+
+/* chapter 06's swatches: the site's control under the frame, quiet */
+.product-swatch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid rgba(26, 25, 21, 0.1);
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: rgba(26, 25, 21, 0.6);
+  transition: border-color 0.2s;
+}
+
+.product-swatch[aria-pressed="true"] {
+  border-color: rgba(26, 25, 21, 0.4);
+}
+
+.product-swatch:hover {
+  border-color: rgba(26, 25, 21, 0.4);
+}
+
+.product-swatch > span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
 }
 
 /* ---------- Product run: choreography ----------

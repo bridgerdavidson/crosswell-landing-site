@@ -21,7 +21,7 @@ export function TopBar({
         lit ? "product-lit" : ""
       }`}
     >
-      <span className="font-medium">{name}</span>
+      <span className="product-strong">{name}</span>
       <span className="product-avatar">{initials}</span>
     </div>
   );

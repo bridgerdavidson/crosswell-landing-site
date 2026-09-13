@@ -75,9 +75,11 @@ else on the page is amber, red, or blue.
 - Secondary text never drops below ink at 60 percent (ivory at 60 on dark
   ground): captions, sources, the fictional-company line, the footer, and
   the label index included. Inside the product, dimming is a tone (a
-  color variable, never a stacked opacity) and never below 60 percent;
-  the chat chapter's dimmed dashboard (40 percent, so one thing is lit)
-  is the exception.
+  color variable, never a stacked opacity). The chapter's payload (what
+  the spec names for it) never drops under 60 percent; product periphery
+  that is not the payload (the calendar column inside chapter 01's fade,
+  the dashboard behind chapter 03's panel) may sit at 40, so one thing is
+  lit.
 - Nothing below 12px.
 
 ## Materials
@@ -86,28 +88,38 @@ else on the page is amber, red, or blue.
   shadow-lifted. The primary buttons (the hero's and how-we-start's "Start
   with the audit" and the nav's "Set up a call") carry shadow-whisper.
   Content cards and primary buttons are the only shadows on the page.
-- Product fragments: parchment shell on ivory with no radius, border, or
-  shadow of its own, so the product reads as a piece of something larger
-  sitting on the page, never a card. The frame's crisp edges are cuts
-  through the app; the rail's and top bar's hairlines (warm gray 30%)
-  carry its structure, and the tiles and cards inside keep their
-  hairlines and 0.75rem radius. One accent per panel. The dark chapter:
-  charcoal shell on charcoal-deep, ivory text, fern-soft accent.
-- Fragments are cut by a fixed-height frame; cut edges dissolve into the
-  page with a mask gradient (double stops). The content edge stays crisp.
-  The dissolve is written in pixels so every frame fades over the same
-  distance: 280 at the right, 160 at the bottom, 120 both ways on phones.
-  An overflowing shell runs 80px past the frame's right edge so the app's
-  top-right corner (the avatar) is out of frame, never half-faded; a
-  fitted shell shows it crisp. Fragments render at real scale; nothing is
-  scaled down. Below 768px a frame crops to a single column.
-- Inside every frame one element is lit: full ink, its own secondary text
-  at 75, its labels at 60, and its receipts in the accent. Everything else
-  sits at the secondary level (ink 70 for primary text, 60 for secondary
-  text and labels, receipts quiet), so the eye lands in one place. Lit per
-  chapter: 01 the draw approval, 02 the Draw 4 row and its synced chip, 03
-  the chat panel (the dashboard behind it at 40), 04 the detail panel, 05
-  the inbox agent's row, 06 the top bar.
+- Product fragments: parchment panels on ivory. The product has no
+  container of its own: its canvas is the page's ivory, and the one
+  parchment surface in a frame is the lit element's (the chat panel, the
+  detail panel, the highlighted row, the top bar in chapter 06), so no
+  frame reads as a rectangle placed on the page and the surface is where
+  the eye lands. Tiles and cards in the field are hairline boxes at
+  0.75rem radius on the canvas. The rail's and top bar's hairlines (warm
+  gray 30%) carry the app's structure. No radius, border, or shadow around
+  a fragment. One accent per panel. The dark chapter: a charcoal panel on
+  the charcoal-deep band, ivory text, fern-soft accent.
+- Fragments are cut by a frame; cut edges dissolve into the page with a
+  mask gradient (double stops). The content edge stays crisp. The dissolve
+  is written in pixels so every frame fades over the same distance: 280 at
+  the right, 160 at the bottom, 120 both ways on phones. A frame ends where
+  its payload ends: it never shows a fade over nothing, and a frame whose
+  product fits it has no fade at all. An overflowing shell runs 80px past
+  the frame's right edge so the app's top-right corner (the avatar) is out
+  of frame, never half-faded; a fitted shell shows it crisp. Fragments
+  render at real scale; nothing is scaled down. Below 768px a frame crops
+  to a single column.
+- Inside every frame exactly one element is lit, and the eye lands on it
+  under a blur. The lit element carries the frame's one parchment surface,
+  full ink, its own secondary text at 75, its labels at 60, weight 600 on
+  its strong words, and every one of the chapter's accent marks (its dot,
+  its check, its bar, its button, its receipts, its avatar). The field, everything else, sits at exactly
+  the floor: text at ink 60, weight 400, and no accent anywhere in it:
+  dots, bars, sparklines, checks, the rail's current box, buttons and
+  receipts outside the lit element take warm gray or hairline forms. Fern
+  lives only inside the lit element. Lit per chapter: 01 the draw
+  approval, 02 the Draw 4 row, 03 the chat panel (the dashboard behind it
+  is periphery at 40), 04 the detail panel, 05 the inbox agent's row, 06
+  the top bar.
 - Chrome inside the product: a 48px rail (16px icons in 32px boxes, 12
   apart, the active one in accent wash, the rest on the label tone) and a
   48px top bar (company name left, 28px avatar right), so the top bar's
@@ -132,23 +144,30 @@ else on the page is amber, red, or blue.
   paints the finished state.
 - Reduced motion and no-JS both get the finished state of everything.
 - Nothing loops except the hero rotation and a running agent's progress.
+- Two kept exceptions to the band and the curve, both out of the
+  redesign's scope: the hero's page-load entrance (the display's 0.95s
+  rise and the woven core's 1.2s decode-gated fade) and the brain
+  section's own transitions (its phrase highlights and Replay on ease).
 
 ## Layout
 
 - Content width max-w-6xl (1152px), gutters px-6. Split sections in the
   company half use the 0.9fr / 1.1fr grid. Section rhythm py-24 (sm:
   py-32).
-- The product run (its intro, the six chapters, the fictional line) sits
-  in max-w-7xl (1280; 1232 inside the gutters at 1440, 86 percent of the
-  viewport), so the product runs nearly gutter to gutter. A chapter is a
-  band and a frame that share both edges. The band is one row in two
-  equal columns (576 / 80 / 576 at 1440): label and claim on the left, the
-  lede on the right with its cap height on the claim's, nothing stacked
-  under the claim. 96 from the band to the frame (64 below lg), 16 from
-  the frame to the caption row, 160 between chapters (112 on phones), 256
-  across the dark band. A split chapter keeps the same two columns with
-  the lede under the claim and the frame in the lede's column, centered on
-  the text. Frame heights at 1440: 860, 540, 600, 700, 600, 480.
+- The product run (its intro, the six chapters, the fictional line)
+  follows the viewport inside fixed 48px gutters at lg (1344 wide at 1440,
+  93 percent; 1632 at 1728), so the product runs gutter to gutter at every
+  width. A chapter is a band and a frame that share both edges. The band
+  is one row in two columns spanning the run: label and claim on the left
+  (the claim at most 672 wide), the lede in a 576 column at the run's
+  right edge with its cap height on the claim's, nothing stacked under the
+  claim. 192 from the band to the frame (96 below lg), 16 from the frame
+  to the caption row, 288 between chapters (176 on phones) and across the
+  dark band (its padding is 160 against the run sections' 128). A split chapter keeps the family: two
+  equal columns, the lede under the claim in the left one and the frame in
+  the right one reaching the run's right edge, its top on the label's.
+  Every frame takes its product's own height, so it ends where the
+  payload ends.
 - Two dark moments only: the chat chapter and the closing CTA.
 - Verify at 1440, 1728, and 390 before calling a piece done.
 

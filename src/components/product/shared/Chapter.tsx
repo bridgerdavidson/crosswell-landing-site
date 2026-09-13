@@ -14,20 +14,21 @@ type ChapterProps = {
 };
 
 /**
- * One chapter of the product run. The band is one row in two columns: the
- * label and the claim on the left, the lede on the right with its cap
- * height on the claim's (the lede's top margin is 9 where the claim's is
- * 12, which lands the two cap tops within half a pixel), and nothing
- * stacked under the claim. The frame hangs
- * from the band by the chapter's biggest gap (96 at lg, 64 below) and is
- * the band's full width, so band and frame share both edges. Everything
- * that describes the product lives here, outside the frame; the frame only
- * ever shows the product. The demo caption and any control sit under the
- * frame, outside it, per the demo rules.
+ * One chapter of the product run. The band is one row in two columns that
+ * span the run: the label and the claim on the left (the claim at most
+ * 672 wide, so most claims hold to one or two lines), the lede in a 576
+ * column at the run's right edge with its cap height on the claim's (the
+ * lede's top margin is 9 where the claim's is 12), and nothing stacked
+ * under the claim. The frame hangs from the band by the chapter's biggest
+ * gap (192 at lg, 96 below) and is the band's full width, so band and
+ * frame share both edges. Everything that describes the product lives
+ * here, outside the frame; the frame only ever shows the product. The demo
+ * caption and any control sit under the frame, outside it, per the demo
+ * rules.
  *
- * The split layout keeps the same two columns: the claim column on the
- * left (label, claim, then the lede beneath it at the same measure) and
- * the frame in the lede's column on the right.
+ * The split layout keeps the family: the claim column on the left (label,
+ * claim, then the lede beneath it at the same measure) and the frame in
+ * the right column reaching the run's right edge, its top on the label's.
  */
 export function Chapter({
   index,
@@ -57,7 +58,7 @@ export function Chapter({
 
   if (layout === "split") {
     return (
-      <div className="grid gap-16 lg:grid-cols-2 lg:items-center lg:gap-x-20">
+      <div className="grid gap-24 lg:grid-cols-2 lg:items-start lg:gap-x-20">
         <Reveal className="min-w-0">
           {labelEl}
           <h3 className={`type-h2 mt-3 max-w-2xl ${ink}`}>{claim}</h3>
@@ -73,16 +74,16 @@ export function Chapter({
 
   return (
     <div>
-      <Reveal className="grid min-w-0 lg:grid-cols-2 lg:gap-x-20">
+      <Reveal className="grid min-w-0 lg:grid-cols-2 lg:gap-x-20 xl:grid-cols-[minmax(0,1fr)_36rem]">
         <div className="lg:col-start-1 lg:row-start-1">{labelEl}</div>
-        <h3 className={`type-h2 mt-3 max-w-2xl lg:col-start-1 lg:row-start-2 ${ink}`}>{claim}</h3>
+        <h3 className={`type-h2 mt-3 max-w-2xl lg:col-start-1 lg:row-start-2 lg:self-start ${ink}`}>{claim}</h3>
         <p
           className={`type-body mt-5 max-w-xl lg:col-start-2 lg:row-start-2 lg:mt-[9px] lg:self-start ${muted}`}
         >
           {body}
         </p>
       </Reveal>
-      <Reveal delay={120} className="mt-16 min-w-0 lg:mt-24">
+      <Reveal delay={120} className="mt-24 min-w-0 lg:mt-48">
         {children}
         {caption}
       </Reveal>

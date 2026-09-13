@@ -14,7 +14,8 @@ const TONE: Record<AgentStatus["kind"], "accent" | "watch" | "ink"> = {
  * the filing agent still running), and the hand-off composer with its
  * task ready. The ticking statuses, the row expand, and the hand-off
  * adding a row are design-loop work. The lit element is the inbox agent's
- * row, the one the live sequence lands on.
+ * row, the one the live sequence lands on. The frame takes the roster's own
+ * height, so the composer reads in full and nothing is cut.
  */
 export default function Agents() {
   const running = agents.roster.filter((a) => a.status.kind === "running").length;
@@ -27,7 +28,7 @@ export default function Agents() {
         claim="Each one has a single job. They run while you don't."
         body="Custom agents built for the work your team names: reading the inbox, chasing the silent deal, drafting the report. Each one reports what it did and waits for your yes before anything leaves the building."
       >
-        <Frame fade="bottom" fit height="h-[860px] sm:h-[600px]">
+        <Frame fade="none" fit height="h-auto">
           <Rail active="settings" />
           <div className="flex min-w-0 flex-1 flex-col">
             <TopBar />
@@ -42,11 +43,11 @@ export default function Agents() {
                     key={agent.id}
                     data-agent={agent.id}
                     className={`grid grid-cols-1 gap-2 py-3.5 sm:grid-cols-[1fr_210px] sm:gap-6 ${
-                      agent.id === agents.roster[0].id ? "product-lit" : ""
+                      agent.id === agents.roster[0].id ? "product-lit -mx-4 rounded-xl px-4" : ""
                     }`}
                   >
                     <div className="min-w-0">
-                      <p className="font-semibold">{agent.name}</p>
+                      <p className="product-strong">{agent.name}</p>
                       <p className="product-label mt-0.5">{agent.job}</p>
                     </div>
                     <div className="min-w-0">
@@ -59,7 +60,7 @@ export default function Agents() {
                   </li>
                 ))}
               </ul>
-              <div className="product-input mt-auto">
+              <div className="product-input mt-6">
                 <span className="min-w-0 flex-1 truncate">{agents.handoff.task}</span>
                 <button type="button" {...inert} className="product-button">
                   {agents.handoff.button}

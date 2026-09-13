@@ -7,8 +7,9 @@ import { Chapter, Frame, Rail, Receipt, TopBar, inert } from "../shared";
  * already asked and answered. The deal-in, the click-to-open, and the
  * other prompts firing are design-loop work. The board area carries its
  * own right fade so the columns dissolve under the panel instead of
- * hitting a hard edge; the frame itself fades at the bottom only, so the
- * panel stays fully readable. The panel is the lit element.
+ * hitting a hard edge; the frame takes the product's own height, so
+ * nothing else is cut and the panel, the lit element and the one parchment
+ * surface, stays fully readable.
  */
 export default function Pipeline() {
   const selected = pipeline.stages
@@ -26,7 +27,7 @@ export default function Pipeline() {
         claim="Every client, every stage, and the whole history one click away."
         body="Every deal the team is working, in the stage it is actually in, synced from the tool they already track it in. Open one and ask the Core about it in a click."
       >
-        <Frame fade="bottom" height="h-[700px]">
+        <Frame fade="none" height="h-auto">
           <Rail active="folder" />
           <div className="flex min-w-0 flex-1 flex-col">
             <TopBar />
@@ -35,7 +36,7 @@ export default function Pipeline() {
                 {pipeline.stages.map((stage) => (
                   <section key={stage.name} data-stage={stage.name} className="w-[200px] flex-none">
                     <div className="flex items-baseline justify-between">
-                      <p className="font-semibold">{stage.name}</p>
+                      <p className="product-strong">{stage.name}</p>
                       <span className="product-t3">{stage.cards.length}</span>
                     </div>
                     <ul className="mt-3 space-y-2">
@@ -46,7 +47,7 @@ export default function Pipeline() {
                             card.id === pipeline.selected ? "product-card-active" : ""
                           }`}
                         >
-                          <p className="font-medium">{card.name}</p>
+                          <p className="product-strong">{card.name}</p>
                           <p className="product-label">
                             {card.place} · {card.kind}
                           </p>

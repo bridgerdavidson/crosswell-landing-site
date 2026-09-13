@@ -2,15 +2,17 @@ import type { CSSProperties, ReactNode, Ref } from "react";
 
 type FrameProps = {
   children: ReactNode;
-  /** which edges are cut and dissolve into the page */
-  fade?: "corner" | "right" | "bottom";
+  /** which edges are cut and dissolve into the page; none when the frame ends where the product ends */
+  fade?: "corner" | "right" | "bottom" | "none";
   dark?: boolean;
-  /** Tailwind height class for the frame box */
+  /** Tailwind height class for the frame box; h-auto when the product sets it */
   height?: string;
   /** fill the frame's width instead of overflowing it; for the narrow split layout */
   fit?: boolean;
   /** below lg, lay the product out as one column that fits the frame */
   fitNarrow?: boolean;
+  /** below 768px, lay the product out as one column that fits the frame */
+  fitPhone?: boolean;
   /** scoped variable overrides, e.g. chapter 06's accent */
   style?: CSSProperties;
   className?: string;
@@ -19,9 +21,10 @@ type FrameProps = {
 };
 
 /**
- * The cropping frame: a fixed-height box that cuts a full-size product shell
- * and dissolves the cut edges into the page. The shell is wider than the
- * frame unless fitted, so the product reads as a corner of something larger,
+ * The cropping frame: a box that cuts a full-size product shell and
+ * dissolves the cut edges into the page. The shell has no fill of its own,
+ * so the frame has no edges but the ones the product's chrome and its cuts
+ * make; a shell wider than the frame reads as a corner of something larger,
  * never as a screenshot scaled to fit.
  */
 export function Frame({
@@ -31,6 +34,7 @@ export function Frame({
   height = "h-[480px]",
   fit = false,
   fitNarrow = false,
+  fitPhone = false,
   style,
   className = "",
   ref,
@@ -40,7 +44,7 @@ export function Frame({
       ref={ref}
       className={`product-frame product-frame-${fade} ${fit ? "product-frame-fit" : ""} ${
         fitNarrow ? "product-frame-fitnarrow" : ""
-      } ${height} ${className}`}
+      } ${fitPhone ? "product-frame-fitphone" : ""} ${height} ${className}`}
     >
       <div
         className={`product-shell ${dark ? "product-shell-dark" : ""} ${fit ? "product-shell-fit" : ""}`}
