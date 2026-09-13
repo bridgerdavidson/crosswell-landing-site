@@ -64,8 +64,8 @@ carries them). Nothing else on the page is amber, red, or blue.
 |---|---|---|
 | 72 (52 at 768) | 1.0 | display: type-display, Newsreader, 400, -0.025em, ink; balanced wrap |
 | 48 (36 at 768) | 1.05 | section title and chapter claim: type-h2, Newsreader, 400, -0.02em, ink; balanced wrap. Also the phone menu's link text. Stat numerals: type-h2 in fern-deep |
-| 24 | 1.3 | lede: type-body, Instrument Sans, 400, -0.01em, ink 80%; pretty wrap. Accent line: type-accent, Newsreader, 400, -0.01em, roman, full ink: why Crosswell's pull quote, the industries row, what a business loses' ledger lines, the brain section's lead-in ("Behind the chat is the Core."); its only emphasis is the page's one emphasis (italic, fern-deep). Product greeting: product-greeting, Newsreader, 400, -0.01em. Product number: product-num, Instrument Sans, 500, -0.01em |
-| 20 | 1.3 | card and person title: type-h3, Instrument Sans, 600, -0.01em, ink. Product panel title: product-title, Newsreader, 400. Product detail number: product-num-sm, Instrument Sans, 500, -0.01em |
+| 24 | 1.3 | lede: type-body, Instrument Sans, 400, -0.01em, ink 80%; pretty wrap. Accent line: type-accent, Newsreader, 400, -0.01em, roman, full ink, balanced wrap: why Crosswell's pull quote, the industries row, what a business loses' ledger lines, the brain section's lead-in ("Behind the chat is the Core."); its only emphasis is the page's one emphasis (italic, fern-deep). Product greeting: product-greeting, Newsreader, 400, -0.01em. Product number: product-num, Instrument Sans, 500, -0.01em |
+| 20 | 1.3 | card and person title: type-h3, Instrument Sans, 600, -0.01em, ink; balanced wrap. Product panel title: product-title, Newsreader, 400. Product detail number: product-num-sm, Instrument Sans, 500, -0.01em |
 | 15 | 1.6 | body: type-text, Instrument Sans, 400, 0, ink 70%, everywhere running text, card text, bios, the stats' lines, and the values' lines sit. The nav links (500, ink 75%), every page button (600), the hero subline (ink 70%; its emphasis span is the page's one emphasis), the footer |
 | 13 | 1.5 | label: type-label, Instrument Sans, 500, 0, fern-deep. Caption and source: type-caption, 400, ink 60%. Product UI: product-shell, 400. Product buttons (600). The note card's lines, title, and summary |
 | 12 | 1.4 | product label and note: product-label, Instrument Sans, 400, on the floor tone (ink 60). Product chips, receipts, avatars. The note card's badge, tags, context, and the Replay controls |
@@ -77,8 +77,13 @@ carries them). Nothing else on the page is amber, red, or blue.
   after a lede is body text (type-text). The hero's subline is
   body text on one line, directly under the display, per the bar's
   mechanism 6.
-- No title or lede line ends on a single word: titles wrap balanced,
-  ledes wrap pretty, and a lede's measure is set so the rag lands.
+- No line of a title, a lede, a card or person title, or an accent line
+  holds a single word, at any width: titles, card and person titles, and
+  accent lines wrap balanced, ledes wrap pretty, and a lede's measure is
+  set so the rag lands. Checked at 390, 430, 640, 700, 768, 820, 900, 1024,
+  1180, 1280, 1366, 1440, 1512, 1728, and 1920. Card rows go three across
+  only where their titles hold (at lg; the team's from md, in the text
+  block's 28 padding).
 - Secondary text never drops below ink at 60 percent (ivory at 60 on dark
   ground): captions, sources, the fictional-company line, the footer, and
   the label index included. Inside the product, dimming is a tone (a
@@ -101,8 +106,8 @@ carries them). Nothing else on the page is amber, red, or blue.
   cards and primary buttons are the only shadows on the page.
 - The team card is the one card whose picture bleeds: the portrait fills
   the card's top edge to edge, with no padding around it (square at lg
-  and on phones, 4:5 between), and the text block under it pads 32 (28 on
-  phones), the name on the block's first line, the discipline label 2
+  and below md, 4:5 between), and the text block under it pads 32 (28
+  below lg), the name on the block's first line, the discipline label 2
   under the name, the bio 12 under the label. Every other card holds the
   card rule below (32 inside, the body 10 under the title).
 - Product fragments: parchment panels on ivory. The product has no
@@ -202,11 +207,14 @@ carries them). Nothing else on the page is amber, red, or blue.
 
 ## Motion
 
-- Curve: cubic-bezier(0.22, 1, 0.36, 1). Entrances 0.6 to 0.9s. Staggers
+- Curve: cubic-bezier(0.22, 1, 0.36, 1), for every transition on the page
+  (the theme's default transition curve, so hovers take it too), except
+  the brain section's kept transitions. Entrances 0.6 to 0.9s. Staggers
   60 to 90ms. Nothing under 300ms except hover (150 to 200ms: card
-  shadows, link colours, the nav links' underline) and one site control:
-  chapter 06's swatch press, whose pressed border crosses over 0.2s (the
-  same transition carries the press the cycle moves). The header is
+  shadows and button colours 150, nav links' colour and underline 200)
+  and one site control: chapter 06's swatch press, whose pressed border
+  crosses over 0.2s on the site curve (the same transition carries the
+  press the cycle moves). The header is
   chrome: its bar's height steps from 80 to 64 when the page scrolls, over
   300ms on the site curve.
 - Scroll reveals trigger with the block's top at about 70% of the viewport,
@@ -341,9 +349,8 @@ carries them). Nothing else on the page is amber, red, or blue.
   over the section's label, a space inside the section, so the line and
   the section read as one block. Every other space inside a section is
   smaller than the hang: 64 from the lead-in to the brain section's label
-  and from a card row to how we start's closing line (48 on phones for
-  both), 32 from the industries' hairline to their row, 24 on each side of
-  a ledger hairline. The hero at lg is
+  (48 on phones), 32 from the industries' hairline to their row, 24 on
+  each side of a ledger hairline. The hero at lg is
   not the viewport's height, and it shares the first frame with the run
   intro: 80 under the fixed nav, 128 to the eyebrow, the words (the display
   168 under the nav), the hero's edge at the buttons set 32 into the run's
@@ -362,14 +369,16 @@ carries them). Nothing else on the page is amber, red, or blue.
   stack. Why Crosswell's right column holds its pull quote in the lede's
   place, its words on the column line like every lede and no rule of its
   own, wrapped balanced so its break falls between its two sentences; how
-  we start's right column is empty (cards follow its title); who it's
-  for's running text follows its lede in the lede's column. The band sets
+  we start's right column holds its first-call paragraph (15, at most 448)
+  and the audit button 20 under it in the lede's place, the paragraph's
+  cap height on the title's, so the section runs band, hang, cards; who
+  it's for's running text follows its lede in the lede's column. The band sets
   the measures, not the line counts: the copy is locked, so a band's
   height follows its words. At 1440 and 1728 a company title runs one or
   two lines (the values' vision line four) and a company lede two or
   three; a chapter's claim runs one to three lines and its lede three or
   four, the lengths the run was judged at. Titles wrap balanced, ledes
-  wrap pretty, and no line ends on a single word. What a band introduces (the
+  wrap pretty, and no line holds a single word. What a band introduces (the
   industries row, the cards, the values' columns) hangs from it by the
   section's hang at the container's full width.
 - The split form (`Split`) carries the three sections whose words sit
@@ -403,7 +412,7 @@ carries them). Nothing else on the page is amber, red, or blue.
   bottom (15 percent above the stage's).
 - No 15px line runs past 448, about 65 characters, at any width. Running
   text holds that measure wherever it sits (who it's for, the three
-  splits, how we start's closing line), and so does every card body, team
+  splits, how we start's first-call paragraph), and so does every card body, team
   bio, and values column, capped inside its box, so the boxes keep their
   widths and edges on the grid while their text stops at 448 (at 1728 a
   card is 528 wide and its body still 448); the stats' lines hold 40ch.
@@ -411,7 +420,7 @@ carries them). Nothing else on the page is amber, red, or blue.
   by the bar's mechanism 6 (582 wide).
 - Cards and ledgers on the grid: why Crosswell's, how we start's, and the
   team's card rows run three across the container, 24 apart (432 wide at
-  1440, 528 at 1728); the values' three columns take the same lines;
+  1440, 528 at 1728), at lg (the team's from md); below that they stack; the values' three columns take the same lines;
   beyond the Core's two cards stack in the right column; the stats' two
   figures sit on the two column lines (x 48 and 816 at 1440); the
   industries row runs the container under its hairline, its six names
