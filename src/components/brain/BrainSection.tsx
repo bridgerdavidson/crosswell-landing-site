@@ -1,11 +1,11 @@
 import BrainStill from "./BrainStill";
 import BrainField from "./BrainField";
 import Reveal from "../Reveal";
-import { CONTAINER, SECTION, Split } from "../Band";
+import { CONTAINER, SEAM, SECTION, Split } from "../Band";
 
 export default function BrainSection() {
   return (
-    <section id="the-brain" className={`${CONTAINER} ${SECTION}`}>
+    <section id="the-brain" className={`${SEAM} ${CONTAINER} ${SECTION}`}>
       {/* the lead-in: the run's closing line opens this section, the beat
           (288, 192 on phones) under the run's last content and 64 (48 on
           phones) over the label, a space inside the section, so the line

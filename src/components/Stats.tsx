@@ -21,7 +21,8 @@ const stats = [
 /* The quiet parchment band that sets up Why Crosswell (spec 6.5): it opens
    the band Why Crosswell sits in, on the page's beat, with the two figures
    on the grid's two column lines (the band's title column and its lede
-   column). */
+   column); why Crosswell's top edge carries the seam hairline between
+   them. */
 export default function Stats() {
   return (
     <section id="stats" className="border-t border-ink/8 bg-parchment">

@@ -1,4 +1,4 @@
-import Band, { CONTAINER, HANG, SECTION } from "./Band";
+import Band, { CONTAINER, HANG, SEAM, SECTION } from "./Band";
 import Reveal from "./Reveal";
 
 const industries = [
@@ -12,7 +12,7 @@ const industries = [
 
 export default function WhoItsFor() {
   return (
-    <section id="who-its-for" className={`${CONTAINER} ${SECTION}`}>
+    <section id="who-its-for" className={`${SEAM} ${CONTAINER} ${SECTION}`}>
       <Band
         label="Who it's for"
         title="Built for businesses that run on what they know."

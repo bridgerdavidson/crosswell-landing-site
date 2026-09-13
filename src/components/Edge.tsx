@@ -17,11 +17,12 @@ const points = [
 ];
 
 /* The parchment band opens with the stats above; this section carries the
-   band's bottom edge. The three points are content cards (spec 4.7), the
+   seam hairline between them (they share the ground) and the band's
+   bottom edge. The three points are content cards (spec 4.7), the
    same object as how-we-start's and the team's. */
 export default function Edge() {
   return (
-    <section id="why-crosswell" className="border-b border-ink/8 bg-parchment">
+    <section id="why-crosswell" className="border-y border-ink/8 bg-parchment">
       <div className={`${CONTAINER} ${SECTION}`}>
         {/* the page's title band. The pull quote, an accent line (roman, full
             ink, wrapped balanced so its break falls between its sentences),

@@ -20,6 +20,15 @@ export const CONTAINER = "px-6 lg:px-12";
  * section's 128 included.
  */
 export const SECTION = "pt-24 pb-24 sm:pt-40 sm:pb-32";
+/**
+ * The seam. Every company section is bounded on both sides by a change of
+ * ground or one ink 8 hairline; where two neighbours share a ground, the
+ * later section's top edge carries the hairline, at the section boundary
+ * inside the beat's space (128 under the previous content, 160 over the
+ * next), exactly where a band's own edge hairline sits, and never beside
+ * one.
+ */
+export const SEAM = "border-t border-ink/8";
 export const HANG = "mt-32 lg:mt-48";
 export const GRID =
   "grid min-w-0 lg:grid-cols-2 lg:gap-x-20 xl:grid-cols-[minmax(0,1fr)_36rem]";

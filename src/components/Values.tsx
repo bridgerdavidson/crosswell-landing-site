@@ -1,4 +1,4 @@
-import Band, { CONTAINER, HANG, SECTION } from "./Band";
+import Band, { CONTAINER, HANG, SEAM, SECTION } from "./Band";
 import Reveal from "./Reveal";
 
 /* The locked foundation, in business language. The vision line is the
@@ -25,7 +25,7 @@ const values = [
 
 export default function Values() {
   return (
-    <section id="values" className={`${CONTAINER} ${SECTION}`}>
+    <section id="values" className={`${SEAM} ${CONTAINER} ${SECTION}`}>
       <Band
         label="Values"
         title="To become the most sought after name in agentic AI by setting the standard for what a partner should be."
