@@ -42,9 +42,12 @@ export default function TimeBack() {
         </Reveal>
 
         <div className="flex flex-col divide-y divide-ink/8">
+          {/* each row sits alone in its reveal, so first: and last: would
+              match every row; the first row's top padding is dropped by
+              index, and every row keeps 24 on each side of its hairline */}
           {sinks.map((sink, i) => (
             <Reveal key={sink.pain} delay={i * 80}>
-              <div className="py-6 first:pt-0 last:pb-0">
+              <div className={i === 0 ? "pb-6" : "py-6"}>
                 <p className="type-accent text-ink">
                   {sink.pain}{" "}
                   <span className="italic text-fern-deep">{sink.fix}</span>
