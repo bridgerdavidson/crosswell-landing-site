@@ -37,12 +37,12 @@ export default function Values() {
           whatever the lines above them wrap to; the rows' spacing lives on
           the elements, not in the grid's gap. The columns share the card
           rows' lines (three across the container, 24 apart) */}
-      <div className={`${HANG} grid gap-y-12 sm:grid-cols-3 sm:gap-x-6 sm:gap-y-0`}>
+      <div className={`${HANG} grid gap-y-12 md:grid-cols-3 md:gap-x-6 md:gap-y-0`}>
         {values.map((value, i) => (
           <Reveal
             key={value.name}
             delay={i * 80}
-            className="sm:grid sm:grid-rows-subgrid sm:row-span-5"
+            className="md:grid md:grid-rows-subgrid md:row-span-5"
           >
             <div className="h-px w-10 bg-fern" />
             <h3 className="type-h3 mt-4 text-ink">{value.name}</h3>

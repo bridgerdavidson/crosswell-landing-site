@@ -84,8 +84,9 @@ export default function Team() {
           lede="Small is deliberate. You work directly with the three people who build and run your Core, not an account manager standing between you and the work."
         />
 
-        {/* three across from md (the names hold one line in the 28 padding
-            there), stacked below */}
+        {/* three across from md, the text block padding 20 until lg so every
+            name holds one line and every bio stays within six lines, where
+            its balanced wrap still applies; stacked below md */}
         <div className={`${HANG} grid gap-6 md:grid-cols-3`}>
           {team.map((person, i) => (
             <Reveal key={person.name} delay={i * 80}>
@@ -124,7 +125,7 @@ export default function Team() {
                     )}
                   </div>
                 </div>
-                <div className="flex flex-1 flex-col p-7 lg:p-8">
+                <div className="flex flex-1 flex-col p-7 md:p-5 lg:p-8">
                   <h3 className="type-h3 text-ink">{person.name}</h3>
                   <p className="type-label mt-0.5 text-fern-deep">
                     {person.role}
