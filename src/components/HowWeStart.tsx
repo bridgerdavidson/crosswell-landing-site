@@ -24,11 +24,32 @@ export default function HowWeStart() {
   return (
     <section id="how-we-start" className="border-y border-ink/8 bg-parchment">
       <div className={`${CONTAINER} ${SECTION}`}>
-        {/* the page's title band; cards follow the title, so no lede and the
-            right column stays empty */}
-        <Band label="How we start" title="Start small, on purpose." />
+        {/* the page's title band. Its right column holds the first call and
+            the audit button in the lede's place, the paragraph's cap height
+            on the title's, so the section runs band, hang, cards */}
+        <Band
+          label="How we start"
+          title="Start small, on purpose."
+          aside={
+            <div className="flex flex-col items-start gap-5">
+              <p className="type-text max-w-md text-ink/70">
+                The first call is thirty minutes. We ask how your firm handles
+                knowledge today, and we tell you straight whether the audit is
+                worth it.
+              </p>
+              <a
+                href={AUDIT_MAILTO}
+                className="type-text rounded-lg bg-fern px-6 py-3 font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep"
+              >
+                Start with the audit
+              </a>
+            </div>
+          }
+        />
 
-        <div className={`${HANG} grid gap-6 sm:grid-cols-3`}>
+        {/* three across at lg; below lg the cards stack, as the bands do, so
+            no card title is squeezed onto a line of its own */}
+        <div className={`${HANG} grid gap-6 lg:grid-cols-3`}>
           {engagements.map((engagement, i) => (
             <Reveal key={engagement.title} delay={i * 80}>
               <div className="flex h-full flex-col rounded-2xl border border-warmgray/40 bg-ivory p-7 shadow-whisper transition-shadow hover:shadow-lifted sm:p-8">
@@ -44,21 +65,6 @@ export default function HowWeStart() {
           ))}
         </div>
 
-        <Reveal delay={80}>
-          <div className="mt-12 flex flex-col items-start gap-5 sm:mt-16">
-            <p className="type-text max-w-md text-ink/70">
-              The first call is thirty minutes. We ask how your firm handles
-              knowledge today, and we tell you straight whether the audit is
-              worth it.
-            </p>
-            <a
-              href={AUDIT_MAILTO}
-              className="type-text rounded-lg bg-fern px-6 py-3 font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep"
-            >
-              Start with the audit
-            </a>
-          </div>
-        </Reveal>
       </div>
     </section>
   );
