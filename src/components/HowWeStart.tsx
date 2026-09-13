@@ -48,9 +48,10 @@ export default function HowWeStart() {
           }
         />
 
-        {/* three across at lg; below lg the cards stack, as the bands do, so
-            no card title is squeezed onto a line of its own */}
-        <div className={`${HANG} grid gap-6 lg:grid-cols-3`}>
+        {/* three across from 1200, where every card title holds one line
+            ("The Core plus the custom layer" breaks to two up to 1192) and
+            every body stays within six; below that the cards stack */}
+        <div className={`${HANG} grid gap-6 min-[75rem]:grid-cols-3`}>
           {engagements.map((engagement, i) => (
             <Reveal key={engagement.title} delay={i * 80}>
               <div className="flex h-full flex-col rounded-2xl border border-warmgray/40 bg-ivory p-7 shadow-whisper transition-shadow hover:shadow-lifted sm:p-8">
