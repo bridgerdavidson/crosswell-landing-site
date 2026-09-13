@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { agenda, agents, brand, chat, company, pipeline, today } from "@/lib/saguaro";
-import type { Card, Detail } from "@/lib/saguaro";
+import type { Card } from "@/lib/saguaro";
 
 const all = JSON.stringify({ agenda, agents, brand, chat, company, pipeline, today });
 
@@ -25,7 +25,7 @@ describe("saguaro dataset", () => {
     expect(pipeline.stages.map((s) => s.name)).toEqual([
       "Screened", "Term sheet", "Underwriting", "Docs out", "Funded",
     ]);
-    expect((pipeline.details as Record<string, Detail>)[pipeline.selected].prompts).toHaveLength(3);
+    expect(pipeline.details[pipeline.selected].prompts).toHaveLength(3);
     expect(pipeline.stages.flatMap((s) => s.cards).some((c) => c.id === pipeline.selected)).toBe(true);
   });
 

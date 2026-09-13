@@ -609,16 +609,28 @@ body {
   mask-image: linear-gradient(to right, #000 0%, #000 74%, transparent 100%);
 }
 
+/* the pipeline board's own right fade under its detail panel; no mobile override */
+.product-board-fade {
+  -webkit-mask-image: linear-gradient(to right, #000 0%, #000 74%, transparent 100%);
+  mask-image: linear-gradient(to right, #000 0%, #000 74%, transparent 100%);
+}
+
 .product-frame-bottom {
   -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
   mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
 }
 
-/* phones stack the agenda track, so the right fade becomes a bottom fade */
+/* phones stack the agenda track, but the shell is still wider than the frame, so cut-right frames keep both fades */
 @media (max-width: 767px) {
   .product-frame-right {
-    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
-    mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
+    -webkit-mask-image:
+      linear-gradient(to right, #000 0%, #000 74%, transparent 100%),
+      linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
+    mask-image:
+      linear-gradient(to right, #000 0%, #000 74%, transparent 100%),
+      linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
   }
 }
 

@@ -20,8 +20,10 @@ checkable by looking at rendered output. Source of truth for tokens is
 | charcoal-deep | #34312c | dark bands |
 | ink | #1a1915 | text |
 
-No other hue on the page, ever. Chapter 06's alternate brand colors are
-variables scoped to that fragment's root. No amber, no red, no blue.
+No other hue on the page, with one exception: chapter 06's swatch picker
+shows the fictional brands' own colors as small dots, and its alternate
+accent colors live as variables scoped to that fragment's shell. Nothing
+else on the page is amber, red, or blue.
 
 ## Type
 
@@ -30,7 +32,9 @@ variables scoped to that fragment's root. No amber, no red, no blue.
 - Sans: Instrument Sans. Everything else, page and product. Tabular
   numerals on inside the product.
 - Section label: 14px, medium, sentence case, fern-deep, optional two-digit
-  index in the product run. No uppercase anywhere on the page.
+  index in the product run. No uppercase anywhere on the page. The two-letter
+  avatar initials inside the product (MG, DW, ML, PS) are data, not styled
+  text, and are the one exception.
 - Scale: type-display, type-h2, type-h3, type-accent, type-body as defined
   in globals.css. Inside the product: numbers 26px, UI 13px, labels 12px,
   panel titles 20px serif. Nothing below 12px.

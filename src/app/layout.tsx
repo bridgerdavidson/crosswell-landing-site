@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
   openGraph: {
     type: "website",
-    url: SITE,
+    url: `${SITE}/`,
     siteName: "Crosswell Consulting",
     title: TITLE,
     description: DESCRIPTION,

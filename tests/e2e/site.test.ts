@@ -73,6 +73,13 @@ describe("built css", () => {
     expect(css).toMatch(/product-frame-corner\{[^}]*#000 0 74%/);
     expect(css).toMatch(/product-frame-corner\{[^}]*#000 0 72%/);
     expect(css).toMatch(/product-frame-right\{[^}]*#000 0 74%/);
+    expect(css).toMatch(/product-frame-bottom\{[^}]*#000 0 72%/);
+    expect(css).toMatch(/product-frame-fit\.product-frame-bottom\{[^}]*#000 0 72%/);
+    // .product-board-fade's declarations are byte-identical to the desktop
+    // .product-frame-right, so the minifier merges them into one selector
+    // list (.product-board-fade,.product-frame-right{...}); match the list.
+    expect(css).toMatch(/product-board-fade[^{}]*\{[^}]*#000 0 74%/);
+    expect(css).toMatch(/product-frame-right\{[^}]*#000 0 72%/);
   });
 });
 

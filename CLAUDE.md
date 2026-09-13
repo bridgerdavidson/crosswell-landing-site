@@ -14,8 +14,8 @@ This repo holds no strategy. Before writing copy or making design calls, pull co
 
 ## Voice & content rules
 
-- Finance-credible voice: serious, specific, confident. Speak to a fund decision-maker (partner, principal, COO). Never generic "AI consultant" hype.
-- Funds are the hero; trust is the through-line. AI is the vehicle, never the headline.
+- Serious, specific, confident. Speak to the person who runs the business (owner, partner, COO), never generic "AI consultant" hype.
+- The business and its team are the hero; trust is the through-line. AI is the vehicle, never the headline. The audience is a general market (manufacturing, healthcare, logistics, professional services, construction, private credit), no longer funds only.
 - **No em dashes. Ever.**
 - No pricing, no fabricated client names or metrics. Any illustrative hero/chat copy is labeled illustrative.
 - The brand name is the **Crosswell** wordmark (the "Xwell" spelling is not used).

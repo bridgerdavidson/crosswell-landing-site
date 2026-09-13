@@ -23,7 +23,7 @@ export default function Today() {
             <div className="min-w-0">
               <p className="product-greeting">{today.greeting}</p>
               <p className="mt-1.5 opacity-60">{today.subline}</p>
-              <div className="mt-6 grid grid-cols-4 gap-3">
+              <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">
                 {today.tiles.map((tile) => (
                   <Tile key={tile.label} {...tile} />
                 ))}

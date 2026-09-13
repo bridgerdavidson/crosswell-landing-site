@@ -21,12 +21,12 @@ export default function Chat() {
           claim="Ask it anything the business has written down. It answers with receipts."
           body="Decisions, meetings, files, and six years of loans. Every answer shows its work: ask where a number came from and the Core cites the meeting, the email, or the file it lives in."
         >
-          <Frame dark fade="bottom" height="h-[580px]">
+          <Frame dark fade="bottom" fit height="h-[580px]">
             <Rail active="chat" />
             <div className="flex min-w-0 flex-1 flex-col">
               <TopBar />
               <div className="flex min-h-0 flex-1">
-                <div className="min-w-0 flex-1 p-6 opacity-40" aria-hidden>
+                <div className="hidden min-w-0 flex-1 p-6 opacity-40 md:block" aria-hidden>
                   <p className="product-greeting">{today.greeting}</p>
                   <p className="mt-1.5 opacity-60">{today.subline}</p>
                   <div className="mt-6 grid grid-cols-2 gap-3">
@@ -36,11 +36,10 @@ export default function Chat() {
                   </div>
                 </div>
 
-                <div className="product-aside flex w-[440px] flex-none flex-col">
+                <div className="product-aside flex w-full flex-none flex-col md:w-[440px]">
                   <div className="product-topbar flex h-11 flex-none items-center gap-2 px-5">
                     <Dot tone="accent" />
                     <span className="font-medium">Core</span>
-                    <span className="opacity-50">answers from this fund&apos;s files</span>
                   </div>
                   <div className="flex-1 space-y-4 overflow-hidden px-5 py-4">
                     <p className="product-bubble">{first.question}</p>

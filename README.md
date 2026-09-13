@@ -5,7 +5,7 @@ The public marketing site for Crosswell and Crosswell Core. Rebuilt fresh in Jul
 ## Locked design decisions (2026-07-07 session)
 
 - **Brand name:** Crosswell wordmark, XW monogram as the mark. "Xwell" spelling not adopted.
-- **Headline:** "The operating layer for financial stewards."
+- **Headline:** "The operating layer your business actually runs on." (2026-09-12, pending Max's clearance; the July 2026 headline was "The operating layer for financial stewards.")
 - **No "coming soon" badge.** The waitlist CTA carries the pre-launch message.
 - **Vibe:** Anthropic-inspired. Warm, soft, editorial, approachable, deliberately not tech-company blue. Ivory-dominant canvas with charcoal reserved for two gravity moments (Security, final CTA).
 - **Type:** Newsreader (editorial serif, headlines) + Instrument Sans (sans, body, UI, and inside the product; replaced Schibsted Grotesk 2026-09-12, which read too default in the nav). Section labels are sentence case; nothing on the page is uppercase. The hierarchy is codified as `type-*` classes in `globals.css` (kicker, display, h2, h3, accent, body); small text is text-sm captions and text-xs labels by convention. The final CTA deliberately reuses `type-display` as a closing bookend.

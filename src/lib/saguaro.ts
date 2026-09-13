@@ -172,7 +172,7 @@ export const pipeline = {
       ],
     },
   ] satisfies Stage[],
-  selected: "redrock",
+  selected: "redrock" as const,
   details: {
     ironline: {
       since: "Repeat borrower since 2024",

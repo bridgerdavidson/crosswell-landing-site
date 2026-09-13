@@ -14,7 +14,7 @@ export default function Pipeline() {
   const selected = pipeline.stages
     .flatMap((s) => s.cards)
     .find((c) => c.id === pipeline.selected);
-  const detail = pipeline.details[pipeline.selected as keyof typeof pipeline.details];
+  const detail = pipeline.details[pipeline.selected];
   if (!selected || !detail) return null;
   const [who, ...rest] = detail.prompts;
 
@@ -31,7 +31,7 @@ export default function Pipeline() {
           <div className="flex min-w-0 flex-1 flex-col">
             <TopBar />
             <div className="flex min-h-0 flex-1">
-              <div className="product-frame-right flex min-w-0 flex-1 gap-4 overflow-hidden p-6">
+              <div className="product-board-fade flex min-w-0 flex-1 gap-4 overflow-hidden p-6">
                 {pipeline.stages.map((stage) => (
                   <section key={stage.name} data-stage={stage.name} className="w-[200px] flex-none">
                     <div className="flex items-baseline justify-between">
