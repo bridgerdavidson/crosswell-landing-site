@@ -24,12 +24,11 @@ export default function Edge() {
   return (
     <section id="why-crosswell" className="border-y border-ink/8 bg-parchment">
       <div className={`${CONTAINER} ${SECTION}`}>
-        {/* the page's title band. The pull quote, an accent line (roman, full
-            ink, wrapped balanced so its break falls between its sentences),
-            takes the lede's place in the right column, its words on the
-            column line like every lede, with no rule of its own. The second
-            sentence of the title holds together, so the balanced wrap breaks
-            between the phrases instead of leaving "So" at a line's end */}
+        {/* the page's title band: the title and its lede, the line that
+            follows it, in the lede's style like every other band. The
+            second sentence of the title holds together, so the balanced
+            wrap breaks between the phrases instead of leaving "So" at a
+            line's end */}
         <Band
           label="Why Crosswell"
           title={
@@ -38,19 +37,13 @@ export default function Edge() {
               <span className="whitespace-nowrap">So we do not sell it.</span>
             </>
           }
-          aside={
-            <blockquote className="lg:mt-[1px]">
-              <p className="type-accent text-balance text-ink">
-                When someone leaves, their knowledge does not. Every meeting,
-                decision, and deal, remembered.
-              </p>
-            </blockquote>
-          }
+          lede="When someone leaves, their knowledge does not. Every meeting, decision, and deal, remembered."
         />
 
-        {/* three across at lg; below lg the cards stack, as the bands do, so
-            no card title is squeezed onto a line of its own */}
-        <div className={`${HANG} grid gap-6 lg:grid-cols-3`}>
+        {/* three across from 1040, where every card title holds its line and
+            every body stays within six (at 1024 to 1032 the first body runs
+            seven); below that the cards stack */}
+        <div className={`${HANG} grid gap-6 min-[65rem]:grid-cols-3`}>
           {points.map((point, i) => (
             <Reveal key={point.title} delay={i * 80}>
               <div className="flex h-full flex-col rounded-2xl border border-warmgray/40 bg-ivory p-7 shadow-whisper transition-shadow hover:shadow-lifted sm:p-8">
