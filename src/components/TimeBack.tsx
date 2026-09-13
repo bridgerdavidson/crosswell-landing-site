@@ -28,9 +28,13 @@ export default function TimeBack() {
         <Reveal>
           <p className="type-label mb-3 text-fern-deep">The value</p>
           <h2 className="type-h2 text-ink">What a business actually loses.</h2>
+          {/* the lede is the first sentence; the rest follows as running
+              text, so the lede lands in two lines */}
           <p className="type-body mt-5 text-ink/80">
-            Almost everything your business knows never gets written down. It
-            is scattered across inboxes, call recordings, files nobody opens
+            Almost everything your business knows never gets written down.
+          </p>
+          <p className="type-text mt-4 text-ink/70">
+            It is scattered across inboxes, call recordings, files nobody opens
             again, and a few people&apos;s heads. You paid for all of it once.
             Most of it you never use twice. We take that whole pile, connect
             it, and put it back to work.
