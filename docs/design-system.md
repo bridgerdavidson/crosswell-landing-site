@@ -64,7 +64,7 @@ carries them). Nothing else on the page is amber, red, or blue.
 |---|---|---|
 | 72 (52 at 768) | 1.0 | display: type-display, Newsreader, 400, -0.025em, ink; balanced wrap |
 | 48 (36 at 768) | 1.05 | section title and chapter claim: type-h2, Newsreader, 400, -0.02em, ink; balanced wrap. Also the phone menu's link text. Stat numerals: type-h2 in fern-deep |
-| 24 | 1.3 | lede: type-body, Instrument Sans, 400, -0.01em, ink 80%; balanced wrap. Accent line: type-accent, Newsreader, 400, -0.01em, roman, full ink, balanced wrap: why Crosswell's pull quote, the industries row, what a business loses' ledger lines, the brain section's lead-in ("Behind the chat is the Core."); its only emphasis is the page's one emphasis (italic, fern-deep). Product greeting: product-greeting, Newsreader, 400, -0.01em. Product number: product-num, Instrument Sans, 500, -0.01em |
+| 24 | 1.3 | lede: type-body, Instrument Sans, 400, -0.01em, ink 80%; balanced wrap. Accent line: type-accent, Newsreader, 400, -0.01em, roman, full ink, balanced wrap: the industries row, what a business loses' ledger lines, the brain section's lead-in ("Behind the chat is the Core."); its only emphasis is the page's one emphasis (italic, fern-deep). Product greeting: product-greeting, Newsreader, 400, -0.01em. Product number: product-num, Instrument Sans, 500, -0.01em |
 | 20 | 1.3 | card and person title: type-h3, Instrument Sans, 600, -0.01em, ink; balanced wrap. Product panel title: product-title, Newsreader, 400. Product detail number: product-num-sm, Instrument Sans, 500, -0.01em |
 | 15 | 1.6 | body: type-text, Instrument Sans, 400, 0, ink 70%, everywhere running text, card text, bios, the stats' lines, and the values' lines sit; card bodies, bios, and the values' lines wrap balanced (type-text-balanced), running text pretty. The nav links (500, ink 75%), every page button (600), the hero subline (ink 70%; its emphasis span is the page's one emphasis), the footer |
 | 13 | 1.5 | label: type-label, Instrument Sans, 500, 0, fern-deep. Caption and source: type-caption, 400, ink 60%. Product UI: product-shell, 400. Product buttons (600). The note card's lines, title, and summary |
@@ -89,9 +89,12 @@ carries them). Nothing else on the page is amber, red, or blue.
   to a block of at most six lines, so no card body, bio, or values line
   runs past six where it balances. Checked, card bodies and bios included,
   at 390, 430, 640, 700, 768, 820, 900, 1024, 1180, 1280, 1366, 1440, 1512,
-  1728, and 1920. Card rows go three across only where their titles and
-  bodies hold (at lg; the team's and the values' from md, the team's text
-  block padding 20 from md to lg).
+  1728, and 1920. Card rows go three across only from a width where every
+  title holds its line and every body stays within six lines, found by a
+  sweep in 4px steps from 640 to 1920: why Crosswell's from 1040 (its first
+  body runs seven from 1024 to 1032), how we start's from lg (1024), the
+  team's and the values' from md (768, the team's text block padding 20
+  from md to lg).
 - Secondary text never drops below ink at 60 percent (ivory at 60 on dark
   ground): captions, sources, the fictional-company line, the footer, and
   the label index included. Inside the product, dimming is a tone (a
@@ -381,9 +384,10 @@ carries them). Nothing else on the page is amber, red, or blue.
   left column (the title at most 672 wide), the lede in the right column
   with its cap height on the title's (the lede's top margin 9 where the
   title's is 12), nothing stacked under the title; below lg the three
-  stack. Why Crosswell's right column holds its pull quote in the lede's
-  place, its words on the column line like every lede and no rule of its
-  own, wrapped balanced so its break falls between its two sentences; how
+  stack. Every band's right column is a lede in the lede's style (24,
+  Instrument Sans, ink 80; 20 below 768), so each band reads as one title
+  and one dimmer lede: why Crosswell's is its "When someone leaves" line,
+  wrapped balanced so its break falls between its two sentences; how
   we start's right column holds its lede, the first call (24, ink 80), and
   the audit button 20 under it, the lede's cap height on the title's, so
   the section runs band, hang, cards; who
@@ -435,7 +439,8 @@ carries them). Nothing else on the page is amber, red, or blue.
   by the bar's mechanism 6 (582 wide).
 - Cards and ledgers on the grid: why Crosswell's, how we start's, and the
   team's card rows run three across the container, 24 apart (432 wide at
-  1440, 528 at 1728), at lg (the team's from md); below that they stack;
+  1440, 528 at 1728), why Crosswell's from 1040, how we start's from lg,
+  the team's from md; below that they stack;
   the values' three columns take the same lines from md and stack below
   it, as the card rows do;
   beyond the Core's two cards stack in the right column; the stats' two
