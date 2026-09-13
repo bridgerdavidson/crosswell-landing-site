@@ -18,6 +18,10 @@
 
   --shadow-whisper: 0 1px 2px rgba(26, 25, 21, 0.05), 0 4px 16px rgba(26, 25, 21, 0.06);
   --shadow-lifted: 0 2px 4px rgba(26, 25, 21, 0.06), 0 12px 32px rgba(26, 25, 21, 0.1);
+
+  /* the one curve: every transition utility (hovers, the header's height)
+     runs on it unless it names its own; durations are the utilities' own */
+  --default-transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 html {
@@ -108,6 +112,7 @@ body {
   font-size: 1.5rem;
   line-height: 1.3;
   letter-spacing: -0.01em;
+  text-wrap: balance;
 }
 
 /* the lede: the sentence or two under a title or claim, its companion.
@@ -125,6 +130,7 @@ body {
   font-weight: 600;
   line-height: 1.3;
   letter-spacing: -0.01em;
+  text-wrap: balance;
 }
 
 /* the body size: running text, card text, bios, the nav, the buttons */
@@ -1247,7 +1253,7 @@ body {
   font-size: 0.8125rem;
   line-height: 1.5;
   color: rgba(26, 25, 21, 0.6);
-  transition: border-color 0.2s;
+  transition: border-color 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .product-swatch[aria-pressed="true"] {

@@ -84,12 +84,14 @@ export default function Team() {
           lede="Small is deliberate. You work directly with the three people who build and run your Core, not an account manager standing between you and the work."
         />
 
-        <div className={`${HANG} grid gap-6 sm:grid-cols-3`}>
+        {/* three across from md (the names hold one line in the 28 padding
+            there), stacked below */}
+        <div className={`${HANG} grid gap-6 md:grid-cols-3`}>
           {team.map((person, i) => (
             <Reveal key={person.name} delay={i * 80}>
               <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-warmgray/40 bg-ivory shadow-whisper transition-shadow hover:shadow-lifted">
                 <div
-                  className="team-flip relative aspect-square w-full bg-warmgray/20 sm:aspect-4/5 lg:aspect-square"
+                  className="team-flip relative aspect-square w-full bg-warmgray/20 md:aspect-4/5 lg:aspect-square"
                   data-flipped={flipped}
                   style={{ "--flip-delay": `${i * 90}ms` } as CSSProperties}
                 >
@@ -122,7 +124,7 @@ export default function Team() {
                     )}
                   </div>
                 </div>
-                <div className="flex flex-1 flex-col p-7 sm:p-8">
+                <div className="flex flex-1 flex-col p-7 lg:p-8">
                   <h3 className="type-h3 text-ink">{person.name}</h3>
                   <p className="type-label mt-0.5 text-fern-deep">
                     {person.role}
