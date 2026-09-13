@@ -154,7 +154,12 @@ carries them). Nothing else on the page is amber, red, or blue.
   bottom. A lit
   surface never sits inside a fade: the chat and detail panels float as
   inset cards over their fields, above the fades, and chapter 06's top bar
-  is an inset card ending before the fade. Fragments render at real scale; nothing is scaled
+  is an inset card ending before the fade. Chapter 01's draw approval row
+  ends 44 before the right fade where the calendar column sits beside the
+  list (1360 and up); from lg to 1360, where the list runs on into the
+  fade with no calendar beside it, the row is inset instead (its right
+  margin 240), so its parchment surface and its Approve button end 24
+  before the fade while the field rows beside it dissolve in it. Fragments render at real scale; nothing is scaled
   down. Below 768px a frame crops to a single column; chapter 04's column
   is the selected card's stage, with the panel out of the crop and the
   card lit.
