@@ -6,8 +6,9 @@ import { Chapter, Frame, Rail, Receipt, TopBar, inert } from "../shared";
  * highlighted, and its detail panel open with "Who is this?" already asked
  * and answered. The deal-in, the click-to-open, and the other prompts
  * firing are design-loop work. At lg the panel is the lit element, a
- * parchment card floating inset over the board, which runs past the
- * frame's right and bottom cuts and dissolves there. Below lg the board
+ * parchment card floating inset over the board; the columns grow to fill
+ * the overflowing shell, so the last one is cut by the frame's right edge
+ * and the columns run into the bottom cut, dissolving at both. Below lg the board
  * is one column (the selected card's stage) at real scale, the panel is
  * out of the crop, and the selected card is the lit element; piece 4's
  * phone mechanic builds on that.
@@ -38,7 +39,7 @@ export default function Pipeline() {
                   <section
                     key={stage.name}
                     data-stage={stage.name}
-                    className={`w-[200px] max-w-full flex-none ${
+                    className={`w-full min-w-[200px] flex-1 lg:w-auto ${
                       stage.cards.some((c) => c.id === pipeline.selected) ? "" : "hidden lg:block"
                     }`}
                   >

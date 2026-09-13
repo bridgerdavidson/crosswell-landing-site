@@ -774,11 +774,14 @@ body {
   color: var(--t1);
 }
 
+/* on the dark ground the accent is fern-soft: the lit element's marks (its
+   dot, its checks) and its send button take it, the chips already do */
 .product-shell-dark .product-lit {
   --t1: var(--color-ivory);
   --t0: var(--color-ivory);
   --t2: rgba(241, 238, 230, 0.75);
   --t3: rgba(241, 238, 230, 0.6);
+  --mark: var(--accent-soft);
 }
 
 /* chapter 04 below lg: the detail panel is out of the crop and the selected
@@ -1112,6 +1115,12 @@ body {
   border-color: transparent;
   background: var(--accent);
   color: var(--color-ivory);
+}
+
+.product-shell-dark .product-lit .product-send,
+.product-shell-dark .product-lit .product-button {
+  background: var(--accent-soft);
+  color: var(--color-charcoal-deep);
 }
 
 .product-input {

@@ -12,7 +12,8 @@ import { Chapter, Check, Chip, Dot, Frame, Rail, TopBar } from "../shared";
  * the scroll piece may move the light to the synced chip as the moment
  * plays. The frame is 800 at lg like every frame, so the panels run on
  * (tomorrow's agenda, the unassigned items, last quarter's rocks) and are
- * cut at the right, where the rocks dissolve, and at the bottom.
+ * cut at the bottom; they grow to fill the overflowing shell, so the rocks
+ * panel crosses the frame's right edge and dissolves in the fade.
  */
 export default function Agenda() {
   return (
@@ -125,7 +126,7 @@ export default function Agenda() {
 
 function Panel({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <section className="w-[380px] max-w-full flex-none">
+    <section className="w-full min-w-[380px] flex-1 md:w-auto">
       <p className="product-title">{title}</p>
       <div className="mt-3">{children}</div>
     </section>
