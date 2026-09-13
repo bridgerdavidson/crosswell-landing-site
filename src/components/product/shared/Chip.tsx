@@ -45,3 +45,23 @@ export function Check() {
     </svg>
   );
 }
+
+/**
+ * A mark a sequence turns: the watch dot a sequence starts on and the check
+ * it draws, in one 14px slot so the row never shifts. Without JavaScript,
+ * and under reduced motion, the slot is the check (the finished state); the
+ * dot exists only under the .js gate, and the check carries data-seq so it
+ * is pre-hidden until the sequence draws it.
+ */
+export function Mark({ seq }: { seq: string }) {
+  return (
+    <span className="product-mark">
+      <span className="product-mark-pre" aria-hidden>
+        <span className="product-dot product-dot-watch" />
+      </span>
+      <span className="product-mark-check" data-seq={seq}>
+        <Check />
+      </span>
+    </span>
+  );
+}

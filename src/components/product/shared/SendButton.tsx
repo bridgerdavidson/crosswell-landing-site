@@ -1,9 +1,21 @@
+import type { Ref } from "react";
 import { inert } from "./inert";
 
-/** The send control; presentation only until the chat mechanic lands. */
-export function SendButton({ label = "Send" }: { label?: string }) {
+/**
+ * The send control. Presentation only until a chapter's mechanic makes it
+ * live (chapter 03 lifts the inert props while a message is composed).
+ */
+export function SendButton({
+  label = "Send",
+  ref,
+  ...rest
+}: {
+  label?: string;
+  ref?: Ref<HTMLButtonElement>;
+  [key: `data-${string}`]: string | undefined;
+}) {
   return (
-    <button type="button" aria-label={label} {...inert} className="product-send">
+    <button ref={ref} type="button" aria-label={label} {...inert} {...rest} className="product-send">
       <svg
         width="14"
         height="14"

@@ -1277,11 +1277,110 @@ body {
   border-radius: 4px;
 }
 
+/* chapter 02's pin. At md and above, under JS with motion, the frame holds
+   (sticky, 80 under the nav or centered when the viewport has the room)
+   while two viewport heights scroll past, and the scroll scrubs the track
+   inside it; the pin wrapper carries the two heights after the frame so
+   the chapter keeps its place in the run. No-JS and reduced motion get the
+   flat chapter: nothing pins, nothing scrubs. */
+@media (min-width: 768px) {
+  /* the two heights are content (a sticky box is held inside its parent's
+     content box, so padding would not extend the hold) */
+  .js .product-pin::after {
+    content: "";
+    display: block;
+    height: 200vh;
+  }
+  .js .product-pin > .product-frame {
+    position: sticky;
+    top: 80px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .js .product-pin > .product-frame {
+    top: max(80px, calc((100vh - 800px) / 2));
+  }
+}
+
+/* chapter 02's Replay belongs to its phone sequence; at md and above the
+   scroll is the replay */
+@media (min-width: 768px) {
+  .js .product-replay-phone {
+    display: none;
+  }
+}
+
+/* a mark a sequence turns: the watch dot it starts on and the check it
+   draws share one 14px slot, so a row never shifts. The dot exists only
+   under the .js gate with motion; the check is the finished state. */
+.product-mark {
+  position: relative;
+  display: inline-flex;
+  width: 14px;
+  height: 14px;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-mark-pre {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+}
+
+.js .product-mark-pre {
+  opacity: 1;
+}
+
+.product-mark-check {
+  display: flex;
+}
+
+/* chapter 03's thread grows piece by piece under its sequence (the panel
+   hugs it); at lg it stops before the frame's bottom fade and scrolls, so
+   the lit panel never reaches the cut */
+.product-thread {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(241, 238, 230, 0.2) transparent;
+}
+
+@media (min-width: 1024px) {
+  .product-thread {
+    max-height: 512px;
+  }
+}
+
+/* the composer's text: the placeholder on the floor tone, a composed
+   message at full ink */
+.product-input-text {
+  color: var(--t3);
+}
+
+.product-input-text.is-composed {
+  color: var(--t1);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .js [data-seq] {
     opacity: 1;
   }
   .js .product-replay {
     display: none;
+  }
+  .js .product-pin::after {
+    display: none;
+  }
+  .js .product-pin > .product-frame {
+    position: relative;
+    top: auto;
+  }
+  .js .product-mark-pre {
+    opacity: 0;
   }
 }

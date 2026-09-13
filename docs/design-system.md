@@ -145,7 +145,13 @@ else on the page is amber, red, or blue.
   apart, the active one in accent wash, the rest on the label tone) and a
   48px top bar (company name left, 28px avatar right), so the top bar's
   rule lands on the first icon's bottom edge. A demo control that does
-  nothing yet is presentation only (tabIndex -1, aria-hidden).
+  nothing yet is presentation only (tabIndex -1, aria-hidden); chapter
+  03's send button and follow-up chips are live only while there is
+  something to send or choose, and inert otherwise.
+- A progress row (chapter 02's rocks) sets its percentage under its title
+  at the row's left, on the label size, above the bar, so every number
+  reads before the frame's right fade whatever the width; only the bars'
+  tails dissolve.
 - Inside a frame the only text is what the product would show its own
   user. No informational pills, headers, captions, or feature labels
   inside a frame. Every description sits outside: the claim, the body, the
@@ -165,7 +171,44 @@ else on the page is amber, red, or blue.
   the unified depth and restarted by Replay. The elements that play in
   carry data-seq and are pre-hidden only under the .js gate, so no-JS
   paints the finished state.
-- Reduced motion and no-JS both get the finished state of everything.
+- Chapter 02 is the scroll-driven chapter. At 768 and above, under JS
+  with motion, its frame holds (position: sticky, 80 under the nav or
+  centered when the viewport has the room) while two viewport heights
+  scroll past, and the scroll position scrubs one timeline over the frame:
+  the team and rocks panels pan in on one rigid track from the right fade
+  (linear in scroll, smoothed over 0.5s), each panel's rows assembling as
+  it clears the fade, and one moment plays across the middle of the hold:
+  the Draw 4 check draws in your day, Dana's site-walk row flips as the
+  pan clears the team panel, the deployment rock nudges 68 to 70 as the
+  rocks panel lands, and the synced chip settles; the last 12 percent is
+  still. Scrolling back reverses it, which is the chapter's replay, so no
+  Replay control shows at 768 and above. Your day itself assembles on the
+  clock at the unified depth. Below 768 nothing pins or scrubs: each panel
+  plays once, on the clock, when its own top reaches the unified depth,
+  and Replay in the caption row restarts the three.
+- Chapter 03 is the send mechanic. The first question sits composed in
+  the input (full ink) beside a live send button; at the unified depth it
+  waits one beat (1.0s) and sends itself unless the visitor sends it. The
+  message lifts into the thread, two working lines rise and their dots
+  turn into drawn checks, the answer's row opens to its full height and
+  the answer streams in word chunks (two to four words every 300ms), the
+  receipts rise 80ms apart, then the follow-up chips. A chip, clicked,
+  collapses the chip row, lands its question in the input, waits 0.6s and
+  sends the same way; the remaining chip returns after the answer. Three
+  exchanges, then still. The panel hugs its thread, so it grows from the
+  composer as an exchange arrives and the send happens in view; at lg the
+  thread stops 24 above the frame's fade (max 512) and scrolls, and below
+  lg the shell is held at the finished exchange's height so the band never
+  moves. The input is never a field: nothing accepts typing, and it reads
+  as the composer with a message ready. Replay collapses the thread and
+  composes the first question again.
+- A mark a sequence turns (a watch dot into a drawn check) lives in one
+  14px slot (product-mark): the dot exists only under the .js gate with
+  motion, the check carries data-seq, so no-JS and reduced motion show the
+  check and nothing shifts when it draws.
+- Reduced motion and no-JS both get the finished state of everything:
+  no pin, no hold, every check drawn, 70, the chip, the first exchange
+  complete with its chips, the input on its placeholder.
 - Nothing loops except the hero rotation and a running agent's progress.
 - Two kept exceptions to the band and the curve, both out of the
   redesign's scope: the hero's page-load entrance (the display's 0.95s

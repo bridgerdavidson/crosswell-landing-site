@@ -132,7 +132,9 @@ describe("chapter 03", () => {
       const dark = page.locator("section.bg-charcoal-deep").first();
       return {
         exists: await dark.count(),
-        question: await dark.getByText("What's at risk this week?").count(),
+        // the first exchange's bubble; under JS the composed input carries
+        // the same question until the sequence sends it
+        question: await dark.locator(".product-bubble", { hasText: "What's at risk this week?" }).count(),
         followUps: await dark.locator("button.product-chip").count(),
         send: await dark.locator("button.product-send").count(),
         receipts: await dark.locator(".product-chip-accent").count(),
@@ -360,6 +362,44 @@ describe("resilience", () => {
     expect(r.greeting).toBe(true);
     expect(r.captions).toBe(6);
     expect(r.answer).toBe(true);
+  });
+
+  it("holds chapters 02 and 03 finished under reduced motion, and composes them under motion", async () => {
+    const read = () => ({
+      pin: getComputedStyle(document.querySelector(".product-pin > .product-frame")!).position,
+      hold:
+        (document.querySelector(".product-pin") as HTMLElement).offsetHeight -
+        (document.querySelector(".product-pin > .product-frame") as HTMLElement).offsetHeight,
+      rock: document.querySelector("[data-rock='draw-4'] [data-rock-num]")!.textContent,
+      checks: [...document.querySelectorAll("[data-seq='mark-day'], [data-seq='mark-team']")].map(
+        (el) => getComputedStyle(el).opacity
+      ),
+      input: document.querySelector("[data-input]")!.textContent,
+      send: (document.querySelector("[data-send]") as HTMLButtonElement).tabIndex,
+    });
+    const reduced = await withPage(
+      async (page) => {
+        await page.goto(site.url, { waitUntil: "networkidle" });
+        return page.evaluate(read);
+      },
+      { reducedMotion: true }
+    );
+    expect(reduced.pin).toBe("relative");
+    expect(reduced.hold).toBe(0);
+    expect(reduced.rock).toBe("70");
+    expect(reduced.checks).toEqual(["1", "1"]);
+    expect(reduced.input).toBe("Message the Core");
+    expect(reduced.send).toBe(-1);
+    const motion = await withPage(async (page) => {
+      await page.goto(site.url, { waitUntil: "networkidle" });
+      return page.evaluate(read);
+    });
+    expect(motion.pin).toBe("sticky");
+    expect(motion.hold).toBe(1800);
+    expect(motion.rock).toBe("68");
+    expect(motion.checks).toEqual(["0", "0"]);
+    expect(motion.input).toBe("What's at risk this week?");
+    expect(motion.send).toBe(0);
   });
 
   it("shows reveals immediately under reduced motion", async () => {

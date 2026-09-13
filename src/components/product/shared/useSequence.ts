@@ -14,6 +14,28 @@ export function ease() {
   return siteEase;
 }
 
+/** the site's unified reveal depth: the block's top at about 70% of the viewport, once */
+export function onEnter(el: Element, cb: () => void) {
+  const io = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) {
+        cb();
+        io.disconnect();
+      }
+    },
+    { threshold: 0, rootMargin: "0px 0px -30% 0px" }
+  );
+  io.observe(el);
+  return () => io.disconnect();
+}
+
+/** reveals a Replay control once its sequence has finished, and lets it take focus */
+export function readyReplay(btn: HTMLButtonElement | null) {
+  if (!btn) return;
+  btn.classList.add("is-ready");
+  btn.tabIndex = 0;
+}
+
 /**
  * A chapter's scroll-in sequence, the pattern every chapter follows. Builds
  * a paused GSAP timeline over the frame, plays it once when the frame's top
@@ -38,26 +60,13 @@ export function useSequence(
     const ctx = gsap.context(() => {
       tl = build(el);
       tl.pause(0);
-      tl.eventCallback("onComplete", () => {
-        if (!replay) return;
-        replay.classList.add("is-ready");
-        replay.tabIndex = 0;
-      });
+      tl.eventCallback("onComplete", () => readyReplay(replay));
     }, el);
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          tl?.play(0);
-          io.disconnect();
-        }
-      },
-      { threshold: 0, rootMargin: "0px 0px -30% 0px" }
-    );
-    io.observe(el);
+    const off = onEnter(el, () => tl?.play(0));
     const onReplay = () => tl?.restart();
     replay?.addEventListener("click", onReplay);
     return () => {
-      io.disconnect();
+      off();
       replay?.removeEventListener("click", onReplay);
       ctx.revert();
     };
@@ -82,4 +91,11 @@ export function countUp(el: HTMLElement, duration: number) {
       el.textContent = `${prefix}${Math.round(n.v)}${suffix}`;
     },
   });
+}
+
+/** primes a check's path so a sequence can draw it; returns its length */
+export function primeDraw(path: SVGPathElement) {
+  const len = path.getTotalLength();
+  gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
+  return len;
 }

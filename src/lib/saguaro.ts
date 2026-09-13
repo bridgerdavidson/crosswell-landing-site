@@ -11,7 +11,7 @@ export type Tile = { label: string; value: string; note: string; spark?: number[
 export type NeedsYou = { id: string; title: string; body: string; receipts: string[]; action?: string };
 export type AgendaItem = { time: string; title: string; ref?: string; done?: boolean };
 export type TeamRow = { name: string; initials: string; items: { title: string; ref?: string; done?: boolean }[] };
-export type Rock = { title: string; pct: number; note?: string };
+export type Rock = { title: string; pct: number; note?: string; ref?: string; was?: number };
 export type Exchange = { id: string; question: string; working: string[]; answer: string; receipts: string[] };
 export type Card = { id: string; name: string; place: string; kind: string; amount: string; rate: string; note?: string; ref?: string };
 export type Stage = { name: string; cards: Card[] };
@@ -139,7 +139,8 @@ export const agenda = {
     { title: "File the Camelback title report" },
   ] satisfies { title: string }[],
   rocks: [
-    { title: "Deploy $6M into new loans", pct: 70, note: "on pace" },
+    /* the rock Draw 4 nudges in chapter 02: it reads `was` before the check propagates */
+    { title: "Deploy $6M into new loans", pct: 70, was: 68, note: "on pace", ref: "draw-4" },
     { title: "Move servicing knowledge into the Core", pct: 80 },
     { title: "Fund report drafting itself by October", pct: 60 },
     { title: "Onboard the new loan ops hire", pct: 90 },
