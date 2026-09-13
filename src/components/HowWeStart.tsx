@@ -33,7 +33,7 @@ export default function HowWeStart() {
             <Reveal key={engagement.title} delay={i * 80}>
               <div className="flex h-full flex-col rounded-2xl border border-warmgray/40 bg-ivory p-7 shadow-whisper transition-shadow hover:shadow-lifted sm:p-8">
                 <h3 className="type-h3 text-ink">{engagement.title}</h3>
-                <p className="type-text mt-2.5 text-ink/70">
+                <p className="type-text mt-2.5 max-w-md text-ink/70">
                   {engagement.body}
                 </p>
                 {engagement.note && (

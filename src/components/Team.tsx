@@ -127,7 +127,7 @@ export default function Team() {
                   <p className="type-label mt-0.5 text-fern-deep">
                     {person.role}
                   </p>
-                  <p className="type-text mt-3 text-ink/70">
+                  <p className="type-text mt-3 max-w-md text-ink/70">
                     {person.line}
                   </p>
                 </div>
