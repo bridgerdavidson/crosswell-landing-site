@@ -29,8 +29,9 @@ export default function WhoItsFor() {
       <Reveal delay={80}>
         {/* the industries hang from the band by the section's hang, their
             rule at the hang and the row 32 under it, at the container's full
-            width; an accent line, roman at full ink */}
-        <ul className={`type-accent ${HANG} flex flex-wrap gap-x-8 gap-y-3 border-t border-ink/8 pt-8 text-ink`}>
+            width (at xl the six names spread from edge to edge of it); an
+            accent line, roman at full ink */}
+        <ul className={`type-accent ${HANG} flex flex-wrap gap-x-8 gap-y-3 border-t border-ink/8 pt-8 text-ink xl:justify-between`}>
           {industries.map((name) => (
             <li key={name}>{name}</li>
           ))}

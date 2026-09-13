@@ -26,8 +26,8 @@ export default function Edge() {
       <div className={`${CONTAINER} ${SECTION}`}>
         {/* the page's title band. The pull quote, an accent line (roman, full
             ink, wrapped balanced so its break falls between its sentences),
-            takes the lede's place in the right column; its rule hangs in the
-            columns' gap so the words sit on the column line. The second
+            takes the lede's place in the right column, its words on the
+            column line like every lede, with no rule of its own. The second
             sentence of the title holds together, so the balanced wrap breaks
             between the phrases instead of leaving "So" at a line's end */}
         <Band
@@ -39,7 +39,7 @@ export default function Edge() {
             </>
           }
           aside={
-            <blockquote className="border-l-2 border-fern pl-6 lg:-ml-8 lg:mt-[1px] lg:pl-[30px]">
+            <blockquote className="lg:mt-[1px]">
               <p className="type-accent text-balance text-ink">
                 When someone leaves, their knowledge does not. Every meeting,
                 decision, and deal, remembered.

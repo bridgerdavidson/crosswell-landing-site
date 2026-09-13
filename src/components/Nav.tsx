@@ -107,7 +107,7 @@ export default function Nav() {
       className={`nav-enter fixed inset-x-0 top-0 z-50 border-b pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] pt-[env(safe-area-inset-top)] ${headerChrome}`}
     >
       <div
-        className={`flex items-center justify-between px-6 transition-[height] duration-300 lg:px-12 ${
+        className={`flex items-center justify-between px-6 transition-[height] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] lg:px-12 ${
           scrolled ? "h-16" : "h-20"
         }`}
       >
@@ -132,7 +132,7 @@ export default function Nav() {
               key={link.href}
               href={link.href}
               onClick={(e) => goToSection(e, link.href)}
-              className="type-text relative font-medium text-ink/75 transition-colors duration-200 hover:text-ink after:absolute after:inset-x-0 after:-bottom-1.5 after:h-px after:origin-left after:scale-x-0 after:bg-fern after:transition-transform after:duration-300 hover:after:scale-x-100"
+              className="type-text relative font-medium text-ink/75 transition-colors duration-200 hover:text-ink after:absolute after:inset-x-0 after:-bottom-1.5 after:h-px after:origin-left after:scale-x-0 after:bg-fern after:transition-transform after:duration-200 hover:after:scale-x-100"
             >
               {link.label}
             </a>
