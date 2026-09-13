@@ -159,7 +159,11 @@ carries them). Nothing else on the page is amber, red, or blue.
   list (1360 and up); from lg to 1360, where the list runs on into the
   fade with no calendar beside it, the row is inset instead (its right
   margin 240), so its parchment surface and its Approve button end 24
-  before the fade while the field rows beside it dissolve in it. Fragments render at real scale; nothing is scaled
+  before the fade while the field rows beside it dissolve in it. Chapter
+  06's list rows are set 4 tighter from lg to 1052 (8 above and below in
+  place of 10), where its wrapped bodies would carry its last accent
+  receipts into the bottom fade, so every accent mark in its lit region
+  ends above the fade at every width. Fragments render at real scale; nothing is scaled
   down. Below 768px a frame crops to a single column; chapter 04's column
   is the selected card's stage, with the panel out of the crop and the
   card lit.

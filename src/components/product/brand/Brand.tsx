@@ -157,7 +157,10 @@ function useBrandMotion(
  * buttons, sparkline, receipts, avatar and the rail's current box, the top
  * bar its one parchment surface, so a swatch retints all of it. The accent
  * variables are set inline on the shell and tweened there, so they can
- * never leak into the page.
+ * never leak into the page. From lg to 1052 the list's body text wraps
+ * enough that its last receipts would reach 4 into the bottom fade, so its
+ * rows are set 4 tighter there (py 8 in place of 10) and every accent chip
+ * ends before the fade.
  */
 export default function Brand() {
   const frame = useRef<HTMLDivElement>(null);
@@ -217,7 +220,7 @@ export default function Brand() {
                   <p className="product-title mt-5">Needs you today</p>
                   <ul className="product-rule mt-1.5">
                     {today.needsYou.map((item) => (
-                      <li key={item.id} className="flex gap-4 py-2.5">
+                      <li key={item.id} className="flex gap-4 py-2.5 lg:max-[1052px]:py-2">
                         <Dot tone="ink" className="mt-2" />
                         <div className="min-w-0 flex-1">
                           <p className="product-strong">{item.title}</p>
