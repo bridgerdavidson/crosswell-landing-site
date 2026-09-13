@@ -63,9 +63,11 @@ else on the page is amber, red, or blue.
 | 13 | 1.5 | label: type-label, Instrument Sans, 500, 0, fern-deep. Caption and source: type-caption, 400, ink 60%. Product UI: product-shell, 400. Product buttons (600). The note card's lines, title, and summary |
 | 12 | 1.4 | product label and note: product-label, Instrument Sans, 400, opacity 60% to 70%. Product chips, receipts, avatars. The note card's badge, tags, context, and Replay |
 
-- The lede follows every title and claim as its companion: half the
-  title, 1.6 times the body, one shade dimmer than the title. A second
-  paragraph after a lede is body text (type-text). The hero's subline is
+- Wherever a sentence follows a title or a claim, that sentence is the
+  lede, the title's companion: half the title, 1.6 times the body, one
+  shade dimmer than the title. A title followed directly by cards or a
+  list (how we start) has no lede and needs none. A second paragraph
+  after a lede is body text (type-text). The hero's subline is
   body text on one line, directly under the display, per the bar's
   mechanism 6.
 - No title or lede line ends on a single word: titles wrap balanced,
