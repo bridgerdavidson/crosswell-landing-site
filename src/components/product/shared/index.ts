@@ -5,3 +5,4 @@ export { Tile } from "./Tile";
 export { Chip, Receipt, Dot, Check } from "./Chip";
 export { SendButton } from "./SendButton";
 export { Chapter } from "./Chapter";
+export { inert } from "./inert";

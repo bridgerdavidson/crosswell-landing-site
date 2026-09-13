@@ -9,7 +9,7 @@ const ICONS = {
 
 export type RailIcon = keyof typeof ICONS;
 
-/** The product's left rail: icons only, no labels, one active. */
+/** The product's left rail: 48 wide, icons only, no labels, one active. */
 export function Rail({ active = "home" }: { active?: RailIcon }) {
   return (
     <aside aria-hidden className="product-rail flex w-12 flex-none flex-col items-center gap-3 py-4">
@@ -17,7 +17,7 @@ export function Rail({ active = "home" }: { active?: RailIcon }) {
         <span
           key={key}
           className={`flex h-8 w-8 items-center justify-center rounded-lg ${
-            key === active ? "product-rail-active" : "opacity-50"
+            key === active ? "product-rail-active" : "product-rail-idle"
           }`}
         >
           <svg

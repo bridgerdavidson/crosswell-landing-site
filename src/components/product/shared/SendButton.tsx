@@ -1,6 +1,9 @@
+import { inert } from "./inert";
+
+/** The send control; presentation only until the chat mechanic lands. */
 export function SendButton({ label = "Send" }: { label?: string }) {
   return (
-    <button type="button" aria-label={label} className="product-send">
+    <button type="button" aria-label={label} {...inert} className="product-send">
       <svg
         width="14"
         height="14"

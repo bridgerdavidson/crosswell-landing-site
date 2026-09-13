@@ -620,83 +620,102 @@ body {
 /* ---------- Product run: the fragments ----------
    Six chapters of the Core, each a real component cut by a frame. The
    product is parchment on ivory, one accent (--accent, so chapter 06 can
-   retint a scoped copy), and never a shadow. Cut edges dissolve into the
-   page with masks; the content edge stays crisp. Double stops in every
-   mask on purpose: the production minifier collapses a single stop to 0
-   and fades the whole frame (see the hero mask above). */
+   retint a scoped copy), and never a shadow. A frame is a window onto a
+   larger app: its crisp edges are cuts, with no radius, border, or
+   shadow, and its cut edges dissolve into the page with masks written
+   in pixels so every frame dissolves over the same distance (280 to the
+   right, 160 at the bottom; 120 on phones). Double stops in every mask
+   on purpose: the production minifier collapses a single stop to 0 and
+   fades the whole frame (see the hero mask above). */
 
 .product-frame {
+  --fade-x: 280px;
+  --fade-y: 160px;
+  /* how far an overflowing shell runs past the frame's right edge, so the
+     app's top-right corner (the avatar) is out of frame, never half-faded */
+  --overhang: 80px;
   position: relative;
   overflow: hidden;
 }
 
 .product-frame-corner {
   -webkit-mask-image:
-    linear-gradient(to right, #000 0%, #000 74%, transparent 100%),
-    linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
+    linear-gradient(to right, #000 0, #000 calc(100% - var(--fade-x)), transparent 100%),
+    linear-gradient(to bottom, #000 0, #000 calc(100% - var(--fade-y)), transparent 100%);
   mask-image:
-    linear-gradient(to right, #000 0%, #000 74%, transparent 100%),
-    linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
+    linear-gradient(to right, #000 0, #000 calc(100% - var(--fade-x)), transparent 100%),
+    linear-gradient(to bottom, #000 0, #000 calc(100% - var(--fade-y)), transparent 100%);
   -webkit-mask-composite: source-in;
   mask-composite: intersect;
 }
 
 .product-frame-right {
-  -webkit-mask-image: linear-gradient(to right, #000 0%, #000 74%, transparent 100%);
-  mask-image: linear-gradient(to right, #000 0%, #000 74%, transparent 100%);
-}
-
-/* the pipeline board's own right fade under its detail panel; no mobile override */
-.product-board-fade {
-  -webkit-mask-image: linear-gradient(to right, #000 0%, #000 74%, transparent 100%);
-  mask-image: linear-gradient(to right, #000 0%, #000 74%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - var(--fade-x)), transparent 100%);
+  mask-image: linear-gradient(to right, #000 0, #000 calc(100% - var(--fade-x)), transparent 100%);
 }
 
 .product-frame-bottom {
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--fade-y)), transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--fade-y)), transparent 100%);
 }
 
-/* phones stack the agenda track, but the shell is still wider than the frame, so cut-right frames keep both fades */
+/* the pipeline board's own right fade under its detail panel, shorter than
+   a frame's because the board is narrower; no mobile override */
+.product-board-fade {
+  --fade-x: 200px;
+  -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - var(--fade-x)), transparent 100%);
+  mask-image: linear-gradient(to right, #000 0, #000 calc(100% - var(--fade-x)), transparent 100%);
+}
+
+/* phones: shorter dissolves, and every overflowing shell is cut at the right
+   as well as the bottom, so cut-right and cut-bottom frames both take the
+   corner mask; a shell that fits the phone keeps only the bottom fade */
 @media (max-width: 767px) {
-  .product-frame-right {
-    -webkit-mask-image:
-      linear-gradient(to right, #000 0%, #000 74%, transparent 100%),
-      linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
-    mask-image:
-      linear-gradient(to right, #000 0%, #000 74%, transparent 100%),
-      linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
-    -webkit-mask-composite: source-in;
-    mask-composite: intersect;
+  .product-frame {
+    --fade-x: 120px;
+    --fade-y: 120px;
   }
-}
-
-/* phones: a bottom-fade frame is also cut at the right, so it takes the corner mask */
-@media (max-width: 767px) {
+  .product-frame-right,
   .product-frame-bottom {
     -webkit-mask-image:
-      linear-gradient(to right, #000 0%, #000 74%, transparent 100%),
-      linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
+      linear-gradient(to right, #000 0, #000 calc(100% - var(--fade-x)), transparent 100%),
+      linear-gradient(to bottom, #000 0, #000 calc(100% - var(--fade-y)), transparent 100%);
     mask-image:
-      linear-gradient(to right, #000 0%, #000 74%, transparent 100%),
-      linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
+      linear-gradient(to right, #000 0, #000 calc(100% - var(--fade-x)), transparent 100%),
+      linear-gradient(to bottom, #000 0, #000 calc(100% - var(--fade-y)), transparent 100%);
     -webkit-mask-composite: source-in;
     mask-composite: intersect;
   }
-}
-
-/* a fitted shell never overflows the frame's width, so on phones it keeps
-   the bottom fade only (the corner mask above would dim real content) */
-@media (max-width: 767px) {
   .product-frame-fit.product-frame-bottom {
-    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
-    mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--fade-y)), transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--fade-y)), transparent 100%);
     -webkit-mask-composite: source-over;
     mask-composite: add;
   }
 }
 
-/* the product itself: always wider than the frame so the crop does the work */
+/* below lg a fit-narrow chapter lays its product out as one column that
+   fits the frame, so only the bottom is a cut */
+@media (max-width: 1023px) {
+  .product-frame-fitnarrow {
+    -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--fade-y)), transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--fade-y)), transparent 100%);
+    -webkit-mask-composite: source-over;
+    mask-composite: add;
+  }
+  .product-frame-fitnarrow > .product-shell {
+    min-width: 0;
+    width: 100%;
+  }
+}
+
+/* the product itself. Wider than the frame so the crop does the work, with
+   no radius or border of its own: the frame's crisp edges are cuts through
+   the app, and the rail's and top bar's hairlines carry its structure.
+   Text tones are three variables so a region can be dimmed without
+   compounding opacities: the shell's default is the secondary level
+   (ink 70 / 60 / 60) and .product-lit restores the full tones for the one
+   element the eye should land on. Nothing meant to be read sits under 60. */
 .product-shell {
   --accent: var(--color-fern);
   --accent-deep: var(--color-fern-deep);
@@ -704,13 +723,14 @@ body {
   --accent-wash: var(--color-fern-wash);
   --line: rgba(184, 178, 167, 0.3);
   --accent-dim: rgba(78, 122, 78, 0.28);
+  --t1: rgba(26, 25, 21, 0.7);
+  --t2: rgba(26, 25, 21, 0.6);
+  --t3: rgba(26, 25, 21, 0.6);
   display: flex;
   min-width: 960px;
   min-height: 100%;
   background: var(--color-parchment);
-  border: 1px solid var(--line);
-  border-radius: 1rem;
-  color: var(--color-ink);
+  color: var(--t1);
   font-size: 13px;
   line-height: 1.5;
   font-variant-numeric: tabular-nums;
@@ -718,8 +738,56 @@ body {
 
 .product-shell-dark {
   --line: rgba(241, 238, 230, 0.1);
+  --t1: rgba(241, 238, 230, 0.7);
+  --t2: rgba(241, 238, 230, 0.6);
+  --t3: rgba(241, 238, 230, 0.6);
   background: var(--color-charcoal);
-  color: var(--color-ivory);
+}
+
+/* the lit element: full ink, its own secondary text at 75, its labels at 60 */
+.product-lit {
+  --t1: var(--color-ink);
+  --t2: rgba(26, 25, 21, 0.75);
+  --t3: rgba(26, 25, 21, 0.6);
+  color: var(--t1);
+}
+
+.product-shell-dark .product-lit {
+  --t1: var(--color-ivory);
+  --t2: rgba(241, 238, 230, 0.75);
+  --t3: rgba(241, 238, 230, 0.6);
+}
+
+/* the chat chapter's dashboard behind the docked panel: the one region
+   allowed under the floor (40, so the panel is the only lit thing) */
+.product-shell-dark .product-backdrop {
+  --t1: rgba(241, 238, 230, 0.4);
+  --t2: rgba(241, 238, 230, 0.4);
+  --t3: rgba(241, 238, 230, 0.4);
+  color: var(--t1);
+}
+
+.product-shell-dark .product-backdrop svg {
+  opacity: 0.4;
+}
+
+/* secondary text (sublines, notes, a row's second line) and the floor
+   (labels, times, counts) */
+.product-t2 {
+  color: var(--t2);
+}
+
+.product-t3 {
+  color: var(--t3);
+}
+
+/* at lg and above an overflowing shell runs past the frame's right edge by
+   the overhang; narrower, its 960 minimum already overflows every frame */
+@media (min-width: 1024px) {
+  .product-frame-corner > .product-shell,
+  .product-frame-right > .product-shell {
+    width: calc(100% + var(--overhang));
+  }
 }
 
 /* phones crop to a single column at real scale */
@@ -733,6 +801,11 @@ body {
 .product-shell-fit {
   min-width: 0;
   width: 100%;
+}
+
+/* demo controls that do nothing yet are presentation only */
+.product-shell button[aria-hidden] {
+  cursor: default;
 }
 
 /* the greeting shares the lede's size and leading, in the serif */
@@ -766,14 +839,19 @@ body {
 }
 
 /* the product's smallest text: tile labels, notes, the line under a row.
-   Dimmed with opacity in the markup, never under 60 percent. */
+   On the floor tone; never under 60 percent. */
 .product-label {
   font-size: 12px;
   line-height: 1.4;
+  color: var(--t3);
 }
 
 .product-rail {
   border-right: 1px solid var(--line);
+}
+
+.product-rail-idle {
+  color: var(--t3);
 }
 
 .product-rail-active {
@@ -847,13 +925,19 @@ body {
   white-space: nowrap;
 }
 
+/* a receipt is quiet by default and carries the accent only inside the lit
+   element, so one set of receipts is green, not every set */
 .product-chip-accent {
+  color: var(--t2);
+}
+
+.product-lit .product-chip-accent {
   border-color: transparent;
   background: var(--accent-wash);
   color: var(--accent-deep);
 }
 
-.product-shell-dark .product-chip-accent {
+.product-shell-dark .product-lit .product-chip-accent {
   background: var(--accent-dim);
   color: var(--color-fern-soft);
 }
@@ -965,5 +1049,60 @@ body {
 @media (max-width: 767px) {
   .product-track {
     flex-direction: column;
+  }
+}
+
+/* ---------- Product run: choreography ----------
+   A chapter's sequence plays once on scroll-in and then holds still. The
+   elements that play in are hidden only when JS is present (the head
+   script sets .js), so no-JS paints the finished state, and reduced
+   motion paints it too; GSAP owns them from there. The Replay control
+   sits outside the frame beside the demo caption and appears once the
+   sequence has finished. */
+
+.js [data-seq] {
+  opacity: 0;
+}
+
+.product-replay {
+  display: none;
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 600;
+  color: var(--color-fern-deep);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.js .product-replay {
+  display: inline;
+}
+
+.bg-charcoal-deep .product-replay {
+  color: var(--color-fern-soft);
+}
+
+.product-replay.is-ready {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.product-replay:focus-visible {
+  outline: 2px solid var(--color-fern-deep);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js [data-seq] {
+    opacity: 1;
+  }
+  .js .product-replay {
+    display: none;
   }
 }

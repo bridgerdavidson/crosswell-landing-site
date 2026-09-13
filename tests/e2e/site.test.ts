@@ -67,19 +67,26 @@ describe("built css", () => {
   it("keeps the double stops in the product masks", () => {
     const dir = join("out", "_next", "static", "css");
     const css = readdirSync(dir).map((f) => readFileSync(join(dir, f), "utf8")).join("\n");
-    // the minifier writes the double stop as the two-position shorthand #000 0 74%
-    // (same as the hero mask's #000 0 55% in production); a lone "#000 0" with no
-    // second position would mean the stop collapsed.
-    expect(css).toMatch(/product-frame-corner\{[^}]*#000 0 74%/);
-    expect(css).toMatch(/product-frame-corner\{[^}]*#000 0 72%/);
-    expect(css).toMatch(/product-frame-right\{[^}]*#000 0 74%/);
-    expect(css).toMatch(/product-frame-bottom\{[^}]*#000 0 72%/);
-    expect(css).toMatch(/product-frame-fit\.product-frame-bottom\{[^}]*#000 0 72%/);
-    // .product-board-fade's declarations are byte-identical to the desktop
-    // .product-frame-right, so the minifier merges them into one selector
-    // list (.product-board-fade,.product-frame-right{...}); match the list.
-    expect(css).toMatch(/product-board-fade[^{}]*\{[^}]*#000 0 74%/);
-    expect(css).toMatch(/product-frame-right\{[^}]*#000 0 72%/);
+    // every fade is written with two black stops, "#000 0" and then
+    // "#000 calc(100% - var(--fade-x|y))", so the solid region survives the
+    // minifier (a lone stop gets collapsed to 0 and fades the whole frame,
+    // as the hero mask once did); the fade lengths are pixel variables on
+    // .product-frame so every frame dissolves over the same distance
+    const stops = (axis: "x" | "y") => `#000 0,#000 calc\\(100% - var\\(--fade-${axis}\\)\\)`;
+    const has = (selector: string, axis: "x" | "y") =>
+      expect(css).toMatch(new RegExp(`${selector}\\{[^}]*${stops(axis)}`));
+    has("product-frame-corner", "x");
+    has("product-frame-corner", "y");
+    has("product-frame-right", "x");
+    has("product-frame-bottom", "y");
+    has("product-frame-fit\\.product-frame-bottom", "y");
+    has("product-frame-fitnarrow", "y");
+    has("product-board-fade[^{}]*", "x");
+    // on phones the cut-right and cut-bottom frames take the corner mask (the
+    // minifier merges them into one selector list ending in .product-frame-right)
+    has("product-frame-right", "y");
+    expect(css).toMatch(/product-frame\{--fade-x:280px;--fade-y:160px;/);
+    expect(css).toMatch(/product-frame\{--fade-x:120px;--fade-y:120px\}/);
   });
 });
 

@@ -8,7 +8,8 @@ import { Chapter, Check, Chip, Dot, Frame, Rail, TopBar } from "../shared";
  * your day and on Dana's row, and the deployment rock already reads 70,
  * which is where the scroll-driven propagation (design loop) ends up. The
  * track is wider than the frame on desktop and fades at the right; on
- * phones it stacks.
+ * phones it stacks. The lit element is the Draw 4 row with its synced chip;
+ * the scroll piece may move it.
  */
 export default function Agenda() {
   return (
@@ -18,7 +19,7 @@ export default function Agenda() {
       claim="One list, and the whole team is on it."
       body="Your day, the team's week, and the quarter's rocks, kept in one place and synced with the task tool the team already uses. Finish something anywhere and it checks off everywhere."
     >
-      <Frame fade="right" height="h-[520px]">
+      <Frame fade="corner" height="h-[540px]">
         <Rail active="list" />
         <div className="flex min-w-0 flex-1 flex-col">
           <TopBar />
@@ -26,14 +27,17 @@ export default function Agenda() {
             <Panel title="Your day">
               <ul className="product-rule">
                 {agenda.yourDay.map((item) => (
-                  <li key={item.time} className="flex items-center gap-3 py-3">
-                    <span className="w-10 flex-none opacity-60">{item.time}</span>
-                    <span className={`flex-1 ${item.done ? "opacity-60" : ""}`}>{item.title}</span>
+                  <li
+                    key={item.time}
+                    className={`flex items-center gap-3 py-3 ${item.ref === "draw-4" ? "product-lit" : ""}`}
+                  >
+                    <span className="product-t3 w-10 flex-none">{item.time}</span>
+                    <span className={`flex-1 ${item.done ? "product-t2" : ""}`}>{item.title}</span>
                     {item.done ? <Check /> : <Dot tone="watch" />}
                   </li>
                 ))}
               </ul>
-              <div className="mt-4">
+              <div className="product-lit mt-4">
                 <Chip accent>synced to {agenda.syncedTo}</Chip>
               </div>
             </Panel>
@@ -49,7 +53,7 @@ export default function Agenda() {
                         {row.items.map((it) => (
                           <li key={it.title} className="flex items-center gap-2">
                             {it.done ? <Check /> : <Dot tone="watch" />}
-                            <span className={it.done ? "opacity-60" : "opacity-80"}>{it.title}</span>
+                            <span className="product-t2">{it.title}</span>
                           </li>
                         ))}
                       </ul>
@@ -65,7 +69,7 @@ export default function Agenda() {
                   <li key={rock.title}>
                     <div className="flex items-baseline justify-between gap-3">
                       <span>{rock.title}</span>
-                      <span className="flex-none opacity-60">
+                      <span className="product-t3 flex-none">
                         {rock.pct}%{rock.note ? `, ${rock.note}` : ""}
                       </span>
                     </div>

@@ -61,7 +61,7 @@ else on the page is amber, red, or blue.
 | 20 | 1.3 | card and person title: type-h3, Instrument Sans, 600, -0.01em, ink. Product panel title: product-title, Newsreader, 400. Product detail number: product-num-sm, Instrument Sans, 500, -0.01em |
 | 15 | 1.6 | body: type-text, Instrument Sans, 400, 0, ink 70%. The nav links (500, ink 75%), every page button (600), the hero subline (ink 70%; its emphasis span is Newsreader italic, fern-deep), the footer |
 | 13 | 1.5 | label: type-label, Instrument Sans, 500, 0, fern-deep. Caption and source: type-caption, 400, ink 60%. Product UI: product-shell, 400. Product buttons (600). The note card's lines, title, and summary |
-| 12 | 1.4 | product label and note: product-label, Instrument Sans, 400, opacity 60% to 70%. Product chips, receipts, avatars. The note card's badge, tags, context, and Replay |
+| 12 | 1.4 | product label and note: product-label, Instrument Sans, 400, on the floor tone (ink 60). Product chips, receipts, avatars. The note card's badge, tags, context, and the Replay controls |
 
 - Wherever a sentence follows a title or a claim, that sentence is the
   lede, the title's companion: half the title, 1.6 times the body, one
@@ -74,9 +74,10 @@ else on the page is amber, red, or blue.
   ledes wrap pretty, and a lede's measure is set so the rag lands.
 - Secondary text never drops below ink at 60 percent (ivory at 60 on dark
   ground): captions, sources, the fictional-company line, the footer, and
-  the label index included. Inside the product, dimming is opacity and
-  never below 60 percent; the chat chapter's dimmed dashboard (40 percent,
-  so one thing is lit) is the exception.
+  the label index included. Inside the product, dimming is a tone (a
+  color variable, never a stacked opacity) and never below 60 percent;
+  the chat chapter's dimmed dashboard (40 percent, so one thing is lit)
+  is the exception.
 - Nothing below 12px.
 
 ## Materials
@@ -85,13 +86,33 @@ else on the page is amber, red, or blue.
   shadow-lifted. The primary buttons (the hero's and how-we-start's "Start
   with the audit" and the nav's "Set up a call") carry shadow-whisper.
   Content cards and primary buttons are the only shadows on the page.
-- Product fragments: parchment shell on ivory, hairline warm gray 30%,
-  radius 1rem, no shadow inside or around, one accent per panel. The dark
-  chapter: charcoal shell on charcoal-deep, ivory text, fern-soft accent.
+- Product fragments: parchment shell on ivory with no radius, border, or
+  shadow of its own, so the product reads as a piece of something larger
+  sitting on the page, never a card. The frame's crisp edges are cuts
+  through the app; the rail's and top bar's hairlines (warm gray 30%)
+  carry its structure, and the tiles and cards inside keep their
+  hairlines and 0.75rem radius. One accent per panel. The dark chapter:
+  charcoal shell on charcoal-deep, ivory text, fern-soft accent.
 - Fragments are cut by a fixed-height frame; cut edges dissolve into the
   page with a mask gradient (double stops). The content edge stays crisp.
-  Fragments render at real scale; nothing is scaled down. Below 768px a
-  frame crops to a single column.
+  The dissolve is written in pixels so every frame fades over the same
+  distance: 280 at the right, 160 at the bottom, 120 both ways on phones.
+  An overflowing shell runs 80px past the frame's right edge so the app's
+  top-right corner (the avatar) is out of frame, never half-faded; a
+  fitted shell shows it crisp. Fragments render at real scale; nothing is
+  scaled down. Below 768px a frame crops to a single column.
+- Inside every frame one element is lit: full ink, its own secondary text
+  at 75, its labels at 60, and its receipts in the accent. Everything else
+  sits at the secondary level (ink 70 for primary text, 60 for secondary
+  text and labels, receipts quiet), so the eye lands in one place. Lit per
+  chapter: 01 the draw approval, 02 the Draw 4 row and its synced chip, 03
+  the chat panel (the dashboard behind it at 40), 04 the detail panel, 05
+  the inbox agent's row, 06 the top bar.
+- Chrome inside the product: a 48px rail (16px icons in 32px boxes, 12
+  apart, the active one in accent wash, the rest on the label tone) and a
+  48px top bar (company name left, 28px avatar right), so the top bar's
+  rule lands on the first icon's bottom edge. A demo control that does
+  nothing yet is presentation only (tabIndex -1, aria-hidden).
 - Inside a frame the only text is what the product would show its own
   user. No informational pills, headers, captions, or feature labels
   inside a frame. Every description sits outside: the claim, the body, the
@@ -102,14 +123,32 @@ else on the page is amber, red, or blue.
 - Curve: cubic-bezier(0.22, 1, 0.36, 1). Entrances 0.6 to 0.9s. Staggers
   60 to 90ms. Nothing under 300ms except hover (150 to 200ms).
 - Scroll reveals trigger with the block's top at about 70% of the viewport,
-  once. Sequences play once and offer a small "Replay" outside the frame.
+  once. Sequences play once and offer a small "Replay" outside the frame,
+  beside the demo caption, revealed once the sequence has finished.
+- A chapter's sequence is a paused GSAP timeline built over the frame by
+  the shared useSequence hook, played once when the frame's top reaches
+  the unified depth and restarted by Replay. The elements that play in
+  carry data-seq and are pre-hidden only under the .js gate, so no-JS
+  paints the finished state.
 - Reduced motion and no-JS both get the finished state of everything.
 - Nothing loops except the hero rotation and a running agent's progress.
 
 ## Layout
 
-- Content width max-w-6xl (1152px), gutters px-6. Split sections use the
-  0.9fr / 1.1fr grid. Section rhythm py-24 (sm: py-32).
+- Content width max-w-6xl (1152px), gutters px-6. Split sections in the
+  company half use the 0.9fr / 1.1fr grid. Section rhythm py-24 (sm:
+  py-32).
+- The product run (its intro, the six chapters, the fictional line) sits
+  in max-w-7xl (1280; 1232 inside the gutters at 1440, 86 percent of the
+  viewport), so the product runs nearly gutter to gutter. A chapter is a
+  band and a frame that share both edges. The band is one row in two
+  equal columns (576 / 80 / 576 at 1440): label and claim on the left, the
+  lede on the right with its cap height on the claim's, nothing stacked
+  under the claim. 96 from the band to the frame (64 below lg), 16 from
+  the frame to the caption row, 160 between chapters (112 on phones), 256
+  across the dark band. A split chapter keeps the same two columns with
+  the lede under the claim and the frame in the lede's column, centered on
+  the text. Frame heights at 1440: 860, 540, 600, 700, 600, 480.
 - Two dark moments only: the chat chapter and the closing CTA.
 - Verify at 1440, 1728, and 390 before calling a piece done.
 
