@@ -48,20 +48,11 @@ export default function ProductRun() {
           <Agents />
           <Brand />
         </div>
+        {/* the run's last content; the next section's lead-in ("Behind the
+            chat is the Core.") sits the beat below it */}
         <p className="type-caption mt-12 text-ink/60">
           Saguaro Capital is fictional. Every number is invented, rounded demo data.
         </p>
-        <Reveal>
-          {/* on the beat: the fictional line sits 288 above it (192 on
-              phones) and the next section's label 288 below it (this
-              section's 128 and the next section's 160). An accent line,
-              roman at full ink, its one emphasis the serif italic in the
-              accent colour */}
-          <p className="mt-48 text-center type-accent text-ink sm:mt-72">
-            Behind the chat is the{" "}
-            <span className="italic text-fern-deep">Core</span>.
-          </p>
-        </Reveal>
       </section>
     </>
   );

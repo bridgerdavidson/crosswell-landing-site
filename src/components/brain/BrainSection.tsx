@@ -6,12 +6,23 @@ import { CONTAINER, SECTION, Split } from "../Band";
 export default function BrainSection() {
   return (
     <section id="the-brain" className={`${CONTAINER} ${SECTION}`}>
+      {/* the lead-in: the run's closing line opens this section, the beat
+          (288, 192 on phones) under the run's last content and 64 (48 on
+          phones) over the label, a space inside the section, so the line
+          and the section read as one block. An accent line, roman at full
+          ink, its one emphasis the serif italic in the accent colour */}
+      <Reveal className="mb-12 sm:mb-16">
+        <p className="type-accent text-ink">
+          Behind the chat is the{" "}
+          <span className="italic text-fern-deep">Core</span>.
+        </p>
+      </Reveal>
       {/* the band's split form: the words in the title column, the stage in
           the lede column. At lg the stage hangs from the section's top
           without adding to its height (the words set the row), lifted by
           its own drawing's inset (brain-stage in globals.css), so the
-          section's first ink is its label, its last is the words' last
-          line, and the drawing sits between them in every phase */}
+          split's first ink is its label, its last is the words' last line,
+          and the drawing sits between them in every phase */}
       <Split
         label="This is the Core"
         title="Nothing your firm knows sits alone."
