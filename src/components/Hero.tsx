@@ -48,12 +48,12 @@ export default function Hero() {
           The operating layer your business actually runs on.
         </h1>
         <p
-          className="hero-enter type-text mx-auto mt-6 max-w-3xl text-balance text-ink/70"
+          className="hero-enter type-body mx-auto mt-6 max-w-3xl text-ink/70"
           style={{ "--enter-delay": "0.75s" } as CSSProperties}
         >
           We build the{" "}
           <span className="font-serif italic text-fern-deep">
-            workflows, automations, sales systems, financial models, and agents
+            workflows, automations, and agents
           </span>{" "}
           that run on it.
         </p>

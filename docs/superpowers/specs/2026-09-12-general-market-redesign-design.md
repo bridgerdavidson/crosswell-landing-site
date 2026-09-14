@@ -147,7 +147,7 @@ Interaction: a swatch cross-fades the accent everywhere in the mini dashboard ov
 
 ### 6.1 Hero
 Headline (Gen 6): "The operating layer your business actually runs on."
-Subline (Gen 6, made static): "We build the workflows, automations, sales systems, financial models, and agents that run on it." The list is set in the serif italic as the one accent, matching how "financial stewards" is set today. No word rotation.
+Subline (Gen 6, made static; shortened 2026-09-14): "We build the workflows, automations, and agents that run on it." The list is set in the serif italic as the one accent, matching how "financial stewards" is set today. No word rotation.
 CTAs: Start with the audit (primary), Set up a call (secondary). Nothing beneath them.
 
 ### 6.2 Product run copy
