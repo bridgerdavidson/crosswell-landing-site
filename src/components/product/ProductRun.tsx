@@ -9,7 +9,7 @@ import Agents from "./agents/Agents";
 import Brand from "./brand/Brand";
 
 /**
- * How it works, then the product run. The statement opens the section and
+ * What we do, then the product run. The statement opens the section and
  * the stack draws the system under it (the Core, the work layer, the
  * dashboard); its frame holds through the scroll, so the beat to the
  * statement above and to the run below comes from the frame's own air.
@@ -24,9 +24,9 @@ import Brand from "./brand/Brand";
 export default function ProductRun() {
   return (
     <>
-      <section id="how-it-works" className="px-6 pt-24 sm:pt-32 lg:px-12">
+      <section id="what-we-do" className="px-6 pt-24 sm:pt-32 lg:px-12">
         <Reveal>
-          <p className="type-label text-fern-deep">How it works</p>
+          <p className="type-label text-fern-deep">What we do</p>
           <h2 className="type-h2 mt-3 max-w-5xl text-ink">
             {tie("AI is only as useful as what it knows about your business.")}{" "}
             <span className="text-ink/60">

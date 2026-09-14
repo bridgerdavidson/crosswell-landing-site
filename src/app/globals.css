@@ -226,7 +226,7 @@ body {
   }
 }
 
-/* ---------- How it works: the stack ----------
+/* ---------- What we do: the stack ----------
    Reduced motion and no-JS get the finished stack, unpinned, beside its
    four captions as a list. Under JS with motion the section is tall, its
    frame holds (sticky) for the whole scroll while one timeline scrubs over

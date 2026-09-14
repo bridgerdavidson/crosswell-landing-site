@@ -290,7 +290,7 @@ carries them). Nothing else on the page is amber, red, or blue.
   clock at the unified depth. Below 768 nothing pins or scrubs: each panel
   plays once, on the clock, when its own top reaches the unified depth,
   and Replay in the caption row restarts the three.
-- How it works is the stack, the page's one long scroll piece. Under JS
+- What we do is the stack, the page's one long scroll piece. Under JS
   with motion its frame holds (position: sticky, the full viewport) while
   the section's own height scrolls past (5svh per timeline unit at lg,
   3.6svh below), and the scroll scrubs one GSAP timeline (smoothed over

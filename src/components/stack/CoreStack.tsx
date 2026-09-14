@@ -26,7 +26,6 @@ import {
   PARENT,
   POINTS,
   ROOTS,
-  ROOT_TOP,
   SPIN,
   THREADS,
   TILES,
@@ -70,8 +69,6 @@ const CAPTIONS = [
 const d3: CSSProperties = { transformStyle: "preserve-3d" };
 const plate = "absolute inset-0 rounded-[18px]";
 const scaler = "absolute top-1/2 left-1/2 h-0 w-0 scale-[0.5] sm:scale-75 lg:scale-90 xl:scale-100";
-const standing = (from: { x: number; y: number }, z: number, angle: number) =>
-  `translate3d(${from.x}px, ${from.y}px, ${z}px) rotate(${angle}deg) rotateX(-90deg)`;
 
 /* The camera over the stack: the plates turned and tipped back, the
    lines standing between them. Rendered twice: once for the stack, and
@@ -93,7 +90,7 @@ function Camera({ children, over = false }: { children: ReactNode; over?: boolea
 }
 
 /**
- * How it works, drawn: the Core (everything the company knows), the work
+ * What we do, drawn: the Core (everything the company knows), the work
  * layer on it (agents, automations, workflows), and the dashboard on top.
  * Under JS with motion the frame holds while the scroll scrubs one
  * timeline: things land on the Core and turn into connected points, each
@@ -112,10 +109,13 @@ export default function CoreStack() {
       const q = gsap.utils.selector(el);
 
       /* the starting state, over the finished one the markup draws */
-      gsap.set(q(".tilt, .spin, .core-group, .agents-group, .dash-group, .root, .dock"), { clearProps: "transform" });
+      gsap.set(q(".tilt, .spin, .core-group, .agents-group, .dash-group"), { clearProps: "transform" });
       gsap.set(q(".tilt"), { rotationX: TILT, y: LOWER });
       gsap.set(q(".spin"), { rotation: SPIN });
-      gsap.set(q(".core-group"), { z: -80, opacity: 0 });
+      /* the plates fade, never their groups: a group below full opacity
+         flattens its 3D children, which drew a falling thing as landed */
+      gsap.set(q(".core-group"), { z: -80 });
+      gsap.set(q(".core-plate"), { opacity: 0 });
       gsap.set(q(".agents-group"), { z: 0, opacity: 0 });
       gsap.set(q(".dash-group"), { z: Z_DASH + 180, opacity: 0 });
       /* things fall flat, parallel to the board, and land flush on it */
@@ -127,12 +127,6 @@ export default function CoreStack() {
       });
       gsap.set(q(".tile"), { scale: 0, opacity: 0, transformOrigin: "50% 50%" });
       gsap.set(q(".tile-check"), { opacity: 0 });
-      ROOTS.forEach((r, i) =>
-        gsap.set(q(`.root-${i}`), { x: r.from.x, y: r.from.y, z: ROOT_TOP, rotation: r.angle, rotationX: -90, transformOrigin: "0% 0%" }),
-      );
-      DOCKS.forEach((d, k) =>
-        gsap.set(q(`.dock-${k}`), { x: d.from.x, y: d.from.y, z: Z_DASH, rotation: d.angle, rotationX: -90, transformOrigin: "0% 0%" }),
-      );
       gsap.set(q(".root-line"), { strokeDashoffset: 100, strokeOpacity: 0.55 });
       gsap.set(q(".dash-pill"), { fill: ink(0.1) });
       gsap.set(q(".stack-cap"), { opacity: 0, y: 18 });
@@ -144,7 +138,8 @@ export default function CoreStack() {
       });
 
       /* 1. the Core: things land one by one and stay, then become points */
-      tl.to(q(".core-group"), { z: 0, opacity: 1, duration: 5 }, 0);
+      tl.to(q(".core-group"), { z: 0, duration: 5 }, 0);
+      tl.to(q(".core-plate"), { opacity: 1, duration: 5 }, 0);
       ARRIVALS.forEach((idx) => {
         const land = CORE_T.land[idx];
         tl.to(q(`.piece-${idx}`), { opacity: 1, duration: 0.8, ease: "none" }, land);
@@ -259,7 +254,7 @@ export default function CoreStack() {
           <Camera>
             {/* the Core */}
             <div className="core-group absolute inset-0" style={d3}>
-              <div className={`${plate} border border-ink/12 bg-parchment`}>
+              <div className={`core-plate ${plate} border border-ink/12 bg-parchment`}>
                 <CoreArt />
               </div>
               {ARRIVALS.map((idx, i) => (
@@ -282,14 +277,7 @@ export default function CoreStack() {
             </div>
 
             {ROOTS.map((r, i) => (
-              <Standing
-                key={i}
-                className={`root root-${i}`}
-                width={r.len}
-                height={ROOT_TOP}
-                transform={standing(r.from, ROOT_TOP, r.angle)}
-                shown={0.2}
-              />
+              <Standing key={i} className={`root root-${i}`} strand={r} shown={0.2} />
             ))}
 
             {/* the dashboard */}
@@ -302,14 +290,7 @@ export default function CoreStack() {
 
           <Camera over>
             {DOCKS.map((d, k) => (
-              <Standing
-                key={k}
-                className={`dock dock-${k}`}
-                width={d.len}
-                height={Z_DASH - Z_AGENTS}
-                transform={standing(d.from, Z_DASH, d.angle)}
-                shown={0}
-              />
+              <Standing key={k} className={`dock dock-${k}`} strand={d} shown={0} />
             ))}
           </Camera>
         </div>

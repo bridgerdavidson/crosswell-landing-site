@@ -59,7 +59,7 @@ describe("nav", () => {
       await page.goto(site.url, { waitUntil: "networkidle" });
       return page.locator("header nav a").allTextContents();
     });
-    expect(labels).toEqual(["How it works", "Why Crosswell", "How we start", "Team", "Insights"]);
+    expect(labels).toEqual(["What we do", "Why Crosswell", "How we start", "Team", "Insights"]);
   });
 });
 
@@ -90,21 +90,21 @@ describe("built css", () => {
   });
 });
 
-describe("how it works", () => {
+describe("what we do", () => {
   it("states what Crosswell does and draws the stack under it", async () => {
     const r = await withPage(async (page) => {
       await page.goto(site.url, { waitUntil: "networkidle" });
       const stack = page.locator(".stack-scroll");
       return {
-        label: await page.locator("#how-it-works .type-label").first().textContent(),
-        statement: await page.locator("#how-it-works h2").textContent(),
+        label: await page.locator("#what-we-do .type-label").first().textContent(),
+        statement: await page.locator("#what-we-do h2").textContent(),
         captions: await stack.locator("h3").allTextContents(),
         legend: await stack.locator("li").allTextContents(),
         layers: await stack.locator(".core-group, .agents-group, .dash-group").count(),
         tiles: await stack.locator(".tile").count(),
       };
     });
-    expect(r.label).toBe("How it works");
+    expect(r.label).toBe("What we do");
     expect(r.statement).toBe(
       "AI is only as useful as what it knows about your business. So we start there. Crosswell brings everything your company knows into one place, then builds the agents and automations that use it."
     );
@@ -289,7 +289,7 @@ describe("hero and the top of the company half", () => {
     ]);
     expect(r.stats).toEqual(["75%", "78%"]);
     expect(r.order.slice(0, 6)).toEqual([
-      "top", "how-it-works", "the-brain", "who-its-for", "stats", "why-crosswell",
+      "top", "what-we-do", "the-brain", "who-its-for", "stats", "why-crosswell",
     ]);
   });
 });
@@ -350,7 +350,7 @@ describe("company half, bottom", () => {
     expect(r.posts).toBe(0);
     expect(r.footer).toContain("Custom agentic AI, built around how your team actually works. Arizona.");
     expect(r.order).toEqual([
-      "top", "how-it-works", "the-brain", "who-its-for", "stats", "why-crosswell",
+      "top", "what-we-do", "the-brain", "who-its-for", "stats", "why-crosswell",
       "what-you-lose", "how-we-start", "beyond-core", "values", "team", "insights",
     ]);
   });

@@ -39,7 +39,6 @@ const dist = (a: P, b: P) => Math.hypot(a.x - b.x, a.y - b.y);
 /* two places is plenty for a drawing, and keeps the server's and the
    browser's style strings identical */
 const r2 = (n: number) => Math.round(n * 100) / 100;
-const angle = (from: P, to: P) => r2((Math.atan2(to.y - from.y, to.x - from.x) * 180) / Math.PI);
 
 /* ---------- the Core ---------- */
 
@@ -140,19 +139,56 @@ export const TILES: (P & { kind: TileKind })[] = [
 ];
 
 /* each tile reaches down to the three points nearest it */
-export const ROOTS: { tile: number; node: number; from: P; angle: number; len: number }[] = TILES.flatMap((t, k) =>
+const NEAREST: { tile: number; node: number }[] = TILES.flatMap((t, k) =>
   POINTS.map((p, i) => ({ i, d: dist(t, p) }))
     .sort((a, b) => a.d - b.d)
     .slice(0, 3)
-    .map(({ i, d }) => ({
-      tile: k,
-      node: i,
-      from: { x: t.x, y: t.y },
-      angle: angle(t, POINTS[i]),
-      len: r2(Math.max(d, 1)),
-    })),
+    .map(({ i }) => ({ tile: k, node: i })),
 );
-export const LIT = [...new Set(ROOTS.map((r) => r.node))];
+export const LIT = [...new Set(NEAREST.map((r) => r.node))];
+
+/* ---------- the strands between layers ---------- */
+
+type V = [number, number, number];
+const sub = (a: V, b: V): V => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
+const dot = (a: V, b: V) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+const times = (a: V, k: number): V => [a[0] * k, a[1] * k, a[2] * k];
+const unit = (a: V): V => times(a, 1 / Math.hypot(...a));
+const cross = (a: V, b: V): V => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+const r4 = (n: number) => Math.round(n * 10000) / 10000;
+
+/* the direction toward the reader in the plates' own space: the camera's
+   tip (rotateX) and turn (rotate) undone */
+const TOWARD: V = (() => {
+  const t = (TILT * Math.PI) / 180;
+  const s = (-SPIN * Math.PI) / 180;
+  return [-Math.sin(t) * Math.sin(s), Math.sin(t) * Math.cos(s), Math.cos(t)];
+})();
+
+/* A strand runs from a top point down to a bottom point on a lower layer.
+   It is drawn in the one plane that holds both ends and turns most toward
+   the reader, so no strand is ever seen edge-on; the div's y axis runs
+   along the strand, its x axis across it in that plane. The S-curve
+   leaves its top and meets its bottom travelling straight down. */
+export type Strand = { transform: string; d: string };
+function strand(top: V, bottom: V): Strand {
+  const run = sub(bottom, top);
+  const L = Math.hypot(...run);
+  const along = times(run, 1 / L);
+  const facing = unit(sub(TOWARD, times(along, dot(TOWARD, along))));
+  const across = cross(facing, along);
+  const m = [...across, 0, ...along, 0, ...facing, 0, ...top, 1].map(r4);
+  /* straight down, in the strand's own axes; the curve's handles are held
+     short enough that it never dips through the layer below or rises
+     through the one above (the handles' drop is k times the share of
+     "down" that lies in the plane) */
+  const inPlane = 1 - facing[2] * facing[2];
+  const k = Math.min(L * 0.5, (0.4 * (top[2] - bottom[2])) / inPlane);
+  const dx = -across[2] * k;
+  const dy = -along[2] * k;
+  const d = `M0 0 C${r2(dx)} ${r2(dy)} ${r2(-dx)} ${r2(L - dy)} 0 ${r2(L)}`;
+  return { transform: `matrix3d(${m.join(",")})`, d };
+}
 
 /* ---------- the dashboard ---------- */
 
@@ -177,10 +213,12 @@ export const slotTop = (k: number) => D.cardY + k * (D.cardH + D.cardGap);
 
 /* each tile's line up to its card's button on the dashboard */
 const PILLS: P[] = [0, 1, 2].map((k) => ({ x: D.x1 - 12 - 30, y: slotTop(k) + D.cardH / 2 }));
-export const DOCKS = TILES.map((t, k) => ({
-  from: PILLS[k],
-  angle: angle(PILLS[k], t),
-  len: r2(Math.max(dist(t, PILLS[k]), 1)),
+export const DOCKS: Strand[] = TILES.map((t, k) => strand([PILLS[k].x, PILLS[k].y, Z_DASH], [t.x, t.y, Z_AGENTS]));
+
+/* each tile's roots, from just under the tile to its three nearest points */
+export const ROOTS: ({ tile: number; node: number } & Strand)[] = NEAREST.map((r) => ({
+  ...r,
+  ...strand([TILES[r.tile].x, TILES[r.tile].y, ROOT_TOP], [POINTS[r.node].x, POINTS[r.node].y, 0]),
 }));
 
 /* ---------- the scroll's beats, in timeline units ---------- */

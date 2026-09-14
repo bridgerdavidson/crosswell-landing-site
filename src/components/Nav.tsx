@@ -6,7 +6,7 @@ import { CALL_MAILTO, CONTACT_EMAIL } from "@/lib/site";
 import { setMenuInk } from "./SafeAreaTheme";
 
 const links = [
-  { href: "#how-it-works", label: "How it works" },
+  { href: "#what-we-do", label: "What we do" },
   { href: "#why-crosswell", label: "Why Crosswell" },
   { href: "#how-we-start", label: "How we start" },
   { href: "#team", label: "Team" },
@@ -56,7 +56,7 @@ export default function Nav() {
   // Smooth-scroll a nav target so its title sits just below the nav (filling the
   // screen from there), without writing a hash to the URL (which is what made
   // reloads jump). The section's py-24/32 top padding lives on the section
-  // itself (#how-it-works) or on an inner wrapper (the rest); we align below
+  // itself (#what-we-do) or on an inner wrapper (the rest); we align below
   // whichever carries it, so there's no empty gap above the title.
   const NAV_H = 64; // scrolled nav height (h-16)
   const TOP_GAP = 20; // small breathing room under the nav

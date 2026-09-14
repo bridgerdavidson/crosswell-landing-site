@@ -1,4 +1,3 @@
-import type { CSSProperties } from "react";
 import {
   ARRIVALS,
   CARD_W,
@@ -18,6 +17,7 @@ import {
   ink,
   slotTop,
   type Kind,
+  type Strand,
   type TileKind,
 } from "./geometry";
 
@@ -179,31 +179,16 @@ export function AgentTiles() {
   );
 }
 
-/* A line standing between two layers: its plane is turned toward its far
-   end and stood up, so an S-curve runs from the top point down to the
-   bottom point; a short bright dash is the light that travels it. The
-   transform places it; the finished state shows the line at `shown`. */
-export function Standing({
-  className,
-  width,
-  height,
-  transform,
-  shown,
-}: {
-  className: string;
-  width: number;
-  height: number;
-  transform: string;
-  shown: number;
-}) {
-  const d = `M0 0 C0 ${height * 0.55} ${width} ${height * 0.45} ${width} ${height}`;
-  const style: CSSProperties = { width, height, transform, transformOrigin: "0 0" };
+/* A strand between two layers, placed by its own transform (see strand in
+   geometry): a line, and a short bright dash on it that is the light
+   travelling it. The finished state shows the line at `shown`. */
+export function Standing({ className, strand, shown }: { className: string; strand: Strand; shown: number }) {
   return (
-    <div className={`${className} absolute top-0 left-0`} style={style}>
-      <svg width={Math.max(width, 1)} height={height} className="absolute inset-0 overflow-visible" aria-hidden>
+    <div className={`${className} absolute top-0 left-0 h-0 w-0`} style={{ transform: strand.transform, transformOrigin: "0 0" }}>
+      <svg width={1} height={1} className="absolute top-0 left-0 overflow-visible" aria-hidden>
         <path
           className="root-line"
-          d={d}
+          d={strand.d}
           pathLength={100}
           fill="none"
           stroke={FERN}
@@ -211,7 +196,7 @@ export function Standing({
           strokeDasharray="100 100"
           style={{ strokeOpacity: shown, strokeDashoffset: shown ? 0 : 100 }}
         />
-        <path className="root-light" d={d} pathLength={100} fill="none" stroke={FERN} strokeWidth={3.2} strokeLinecap="round" strokeDasharray="7 110" strokeDashoffset={7} opacity={0} />
+        <path className="root-light" d={strand.d} pathLength={100} fill="none" stroke={FERN} strokeWidth={3.2} strokeLinecap="round" strokeDasharray="7 110" strokeDashoffset={7} opacity={0} />
       </svg>
     </div>
   );
