@@ -5,18 +5,13 @@ import HeroCore from "./HeroCore";
 export default function Hero() {
   return (
     /* Below lg the hero is the viewport's height. At lg it shares the first
-       frame with the run intro: 80 under the fixed nav, 128 to the eyebrow
-       (the display 168 under the nav), the words, and the hero's edge at
-       the buttons, set 32 into the run's own 128, so the run intro's label
-       sits 96 under the buttons. That block ends the intro's last line 31
-       above the fold at 1440x900. On a taller viewport the hero takes the
-       extra height (its least height is the viewport less 373, the
-       intro's share and the 31), and its words stay centred in it on the
-       woven core, so the air splits above and below them and the fold
-       still falls 31 under the intro's last line. At 1440x900 and shorter
-       the words' own height is the larger, so nothing moves there. The
-       sphere dissolves under the buttons instead of filling a band of its
-       own. */
+       frame with the run intro: its least height is the viewport less 373
+       (the intro's share and 31 under its last line), its words stay
+       centred in that height on the woven core, and its edge sits at the
+       buttons, set 32 into the run's own 128, so the run intro's label sits
+       96 under them. With no label above it, the headline is the first
+       thing in the frame. The sphere dissolves under the buttons instead of
+       filling a band of its own. */
     <section
       id="top"
       className="relative flex min-h-svh flex-col justify-center overflow-hidden pt-20 lg:-mb-8 lg:min-h-[calc(100svh_-_373px)]"
@@ -35,12 +30,6 @@ export default function Hero() {
         className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-ivory via-ivory/70 to-transparent"
       />
       <div className="relative mx-auto max-w-4xl px-6 py-20 text-center lg:pt-32 lg:pb-0">
-        <p
-          className="hero-enter type-label mb-5 text-fern-deep"
-          style={{ "--enter-delay": "0.2s" } as CSSProperties}
-        >
-          Crosswell Core
-        </p>
         <h1
           className="hero-enter hero-display type-display text-ink"
           style={{ "--enter-delay": "0.45s", "--enter-dur": "0.95s" } as CSSProperties}
