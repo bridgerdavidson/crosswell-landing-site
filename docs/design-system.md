@@ -290,6 +290,30 @@ carries them). Nothing else on the page is amber, red, or blue.
   clock at the unified depth. Below 768 nothing pins or scrubs: each panel
   plays once, on the clock, when its own top reaches the unified depth,
   and Replay in the caption row restarts the three.
+- How it works is the stack, the page's one long scroll piece. Under JS
+  with motion its frame holds (position: sticky, the full viewport) while
+  the section's own height scrolls past (5svh per timeline unit at lg,
+  3.6svh below), and the scroll scrubs one GSAP timeline (smoothed over
+  0.8s) over an exploded stack of three flat plates seen at one camera
+  (turned 40, tipped back 62): the Core, the work layer 170 above it, and
+  the dashboard 340 above it. Four beats, each caption taking the one
+  caption slot in turn: things (mail, documents, sheets, meetings,
+  calendars, chats) fall flat onto the empty Core at uneven intervals and
+  stay, then turn into points in an uneven order with details springing
+  out of them and threads drawing in; the work layer lifts out of the Core
+  and its three tiles (agent, automation, workflow) work one at a time,
+  each a fern border and glow, three roots growing down to its nearest
+  points, a light down each root and back up, the points lit, then a
+  check; the dashboard settles on top and, one tile at a time, a line
+  draws up to its card's button, a light runs up it, and the button turns
+  green; the lower layers come down under the dashboard, keeping their
+  spacing and fading, as the camera comes round to face it. The lines up
+  to the dashboard draw on a second, identical camera over the first, so
+  they read all the way into their cards. The stack is flat material: no
+  shadows, no plate thickness, the work layer's plate parchment at 50.
+  Scrolling back reverses it. Reduced motion and no-JS get the finished
+  stack (the Core connected, the tiles checked, the buttons green),
+  unpinned, beside the four captions as a list.
 - Chapter 03 is the send mechanic. The first question sits composed in
   the input (full ink) beside a live send button; at the unified depth it
   waits one beat (1.0s) and sends itself unless the visitor sends it. The

@@ -1,5 +1,6 @@
 import Reveal from "@/components/Reveal";
 import { tie } from "@/components/tie";
+import CoreStack from "@/components/stack/CoreStack";
 import Today from "./today/Today";
 import Agenda from "./agenda/Agenda";
 import Chat from "./chat/Chat";
@@ -8,31 +9,41 @@ import Agents from "./agents/Agents";
 import Brand from "./brand/Brand";
 
 /**
- * The product run: six chapters of the Core, each a claim plus a fragment.
- * Chapters 01 and 02 sit in the first container, chapter 03 is its own
- * full-bleed dark band, and 04 to 06 close the run before the fictional
- * line and the bridge into the brain section. The run's width follows the
- * viewport inside fixed 48px gutters at lg (1344 at 1440, 1632 at 1728), so
- * the product runs gutter to gutter at every width; the chapters fall on
- * one beat, 288 apart (192 on phones), with the dark band padded to match.
+ * How it works, then the product run. The statement opens the section and
+ * the stack draws the system under it (the Core, the work layer, the
+ * dashboard); its frame holds through the scroll, so the beat to the
+ * statement above and to the run below comes from the frame's own air.
+ * Then six chapters of the Core, each a claim plus a fragment: 01 and 02
+ * in the first container under a lead-in, chapter 03 its own full-bleed
+ * dark band, and 04 to 06 closing the run before the fictional line and
+ * the bridge into the brain section. The run's width follows the viewport
+ * inside fixed 48px gutters at lg (1344 at 1440, 1632 at 1728), so the
+ * product runs gutter to gutter at every width; the chapters fall on one
+ * beat, 288 apart (192 on phones), with the dark band padded to match.
  */
 export default function ProductRun() {
   return (
     <>
-      <section
-        id="how-it-works"
-        className="px-6 pt-24 pb-24 sm:pt-32 sm:pb-32 lg:px-12"
-      >
+      <section id="how-it-works" className="px-6 pt-24 sm:pt-32 lg:px-12">
         <Reveal>
           <p className="type-label text-fern-deep">How it works</p>
-          <h2 className="type-h2 mt-3 max-w-3xl text-ink">
-            {tie("You're not talking to a chatbot. You're talking to your firm's memory.")}
+          <h2 className="type-h2 mt-3 max-w-5xl text-ink">
+            {tie("AI is only as useful as what it knows about your business.")}{" "}
+            <span className="text-ink/60">
+              {tie("So we start there. Crosswell brings everything your company knows into one place, then builds the agents and automations that use it.")}
+            </span>
           </h2>
-          <p className="type-body mt-5 max-w-2xl text-ink/80">
-            {tie("The Core is built on agentic AI (AI that does the work, not just answers questions) and managed for you. Six things it does on a Thursday morning.")}
-          </p>
         </Reveal>
-        <div className="mt-48 space-y-48 sm:mt-72 sm:space-y-72">
+      </section>
+
+      <CoreStack />
+
+      <section className="px-6 pb-24 sm:pb-32 lg:px-12">
+        {/* the lead-in into the run, 64 (48 on phones) over chapter 01's label */}
+        <Reveal className="mb-12 sm:mb-16">
+          <p className="type-accent text-ink">{tie("Here's what that looks like on a Thursday morning.")}</p>
+        </Reveal>
+        <div className="space-y-48 sm:space-y-72">
           <Today />
           <Agenda />
         </div>

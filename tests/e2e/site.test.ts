@@ -90,20 +90,50 @@ describe("built css", () => {
   });
 });
 
+describe("how it works", () => {
+  it("states what Crosswell does and draws the stack under it", async () => {
+    const r = await withPage(async (page) => {
+      await page.goto(site.url, { waitUntil: "networkidle" });
+      const stack = page.locator(".stack-scroll");
+      return {
+        label: await page.locator("#how-it-works .type-label").first().textContent(),
+        statement: await page.locator("#how-it-works h2").textContent(),
+        captions: await stack.locator("h3").allTextContents(),
+        legend: await stack.locator("li").allTextContents(),
+        layers: await stack.locator(".core-group, .agents-group, .dash-group").count(),
+        tiles: await stack.locator(".tile").count(),
+      };
+    });
+    expect(r.label).toBe("How it works");
+    expect(r.statement).toBe(
+      "AI is only as useful as what it knows about your business. So we start there. Crosswell brings everything your company knows into one place, then builds the agents and automations that use it."
+    );
+    expect(r.captions).toEqual([
+      "Everything your company knows, in one place.",
+      "The work, built on what you know.",
+      "One screen for the whole team.",
+      "Your team sees one screen. Everything under it is what makes it smart.",
+    ]);
+    expect(r.legend).toEqual(["Agent", "Automation", "Workflow"]);
+    expect(r.layers).toBe(3);
+    expect(r.tiles).toBe(3);
+  });
+});
+
 describe("product run", () => {
   it("renders chapter 01 with the finished morning", async () => {
     const r = await withPage(async (page) => {
       await page.goto(site.url, { waitUntil: "networkidle" });
-      const run = page.locator("#how-it-works");
+      const run = page.locator("main > section").filter({ has: page.getByText("Your morning, already assembled.") });
       return {
-        intro: await run.locator("h2").first().textContent(),
-        label: await run.locator(".type-label").nth(1).textContent(),
+        leadIn: await run.locator(".type-accent").first().textContent(),
+        label: await run.locator(".type-label").first().textContent(),
         greeting: await run.getByText("Good morning, Morgan.").count(),
         filed: await run.getByText("14 filed overnight").count(),
         captions: await page.getByText("Interactive demo · Sample data").count(),
       };
     });
-    expect(r.intro).toContain("talking to your firm");
+    expect(r.leadIn).toBe("Here's what that looks like on a Thursday morning.");
     expect(r.label).toContain("Today");
     expect(r.greeting).toBe(1);
     expect(r.filed).toBe(1);
@@ -115,7 +145,7 @@ describe("chapter 02", () => {
   it("renders the agenda with Draw 4 checked and synced", async () => {
     const r = await withPage(async (page) => {
       await page.goto(site.url, { waitUntil: "networkidle" });
-      const run = page.locator("#how-it-works");
+      const run = page.locator("main > section").filter({ has: page.getByText("Your morning, already assembled.") });
       return {
         panels: await run.locator(".product-track > section").count(),
         synced: await run.getByText("synced to Asana").count(),

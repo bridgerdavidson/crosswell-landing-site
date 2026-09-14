@@ -226,6 +226,100 @@ body {
   }
 }
 
+/* ---------- How it works: the stack ----------
+   Reduced motion and no-JS get the finished stack, unpinned, beside its
+   four captions as a list. Under JS with motion the section is tall, its
+   frame holds (sticky) for the whole scroll while one timeline scrubs over
+   the stack, and the captions take turns in one place; the frame's own air
+   is the beat to the statement above and the run below. */
+.stack-scroll {
+  padding-block: 96px;
+}
+.stack-frame {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+.stack-caps {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+  order: 2;
+}
+.stack-stage {
+  position: relative;
+  height: 440px;
+  order: 1;
+}
+@media (min-width: 640px) {
+  .stack-stage {
+    height: 620px;
+  }
+}
+@media (min-width: 1024px) {
+  .stack-scroll {
+    padding-block: 192px;
+  }
+  .stack-frame {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: center;
+  }
+  .stack-caps {
+    order: 1;
+  }
+  .stack-stage {
+    order: 2;
+    height: 760px;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .js .stack-scroll {
+    padding-block: 0;
+    height: calc(100svh + var(--stack-units) * 3.6svh);
+  }
+  .js .stack-frame {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    overflow: hidden;
+    padding-top: 64px;
+    padding-bottom: 32px;
+    gap: 16px;
+  }
+  .js .stack-caps {
+    display: block;
+    position: relative;
+    flex: none;
+    height: 19rem;
+  }
+  .js .stack-cap {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+  }
+  .js .stack-stage {
+    flex: 1;
+    min-height: 0;
+    height: auto;
+  }
+}
+@media (prefers-reduced-motion: no-preference) and (min-width: 1024px) {
+  .js .stack-scroll {
+    height: calc(100svh + var(--stack-units) * 5svh);
+  }
+  .js .stack-frame {
+    padding-block: 0;
+    gap: 48px;
+  }
+  .js .stack-caps {
+    height: 20rem;
+  }
+  .js .stack-stage {
+    height: 100%;
+  }
+}
+
 /* ---------- Hero load entrance ----------
    A one-shot staggered rise+fade that plays on first paint, in the same
    motion language as the scroll reveals above. JS-gated (only hides when

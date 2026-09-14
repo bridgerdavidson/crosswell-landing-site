@@ -289,10 +289,21 @@ Decisions made while executing the plan, recorded so the design loop starts from
 - **Chapter 03 on phones** hides the dimmed dashboard and gives the chat panel the whole frame.
 - **Frame heights.** Chapter 05 is `h-[860px] sm:h-[600px]`, chapter 06 `h-[560px] sm:h-[420px]`, chapter 01 `h-[540px]`, chapter 04 `h-[600px]`; the fitted roster and the wrapped tiles needed the room on phones. Chapter 01's tiles are two-up below `md`.
 - **Pipeline opens on Redrock**, the second column, because at 1440 only about three of five columns fit beside the detail panel and the Ironline card sat off-frame. Ironline keeps its Draw 4 reference for the loop's click interaction.
-- **The run intro** carries one sentence under its heading defining agentic AI, the page's first use.
+- **The run intro** carries one sentence under its heading defining agentic AI, the page's first use. (Superseded by section 15.)
 - **Section 5.1 "cropped, never shrunk"** is read as a rule about scale, not about overflow: a fitted shell at 1x satisfies it.
 - **Finished-state payload past the crop.** In the no-JS state, chapter 01 shows one needs-you item and not the "filed overnight" line, chapter 02's rock percentages sit past the right fade, chapter 04 shows about three columns, and chapter 05's composer sits in the bottom fade. The design loop decides heights and crops with the spec's payload visible.
 - **Stats** ship on the branch with both chips; the second citation stays on Max's checklist and gates the merge (section 6.5).
 - **Screenshots** of this site need `--reduced-motion` on full-page captures (scroll reveals never fire in a headless full-page capture), and the loop's preflight should shoot the built export, not the dev server.
 - **The copy guard** strips `className` attribute regions by brace depth before checking copy lines, exempts `src/components/brain/` from the "brain" rule (component names), and is run on `src/` as a gate.
 - **The split rhythm withdrawn (design loop, run 2, 2026-09-13).** Section 5.2's "wide, wide, wide dark, wide, split, split" is withdrawn: chapters 05 and 06 take the wide skeleton too (label and claim left, lede right, the frame hanging 192 below the band, gutter to gutter, 800 tall). Read blind, the two split chapters stacked the lede under the claim, shrank the product to a half-width panel with no hang, and broke the run's beat; one skeleton for six chapters holds it. Chapter 06's swatch picker stays a site control outside the frame, in the caption row.
+
+## 15. How it works: the stack (hand-tuning pass, 2026-09-14)
+
+Bridger's direction after the design loop: a first-time visitor should understand what Crosswell does before seeing any dashboard, without technical words. Settled over a scroll prototype, then built.
+
+- **The run intro is replaced.** "How it works" now opens with one statement, the first sentence in full ink and the rest at the floor tone: "AI is only as useful as what it knows about your business. So we start there. Crosswell brings everything your company knows into one place, then builds the agents and automations that use it." The chatbot heading and the agentic AI definition are gone; the run's chapters follow a lead-in, "Here's what that looks like on a Thursday morning."
+- **The stack.** Between the statement and chapter 01, a pinned scroll draws the system as three flat layers (the Core, the work layer, the dashboard) with four captions: The Core ("Everything your company knows, in one place."), Agents and automations ("The work, built on what you know.", with a key: Agent, Automation, Workflow), Your dashboard ("One screen for the whole team."), and Built by Crosswell ("Your team sees one screen. Everything under it is what makes it smart."). The choreography is in docs/design-system.md, Motion.
+- **Drawn in code, not generated.** A generated video was considered and set aside: scroll-scrubbed video stutters, garbles interface text, and fine lines turned to fabric in the hero's video attempts. The stack's dashboard is a wordless skeleton, so the product-frame text rule holds.
+- **Copy.** The statement, the lead-in, and the four captions and their bodies are new and join Max's clearance list. The page's first "agentic AI" is now the stats section, undefined; flagged with the copy.
+- **Open.** Whether "Behind the chat is the Core" now repeats the stack is to be decided after a visual pass.
+
