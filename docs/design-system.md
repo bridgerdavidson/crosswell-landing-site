@@ -427,7 +427,14 @@ carries them). Nothing else on the page is amber, red, or blue.
   two lines (the values' vision line four) and a company lede two or
   three; a chapter's claim runs one to three lines and its lede three or
   four, the lengths the run was judged at. Titles and ledes wrap
-  balanced, and no line holds a single word. What a band introduces (the
+  balanced, and no line holds a single word. The values' vision line
+  breaks only between its phrases ("To become", "the most sought after",
+  "name in agentic AI", "by setting the standard", "for what a partner",
+  "should be." each hold together): four lines at 1440 and up ("To become
+  the most sought after / name in agentic AI / by setting the standard /
+  for what a partner should be."), and elsewhere as many lines as whole
+  phrases need: three at 768, five at 1280, six at 1024 and 390, where the
+  phrases stack one to a line. What a band introduces (the
   industries row, the cards, the values' columns) hangs from it by the
   section's hang at the container's full width.
 - The split form (`Split`) carries the three sections whose words sit

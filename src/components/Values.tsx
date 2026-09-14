@@ -29,7 +29,21 @@ export default function Values() {
     <section id="values" className={`${SEAM} ${CONTAINER} ${SECTION}`}>
       <Band
         label="Values"
-        title="To become the most sought after name in agentic AI by setting the standard for what a partner should be."
+        title={
+          /* the vision line breaks only between its phrases: "To become",
+             "the most sought after", "name in agentic AI", "by setting the
+             standard", "for what a partner", "should be." each hold together,
+             so "sought after" never splits and the balanced wrap sets whole
+             phrases per line (four lines at 1440 and up) */
+          <>
+            <span className="whitespace-nowrap">To become</span>{" "}
+            <span className="whitespace-nowrap">the most sought after</span>{" "}
+            <span className="whitespace-nowrap">name in agentic AI</span>{" "}
+            <span className="whitespace-nowrap">by setting the standard</span>{" "}
+            <span className="whitespace-nowrap">for what a partner</span>{" "}
+            <span className="whitespace-nowrap">should be.</span>
+          </>
+        }
         lede="That is what we are building toward. What we do every day is simpler: we help businesses become AI native."
       />
 
