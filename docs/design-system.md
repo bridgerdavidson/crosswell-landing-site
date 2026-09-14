@@ -85,11 +85,28 @@ carries them). Nothing else on the page is amber, red, or blue.
   1280, 1440, or 1728 (the shortest is 0.78). What a business loses'
   ledger rows set their ink clause and their fern clause as two inline
   blocks, so a row that runs past one line breaks between the clauses,
-  and each clause balances within itself when it wraps. Balance applies
-  to a block of at most six lines, so no card body, bio, or values line
-  runs past six where it balances. Checked, card bodies and bios included,
-  at 390, 430, 640, 700, 768, 820, 900, 1024, 1180, 1280, 1366, 1440, 1512,
-  1728, and 1920. Card rows go three across only from a width where every
+  and each clause balances within itself when it wraps.
+- No sentence edge strands a word: in every title, lede, card body, bio,
+  values line, stat line, and running text, a sentence's first two words
+  and its last two words are held together (`tie`, spans that do not wrap;
+  the words and their spaces are unchanged), so no line ends on the first
+  word of a sentence and no line begins with its last. The closing
+  bookend's two sentences are held the same way. Swept at 390, 768, 1024,
+  1280, 1440, and 1728, at every 1px from 320 to 440, and every 3px from
+  441 to 1920: no strand and no single-word line in any title, lede, card
+  or person title, accent line, card body, bio, or running text. The
+  hero's display wraps greedily below 345 (balanced it leaves "business"
+  alone there), which sets "The operating / layer your / business
+  actually / runs on.".
+- Balance applies to a block of at most six lines, so no card body, bio,
+  or values line runs past six where it balances. That holds from 345 up.
+  From 320 to 344 why Crosswell's first two card bodies and beyond the
+  Core's first run seven lines inside the card's 28 padding, which no wrap
+  or tie can shorten without a copy change; there the balanced class
+  wraps pretty, so their last lines still carry two words or more.
+  Checked, card bodies and bios included, at 390, 430, 640, 700, 768, 820,
+  900, 1024, 1180, 1280, 1366, 1440, 1512, 1728, and 1920, and at every 1px
+  from 320 to 480. Card rows go three across only from a width where every
   title holds its line and every body stays within six lines, found by a
   sweep in 4px steps from 640 to 1920: why Crosswell's from 1040 (its first
   body runs seven from 1024 to 1032), how we start's from 1200 ("The Core
