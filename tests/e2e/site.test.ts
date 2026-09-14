@@ -127,14 +127,16 @@ describe("product run", () => {
       const run = page.locator("main > section").filter({ has: page.getByText("Your morning, already assembled.") });
       return {
         leadIn: await run.locator(".type-accent").first().textContent(),
-        label: await run.locator(".type-label").first().textContent(),
+        claim: await run.locator("h3").first().textContent(),
+        labels: await run.locator(".type-label").count(),
         greeting: await run.getByText("Good morning, Morgan.").count(),
         filed: await run.getByText("14 filed overnight").count(),
         captions: await page.getByText("Interactive demo · Sample data").count(),
       };
     });
     expect(r.leadIn).toBe("Here's that screen at work, inside a sample company.");
-    expect(r.label).toContain("Today");
+    expect(r.claim).toBe("Your morning, already assembled.");
+    expect(r.labels).toBe(0);
     expect(r.greeting).toBe(1);
     expect(r.filed).toBe(1);
     expect(r.captions).toBeGreaterThanOrEqual(1);
@@ -251,13 +253,13 @@ describe("chapter 06 and the whole run", () => {
         captions: await page.getByText("Interactive demo · Sample data").count(),
         fictional: await page.getByText("Saguaro Capital is fictional").count(),
         bridge: await page.getByText("Behind the chat is the").count(),
-        labels: await page.locator(".type-label-index").allTextContents(),
+        indexes: await page.locator(".type-label-index").count(),
       };
     });
     expect(r.captions).toBe(6);
     expect(r.fictional).toBe(1);
     expect(r.bridge).toBe(1);
-    expect(r.labels).toEqual(["01", "02", "03", "04", "05", "06"]);
+    expect(r.indexes).toBe(0);
   });
 });
 

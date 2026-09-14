@@ -68,8 +68,6 @@ export default function Today() {
 
   return (
     <Chapter
-      index="01"
-      label="Today"
       claim="Your morning, already assembled."
       body="Before anyone sits down, the Core has read the night's mail, filed what is routine, and put the three things that need a person at the top."
       controls={

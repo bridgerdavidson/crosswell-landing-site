@@ -171,12 +171,6 @@ body {
   line-height: 1.5;
 }
 
-/* the two-digit chapter prefix in the product run; color in the markup */
-.type-label-index {
-  font-variant-numeric: tabular-nums;
-  margin-right: 0.5em;
-}
-
 /* Mobile: the desktop clamps bottom out at 768px, so nothing in the type
    scale adapts across 320-430px phones. The display and h2 scale within
    that range and meet the desktop floor exactly at 768px; the lede sits

@@ -323,8 +323,6 @@ export default function Agents() {
   return (
     <div data-chapter="05">
       <Chapter
-        index="05"
-        label="Agents"
         claim="Each one has a single job. They run while you don't."
         body="Custom agents built for the work your team names: reading the inbox, chasing the silent deal, drafting the report. Each one reports what it did and waits for your yes before anything leaves the building."
         controls={

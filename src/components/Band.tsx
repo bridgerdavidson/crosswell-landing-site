@@ -39,8 +39,8 @@ export const GRID =
   "grid min-w-0 lg:grid-cols-2 lg:gap-x-20 xl:grid-cols-[minmax(0,1fr)_36rem]";
 
 type BandProps = {
-  /** the label's content: the section's name, or a chapter's index and name */
-  label: ReactNode;
+  /** the section's name; a chapter's band carries none, so its claim leads */
+  label?: ReactNode;
   title: ReactNode;
   /** h2 for a page section, h3 for a chapter's claim inside the run */
   titleAs?: ElementType;
@@ -58,7 +58,8 @@ type BandProps = {
  * every titled company section so the two halves cannot drift apart. One row
  * on the grid: the label and the title in the left column (the title at most
  * 672 wide), the lede in the right column with its cap height on the title's
- * (the lede's top margin is 9 where the title's is 12). Nothing stacks under
+ * (the lede's top margin is 9 where the title's is 12, or the lede sits 3
+ * above the title where there is no label). Nothing stacks under
  * the title; below lg the three stack. Whatever the band introduces (a
  * chapter's frame, a section's cards) hangs from it at the container's full
  * width, by the largest space in the section.
@@ -74,14 +75,20 @@ export default function Band({
 }: BandProps) {
   const ink = dark ? "text-ivory" : "text-ink";
   const muted = dark ? "text-ivory/80" : "text-ink/80";
-  const column = "lg:col-start-2 lg:row-start-2 lg:mt-[9px] lg:self-start";
+  const column = label
+    ? "lg:col-start-2 lg:row-start-2 lg:mt-[9px] lg:self-start"
+    : "lg:col-start-2 lg:row-start-1 lg:-mt-[3px] lg:self-start";
 
   return (
     <Reveal className={GRID}>
-      <div className="lg:col-start-1 lg:row-start-1">
-        <p className={`type-label ${dark ? "text-fern-soft" : "text-fern-deep"}`}>{label}</p>
-      </div>
-      <Title className={`type-h2 mt-3 max-w-2xl lg:col-start-1 lg:row-start-2 lg:self-start ${ink}`}>
+      {label && (
+        <div className="lg:col-start-1 lg:row-start-1">
+          <p className={`type-label ${dark ? "text-fern-soft" : "text-fern-deep"}`}>{label}</p>
+        </div>
+      )}
+      <Title
+        className={`type-h2 max-w-2xl lg:col-start-1 lg:self-start ${label ? "mt-3 lg:row-start-2" : "lg:row-start-1"} ${ink}`}
+      >
         {held(title)}
       </Title>
       {aside ? (

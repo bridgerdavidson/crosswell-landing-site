@@ -42,8 +42,9 @@ carries them). Nothing else on the page is amber, red, or blue.
   italic or emphasized; an accent line is otherwise roman, 400, full ink.
 - Sans: Instrument Sans. Everything else, page and product. Tabular
   numerals on inside the product.
-- Section label: 13px, medium, sentence case, fern-deep, optional two-digit
-  index (ink at 60 percent) in the product run. No styled uppercase
+- Section label: 13px, medium, sentence case, fern-deep. The product run's
+  chapters carry no label: each band opens on its claim (hand-tuning pass,
+  2026-09-14). No styled uppercase
   anywhere on the page: no text-transform, no all-caps strings set as
   labels or kickers, no wide-tracked small caps. Acronyms and initials
   that are data (AI, LTC, the avatar initials MG, DW, ML, PS) are not
@@ -117,8 +118,8 @@ carries them). Nothing else on the page is amber, red, or blue.
   values' from md (768, the team's text block padding 20 from md to lg).
   Every title here holds one line wherever its row runs three across.
 - Secondary text never drops below ink at 60 percent (ivory at 60 on dark
-  ground): captions, sources, the fictional-company line, the footer, and
-  the label index included. Inside the product, dimming is a tone (a
+  ground): captions, sources, the fictional-company line, and the footer
+  included. Inside the product, dimming is a tone (a
   color variable, never a stacked opacity). The chapter's payload (what
   the spec names for it) never drops under 60 percent. Product periphery
   that is not the payload may sit at 40 only where a fade or the lit panel

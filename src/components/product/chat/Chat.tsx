@@ -309,8 +309,6 @@ export default function Chat() {
     <section className="bg-charcoal-deep text-ivory">
       <div className="px-6 py-24 sm:py-40 lg:px-12">
         <Chapter
-          index="03"
-          label="The Core"
           dark
           claim="Ask it anything the business has written down. It answers with receipts."
           body="Decisions, meetings, files, and six years of loans. Every answer shows its work: ask where a number came from and the Core cites the meeting, the email, or the file it lives in."

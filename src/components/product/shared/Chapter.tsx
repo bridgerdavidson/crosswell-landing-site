@@ -3,8 +3,6 @@ import Reveal from "@/components/Reveal";
 import Band from "@/components/Band";
 
 type ChapterProps = {
-  index: string;
-  label: string;
   claim: ReactNode;
   body: string;
   dark?: boolean;
@@ -16,8 +14,8 @@ type ChapterProps = {
 /**
  * One chapter of the product run, the one skeleton all six share. The band
  * is the page's one title band (`Band`, which every titled company section
- * shares): one row in two columns that span the run, the label and the claim
- * on the left (the claim at most 672 wide, so most claims hold to one or two
+ * shares): one row in two columns that span the run, the claim on the left
+ * with no label over it (a number and a name there only cluttered the band) (the claim at most 672 wide, so most claims hold to one or two
  * lines), the lede in a 576 column at the run's right edge with its cap
  * height on the claim's, and nothing stacked under the claim. The frame
  * hangs 96 under the band (64 below lg), close enough that the words and
@@ -29,8 +27,6 @@ type ChapterProps = {
  * the demo rules.
  */
 export function Chapter({
-  index,
-  label,
   claim,
   body,
   dark = false,
@@ -50,12 +46,6 @@ export function Chapter({
       <Band
         titleAs="h3"
         dark={dark}
-        label={
-          <>
-            <span className={`type-label-index ${quiet}`}>{index}</span>
-            {label}
-          </>
-        }
         title={claim}
         lede={body}
       />

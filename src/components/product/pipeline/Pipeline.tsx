@@ -365,8 +365,6 @@ export default function Pipeline() {
   return (
     <div data-chapter="04">
       <Chapter
-        index="04"
-        label="Pipeline"
         claim="Every client, every stage, and the whole history one click away."
         body="Every deal the team is working, in the stage it is actually in, synced from the tool they already track it in. Open one and ask the Core about it in a click."
         controls={

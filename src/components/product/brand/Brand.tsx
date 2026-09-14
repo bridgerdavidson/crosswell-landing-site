@@ -173,8 +173,6 @@ export default function Brand() {
   return (
     <div data-chapter="06">
       <Chapter
-        index="06"
-        label="Your brand"
         claim="It looks like your company, not ours."
         body="Your name, your colors, every screen. The Core is set up to look like it was always yours, because to your team it was."
         controls={

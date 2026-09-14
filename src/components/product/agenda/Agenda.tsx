@@ -203,8 +203,6 @@ export default function Agenda() {
 
   return (
     <Chapter
-      index="02"
-      label="Agenda"
       claim="One list, and the whole team is on it."
       body="Your day, the team's week, and the quarter's rocks, kept in one place and synced with the task tool the team already uses. Finish something anywhere and it checks off everywhere."
       controls={
