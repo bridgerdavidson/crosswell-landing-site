@@ -39,9 +39,11 @@ export default function ProductRun() {
       <CoreStack />
 
       <section className="px-6 pb-24 sm:pb-32 lg:px-12">
-        {/* the lead-in into the run, 64 (48 on phones) over chapter 01's label */}
-        <Reveal className="mb-12 sm:mb-16">
-          <p className="type-accent text-ink">{tie("Here's what that looks like on a Thursday morning.")}</p>
+        {/* the lead-in into the run: it picks up the stack's last caption
+            (one screen) and says the chapters are a sample, 96 (64 on
+            phones) over chapter 01's label, the chapters' own hang */}
+        <Reveal className="mb-16 lg:mb-24">
+          <p className="type-accent text-ink">{tie("Here's that screen at work, inside a sample company.")}</p>
         </Reveal>
         <div className="space-y-48 sm:space-y-72">
           <Today />

@@ -20,8 +20,8 @@ type ChapterProps = {
  * on the left (the claim at most 672 wide, so most claims hold to one or two
  * lines), the lede in a 576 column at the run's right edge with its cap
  * height on the claim's, and nothing stacked under the claim. The frame
- * hangs from the band by the chapter's biggest gap (192 at lg, 128 below)
- * and is the band's full width, so band and frame share both edges; its
+ * hangs 96 under the band (64 below lg), close enough that the words and
+ * the product share a screen, and is the band's full width, so band and frame share both edges; its
  * reveal follows the band's by the site's one 80ms step. Everything that
  * describes the product lives here, outside the frame; the frame only ever
  * shows the product. The demo caption and any site control (Replay, chapter
@@ -59,7 +59,7 @@ export function Chapter({
         title={claim}
         lede={body}
       />
-      <Reveal delay={80} className="mt-32 min-w-0 lg:mt-48">
+      <Reveal delay={80} className="mt-16 min-w-0 lg:mt-24">
         {children}
         {caption}
       </Reveal>

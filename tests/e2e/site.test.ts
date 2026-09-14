@@ -133,7 +133,7 @@ describe("product run", () => {
         captions: await page.getByText("Interactive demo · Sample data").count(),
       };
     });
-    expect(r.leadIn).toBe("Here's what that looks like on a Thursday morning.");
+    expect(r.leadIn).toBe("Here's that screen at work, inside a sample company.");
     expect(r.label).toContain("Today");
     expect(r.greeting).toBe(1);
     expect(r.filed).toBe(1);
