@@ -77,8 +77,10 @@ carries them). Nothing else on the page is amber, red, or blue.
   after a lede is body text (type-text). The hero's subline is
   body text on one line, directly under the display, per the bar's
   mechanism 6.
-- No line of a title, a lede, a card or person title, or an accent line
-  holds a single word, at any width, and every lede's last line carries
+- No line of a title, a lede, a card or person title, or a sentence set
+  as an accent line holds a single word, at any width (a list of
+  one-word items, the industries row, wraps between its items, so an
+  item may sit alone on a phone), and every lede's last line carries
   weight: titles, ledes (the chapters' included), card and person titles,
   accent lines, card bodies, bios, and the values' lines all wrap
   balanced, so no lede's last line is under half its longest at 1024,
