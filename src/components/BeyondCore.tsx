@@ -1,5 +1,6 @@
 import { CONTAINER, SECTION, Split } from "./Band";
 import Reveal from "./Reveal";
+import { tie } from "./tie";
 
 const offerings = [
   {
@@ -29,7 +30,7 @@ export default function BeyondCore() {
                 <div className="rounded-2xl border border-warmgray/40 bg-parchment p-7 shadow-whisper transition-shadow hover:shadow-lifted sm:p-8">
                   <h3 className="type-h3 text-ink">{offering.title}</h3>
                   <p className="type-text mt-2.5 max-w-md type-text-balanced text-ink/70">
-                    {offering.body}
+                    {tie(offering.body)}
                   </p>
                 </div>
               </Reveal>
@@ -39,8 +40,7 @@ export default function BeyondCore() {
       >
         {/* the lede is the first two sentences, the first alone being short */}
         <p className="type-body mt-5 max-w-xl text-ink/80">
-          Lean firms stay lean on purpose. You will never hire an in-house
-          engineering team, and you should not have to.
+          {tie("Lean firms stay lean on purpose. You will never hire an in-house engineering team, and you should not have to.")}
         </p>
       </Split>
     </section>

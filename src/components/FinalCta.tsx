@@ -1,6 +1,7 @@
 import { CONTAINER } from "./Band";
 import Reveal from "./Reveal";
 import { AUDIT_MAILTO, CALL_MAILTO } from "@/lib/site";
+import { tie } from "./tie";
 
 /* The closing bookend: the hero's display, subline and two buttons again,
    on the hero's own margins, centred in the page's container. A dark band,
@@ -13,12 +14,11 @@ export default function FinalCta() {
         <Reveal>
           {/* deliberate reuse of the hero display scale as a closing bookend */}
           <h2 className="type-display mx-auto max-w-4xl">
-            Your firm already knows the answers.{" "}
-            <span className="italic text-fern-soft">Give it a memory.</span>
+            {tie("Your firm already knows the answers.")}{" "}
+            <span className="italic text-fern-soft">{tie("Give it a memory.")}</span>
           </h2>
           <p className="type-body mx-auto mt-6 max-w-2xl text-ivory/80">
-            The Core is built alongside the firms it serves. Start with the
-            two-week knowledge audit, or talk to us directly.
+            {tie("The Core is built alongside the firms it serves. Start with the two-week knowledge audit, or talk to us directly.")}
           </p>
         </Reveal>
         <Reveal delay={80}>

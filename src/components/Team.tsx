@@ -3,6 +3,7 @@
 import { useEffect, useState, type CSSProperties } from "react";
 import Band, { CONTAINER, HANG, SECTION } from "./Band";
 import Reveal from "./Reveal";
+import { tie } from "./tie";
 
 /* Type this anywhere on the page and the headshots flip to the golden-hour
    set. Type it again to flip back; a reload always restores the real photos. */
@@ -131,7 +132,7 @@ export default function Team() {
                     {person.role}
                   </p>
                   <p className="type-text mt-3 max-w-md type-text-balanced text-ink/70">
-                    {person.line}
+                    {tie(person.line)}
                   </p>
                 </div>
               </div>

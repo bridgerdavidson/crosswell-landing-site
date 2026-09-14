@@ -1,5 +1,6 @@
 import { CONTAINER, GRID, SECTION } from "./Band";
 import Reveal from "./Reveal";
+import { tie } from "./tie";
 
 /* Both figures come from Max's fact-check ledger. The second citation is
    pending his reconciliation (his handoff note names Gallup; the source
@@ -32,7 +33,7 @@ export default function Stats() {
             <Reveal key={stat.figure} delay={i * 80}>
               <div>
                 <p className="type-h2 text-fern-deep">{stat.figure}</p>
-                <p className="type-text mt-2 max-w-[40ch] text-ink/70">{stat.body}</p>
+                <p className="type-text mt-2 max-w-[40ch] text-ink/70">{tie(stat.body)}</p>
                 <p className="type-caption mt-3 text-ink/60">{stat.source}</p>
               </div>
             </Reveal>

@@ -1,5 +1,6 @@
 import Band, { CONTAINER, HANG, SEAM, SECTION } from "./Band";
 import Reveal from "./Reveal";
+import { tie } from "./tie";
 
 const industries = [
   "Manufacturing",
@@ -19,10 +20,7 @@ export default function WhoItsFor() {
         lede="Arizona first. If your business runs on knowledge and judgment, the Core fits."
         more={
           <p className="type-text mt-4 max-w-md text-ink/70">
-            The platforms built for this sell multi-year enterprise contracts
-            with no published price, no self-serve, and an implementation model
-            that assumes an internal IT function you do not have. That gap is
-            where we work.
+            {tie("The platforms built for this sell multi-year enterprise contracts with no published price, no self-serve, and an implementation model that assumes an internal IT function you do not have. That gap is where we work.")}
           </p>
         }
       />

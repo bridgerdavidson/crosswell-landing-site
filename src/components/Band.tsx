@@ -1,5 +1,10 @@
 import type { ElementType, ReactNode } from "react";
 import Reveal from "./Reveal";
+import { tie } from "./tie";
+
+/* strings are held at their sentence edges; anything already marked up
+   passes through as it is */
+const held = (node: ReactNode) => (typeof node === "string" ? tie(node) : node);
 
 /**
  * The page's one grid, hero to footer. Every section sits in the run's
@@ -77,7 +82,7 @@ export default function Band({
         <p className={`type-label ${dark ? "text-fern-soft" : "text-fern-deep"}`}>{label}</p>
       </div>
       <Title className={`type-h2 mt-3 max-w-2xl lg:col-start-1 lg:row-start-2 lg:self-start ${ink}`}>
-        {title}
+        {held(title)}
       </Title>
       {aside ? (
         <div className={`mt-5 max-w-xl ${column}`}>{aside}</div>
@@ -85,11 +90,11 @@ export default function Band({
         lede &&
         (more ? (
           <div className={`mt-5 max-w-xl ${column}`}>
-            <p className={`type-body ${muted}`}>{lede}</p>
+            <p className={`type-body ${muted}`}>{held(lede)}</p>
             {more}
           </div>
         ) : (
-          <p className={`type-body mt-5 max-w-xl ${column} ${muted}`}>{lede}</p>
+          <p className={`type-body mt-5 max-w-xl ${column} ${muted}`}>{held(lede)}</p>
         ))
       )}
     </Reveal>
@@ -120,7 +125,7 @@ export function Split({ label, title, children, aside, asideClassName = "" }: Sp
     <div className={GRID}>
       <Reveal className="min-w-0 lg:col-start-1 lg:row-start-1">
         <p className="type-label text-fern-deep">{label}</p>
-        <h2 className="type-h2 mt-3 max-w-2xl text-ink">{title}</h2>
+        <h2 className="type-h2 mt-3 max-w-2xl text-ink">{held(title)}</h2>
         {children}
       </Reveal>
       <div className={`mt-32 min-w-0 lg:col-start-2 lg:row-start-1 lg:mt-0 ${asideClassName}`}>

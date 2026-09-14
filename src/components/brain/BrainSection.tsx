@@ -2,6 +2,7 @@ import BrainStill from "./BrainStill";
 import BrainField from "./BrainField";
 import Reveal from "../Reveal";
 import { CONTAINER, SEAM, SECTION, Split } from "../Band";
+import { tie } from "../tie";
 
 export default function BrainSection() {
   return (
@@ -44,17 +45,13 @@ export default function BrainSection() {
         {/* the lede is the first two sentences, the first alone being short;
             the rest of the paragraph follows as running text */}
         <p className="type-body mt-5 max-w-xl text-ink/80">
-          The Core is everything your firm knows, connected. Every meeting,
-          email, and file becomes a memory linked to the people, deals, and
-          decisions it touches.
+          {tie("The Core is everything your firm knows, connected. Every meeting, email, and file becomes a memory linked to the people, deals, and decisions it touches.")}
         </p>
         <p className="type-text mt-4 max-w-md text-ink/70">
-          Your questions search this, and it&apos;s yours, compounding over time
-          instead of walking out the door.
+          {tie("Your questions search this, and it's yours, compounding over time instead of walking out the door.")}
         </p>
         <p className="type-text mt-4 max-w-md text-ink/70">
-          Everyone runs the same models now. What a competitor can&apos;t copy
-          is what your firm knows. We make that an asset you own.
+          {tie("Everyone runs the same models now. What a competitor can't copy is what your firm knows. We make that an asset you own.")}
         </p>
         <p className="type-caption mt-6 text-ink/60">
           Illustrative

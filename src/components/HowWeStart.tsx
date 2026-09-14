@@ -1,6 +1,7 @@
 import Band, { CONTAINER, HANG, SECTION } from "./Band";
 import Reveal from "./Reveal";
 import { AUDIT_MAILTO } from "@/lib/site";
+import { tie } from "./tie";
 
 /* No prices anywhere in this section, per the messaging handoff: "two weeks,
    fixed scope" is the only cost signal that ships. */
@@ -34,9 +35,7 @@ export default function HowWeStart() {
           aside={
             <div className="flex flex-col items-start gap-5">
               <p className="type-body text-ink/80">
-                The first call is thirty minutes. We ask how your firm handles
-                knowledge today, and we tell you straight whether the audit is
-                worth it.
+                {tie("The first call is thirty minutes. We ask how your firm handles knowledge today, and we tell you straight whether the audit is worth it.")}
               </p>
               <a
                 href={AUDIT_MAILTO}
@@ -57,7 +56,7 @@ export default function HowWeStart() {
               <div className="flex h-full flex-col rounded-2xl border border-warmgray/40 bg-ivory p-7 shadow-whisper transition-shadow hover:shadow-lifted sm:p-8">
                 <h3 className="type-h3 text-ink">{engagement.title}</h3>
                 <p className="type-text mt-2.5 max-w-md type-text-balanced text-ink/70">
-                  {engagement.body}
+                  {tie(engagement.body)}
                 </p>
                 {engagement.note && (
                   <p className="type-caption mt-4 font-medium text-fern-deep">{engagement.note}</p>

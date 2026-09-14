@@ -1,4 +1,5 @@
 import Reveal from "@/components/Reveal";
+import { tie } from "@/components/tie";
 import Today from "./today/Today";
 import Agenda from "./agenda/Agenda";
 import Chat from "./chat/Chat";
@@ -25,13 +26,10 @@ export default function ProductRun() {
         <Reveal>
           <p className="type-label text-fern-deep">How it works</p>
           <h2 className="type-h2 mt-3 max-w-3xl text-ink">
-            You&apos;re not talking to a chatbot. You&apos;re talking to your
-            firm&apos;s memory.
+            {tie("You're not talking to a chatbot. You're talking to your firm's memory.")}
           </h2>
           <p className="type-body mt-5 max-w-2xl text-ink/80">
-            The Core is built on agentic AI (AI that does the work, not just
-            answers questions) and managed for you. Six things it does on a
-            Thursday morning.
+            {tie("The Core is built on agentic AI (AI that does the work, not just answers questions) and managed for you. Six things it does on a Thursday morning.")}
           </p>
         </Reveal>
         <div className="mt-48 space-y-48 sm:mt-72 sm:space-y-72">
