@@ -41,10 +41,10 @@ export default function Edge() {
           lede="When someone leaves, their knowledge does not. Every meeting, decision, and deal, remembered."
         />
 
-        {/* three across from 1040, where every card title holds its line and
-            every body stays within six (at 1024 to 1032 the first body runs
-            seven); below that the cards stack */}
-        <div className={`${HANG} grid gap-6 min-[65rem]:grid-cols-3`}>
+        {/* three across from 1064, where every card title holds its line and
+            every body stays within six (with its sentence edges held, the
+            first body runs seven up to 1057); below that the cards stack */}
+        <div className={`${HANG} grid gap-6 min-[66.5rem]:grid-cols-3`}>
           {points.map((point, i) => (
             <Reveal key={point.title} delay={i * 80}>
               <div className="flex h-full flex-col rounded-2xl border border-warmgray/40 bg-ivory p-7 shadow-whisper transition-shadow hover:shadow-lifted sm:p-8">
