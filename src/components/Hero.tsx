@@ -42,7 +42,7 @@ export default function Hero() {
           Crosswell Core
         </p>
         <h1
-          className="hero-enter type-display text-ink"
+          className="hero-enter hero-display type-display text-ink"
           style={{ "--enter-delay": "0.45s", "--enter-dur": "0.95s" } as CSSProperties}
         >
           The operating layer your business actually runs on.

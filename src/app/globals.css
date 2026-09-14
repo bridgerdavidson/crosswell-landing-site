@@ -149,6 +149,15 @@ body {
   text-wrap: balance;
 }
 
+/* below 345 the two longest card bodies (why Crosswell's first, beyond the
+   Core's first) run seven lines, past the six that balance applies to; pretty
+   keeps their last line from standing alone there */
+@media (max-width: 344px) {
+  .type-text-balanced {
+    text-wrap: pretty;
+  }
+}
+
 /* the label size: section labels (sentence case, fern-deep in the
    markup), captions, sources, and the product's UI text */
 .type-label {
@@ -173,6 +182,15 @@ body {
    that range and meet the desktop floor exactly at 768px; the lede sits
    on the h3 size, so the phone ladder is 42.5, 30.8, 24, 20, 15, 13, 12
    at 390. */
+/* the hero's display wraps greedily below 345: there the balanced wrap
+   leaves "business" alone on its third line, and the greedy one sets "The
+   operating / layer your / business actually / runs on." */
+@media (max-width: 344px) {
+  .hero-display {
+    text-wrap: wrap;
+  }
+}
+
 @media (max-width: 767px) {
   .type-display {
     font-size: clamp(2.375rem, 1rem + 6.8vw, 3.25rem);
