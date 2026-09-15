@@ -161,7 +161,8 @@ export function AppWindow({
             </span>
           </div>
         </div>
-        <div className="min-h-0 flex-1 overflow-y-auto">{main}</div>
+        {/* static: a chapter shows the page, it never scrolls inside the frame */}
+        <div className="min-h-0 flex-1 overflow-hidden">{main}</div>
       </div>
       <CorePanel>{core}</CorePanel>
     </div>
