@@ -57,6 +57,7 @@ const PATHS = {
   chat: "M4 5h16v11H9.5L5 19.5V16H4z",
   close: "M6.5 6.5l11 11M17.5 6.5l-11 11",
   spin: "M12 3.5a8.5 8.5 0 1 0 8.5 8.5",
+  mail: "M3.5 6h17v12h-17zM3.5 6.5l8.5 6.5 8.5-6.5",
   more: "M5 12h.01M12 12h.01M19 12h.01",
   sync: "M20 11a8 8 0 0 0-14.3-4.9L4 8M4 4v4h4M4 13a8 8 0 0 0 14.3 4.9L20 16M20 20v-4h-4",
   chevron: "M9 6l6 6-6 6",
@@ -116,6 +117,7 @@ export function AppWindow({
   actions,
   main,
   core,
+  coreColumn,
   draft,
   mainClassName = "",
   size = "h-[900px] w-[1440px]",
@@ -126,6 +128,8 @@ export function AppWindow({
   mainClassName?: string;
   /** what the Core's column holds; empty unless a chapter shows it at work */
   core?: ReactNode;
+  /** a chapter's own Core column in the docked place, when the Core does more than hold a thread */
+  coreColumn?: ReactNode;
   /** the window's box; the site's chapters size it to their frame */
   size?: string;
   theme: Theme;
@@ -173,7 +177,7 @@ export function AppWindow({
         {/* static: a chapter shows the page, it never scrolls inside the frame */}
         <div className={`min-h-0 flex-1 overflow-hidden ${mainClassName}`}>{main}</div>
       </div>
-      <CorePanel draft={draft}>{core}</CorePanel>
+      {coreColumn ?? <CorePanel draft={draft}>{core}</CorePanel>}
     </div>
   );
 }

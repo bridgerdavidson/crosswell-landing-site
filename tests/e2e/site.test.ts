@@ -269,6 +269,43 @@ describe("the agents chapter", () => {
     });
     expect(r).toEqual({ window: 1, dark: 1, agents: 5, review: 1, spares: 1, ink: "#f1eee6" });
   });
+
+  it("hands the typed request to an email agent, which drafts and sends it", async () => {
+    const r = await withPage(
+      async (page) => {
+        await page.goto(site.url, { waitUntil: "networkidle" });
+        const chap = page.locator("[data-chapter='05']");
+        await chap.scrollIntoViewIfNeeded();
+        const atRest = await chap.getByText("Email agent", { exact: true }).count();
+        const replayAtRest = await chap.locator(".product-replay.is-ready").count();
+        await chap.getByRole("button", { name: "Send", exact: true }).click();
+        const drafted = {
+          row: await chap.getByText("Email agent", { exact: true }).count(),
+          draft: await chap.getByText("Email draft").count(),
+          owner: await chap.getByText("finish the Ocotillo Commons term sheet review by Friday").count(),
+          edit: await chap.getByRole("button", { name: "Edit" }).isDisabled(),
+        };
+        await chap.getByRole("button", { name: "Approve and send" }).click();
+        const sent = {
+          /* the Core's draft card and the agent's own log both say it */
+          said: await chap.getByText("Sent by email and to 4 dashboards", { exact: true }).count(),
+          row: await chap.getByText("By email and to 4 dashboards", { exact: true }).count(),
+          told: await chap.getByText("each of their dashboards now shows their own item", { exact: false }).count(),
+        };
+        await chap.getByRole("button", { name: /^Waiting on you/ }).click();
+        const waiting = await chap.locator("button[aria-expanded]").count();
+        await chap.locator(".product-replay").click();
+        return { atRest, replayAtRest, drafted, sent, waiting, back: await chap.getByRole("button", { name: "Send", exact: true }).count() };
+      },
+      { reducedMotion: true }
+    );
+    expect(r.atRest).toBe(0);
+    expect(r.replayAtRest).toBe(0);
+    expect(r.drafted).toEqual({ row: 2, draft: 1, owner: 1, edit: true });
+    expect(r.sent).toEqual({ said: 2, row: 1, told: 1 });
+    expect(r.waiting).toBe(2);
+    expect(r.back).toBe(1);
+  });
 });
 
 describe("the custom chapter and the whole run", () => {

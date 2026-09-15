@@ -161,6 +161,23 @@ body {
   }
 }
 
+/* ---------- Chapter 05: the agents ----------
+   The request waiting in the Core's message box keeps its caret blinking,
+   so the send button beside it reads as the thing to press. Rows that
+   arrive use chapter 02's rise. */
+@keyframes agents-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.agents-caret {
+  animation: agents-blink 1.1s steps(1) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .agents-caret {
+    animation: none;
+  }
+}
+
 /* ---------- Type roles ----------
    Seven sizes carry the page at 1440 and above: 72, 48, 24, 20, 15, 13,
    12. Every size has exactly one line-height (1.0, 1.05, 1.3, 1.3, 1.6,
@@ -1584,8 +1601,10 @@ body {
    elements that play in are hidden only when JS is present (the head
    script sets .js), so no-JS paints the finished state, and reduced
    motion paints it too; GSAP owns them from there. The Replay control
-   sits outside the frame beside the demo caption and appears once the
-   sequence has finished. */
+   sits outside the frame, under it, and appears once the chapter's
+   sequence has finished. Reduced motion keeps it: the interactive
+   chapters (the Core's, the agents') are click-driven, so Replay is how
+   a visitor puts back what they changed. */
 
 .js [data-seq] {
   opacity: 0;
@@ -1737,9 +1756,6 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .js [data-seq] {
     opacity: 1;
-  }
-  .js .product-replay {
-    display: none;
   }
   .js .product-pin::after {
     display: none;

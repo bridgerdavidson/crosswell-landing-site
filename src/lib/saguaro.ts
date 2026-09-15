@@ -489,13 +489,26 @@ export const agents = {
     { id: "meeting-prep", name: "Meeting-prep agent", job: "Pulls the file, the last notes, and the open items before every call" },
     { id: "expiry", name: "Expiry watcher", job: "Watches insurance, permits, and rate locks for the dates about to pass" },
   ] satisfies { id: string; name: string; job: string }[],
-  handoff: {
-    placeholder: "Give an agent a task",
-    task: "Research Two Palms Development's track record",
-    button: "Hand it off",
-    /* the row the hand-off adds to the roster, running from the moment it lands */
-    status: { kind: "running", text: "Started just now" } satisfies AgentStatus,
+  /* chapter 05's request: typed in the Core's message box, handed to an email agent that joins the
+     top of the roster, and approved to go out by email and to each person's own dashboard */
+  recap: {
+    request: "Send the team a recap of this morning's standup, with who owns what.",
+    reply: "The email agent is on it. It's pulling this morning's standup notes and writing a recap with owners and dates.",
+    agent: { name: "Email agent", job: "Standup recap to the team" },
+    log: ["9:48 am  Read this morning's standup notes", "9:48 am  Drafted a recap to 4 people", "9:52 am  Sent by email and to 4 dashboards"],
+    to: ["DW", "ML", "PS", "JR"],
+    subject: "Standup recap, Thursday",
+    greeting: "Morning, team. Here's who owns what from standup:",
+    owners: [
+      { who: "Dana", line: "send the Palo Verde inspection report by Friday" },
+      { who: "Marcus", line: "finish the Ocotillo Commons term sheet review by Friday" },
+      { who: "Priya", line: "close out the servicing handoff by Tuesday" },
+      { who: "Jordan", line: "send the investor brief before the 3:00 call" },
+    ],
+    sent: "Sent. Dana, Marcus, Priya, and Jordan have it by email, and each of their dashboards now shows their own item at the top.",
   },
+  /* the applications the screening agent works through, one each time the roster's loop comes round */
+  applications: ["Desert Vista Homes", "Mesquite Court", "Palo Brea Homes"],
 };
 
 export const brand = {
