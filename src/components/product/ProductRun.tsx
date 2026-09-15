@@ -5,8 +5,6 @@ import CoreStack from "@/components/stack/CoreStack";
 import Today from "./today/Today";
 import Core from "./core/Core";
 import Agenda from "./agenda/Agenda";
-import Chat from "./chat/Chat";
-import Pipeline from "./pipeline/Pipeline";
 import Agents from "./agents/Agents";
 import Brand from "./brand/Brand";
 
@@ -15,10 +13,10 @@ import Brand from "./brand/Brand";
  * the stack draws the system under it (the Core, the work layer, the
  * dashboard); its frame holds through the scroll, so the beat to the
  * statement above and to the run below comes from the frame's own air.
- * Then the chapters, each a claim plus the product: Today, Ask the Core,
- * and the agenda in the first container under a lead-in, the chat chapter
- * its own full-bleed dark band, and the pipeline, agents, and brand closing
- * the run before the fictional line and the bridge into the brain section. The run sits in the page column
+ * Then five chapters, each a claim plus the product: Today, Ask the Core,
+ * and the agenda in the first container under a lead-in; the agents on the
+ * run's one full-bleed dark band; and the custom chapter closing the run
+ * before the fictional line and the bridge into the brain section. The run sits in the page column
  * (never wider than 1344, its words on a 1280 measure from 1440 up), and
  * each frame hangs out to the column's edge; the chapters fall on one
  * beat, 288 apart (192 on phones), with the dark band padded to match.
@@ -56,12 +54,15 @@ export default function ProductRun() {
         </div>
       </section>
 
-      <Chat />
+      {/* the run's one dark band: the agents, working while you don't */}
+      <section className="bg-charcoal-deep text-ivory">
+        <div className={`${CONTAINER} py-24 sm:py-40`}>
+          <Agents dark />
+        </div>
+      </section>
 
       <section className={`${CONTAINER} pt-24 pb-24 sm:pt-32 sm:pb-32`}>
         <div className="space-y-48 sm:space-y-72">
-          <Pipeline />
-          <Agents />
           <Brand />
         </div>
         {/* the run's last content; the next section's lead-in ("Behind the

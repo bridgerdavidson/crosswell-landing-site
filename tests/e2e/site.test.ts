@@ -82,9 +82,6 @@ describe("built css", () => {
     // below lg a frame takes its product's height, so the only mask is the
     // right fade on a shell that still overflows the frame
     has("product-frame", "x");
-    // chapter 04's phone scroller fades its own two edges; the minifier
-    // keeps both black positions as one double-position stop
-    expect(css).toMatch(/product-board\{[^}]*#000 24px calc\(100% - 40px\)/);
     expect(css).toMatch(/product-frame\{--fade-x:160px;--fade-y:120px;/);
     expect(css).toMatch(/product-frame\{--fade-x:120px;--fade-y:120px\}/);
   });
@@ -111,7 +108,7 @@ describe("page column", () => {
         },
         { width }
       );
-    const frames = (n: number) => Array(7).fill([n, n]);
+    const frames = (n: number) => Array(5).fill([n, n]);
     expect(await edges(1024)).toEqual({ logo: 48, claim: 48, cards: 48, footer: 48, frame: frames(48), overflow: 0 });
     expect(await edges(1440)).toEqual({ logo: 80, claim: 80, cards: 80, footer: 80, frame: frames(48), overflow: 0 });
     expect(await edges(1728)).toEqual({ logo: 224, claim: 224, cards: 224, footer: 224, frame: frames(192), overflow: 0 });
@@ -185,6 +182,8 @@ describe("chapter 02, ask the Core", () => {
         await chap.getByRole("button", { name: "Who is this?" }).click();
         const who = await chap.getByText("Redrock Flips is a first-time borrower", { exact: false }).count();
         const sendAfterWho = await chap.getByRole("button", { name: "Send", exact: true }).count();
+        await chap.getByRole("button", { name: "What's our rule on first-time borrowers?" }).click();
+        const rule = await chap.getByText("so its lock lapsed on September 10", { exact: false }).count();
         await chap.getByRole("button", { name: "What's outstanding?" }).click();
         const outstanding = await chap.getByText("The signed loan documents and the entity's operating agreement", { exact: false }).count();
         await chap.getByRole("button", { name: "Send", exact: true }).click();
@@ -194,6 +193,7 @@ describe("chapter 02, ask the Core", () => {
           who,
           sendAfterWho,
           outstanding,
+          rule,
           nudged: await chap.getByText("Nudged today").count(),
           left: await chap.getByRole("button", { name: "Draft an update" }).count(),
         };
@@ -205,6 +205,7 @@ describe("chapter 02, ask the Core", () => {
     expect(r.who).toBe(1);
     expect(r.sendAfterWho).toBe(0);
     expect(r.outstanding).toBe(1);
+    expect(r.rule).toBe(1);
     expect(r.nudged).toBe(1);
     expect(r.left).toBe(1);
   });
@@ -227,49 +228,30 @@ describe("the agenda chapter", () => {
   });
 });
 
-describe("chapter 03", () => {
-  it("renders the dark chat with the first exchange answered", async () => {
+describe("the agents chapter", () => {
+  it("sits on the run's one dark band", async () => {
     const r = await withPage(async (page) => {
       await page.goto(site.url, { waitUntil: "networkidle" });
-      const dark = page.locator("section.bg-charcoal-deep").first();
       return {
-        exists: await dark.count(),
-        // the first exchange's bubble; under JS the composed input carries
-        // the same question until the sequence sends it
-        question: await dark.locator(".product-bubble", { hasText: "What's at risk this week?" }).count(),
-        followUps: await dark.locator("button.product-chip").count(),
-        send: await dark.locator("button.product-send").count(),
-        receipts: await dark.locator(".product-chip-accent").count(),
+        bands: await page.locator("main section.bg-charcoal-deep").count(),
+        agents: await page.locator("section.bg-charcoal-deep [data-chapter='05']").count(),
+        claim: await page.locator("section.bg-charcoal-deep [data-chapter='05'] h3").first().textContent(),
+        order: await page.locator("main h3.type-h2").evaluateAll((hs) => hs.map((h) => h.textContent)),
       };
     });
-    expect(r.exists).toBe(1);
-    expect(r.question).toBe(1);
-    expect(r.followUps).toBe(2);
-    expect(r.send).toBe(1);
-    expect(r.receipts).toBeGreaterThanOrEqual(2);
+    expect(r.bands).toBeGreaterThanOrEqual(1);
+    expect(r.agents).toBe(1);
+    expect(r.claim).toBe("Each one has a single job. They run while you don't.");
+    const run = r.order.slice(r.order.indexOf("Your morning, already assembled."));
+    expect(run.slice(0, 5)).toEqual([
+      "Your morning, already assembled.",
+      "Ask the Core about whatever you're looking at.",
+      "One list, and the whole team is on it.",
+      "Each one has a single job. They run while you don't.",
+      "It looks like your company, not ours.",
+    ]);
   });
-});
 
-describe("chapter 04", () => {
-  it("renders the board with the selected card's detail open", async () => {
-    const r = await withPage(async (page) => {
-      await page.goto(site.url, { waitUntil: "networkidle" });
-      const run = page.locator("[data-chapter='04']");
-      return {
-        stages: await run.locator("[data-stage]").count(),
-        active: await run.locator(".product-card-active").count(),
-        who: await run.getByText("Who is this?").count(),
-        answer: await run.getByText("Redrock Flips, a first-time borrower introduced by Canyon State Brokers").count(),
-      };
-    });
-    expect(r.stages).toBe(5);
-    expect(r.active).toBe(1);
-    expect(r.who).toBe(2);
-    expect(r.answer).toBe(1);
-  });
-});
-
-describe("chapter 05", () => {
   it("renders five agents and the hand-off", async () => {
     // the settled roster; under motion the count opens on the live
     // moment's value and ticks down to this one
@@ -291,7 +273,7 @@ describe("chapter 05", () => {
   });
 });
 
-describe("chapter 06 and the whole run", () => {
+describe("the custom chapter and the whole run", () => {
   it("renders four swatches with Saguaro pressed and the accent scoped", async () => {
     const r = await withPage(async (page) => {
       await page.goto(site.url, { waitUntil: "networkidle" });
@@ -461,17 +443,17 @@ describe("resilience", () => {
         return {
           greeting: await page.getByText("Good morning, Morgan.").first().isVisible(),
           captions: await page.getByText("Interactive demo · Sample data").count(),
-          answer: await page.getByText("Four flags. The one that matters").isVisible(),
+          agents: await page.getByText("Inbox agent").first().isVisible(),
         };
       },
       { js: false }
     );
     expect(r.greeting).toBe(true);
     expect(r.captions).toBe(0);
-    expect(r.answer).toBe(true);
+    expect(r.agents).toBe(true);
   });
 
-  it("holds chapters 02 and 03 finished under reduced motion, and composes them under motion", async () => {
+  it("holds the agenda finished under reduced motion, and composes it under motion", async () => {
     const read = () => ({
       pin: getComputedStyle(document.querySelector(".product-pin > .product-frame")!).position,
       hold:
@@ -481,8 +463,6 @@ describe("resilience", () => {
       checks: [...document.querySelectorAll("[data-seq='mark-day'], [data-seq='mark-team']")].map(
         (el) => getComputedStyle(el).opacity
       ),
-      input: document.querySelector("[data-input]")!.textContent,
-      send: (document.querySelector("[data-send]") as HTMLButtonElement).tabIndex,
     });
     const reduced = await withPage(
       async (page) => {
@@ -495,8 +475,6 @@ describe("resilience", () => {
     expect(reduced.hold).toBe(0);
     expect(reduced.rock).toBe("70");
     expect(reduced.checks).toEqual(["1", "1"]);
-    expect(reduced.input).toBe("Message the Core");
-    expect(reduced.send).toBe(-1);
     const motion = await withPage(async (page) => {
       await page.goto(site.url, { waitUntil: "networkidle" });
       return page.evaluate(read);
@@ -505,19 +483,12 @@ describe("resilience", () => {
     expect(motion.hold).toBe(1800);
     expect(motion.rock).toBe("68");
     expect(motion.checks).toEqual(["0", "0"]);
-    expect(motion.input).toBe("What's at risk this week?");
-    expect(motion.send).toBe(0);
   });
 
-  it("holds chapters 04 to 06 finished under reduced motion, and composes them under motion", async () => {
+  it("holds the agents and custom chapters finished under reduced motion, and composes them under motion", async () => {
     const read = () => {
-      const detail = document.querySelector("[data-chapter='04'] [data-detail]")!;
       const roster = document.querySelector("[data-chapter='05']")!;
       return {
-        panel: getComputedStyle(detail).opacity,
-        rows: [...detail.querySelectorAll("[data-grow]")].map((g) => g.getBoundingClientRect().height > 0),
-        prompt: (detail.querySelector("[data-prompt]") as HTMLButtonElement).tabIndex,
-        card: (document.querySelector("[data-chapter='04'] .product-card-face") as HTMLButtonElement).tabIndex,
         count: roster.querySelector("[data-running]")!.textContent,
         inbox: roster.querySelector("[data-agent='inbox'] [data-status]")!.textContent,
         inboxLog: getComputedStyle(roster.querySelector("[data-agent='inbox'] [data-log]")!).display,
@@ -533,10 +504,6 @@ describe("resilience", () => {
       },
       { reducedMotion: true }
     );
-    expect(reduced.panel).toBe("1");
-    expect(reduced.rows).toEqual([true, true, true]);
-    expect(reduced.prompt).toBe(-1);
-    expect(reduced.card).toBe(-1);
     expect(reduced.count).toBe("1");
     expect(reduced.inbox).toBe("3 drafts ready for your yes");
     expect(reduced.inboxLog).toBe("grid");
@@ -547,10 +514,6 @@ describe("resilience", () => {
       await page.goto(site.url, { waitUntil: "networkidle" });
       return page.evaluate(read);
     });
-    expect(motion.panel).toBe("0");
-    expect(motion.rows).toEqual([false, false, false]);
-    expect(motion.prompt).toBe(-1);
-    expect(motion.card).toBe(0);
     expect(motion.count).toBe("2");
     expect(motion.inbox).toBe("Reading 14 new");
     expect(motion.inboxLog).toBe("none");

@@ -103,8 +103,9 @@ export type CoreReply = {
 };
 
 /* chapter 02, Ask the Core: Redrock Flips with its loan documents out and
-   gone quiet, the one card lit on the board. (Chapter 04 still shows it at
-   term sheet; reconcile when that chapter is rebuilt.) */
+   gone quiet, the one card lit on the board. The questions go from the deal,
+   to the business around it (a rule set in a meeting, applied to this deal),
+   to the work outstanding, to an action. */
 export const core = {
   selected: "redrock",
   stage: "Docs out",
@@ -114,13 +115,19 @@ export const core = {
     { label: "Rate", value: "12.25%" },
     { label: "Days at stage", value: "21" },
   ],
-  questions: ["Who is this?", "What's outstanding?", "Draft an update"],
+  questions: ["Who is this?", "What's our rule on first-time borrowers?", "What's outstanding?", "Draft an update"],
   replies: {
     "Who is this?": {
       working: ["Reading the borrower file", "Checking the broker's notes"],
       answer:
         "Redrock Flips is a first-time borrower, introduced by Canyon State Brokers in July. This deal is a Tempe fix and flip, $385K at 12.25% on a three-bedroom rehab. The loan documents went out August 27 and haven't come back signed.",
       sources: ["broker intro", "deal record"],
+    },
+    "What's our rule on first-time borrowers?": {
+      working: ["Searching partner meetings", "Reading the credit policy"],
+      answer:
+        "Two rules, set at the August 12 partner meeting: first-time borrowers sign a personal guarantee, and their loan documents come back within 14 days or the rate lock lapses. Redrock Flips is at 21 days, so its lock lapsed on September 10.",
+      sources: ["partner meeting, Aug 12", "credit policy"],
     },
     "What's outstanding?": {
       working: ["Reading the deal record", "Checking with the follow-up agent"],
@@ -419,7 +426,7 @@ export const agents = {
       name: "Follow-up agent",
       job: "Watches deals for silence and drafts the nudge",
       status: { kind: "waiting", text: "1 draft waiting" },
-      lastResult: "Redrock Flips, dormant 21 days at term sheet",
+      lastResult: "Redrock Flips, quiet 21 days in docs out",
       log: ["6:10 am  Checked 11 open deals", "6:10 am  One past the 14 day mark", "6:12 am  Drafted a check-in, waiting"],
       live: [
         { kind: "scheduled", text: "Runs at 6:10 am" },

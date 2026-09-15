@@ -424,7 +424,7 @@ carries them). Nothing else on the page is amber, red, or blue.
   business so the finance detail reads as an example), 96 (64 on phones)
   over chapter 01's claim. A company section pads 160 above its content and
   128 below (96 and 96 on phones); the run's light sections pad 128 and
-  the two dark bands (the chat chapter's and the closing) 160 on both
+  the two dark bands (the agents chapter's and the closing) 160 on both
   sides (96 on phones), so every pair of neighbours adds up to 288. The
   brain section opens with a lead-in, the line "Behind the chat is the
   Core." (an accent line at x 48): the beat (288, 192 on phones) under the
@@ -540,7 +540,7 @@ carries them). Nothing else on the page is amber, red, or blue.
   into who it's for, the stats into why Crosswell, beyond the Core into
   the values) the later section's top edge carries it. No seam carries
   two. A dark band's edge carries none: the change to charcoal is the edge
-  (the chat chapter's band, the closing band's top). The footer's top,
+  (the agents chapter's band, the closing band's top). The footer's top,
   charcoal-deep against the closing band's charcoal, carries one ivory 10
   hairline.
 - Cards are one object across the page: why Crosswell's three points, how
@@ -553,6 +553,10 @@ carries them). Nothing else on the page is amber, red, or blue.
   values are a ledger, not cards: three columns on five shared rows
   (subgrid: rule, name, line, "What it costs", cost), so the labels sit on
   one line across the row whatever the lines above them wrap to.
+- The run is five chapters (spec section 18): Today, Ask the Core, the agenda,
+  the agents on the run's one dark band, and the custom chapter. The chat and
+  pipeline chapters were cut on 2026-09-15; the notes on chapters 03 and 04
+  elsewhere in this document describe code that no longer ships.
 - Chapter 02, Ask the Core (spec section 18), draws the pipeline window lowered
   under a wash and a bottom-left fall-off with one lit card, and lifts the
   Core out of its column on click, the product's one shadow. It is the run's
@@ -575,7 +579,7 @@ carries them). Nothing else on the page is amber, red, or blue.
   the design loop's run 2), chapter 06's swatch row sitting in the caption
   row as a site control. Every frame is 800 tall at lg and above and takes
   its product's own height below.
-- Two dark moments only: the chat chapter and the closing CTA.
+- Two dark moments only: the agents chapter's band and the closing CTA.
 - Verify at 1440, 1728, 1024, and 390 before calling a piece done.
 
 ## Copy rules the critic can see

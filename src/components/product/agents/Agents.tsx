@@ -314,7 +314,7 @@ function StatusMark({ status, live }: { status: AgentStatus; live?: AgentStatus[
  * row, the one the live moment lands on. The product fits the frame's
  * width, so the top bar's rule stops inside the right edge.
  */
-export default function Agents() {
+export default function Agents({ dark = false }: { dark?: boolean }) {
   const frame = useRef<HTMLDivElement>(null);
   const replay = useRef<HTMLButtonElement>(null);
   useAgentsMotion(frame, replay);
@@ -323,6 +323,7 @@ export default function Agents() {
   return (
     <div data-chapter="05">
       <Chapter
+        dark={dark}
         claim="Each one has a single job. They run while you don't."
         body="Custom agents built for the work your team names: reading the inbox, chasing the silent deal, drafting the report. Each one reports what it did and waits for your yes before anything leaves the building."
         controls={
@@ -331,7 +332,7 @@ export default function Agents() {
           </button>
         }
       >
-        <Frame ref={frame} fade="bottom" fit height="h-auto lg:h-[800px]">
+        <Frame ref={frame} dark={dark} fade="bottom" fit height="h-auto lg:h-[800px]">
           <Rail active="settings" />
           <div className="flex min-w-0 flex-1 flex-col">
             <TopBar inset />
