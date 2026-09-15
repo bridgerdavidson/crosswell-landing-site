@@ -3,11 +3,21 @@ import WindowFrame from "@/components/dashboard/WindowFrame";
 import { themeOf } from "@/components/dashboard/worlds";
 import { Chapter } from "../shared";
 
+/*
+ * The light: the morning is lit and everything else deliberately recedes.
+ * An even wash of the page's ground covers the whole window except a soft
+ * oval over its top (the date, the 9:40 line and the next call, the to-do
+ * list, the top of the team), and the window dissolves into the page over
+ * its last 160. Positions are in the window's own pixels, from its top-left.
+ */
+const WASH = "rgba(241, 238, 230, 0.74)";
+const LIT = "radial-gradient(ellipse 700px 380px at 470px 260px, transparent 0%, transparent 58%, #000 100%)";
+const FADE = "linear-gradient(to bottom, #000 0, #000 calc(100% - 160px), transparent 100%)";
+
 /**
  * The agenda chapter: the dashboard's Agenda page, the real window from the
  * dashboard (src/components/dashboard), whole at 800 tall so the day runs
- * 8 am to 6 pm, static and at full opacity while its lighting and any
- * interaction are worked out. The Core's column is empty.
+ * 8 am to 6 pm, with the morning lit (above). The Core's column is empty.
  */
 export default function Agenda() {
   return (
@@ -17,7 +27,14 @@ export default function Agenda() {
         body="Your day, the team's week, and the quarter's rocks, kept in one place and synced with the task tool the team already uses. Finish something anywhere and it checks off everywhere."
       >
         <WindowFrame height={800}>
-          <AgendaScreen theme={themeOf("saguaro")} size="h-[800px] w-full" />
+          <div className="relative" style={{ WebkitMaskImage: FADE, maskImage: FADE }}>
+            <AgendaScreen theme={themeOf("saguaro")} size="h-[800px] w-full" />
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 rounded-xl"
+              style={{ background: WASH, WebkitMaskImage: LIT, maskImage: LIT }}
+            />
+          </div>
         </WindowFrame>
       </Chapter>
     </div>
