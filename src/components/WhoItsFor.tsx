@@ -15,7 +15,7 @@ export default function WhoItsFor() {
   return (
     <section id="who-its-for" className={`${SEAM} ${CONTAINER} ${SECTION}`}>
       <Band
-        label="Who it's for"
+        label="Who it’s for"
         title="Built for businesses that run on what they know."
         lede="Arizona first. If your business runs on knowledge and judgment, the Core fits."
         more={

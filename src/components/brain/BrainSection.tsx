@@ -33,7 +33,7 @@ export default function BrainSection() {
             <div id="brain-stage" className="brain-stage" data-mode="still">
               <p className="sr-only">
                 Illustrative: a meeting transcript is captured, sorted into a tagged
-                note, and connected into the firm&apos;s knowledge graph across
+                note, and connected into the firm’s knowledge graph across
                 deals, people, meetings, operations, and investors.
               </p>
               <BrainStill />
@@ -48,10 +48,10 @@ export default function BrainSection() {
           {tie("The Core is everything your firm knows, connected. Every meeting, email, and file becomes a memory linked to the people, deals, and decisions it touches.")}
         </p>
         <p className="type-text mt-4 max-w-md text-ink/70">
-          {tie("Your questions search this, and it's yours, compounding over time instead of walking out the door.")}
+          {tie("Your questions search this, and it’s yours, compounding over time instead of walking out the door.")}
         </p>
         <p className="type-text mt-4 max-w-md text-ink/70">
-          {tie("Everyone runs the same models now. What a competitor can't copy is what your firm knows. We make that an asset you own.")}
+          {tie("Everyone runs the same models now. What a competitor can’t copy is what your firm knows. We make that an asset you own.")}
         </p>
         <p className="type-caption mt-6 text-ink/60">
           Illustrative

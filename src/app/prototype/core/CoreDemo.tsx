@@ -27,26 +27,26 @@ type Prepared = { title: string; meta: string; body?: string; edit: string };
 type Reply = { working: string[]; answer: string; sources: string[]; prepared?: Prepared };
 
 /* the deal, then the business around it, then the work outstanding, then an action */
-const QUESTIONS = ["Who is this?", "What's our rule on first-time borrowers?", "What's outstanding?", "Draft an update"] as const;
+const QUESTIONS = ["Who is this?", "What’s our rule on first-time borrowers?", "What’s outstanding?", "Draft an update"] as const;
 type Question = (typeof QUESTIONS)[number];
 
 const REPLIES: Record<Question, Reply> = {
   "Who is this?": {
-    working: ["Reading the borrower file", "Checking the broker's notes"],
+    working: ["Reading the borrower file", "Checking the broker’s notes"],
     answer:
-      "Redrock Flips is a first-time borrower, introduced by Canyon State Brokers in July. This deal is a Tempe fix and flip, $385K at 12.25% on a three-bedroom rehab. The loan documents went out August 27 and haven't come back signed.",
+      "Redrock Flips is a first-time borrower, introduced by Canyon State Brokers in July. This deal is a Tempe fix and flip, $385K at 12.25% on a three-bedroom rehab. The loan documents went out August 27 and haven’t come back signed.",
     sources: ["broker intro", "deal record"],
   },
-  "What's our rule on first-time borrowers?": {
+  "What’s our rule on first-time borrowers?": {
     working: ["Searching partner meetings", "Reading the credit policy"],
     answer:
       "Two rules, set at the August 12 partner meeting: first-time borrowers sign a personal guarantee, and their loan documents come back within 14 days or the rate lock lapses. Redrock Flips is at 21 days, so its lock lapsed on September 10.",
     sources: ["partner meeting, Aug 12", "credit policy"],
   },
-  "What's outstanding?": {
+  "What’s outstanding?": {
     working: ["Reading the deal record", "Checking with the follow-up agent"],
     answer:
-      "Two things. The signed loan documents and the entity's operating agreement are both still out, 21 days after the docs went out. The follow-up agent has a check-in drafted and waiting for your yes.",
+      "Two things. The signed loan documents and the entity’s operating agreement are both still out, 21 days after the docs went out. The follow-up agent has a check-in drafted and waiting for your yes.",
     sources: ["loan documents", "follow-up draft"],
     prepared: {
       title: "Check-in to Redrock Flips",
@@ -56,12 +56,12 @@ const REPLIES: Record<Question, Reply> = {
   },
   "Draft an update": {
     working: ["Reading the deal record", "Writing it in your voice"],
-    answer: "Here's a short update for Redrock Flips. It picks up from the August 27 documents and asks for both signatures by Friday.",
+    answer: "Here’s a short update for Redrock Flips. It picks up from the August 27 documents and asks for both signatures by Friday.",
     sources: ["deal record", "your sent mail"],
     prepared: {
       title: "Update to Redrock Flips",
       meta: "Draft, in your voice",
-      body: "Hi, following up on the loan documents we sent August 27. Once they're signed and we have the operating agreement, we can set a closing date. Could you send both back by Friday?",
+      body: "Hi, following up on the loan documents we sent August 27. Once they’re signed and we have the operating agreement, we can set a closing date. Could you send both back by Friday?",
       edit: "Edit",
     },
   },

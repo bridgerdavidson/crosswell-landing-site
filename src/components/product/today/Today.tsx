@@ -16,7 +16,7 @@ export default function Today() {
   return (
     <Chapter
       claim="Your morning, already assembled."
-      body="Before anyone sits down, the Core has read the night's mail, filed what is routine, and put the three things that need a person at the top."
+      body="Before anyone sits down, the Core has read the night’s mail, filed what is routine, and put the three things that need a person at the top."
     >
       <WindowFrame>
         <HomeScreen

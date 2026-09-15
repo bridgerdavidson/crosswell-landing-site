@@ -19,8 +19,8 @@ const SCREENS: { id: string; name: string; note: string; screen: ReactNode }[] =
   { id: "agenda", name: "Agenda", note: "Chapter 02.", screen: <AgendaScreen theme={saguaro} /> },
   { id: "pipeline", name: "Pipeline", note: "Chapter 04. Redrock Flips is selected.", screen: <PipelineScreen theme={saguaro} /> },
   { id: "agents", name: "Agents", note: "Chapter 05.", screen: <AgentsScreen theme={saguaro} /> },
-  { id: "custom-supply", name: "Custom: Juniper Row Supply", note: "Chapter 06. The same product for a building-supply distributor: its own pages, and a Home built around the day's deliveries.", screen: <JuniperHome /> },
-  { id: "custom-firm", name: "Custom: Kestrel & Vane", note: "Chapter 06. The same product for an accounting firm: its own pages, and a Home built around the week's deadlines.", screen: <KestrelHome /> },
+  { id: "custom-supply", name: "Custom: Juniper Row Supply", note: "Chapter 06. The same product for a building-supply distributor: its own pages, and a Home built around the day’s deliveries.", screen: <JuniperHome /> },
+  { id: "custom-firm", name: "Custom: Kestrel & Vane", note: "Chapter 06. The same product for an accounting firm: its own pages, and a Home built around the week’s deadlines.", screen: <KestrelHome /> },
 ];
 
 export default function DashboardPrototype() {
@@ -29,7 +29,7 @@ export default function DashboardPrototype() {
       <div className="mx-auto max-w-[1440px]">
         <h1 className="font-serif text-[34px] leading-tight">The dashboard, page by page</h1>
         <p className="mt-2 max-w-3xl text-[14px] leading-[1.6] text-ink/65">
-          Every page the six chapters use, drawn flat at a real laptop size (1440 by 900) with {company.name}&apos;s sample data.
+          Every page the six chapters use, drawn flat at a real laptop size (1440 by 900) with {company.name}’s sample data.
           Nothing is cut or faded, and the main area scrolls inside each window. The Core column stays empty until a chapter shows it at work.
         </p>
         <nav className="mt-4 flex flex-wrap gap-x-5 gap-y-1 text-[13px]">

@@ -17,6 +17,7 @@ This repo holds no strategy. Before writing copy or making design calls, pull co
 - Serious, specific, confident. Speak to the person who runs the business (owner, partner, COO), never generic "AI consultant" hype.
 - The business and its team are the hero; trust is the through-line. AI is the vehicle, never the headline. The audience is a general market (manufacturing, healthcare, logistics, professional services, construction, private credit), no longer funds only.
 - **No em dashes. Ever.**
+- Apostrophes are typographic (’), never straight, in anything a visitor reads. The copy guard checks it.
 - No pricing, no fabricated client names or metrics. Any illustrative hero/chat copy is labeled illustrative.
 - The brand name is the **Crosswell** wordmark (the "Xwell" spelling is not used).
 - No AI prefix on files; do not mark files as AI-made.

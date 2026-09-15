@@ -80,7 +80,7 @@ export const today = {
   ask: {
     question: "Which draws are due this week?",
     answer:
-      "Three. Draw 4 on the Palo Verde build is checked against budget and waiting on your yes, $130K. Copper Sky's third draw is set for Friday, and Cholla Creek's seventh is waiting on Tuesday's inspection.",
+      "Three. Draw 4 on the Palo Verde build is checked against budget and waiting on your yes, $130K. Copper Sky’s third draw is set for Friday, and Cholla Creek’s seventh is waiting on Tuesday’s inspection.",
     receipts: ["draw schedules", "inspection report"],
     time: "9:38 am",
   },
@@ -115,24 +115,24 @@ export const core = {
     { label: "Rate", value: "12.25%" },
     { label: "Days at stage", value: "21" },
   ],
-  questions: ["Who is this?", "What's our rule on first-time borrowers?", "What's outstanding?", "Draft an update"],
+  questions: ["Who is this?", "What’s our rule on first-time borrowers?", "What’s outstanding?", "Draft an update"],
   replies: {
     "Who is this?": {
-      working: ["Reading the borrower file", "Checking the broker's notes"],
+      working: ["Reading the borrower file", "Checking the broker’s notes"],
       answer:
-        "Redrock Flips is a first-time borrower, introduced by Canyon State Brokers in July. This deal is a Tempe fix and flip, $385K at 12.25% on a three-bedroom rehab. The loan documents went out August 27 and haven't come back signed.",
+        "Redrock Flips is a first-time borrower, introduced by Canyon State Brokers in July. This deal is a Tempe fix and flip, $385K at 12.25% on a three-bedroom rehab. The loan documents went out August 27 and haven’t come back signed.",
       sources: ["broker intro", "deal record"],
     },
-    "What's our rule on first-time borrowers?": {
+    "What’s our rule on first-time borrowers?": {
       working: ["Searching partner meetings", "Reading the credit policy"],
       answer:
         "Two rules, set at the August 12 partner meeting: first-time borrowers sign a personal guarantee, and their loan documents come back within 14 days or the rate lock lapses. Redrock Flips is at 21 days, so its lock lapsed on September 10.",
       sources: ["partner meeting, Aug 12", "credit policy"],
     },
-    "What's outstanding?": {
+    "What’s outstanding?": {
       working: ["Reading the deal record", "Checking with the follow-up agent"],
       answer:
-        "Two things. The signed loan documents and the entity's operating agreement are both still out, 21 days after the docs went out. The follow-up agent has a check-in drafted and waiting for your yes.",
+        "Two things. The signed loan documents and the entity’s operating agreement are both still out, 21 days after the docs went out. The follow-up agent has a check-in drafted and waiting for your yes.",
       sources: ["loan documents", "follow-up draft"],
       prepared: {
         title: "Check-in to Redrock Flips",
@@ -142,12 +142,12 @@ export const core = {
     },
     "Draft an update": {
       working: ["Reading the deal record", "Writing it in your voice"],
-      answer: "Here's a short update for Redrock Flips. It picks up from the August 27 documents and asks for both signatures by Friday.",
+      answer: "Here’s a short update for Redrock Flips. It picks up from the August 27 documents and asks for both signatures by Friday.",
       sources: ["deal record", "your sent mail"],
       prepared: {
         title: "Update to Redrock Flips",
         meta: "Draft, in your voice",
-        body: "Hi, following up on the loan documents we sent August 27. Once they're signed and we have the operating agreement, we can set a closing date. Could you send both back by Friday?",
+        body: "Hi, following up on the loan documents we sent August 27. Once they’re signed and we have the operating agreement, we can set a closing date. Could you send both back by Friday?",
         edit: "Edit",
       },
     },
@@ -205,7 +205,7 @@ export const agenda = {
       name: "Jordan Reyes",
       initials: "JR",
       items: [
-        { title: "Builder's risk renewals, October" },
+        { title: "Builder’s risk renewals, October" },
         { title: "Investor brief, Thursday" },
         { title: "Rate lock review, Sandstone Villas" },
       ],
@@ -267,10 +267,10 @@ export const chat = {
   exchanges: [
     {
       id: "risk",
-      question: "What's at risk this week?",
+      question: "What’s at risk this week?",
       working: ["Checking the borrower queue", "Cross-referencing draws and profiles"],
       answer:
-        "Four flags. The one that matters: Cholla Creek matures inside 45 days with no payoff plan on file. The other three are a draw request overdue nine days, a borrower dormant at term sheet, and a builder's risk policy expiring October 2.",
+        "Four flags. The one that matters: Cholla Creek matures inside 45 days with no payoff plan on file. The other three are a draw request overdue nine days, a borrower dormant at term sheet, and a builder’s risk policy expiring October 2.",
       receipts: ["servicing", "exposure model"],
     },
     {
@@ -360,17 +360,17 @@ export const pipeline = {
         {
           label: "Who is this?",
           answer:
-            "Ironline Builds, a repeat borrower since 2024. Three loans with us, all current. The principal is Sam Ortega, and the last touch was Tuesday's Draw 4 inspection.",
+            "Ironline Builds, a repeat borrower since 2024. Three loans with us, all current. The principal is Sam Ortega, and the last touch was Tuesday’s Draw 4 inspection.",
           receipts: ["borrower history", "inspection report"],
         },
         {
-          label: "What's outstanding?",
+          label: "What’s outstanding?",
           answer: "Draw 4 is computed and waiting on your approval. Nothing else is open.",
           receipts: ["draw sheet"],
         },
         {
           label: "Draft an update",
-          answer: "Drafted a two-paragraph update on Draw 4 timing in the fund's voice. It is in your drafts, not sent.",
+          answer: "Drafted a two-paragraph update on Draw 4 timing in the fund’s voice. It is in your drafts, not sent.",
           receipts: ["drafts"],
         },
       ],
@@ -390,7 +390,7 @@ export const pipeline = {
           receipts: ["broker intro", "term sheet"],
         },
         {
-          label: "What's outstanding?",
+          label: "What’s outstanding?",
           answer: "The signed term sheet and the entity documents. The follow-up agent has a nudge drafted and waiting for your yes.",
           receipts: ["follow-up draft"],
         },
@@ -416,13 +416,13 @@ export const pipeline = {
           receipts: ["sponsor history", "payoff record"],
         },
         {
-          label: "What's outstanding?",
+          label: "What’s outstanding?",
           answer: "The appraisal and the updated budget. Construction concentration would land at 41% after funding, inside the 50% limit.",
           receipts: ["exposure model", "appraisal request"],
         },
         {
           label: "Draft an update",
-          answer: "Drafted a note to the sponsor listing the two open items ahead of Tuesday's call. In your drafts.",
+          answer: "Drafted a note to the sponsor listing the two open items ahead of Tuesday’s call. In your drafts.",
           receipts: ["drafts"],
         },
       ],
@@ -492,13 +492,13 @@ export const agents = {
   /* chapter 05's request: typed in the Core's message box, handed to an email agent that joins the
      top of the roster, and approved to go out by email and to each person's own dashboard */
   recap: {
-    request: "Send the team a recap of this morning's standup, with who owns what.",
-    reply: "The email agent is on it. It's pulling this morning's standup notes and writing a recap with owners and dates.",
+    request: "Send the team a recap of this morning’s standup, with who owns what.",
+    reply: "The email agent is on it. It’s pulling this morning’s standup notes and writing a recap with owners and dates.",
     agent: { name: "Email agent", job: "Standup recap to the team" },
-    log: ["9:48 am  Read this morning's standup notes", "9:48 am  Drafted a recap to 4 people", "9:52 am  Sent by email and to 4 dashboards"],
+    log: ["9:48 am  Read this morning’s standup notes", "9:48 am  Drafted a recap to 4 people", "9:52 am  Sent by email and to 4 dashboards"],
     to: ["DW", "ML", "PS", "JR"],
     subject: "Standup recap, Thursday",
-    greeting: "Morning, team. Here's who owns what from standup:",
+    greeting: "Morning, team. Here’s who owns what from standup:",
     owners: [
       { who: "Dana", line: "send the Palo Verde inspection report by Friday" },
       { who: "Marcus", line: "finish the Ocotillo Commons term sheet review by Friday" },

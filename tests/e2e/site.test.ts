@@ -160,7 +160,7 @@ describe("product run", () => {
         captions: await page.getByText("Interactive demo · Sample data").count(),
       };
     });
-    expect(r.leadIn).toBe("Here's that screen at work, custom built for a sample private lending company.");
+    expect(r.leadIn).toBe("Here’s that screen at work, custom built for a sample private lending company.");
     expect(r.claim).toBe("Your morning, already assembled.");
     expect(r.labels).toBe(0);
     expect(r.greeting).toBe(1);
@@ -182,10 +182,10 @@ describe("chapter 02, ask the Core", () => {
         await chap.getByRole("button", { name: "Who is this?" }).click();
         const who = await chap.getByText("Redrock Flips is a first-time borrower", { exact: false }).count();
         const sendAfterWho = await chap.getByRole("button", { name: "Send", exact: true }).count();
-        await chap.getByRole("button", { name: "What's our rule on first-time borrowers?" }).click();
+        await chap.getByRole("button", { name: "What’s our rule on first-time borrowers?" }).click();
         const rule = await chap.getByText("so its lock lapsed on September 10", { exact: false }).count();
-        await chap.getByRole("button", { name: "What's outstanding?" }).click();
-        const outstanding = await chap.getByText("The signed loan documents and the entity's operating agreement", { exact: false }).count();
+        await chap.getByRole("button", { name: "What’s outstanding?" }).click();
+        const outstanding = await chap.getByText("The signed loan documents and the entity’s operating agreement", { exact: false }).count();
         await chap.getByRole("button", { name: "Send", exact: true }).click();
         return {
           claim,
@@ -212,7 +212,7 @@ describe("chapter 02, ask the Core", () => {
 });
 
 describe("the agenda chapter", () => {
-  it("draws the day, the to-do list, and the team in the dashboard's window", async () => {
+  it("draws the day, the to-do list, and the team in the dashboard’s window", async () => {
     const r = await withPage(async (page) => {
       await page.goto(site.url, { waitUntil: "networkidle" });
       const chap = page.locator("[data-chapter='agenda']");
@@ -230,7 +230,7 @@ describe("the agenda chapter", () => {
 });
 
 describe("the agents chapter", () => {
-  it("sits on the run's one dark band", async () => {
+  it("sits on the run’s one dark band", async () => {
     const r = await withPage(async (page) => {
       await page.goto(site.url, { waitUntil: "networkidle" });
       return {
@@ -247,13 +247,13 @@ describe("the agents chapter", () => {
     expect(run.slice(0, 5)).toEqual([
       "Your morning, already assembled.",
       "Your whole business, a question away. The next step, a yes away.",
-      "Your day, and everyone else's, without asking.",
+      "Your day, and everyone else’s, without asking.",
       "You name the work. We build the agent that does it.",
       "It looks like your company, not ours.",
     ]);
   });
 
-  it("draws the Agents page in the dashboard's dark colours", async () => {
+  it("draws the Agents page in the dashboard’s dark colours", async () => {
     const r = await withPage(async (page) => {
       await page.goto(site.url, { waitUntil: "networkidle" });
       const chap = page.locator("[data-chapter='05']");

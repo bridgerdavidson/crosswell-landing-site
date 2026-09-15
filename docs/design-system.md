@@ -596,6 +596,9 @@ carries them). Nothing else on the page is amber, red, or blue.
 
 ## Copy rules the critic can see
 
-No em dashes. No uppercase. "the Core", never bare "Core". No "brain" or
-"mind". No logos; tool names in plain text. Every stat carries a printed
-source. No security, hosting, or compliance claims.
+No em dashes. No uppercase. Typographic apostrophes (’), never straight
+ones, in anything a visitor reads (2026-09-15: the whole site was
+converted, and the copy guard now checks it). "the Core", never bare
+"Core". No "brain" or "mind". No logos; tool names in plain text. Every
+stat carries a printed source. No security, hosting, or compliance
+claims.

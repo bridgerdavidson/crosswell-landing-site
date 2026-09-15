@@ -1,6 +1,8 @@
 // Copy guard: the site's standing copy rules, enforced on a directory.
 // Usage: node scripts/check-copy.mjs <dir>
-// Rules: no em dash anywhere; no "brain" or "mind" in .tsx copy lines
+// Rules: no em dash anywhere; no "brain" or "mind" in .tsx copy lines; the
+// site’s apostrophe is typographic (’), so a straight one between letters
+// in copy is a hit, as is an &apos; entity
 // (import and comment lines are skipped whole; className attribute regions
 // are stripped out of a line before the copy-scope rules run against it,
 // rather than skipping the whole line, so a live `<p className="...">Copy</p>`
@@ -17,6 +19,7 @@ const rules = [
   { name: "the word brain", re: /\bbrain\b/i, scope: "copy" },
   { name: "the word mind", re: /\bmind\b/i, scope: "copy" },
   { name: "uppercase", re: /\buppercase\b|text-transform:\s*uppercase/, scope: "all" },
+  { name: "straight apostrophe", re: /(?<=[A-Za-z])'(?=[A-Za-z])|&apos;|&#39;/, scope: "copy" },
 ];
 const NOT_COPY = /^\s*import\s|\bfrom\s+"|^\s*\/\/|^\s*\/\*|^\s*\*/;
 
@@ -52,6 +55,35 @@ function stripClassNameAttrs(line) {
   return out;
 }
 
+// Comments are not copy, wherever they sit: a `//` to the end of the line,
+// and a `/* ... */` region, which in markup ({/* ... */}) can share a line
+// with copy and can run over several lines without a `*` down its margin.
+// Strip those regions from the copy line and report whether the line leaves
+// a block open.
+function stripComments(line, open) {
+  let out = "";
+  let i = 0;
+  while (i < line.length) {
+    if (open) {
+      const close = line.indexOf("*/", i);
+      if (close === -1) return { line: out, open: true };
+      i = close + 2;
+      open = false;
+      continue;
+    }
+    if (line.startsWith("/*", i)) {
+      open = true;
+      i += 2;
+      continue;
+    }
+    // a line comment, but not the // of a URL
+    if (line.startsWith("//", i) && line[i - 1] !== ":") return { line: out, open: false };
+    out += line[i];
+    i += 1;
+  }
+  return { line: out, open };
+}
+
 function walk(dir, acc = []) {
   for (const name of readdirSync(dir)) {
     const p = join(dir, name);
@@ -66,8 +98,11 @@ for (const file of walk(root)) {
   const rel = relative(process.cwd(), file);
   const isTsx = file.endsWith(".tsx");
   const skipCopy = SKIP_COPY_DIRS.some((d) => rel.startsWith(d));
+  let open = false;
   readFileSync(file, "utf8").split("\n").forEach((line, i) => {
-    const copyLine = stripClassNameAttrs(line);
+    const stripped = stripComments(stripClassNameAttrs(line), open);
+    const copyLine = stripped.line;
+    open = stripped.open;
     for (const rule of rules) {
       if (rule.scope === "copy") {
         if (!isTsx || skipCopy || NOT_COPY.test(line)) continue;

@@ -5,7 +5,7 @@ import { tie } from "./tie";
 const points = [
   {
     title: "Built around your work",
-    body: "We start by learning how your team actually operates, then build the Core and the tools around that. No forcing your business through someone else's template, and no features nobody asked for.",
+    body: "We start by learning how your team actually operates, then build the Core and the tools around that. No forcing your business through someone else’s template, and no features nobody asked for.",
   },
   {
     title: "We sell trust",

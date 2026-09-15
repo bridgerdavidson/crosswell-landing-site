@@ -27,6 +27,12 @@ describe("copy guard", () => {
     expect(r.stderr).toMatch(/bad\.tsx:8: the word mind/);
   });
 
+  it("catches a straight apostrophe in copy", () => {
+    const r = guard("tests/fixtures/copy-bad");
+    expect(r.status).toBe(1);
+    expect(r.stderr).toMatch(/bad\.tsx:9: straight apostrophe/);
+  });
+
   it("passes clean copy", () => {
     const r = guard("tests/fixtures/copy-good");
     expect(r.status).toBe(0);

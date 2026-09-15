@@ -45,7 +45,7 @@ export default function ProductRun() {
             the finance detail as an example rather than the audience; 96
             (64 on phones) over chapter 01's claim, the chapters' own hang */}
         <Reveal className="mb-16 lg:mb-24">
-          <p className="type-accent text-ink">{tie("Here's that screen at work, custom built for a sample private lending company.")}</p>
+          <p className="type-accent text-ink">{tie("Here’s that screen at work, custom built for a sample private lending company.")}</p>
         </Reveal>
         <div className="space-y-48 sm:space-y-72">
           <Today />

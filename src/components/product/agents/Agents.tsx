@@ -276,7 +276,7 @@ function CoreColumn({ phase, s, onSend, onApprove }: { phase: Phase; s: number; 
                     <p className="flex items-center gap-1.5 text-[11.5px] text-ink/62">
                       <Icon name="mail" size={12} />
                       <Icon name="home" size={12} />
-                      Goes by email and to each person&apos;s dashboard
+                      Goes by email and to each person’s dashboard
                     </p>
                     <div className="mt-2.5 flex justify-end gap-1.5">
                       {/* the product's Edit, shown but not part of the chapter's story */}

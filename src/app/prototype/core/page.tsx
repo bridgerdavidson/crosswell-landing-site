@@ -13,7 +13,7 @@ export default function CorePrototype() {
       <div className="mx-auto max-w-[1440px]">
         <h1 className="font-serif text-[34px] leading-tight">Ask the Core</h1>
         <p className="mt-2 max-w-3xl text-[14px] leading-[1.6] text-ink/65">
-          A throwaway prototype of the Core chapter&apos;s choreography. Click Ask the Core on Redrock Flips; tap a question or Send to jump ahead.
+          A throwaway prototype of the Core chapter’s choreography. Click Ask the Core on Redrock Flips; tap a question or Send to jump ahead.
         </p>
         <div className="mt-8">
           <Fit height={960}>

@@ -8,12 +8,12 @@ import { tie } from "./tie";
 const engagements = [
   {
     title: "The knowledge audit",
-    body: "Two weeks, fixed scope. We map where your firm's information gets dropped and what it costs you. You keep the map either way.",
+    body: "Two weeks, fixed scope. We map where your firm’s information gets dropped and what it costs you. You keep the map either way.",
     note: "Where every firm starts",
   },
   {
     title: "The Core install",
-    body: "Your firm's memory, provisioned and handed over running, your team onboarded.",
+    body: "Your firm’s memory, provisioned and handed over running, your team onboarded.",
   },
   {
     title: "The Core plus the custom layer",

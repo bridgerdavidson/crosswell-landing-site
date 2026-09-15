@@ -28,8 +28,8 @@ export default function Agenda() {
   return (
     <div data-chapter="agenda">
       <Chapter
-        claim="Your day, and everyone else's, without asking."
-        body="Your meetings, your focus time, and the list waiting on you, synced with the task tool your team already uses. Beside it, what everyone else is on right now and when they're free. Finish something anywhere and it checks off everywhere."
+        claim="Your day, and everyone else’s, without asking."
+        body="Your meetings, your focus time, and the list waiting on you, synced with the task tool your team already uses. Beside it, what everyone else is on right now and when they’re free. Finish something anywhere and it checks off everywhere."
       >
         <WindowFrame height={800}>
           <div className="relative" style={{ WebkitMaskImage: FADE, maskImage: FADE, WebkitMaskComposite: "source-in", maskComposite: "intersect" }}>

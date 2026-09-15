@@ -18,7 +18,7 @@ import { themeOf } from "../dashboard/worlds";
  */
 
 const LOOP = 30;
-const MESSAGE = "Send the team a recap of this morning's standup, with who owns what.";
+const MESSAGE = "Send the team a recap of this morning’s standup, with who owns what.";
 /* a long crescent at the bottom-left, traced from a hand-drawn line: it comes off the left edge
    about a third of the way down, sweeps through the lower rows, and runs along the bottom until it
    meets the edge short of the Core column, then dives away so the column stays whole. The path
@@ -86,7 +86,7 @@ type Phase = "rest" | "sent" | "draft" | "approved";
 /* the email agent, from the moment Send is pressed (s seconds ago) */
 function emailRow(phase: Phase, s: number): Row | null {
   if (phase === "rest") return null;
-  const log = ["9:48 am  Read this morning's standup notes", "9:48 am  Drafted a recap to 4 people"];
+  const log = ["9:48 am  Read this morning’s standup notes", "9:48 am  Drafted a recap to 4 people"];
   if (phase === "approved")
     return { id: "email", name: "Email agent", job: "Standup recap to the team", fresh: true, live: { kind: "done", text: "Sent, 9:52 am", result: "By email and to 4 dashboards", run: "just now" }, log: [...log, "9:52 am  Sent by email and to 4 dashboards"] };
   const live: Live =
@@ -229,7 +229,7 @@ function CoreColumn({ phase, s, editing, onSend, onEdit, onApprove }: { phase: P
           )}
           {replied && (
             <p className="core-rise leading-[1.6] text-ink/85 [text-wrap:pretty]">
-              The email agent is on it. It&apos;s pulling this morning&apos;s standup notes and writing a recap with owners and dates.
+              The email agent is on it. It’s pulling this morning’s standup notes and writing a recap with owners and dates.
             </p>
           )}
           {drafted && (
@@ -254,7 +254,7 @@ function CoreColumn({ phase, s, editing, onSend, onEdit, onApprove }: { phase: P
                   Subject <span className="text-ink">Standup recap, Thursday</span>
                 </p>
                 <div className="mt-2.5 flex flex-col gap-1 text-ink/85">
-                  <p>Morning, team. Here&apos;s who owns what from standup:</p>
+                  <p>Morning, team. Here’s who owns what from standup:</p>
                   {RECAP.map((r) => (
                     <p key={r.who}>
                       <span className="font-medium">{r.who}</span>: {r.line}
@@ -274,7 +274,7 @@ function CoreColumn({ phase, s, editing, onSend, onEdit, onApprove }: { phase: P
                     <p className="flex items-center gap-1.5 text-[11.5px] text-ink/62">
                       <Icon name="mail" size={12} />
                       <Icon name="home" size={12} />
-                      Goes by email and to each person&apos;s dashboard
+                      Goes by email and to each person’s dashboard
                     </p>
                     <div className="mt-2.5 flex justify-end gap-1.5">
                       <button type="button" disabled className="inline-flex h-7 cursor-default items-center rounded-md border border-ink/12 px-2.5 text-[12px] font-semibold whitespace-nowrap text-ink/80 opacity-45">
