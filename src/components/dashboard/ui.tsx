@@ -113,8 +113,14 @@ export function AppWindow({
   actions,
   main,
   core,
+  draft,
+  mainClassName = "",
   size = "h-[900px] w-[1440px]",
 }: {
+  /** half-typed text in the Core's message box */
+  draft?: string;
+  /** a class on the page's content, e.g. the chapter's fade into the app's ground */
+  mainClassName?: string;
   /** what the Core's column holds; empty unless a chapter shows it at work */
   core?: ReactNode;
   /** the window's box; the site's chapters size it to their frame */
@@ -162,9 +168,9 @@ export function AppWindow({
           </div>
         </div>
         {/* static: a chapter shows the page, it never scrolls inside the frame */}
-        <div className="min-h-0 flex-1 overflow-hidden">{main}</div>
+        <div className={`min-h-0 flex-1 overflow-hidden ${mainClassName}`}>{main}</div>
       </div>
-      <CorePanel>{core}</CorePanel>
+      <CorePanel draft={draft}>{core}</CorePanel>
     </div>
   );
 }
@@ -211,7 +217,7 @@ function Rail({ theme, pages, active }: { theme: Theme; pages: Page[]; active: s
 }
 
 /* the Core's column: empty until a chapter shows it at work */
-function CorePanel({ children }: { children?: ReactNode }) {
+function CorePanel({ children, draft }: { children?: ReactNode; draft?: string }) {
   return (
     <aside className="flex w-[384px] flex-none flex-col border-l border-ink/8 bg-ivory">
       <div className="flex h-12 flex-none items-center border-b border-ink/8 pr-3 pl-5">
@@ -229,7 +235,14 @@ function CorePanel({ children }: { children?: ReactNode }) {
       </div>
       <div className="flex-none p-3">
         <div className="rounded-lg border border-ink/12 bg-parchment">
-          <p className="px-3 pt-2.5 pb-6 text-ink/45">Ask the Core, or tell it what to do</p>
+          {draft ? (
+            <p className="px-3 pt-2.5 pb-6">
+              {draft}
+              <span aria-hidden className="ml-px inline-block h-[15px] w-[1.5px] translate-y-[3px] bg-ink" />
+            </p>
+          ) : (
+            <p className="px-3 pt-2.5 pb-6 text-ink/45">Ask the Core, or tell it what to do</p>
+          )}
           <div className="flex items-center px-1.5 pb-1.5 text-ink/45">
             <span className="flex h-7 w-7 items-center justify-center">
               <Icon name="clip" size={15} />
@@ -237,7 +250,11 @@ function CorePanel({ children }: { children?: ReactNode }) {
             <span className="flex h-7 w-7 items-center justify-center">
               <Icon name="at" size={15} />
             </span>
-            <span className="ml-auto flex h-7 w-7 items-center justify-center rounded-md bg-ink/8 text-ink/45">
+            <span
+              className={`ml-auto flex h-7 w-7 items-center justify-center rounded-md ${
+                draft ? "bg-[var(--accent)] text-ivory" : "bg-ink/8 text-ink/45"
+              }`}
+            >
               <Icon name="up" size={14} />
             </span>
           </div>
@@ -251,15 +268,24 @@ function CorePanel({ children }: { children?: ReactNode }) {
 
 /* the Core's side of a conversation: the person's question on the accent's
    wash, the Core's answer as plain text, and where it came from */
-export function Exchange({ question, answer, receipts }: { question: string; answer: string; receipts: string[] }) {
+export function Exchange({ question, answer, receipts, time }: { question: string; answer: string; receipts: string[]; time?: string }) {
+  const who = (name: string) =>
+    time && (
+      <p className="mb-1.5 text-[11px]">
+        <span className="font-medium text-ink/70">{name}</span>
+        <span className="ml-1.5 tabular-nums text-ink/45">{time}</span>
+      </p>
+    );
   return (
     <>
-      <div className="flex justify-end">
+      <div className="flex flex-col items-end">
+        {who("You")}
         <p className="max-w-[85%] rounded-xl rounded-br-sm bg-[var(--accent-wash)] px-3 py-2 leading-[1.5] [text-wrap:balance]">
           {question}
         </p>
       </div>
       <div>
+        {who("The Core")}
         <p className="leading-[1.6] text-ink/85 [text-wrap:pretty]">{answer}</p>
         <div className="mt-2.5">
           <Sources items={receipts} />

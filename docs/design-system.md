@@ -552,9 +552,10 @@ carries them). Nothing else on the page is amber, red, or blue.
   (subgrid: rule, name, line, "What it costs", cost), so the labels sit on
   one line across the row whatever the lines above them wrap to.
 - Chapter 01 draws the designed dashboard window (`src/components/dashboard`,
-  spec section 17) instead of a cut fragment: cropped to its top 600, clear
-  across its top, dissolving into the page over its bottom 240
-  (`.window-light`), with one exchange in the Core's column. The fragment
+  spec section 17) instead of a cut fragment: the whole window at 640 tall,
+  static, its page dissolving into the app's ground over its last 200
+  (`.dashboard-fade`) while the rail and the Core's column stay crisp; the
+  Core's column holds one exchange and a half-typed message. The fragment
   rules above still govern chapters 02 to 06 until each is rebuilt on the
   dashboard.
 - The product run (its intro, the six chapters, the fictional line) sits

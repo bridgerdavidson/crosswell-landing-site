@@ -97,12 +97,26 @@ function HomeMain({ home }: { home: HomeWorld }) {
   );
 }
 
-export function HomeScreen({ home, size, core }: { home: HomeWorld; size?: string; core?: ReactNode }) {
+export function HomeScreen({
+  home,
+  size,
+  core,
+  draft,
+  mainClassName,
+}: {
+  home: HomeWorld;
+  size?: string;
+  core?: ReactNode;
+  draft?: string;
+  mainClassName?: string;
+}) {
   return (
     <AppWindow
       theme={home.theme}
       size={size}
       core={core}
+      draft={draft}
+      mainClassName={mainClassName}
       active="home"
       actions={<Button icon="plus">{home.action}</Button>}
       main={<HomeMain home={home} />}

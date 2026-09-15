@@ -108,15 +108,16 @@ body {
   margin-inline: calc(var(--page-inset) * -1);
 }
 
-/* ---------- The dashboard window's light ----------
-   A chapter's window stays clear across its top and dissolves into the
-   page along its bottom edge, --light-bottom deep, so the crop reads as a
-   page that runs on rather than a picture that ends. Double stops on
-   purpose (the production minifier trap, see the hero mask). */
-.window-light {
-  --light-bottom: 240px;
-  -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--light-bottom)), transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--light-bottom)), transparent 100%);
+/* ---------- The dashboard's fade ----------
+   The window stays whole, its rail, top bar, and Core column crisp to its
+   bottom edge; the page inside it dissolves into the app's own ground over
+   its last --dashboard-fade, so it reads as a page running on under the
+   window rather than a picture that ends. Double stops on purpose (the
+   production minifier trap, see the hero mask). */
+.dashboard-fade {
+  --dashboard-fade: 200px;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--dashboard-fade)), transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--dashboard-fade)), transparent 100%);
 }
 
 /* ---------- Type roles ----------

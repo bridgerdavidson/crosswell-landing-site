@@ -3,14 +3,15 @@
 import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
 
 /*
- * The frame a chapter shows the dashboard in. The window keeps its real
- * size and the frame crops it: from lg the window takes the frame's width,
- * never less than 1280 or more than 1440, and the frame shows its top 600,
- * so the page runs on past the cut; below lg the same 1280 by 600 crop
- * scales down to the frame's width. `light` names how the crop recedes into
- * the page (globals.css, "The dashboard window's light").
+ * The frame a chapter shows the dashboard in: the whole window, 640 tall,
+ * so the rail, the top bar, and the Core's column with its message box all
+ * read as an app. From lg the window takes the frame's width, never less
+ * than 1280 or more than 1440 (below 1440 its right side crops); below lg
+ * the 1280 by 640 window scales down to the frame's width. What recedes is
+ * the chapter's to say, inside the window (globals.css, "The dashboard's
+ * fade").
  */
-export default function WindowFrame({ children, light = "" }: { children: ReactNode; light?: string }) {
+export default function WindowFrame({ children }: { children: ReactNode }) {
   const box = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
 
@@ -29,7 +30,7 @@ export default function WindowFrame({ children, light = "" }: { children: ReactN
   }, []);
 
   return (
-    <div ref={box} data-window className={`relative aspect-[32/15] w-full overflow-hidden lg:aspect-auto lg:h-[600px] ${light}`}>
+    <div ref={box} data-window className="relative aspect-[2/1] w-full overflow-hidden lg:aspect-auto lg:h-[640px]">
       <div
         className="absolute top-0 left-0 w-[1280px] origin-top-left lg:static lg:w-full lg:min-w-[1280px] lg:max-w-[1440px]"
         style={scale === 1 ? undefined : { transform: `scale(${scale})` }}
