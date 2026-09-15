@@ -7,14 +7,17 @@ import { tie } from "./tie";
 const held = (node: ReactNode) => (typeof node === "string" ? tie(node) : node);
 
 /**
- * The page's one grid, hero to footer. Every section sits in the run's
- * container (48 gutters at lg, so 1344 wide at 1440 and 1632 at 1728; 24
- * below lg) and every two-column arrangement lands on the same two column
- * lines: two equal columns 80 apart at lg, and at xl a 576 right column at
- * the container's right edge with the left column taking the rest (x 48 to
- * 736 and 816 to 1392 at 1440; 48 to 1024 and 1104 to 1680 at 1728).
+ * The page's one grid, hero to footer. Every section sits in the page
+ * column (`page` in globals.css: 24 in below lg, 48 at lg, never wider than
+ * 1344, and from xl its words 32 further in, so they hold a 1280 measure at
+ * 1440 and above) and every two-column arrangement lands on the same two
+ * column lines: two equal columns 80 apart at lg, and at xl a 528 right
+ * column at the words' right edge with the left column taking the rest,
+ * which is the title's own 672 from 1440 up (x 80 to 752 and 832 to 1360 at
+ * 1440, the same lines 144 further in at 1728). Only a chapter's frame
+ * hangs out to the column's edge (`page-wide`).
  */
-export const CONTAINER = "px-6 lg:px-12";
+export const CONTAINER = "page";
 /**
  * The beat. Neighbouring sections' content sits 288 apart and a band hangs
  * what it introduces by 192, the run's own two numbers (192 and 128 below
@@ -36,7 +39,7 @@ export const SECTION = "pt-24 pb-24 sm:pt-40 sm:pb-32";
 export const SEAM = "border-t border-ink/8";
 export const HANG = "mt-32 lg:mt-48";
 export const GRID =
-  "grid min-w-0 lg:grid-cols-2 lg:gap-x-20 xl:grid-cols-[minmax(0,1fr)_36rem]";
+  "grid min-w-0 lg:grid-cols-2 lg:gap-x-20 xl:grid-cols-[minmax(0,1fr)_33rem]";
 
 type BandProps = {
   /** the section's name; a chapter's band carries none, so its claim leads */

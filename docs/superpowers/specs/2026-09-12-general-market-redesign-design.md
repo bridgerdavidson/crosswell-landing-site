@@ -307,3 +307,11 @@ Bridger's direction after the design loop: a first-time visitor should understan
 - **Copy.** The statement, the lead-in, and the four captions and their bodies are new and join Max's clearance list. The page's first "agentic AI" is now the stats section, undefined; flagged with the copy.
 - **Open.** Whether "Behind the chat is the Core" now repeats the stack is to be decided after a visual pass.
 
+## 16. The page column (hand-tuning pass, 2026-09-15)
+
+The page ran to 48 gutters at every width, so on a 1728 or wider window the content ran nearly side to side (1632 wide at 1728, about 2400 at 2560). Measured against linear.app at seven widths: Linear caps its pictures at 1344 and its words at 1280 and centres the column, so its margins grow with the window while its vertical spacing stays fixed px at every width (the two are not linked; at about 1680 its text margin happens to equal its 200 nav-to-headline gap). Of three options (cap only, cap plus Linear's text inset, a tighter 1248 cap) the owner chose the cap plus the inset.
+
+- One page column for every section, the nav, and the footer: 24 below lg, 48 at lg, never wider than 1344. From xl the words sit 32 further in (1280 from 1440 up) and only the six product frames, with their caption rows, hang out to the column's edge.
+- The grid's right column moves from 576 to 528 so the title column stays 672 from 1440 up and no claim or title re-wraps; four ledes gain a line.
+- At 1440 the words move from x 48 to 80 and the frames stay at 48; at 1728 words 224, frames 192. Below xl nothing moves. The vertical system is untouched.
+- The hero's words are centred and 848 wide, so the cap never touches them; its drawing still runs the full window.

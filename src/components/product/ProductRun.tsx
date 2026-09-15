@@ -1,3 +1,4 @@
+import { CONTAINER } from "@/components/Band";
 import Reveal from "@/components/Reveal";
 import { tie } from "@/components/tie";
 import CoreStack from "@/components/stack/CoreStack";
@@ -16,15 +17,15 @@ import Brand from "./brand/Brand";
  * Then six chapters of the Core, each a claim plus a fragment: 01 and 02
  * in the first container under a lead-in, chapter 03 its own full-bleed
  * dark band, and 04 to 06 closing the run before the fictional line and
- * the bridge into the brain section. The run's width follows the viewport
- * inside fixed 48px gutters at lg (1344 at 1440, 1632 at 1728), so the
- * product runs gutter to gutter at every width; the chapters fall on one
+ * the bridge into the brain section. The run sits in the page column
+ * (never wider than 1344, its words on a 1280 measure from 1440 up), and
+ * each frame hangs out to the column's edge; the chapters fall on one
  * beat, 288 apart (192 on phones), with the dark band padded to match.
  */
 export default function ProductRun() {
   return (
     <>
-      <section id="what-we-do" className="px-6 pt-24 sm:pt-32 lg:px-12">
+      <section id="what-we-do" className={`${CONTAINER} pt-24 sm:pt-32`}>
         <Reveal>
           <p className="type-label text-fern-deep">What we do</p>
           <h2 className="type-h2 mt-3 max-w-5xl text-ink">
@@ -38,7 +39,7 @@ export default function ProductRun() {
 
       <CoreStack />
 
-      <section className="px-6 pb-24 sm:pb-32 lg:px-12">
+      <section className={`${CONTAINER} pb-24 sm:pb-32`}>
         {/* the lead-in into the run: it picks up the stack's last caption
             (one screen) and says the chapters are a sample, 96 (64 on
             phones) over chapter 01's label, the chapters' own hang */}
@@ -53,7 +54,7 @@ export default function ProductRun() {
 
       <Chat />
 
-      <section className="px-6 pt-24 pb-24 sm:pt-32 sm:pb-32 lg:px-12">
+      <section className={`${CONTAINER} pt-24 pb-24 sm:pt-32 sm:pb-32`}>
         <div className="space-y-48 sm:space-y-72">
           <Pipeline />
           <Agents />

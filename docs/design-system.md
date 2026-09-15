@@ -158,7 +158,7 @@ carries them). Nothing else on the page is amber, red, or blue.
   mask gradient (double stops). The content edge stays crisp. The dissolve
   is written in pixels so every frame fades over the same distance: 160 at
   the right, 120 at the bottom (120 both ways on phones), so the product
-  reaches the gutter. A mask exists only where the frame cuts the product:
+  reaches the page column's edge. A mask exists only where the frame cuts the product:
   below lg a frame takes its product's own height and carries no bottom
   mask, and a shell that fits its frame carries none at all; only a shell
   that still overflows the frame's width keeps the right fade. Every frame is
@@ -390,17 +390,25 @@ carries them). Nothing else on the page is amber, red, or blue.
 
 ## Layout
 
-- One container and one grid, hero to footer. Every section, the nav, the
-  closing band, and the footer sit in the run's container: 48 gutters at
-  lg (1344 wide at 1440, 1632 at 1728), 24 below lg, so the page has one
-  left edge, x 48, at lg and above. The grid has two column lines: two
-  equal columns 80 apart at lg, and at xl a 576 right column at the
-  container's right edge with the left column taking the rest (48 to 736
-  and 816 to 1392 at 1440; 48 to 1024 and 1104 to 1680 at 1728; 48 to 472
-  and 552 to 976 at 1024). Every two-column arrangement on the page lands
-  on those lines; the hero's words and the closing bookend centre in the
-  container. The shared code is `src/components/Band.tsx` (the container,
-  the grid, the beat, the band, and its split form).
+- One column and one grid, hero to footer, after Linear's page. Every
+  section, the nav, the closing band, and the footer sit in the page
+  column (`.page` in globals.css, `CONTAINER` in code): 24 in from the
+  window below lg, 48 at lg, and never wider than 1344, so past 1440 the
+  column centres and a wider window widens the margins, never the content.
+  From xl the column has two edges: the words step 32 further in (a 1280
+  measure from 1440 up), and only the six product frames hang out to the
+  column's own edge (`.page-wide`). So at 1440 every word, the nav's
+  lockup and button, and every card sit on x 80 and the frames on x 48; at
+  1728 the same lines sit at 224 and 192, at 1920 at 320 and 288; at 1024
+  there is one edge, x 48. Grounds, seams, and the hero's drawing still run
+  the full window. The grid has two column lines: two equal columns 80
+  apart at lg, and at xl a 528 right column at the words' right edge with
+  the left column taking the rest, which is the title's own 672 from 1440
+  up (80 to 752 and 832 to 1360 at 1440; 224 to 896 and 976 to 1504 at
+  1728; 48 to 472 and 552 to 976 at 1024). Every two-column arrangement on
+  the page lands on those lines; the hero's words and the closing bookend
+  centre in the column. The shared code is `src/components/Band.tsx` (the
+  column, the grid, the beat, the band, and its split form).
 - The beat, in one sentence: neighbouring sections' content sits 288
   apart (192 on phones) and a band hangs what it introduces by 192 (128
   below lg), so inside any section the hang is the largest space and a
@@ -541,12 +549,12 @@ carries them). Nothing else on the page is amber, red, or blue.
   values are a ledger, not cards: three columns on five shared rows
   (subgrid: rule, name, line, "What it costs", cost), so the labels sit on
   one line across the row whatever the lines above them wrap to.
-- The product run (its intro, the six chapters, the fictional line)
-  follows the viewport inside the page's container, so the product runs
-  gutter to gutter at every width. A chapter is a band and a frame that
-  share both edges: the title band spanning the run (688 / 80 / 576 at
-  1440), 192 from the band to the frame (128 below lg, at least half the
-  band), 16 from the frame to the caption row, 288 between chapters (192
+- The product run (its intro, the six chapters, the fictional line) sits
+  in the page column like everything else. A chapter is a band and a
+  frame: the title band on the words' measure (672 / 80 / 528 from 1440
+  up), the frame and its caption row hanging 32 past it on both sides from
+  xl, 96 from the band to the frame (64 below lg), 16 from the frame to
+  the caption row, 288 between chapters (192
   on phones) and across the dark band. One skeleton for six chapters:
   chapters 05 and 06 take it too (the spec's split rhythm was withdrawn in
   the design loop's run 2), chapter 06's swatch row sitting in the caption

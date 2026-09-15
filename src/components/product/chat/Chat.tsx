@@ -3,6 +3,7 @@
 import { useEffect, useRef, type RefObject } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { CONTAINER } from "@/components/Band";
 import { chat, today } from "@/lib/saguaro";
 import { Chapter, Dot, Frame, Mark, Rail, Receipt, SendButton, Tile, TopBar, inert } from "../shared";
 import { CHUNK_EVERY, chunk, ease, grow, primeDraw, readyReplay, rise, tick } from "../shared/useSequence";
@@ -307,7 +308,7 @@ export default function Chat() {
 
   return (
     <section className="bg-charcoal-deep text-ivory">
-      <div className="px-6 py-24 sm:py-40 lg:px-12">
+      <div className={`${CONTAINER} py-24 sm:py-40`}>
         <Chapter
           dark
           claim="Ask it anything the business has written down. It answers with receipts."

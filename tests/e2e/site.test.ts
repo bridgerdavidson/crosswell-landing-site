@@ -90,6 +90,34 @@ describe("built css", () => {
   });
 });
 
+describe("page column", () => {
+  it("caps the content and hangs only the frames past the words", async () => {
+    const edges = async (width: number) =>
+      withPage(
+        async (page) => {
+          await page.goto(site.url, { waitUntil: "networkidle" });
+          return page.evaluate(() => {
+            const left = (el: Element | null) => Math.round(el!.getBoundingClientRect().left);
+            const right = (el: Element | null) => Math.round(innerWidth - el!.getBoundingClientRect().right);
+            return {
+              logo: left(document.querySelector("header img")),
+              claim: left(document.querySelector("[data-chapter] h3, main h3.type-h2")),
+              cards: left(document.querySelector("#why-crosswell .rounded-2xl")),
+              footer: left(document.querySelector("footer img")),
+              frame: [...document.querySelectorAll(".product-frame")].map((f) => [left(f), right(f)]),
+              overflow: document.documentElement.scrollWidth - innerWidth,
+            };
+          });
+        },
+        { width }
+      );
+    const frames = (n: number) => Array(6).fill([n, n]);
+    expect(await edges(1024)).toEqual({ logo: 48, claim: 48, cards: 48, footer: 48, frame: frames(48), overflow: 0 });
+    expect(await edges(1440)).toEqual({ logo: 80, claim: 80, cards: 80, footer: 80, frame: frames(48), overflow: 0 });
+    expect(await edges(1728)).toEqual({ logo: 224, claim: 224, cards: 224, footer: 224, frame: frames(192), overflow: 0 });
+  });
+});
+
 describe("what we do", () => {
   it("states what Crosswell does and draws the stack under it", async () => {
     const r = await withPage(async (page) => {

@@ -3,7 +3,7 @@ import { CONTACT_EMAIL } from "@/lib/site";
 import { CONTAINER } from "./Band";
 
 /* Chrome under the closing band, 64 above and below its one row, in the
-   page's container (the run's 48 gutters at lg). The lockup loads eagerly: next/image defaults to lazy,
+   page column, so the lockup sits on the words' edge like the nav's. The lockup loads eagerly: next/image defaults to lazy,
    which left the footer without its mark in any capture that never
    scrolled there. */
 export default function Footer() {
