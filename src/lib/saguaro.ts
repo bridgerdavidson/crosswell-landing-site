@@ -236,6 +236,32 @@ export const agenda = {
   syncedTo: "Asana",
 };
 
+/* the agenda chapter's page: today on a clock at 9:40, a short to-do list,
+   and what each teammate is in right now, with their day as busy spans */
+export type AgendaBlock = { from: number; to: number; title: string; kind: "meeting" | "focus"; people?: string[]; note?: string };
+
+export const agendaDay = {
+  blocks: [
+    { from: 9, to: 9.5, title: "Partner standup", kind: "meeting", people: ["MG", "DW", "ML", "PS", "JR"] },
+    { from: 11, to: 11.5, title: "Extension call, Cholla Creek", kind: "meeting", note: "Brief attached" },
+    { from: 13, to: 14, title: "September report, first read", kind: "focus", note: "Focus time" },
+    { from: 15, to: 16, title: "Investor call", kind: "meeting", people: ["MG", "JR"], note: "Brief attached" },
+    { from: 17, to: 18, title: "September report, second pass", kind: "focus", note: "Focus time" },
+  ] satisfies AgendaBlock[],
+  todo: [
+    { title: "Approve Draw 4, Palo Verde", done: true, meta: "8:32 am" },
+    { title: "Sign the Cholla Creek payoff letter", meta: "Drafted" },
+    { title: "Countersign the Ocotillo Commons term sheet" },
+    { title: "Confirm the Sedona survey date" },
+  ] as { title: string; done?: boolean; meta?: string }[],
+  team: [
+    { initials: "DW", name: "Dana Whitfield", now: "Site walk, Palo Verde", until: 11.5, busy: [[9, 9.5], [9.5, 11.5], [13, 14], [14.5, 15.5]] },
+    { initials: "ML", name: "Marcus Lee", now: "Term sheet review, Ocotillo Commons", until: 10.5, busy: [[9, 9.5], [9.5, 10.5], [11.5, 12.5], [15, 16]] },
+    { initials: "PS", name: "Priya Shah", now: "Servicing handoff, week two", until: 11, busy: [[9, 9.5], [9.5, 11], [13, 14], [16, 17]] },
+    { initials: "JR", name: "Jordan Reyes", now: "Investor brief for the 3:00 call", until: 12, busy: [[9, 9.5], [9.5, 12], [15, 16]] },
+  ] as { initials: string; name: string; now: string; until: number; busy: number[][] }[],
+};
+
 export const chat = {
   placeholder: "Message the Core",
   exchanges: [

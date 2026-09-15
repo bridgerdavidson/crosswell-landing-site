@@ -557,6 +557,8 @@ carries them). Nothing else on the page is amber, red, or blue.
   the agents on the run's one dark band, and the custom chapter. The chat and
   pipeline chapters were cut on 2026-09-15; the notes on chapters 03 and 04
   elsewhere in this document describe code that no longer ships.
+- The agenda chapter (spec section 19) draws the dashboard's Agenda window,
+  whole at 800 tall, static and at full opacity pending its lighting.
 - Chapter 02, Ask the Core (spec section 18), draws the pipeline window lowered
   under a wash and a bottom-left fall-off with one lit card, and lifts the
   Core out of its column on click, the product's one shadow. It is the run's

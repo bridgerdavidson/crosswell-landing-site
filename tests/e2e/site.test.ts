@@ -156,7 +156,7 @@ describe("product run", () => {
         labels: await run.locator(".type-label").count(),
         greeting: await run.getByText("Good morning, Morgan.").count(),
         filed: await run.getByText("Filed overnight").count(),
-        window: await run.locator("[data-window]").count(),
+        window: await run.locator("[data-window]").filter({ hasText: "Good morning, Morgan." }).count(),
         captions: await page.getByText("Interactive demo · Sample data").count(),
       };
     });
@@ -212,19 +212,20 @@ describe("chapter 02, ask the Core", () => {
 });
 
 describe("the agenda chapter", () => {
-  it("renders the agenda with Draw 4 checked and synced", async () => {
+  it("draws the day, the to-do list, and the team in the dashboard's window", async () => {
     const r = await withPage(async (page) => {
       await page.goto(site.url, { waitUntil: "networkidle" });
-      const run = page.locator("main > section").filter({ has: page.getByText("Your morning, already assembled.") });
+      const chap = page.locator("[data-chapter='agenda']");
       return {
-        panels: await run.locator(".product-track > section").count(),
-        synced: await run.getByText("synced to Asana").count(),
-        rocks: await run.getByText("Deploy $6M into new loans").count(),
+        window: await chap.locator("[data-window]").count(),
+        date: await chap.getByText("Thursday, September 17").count(),
+        synced: await chap.getByText("Synced to Asana").count(),
+        standup: await chap.getByText("Partner standup").count(),
+        todo: await chap.getByText("Approve Draw 4, Palo Verde").count(),
+        team: await chap.getByText("What the team is up to").count(),
       };
     });
-    expect(r.panels).toBe(3);
-    expect(r.synced).toBe(1);
-    expect(r.rocks).toBe(1);
+    expect(r).toEqual({ window: 1, date: 1, synced: 1, standup: 1, todo: 1, team: 1 });
   });
 });
 
@@ -453,16 +454,10 @@ describe("resilience", () => {
     expect(r.agents).toBe(true);
   });
 
-  it("holds the agenda finished under reduced motion, and composes it under motion", async () => {
+  it("draws the agenda still, with no pin, under motion and under reduced motion", async () => {
     const read = () => ({
-      pin: getComputedStyle(document.querySelector(".product-pin > .product-frame")!).position,
-      hold:
-        (document.querySelector(".product-pin") as HTMLElement).offsetHeight -
-        (document.querySelector(".product-pin > .product-frame") as HTMLElement).offsetHeight,
-      rock: document.querySelector("[data-rock='draw-4'] [data-rock-num]")!.textContent,
-      checks: [...document.querySelectorAll("[data-seq='mark-day'], [data-seq='mark-team']")].map(
-        (el) => getComputedStyle(el).opacity
-      ),
+      pins: document.querySelectorAll("[data-chapter='agenda'] .product-pin").length,
+      height: Math.round((document.querySelector("[data-chapter='agenda'] [data-window]") as HTMLElement).getBoundingClientRect().height),
     });
     const reduced = await withPage(
       async (page) => {
@@ -471,18 +466,12 @@ describe("resilience", () => {
       },
       { reducedMotion: true }
     );
-    expect(reduced.pin).toBe("relative");
-    expect(reduced.hold).toBe(0);
-    expect(reduced.rock).toBe("70");
-    expect(reduced.checks).toEqual(["1", "1"]);
     const motion = await withPage(async (page) => {
       await page.goto(site.url, { waitUntil: "networkidle" });
       return page.evaluate(read);
     });
-    expect(motion.pin).toBe("sticky");
-    expect(motion.hold).toBe(1800);
-    expect(motion.rock).toBe("68");
-    expect(motion.checks).toEqual(["0", "0"]);
+    expect(reduced).toEqual({ pins: 0, height: 800 });
+    expect(motion).toEqual({ pins: 0, height: 800 });
   });
 
   it("holds the agents and custom chapters finished under reduced motion, and composes them under motion", async () => {
