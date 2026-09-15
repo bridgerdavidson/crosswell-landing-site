@@ -412,8 +412,8 @@ export default function Core() {
   return (
     <div data-chapter="core">
       <Chapter
-        claim="Ask the Core about whatever you're looking at."
-        body="Open a deal, a borrower, or a file and the Core already has it in hand. Tap a question or ask your own: it answers with its sources, then hands you the work it prepared, waiting for your yes."
+        claim="Your whole business, a question away. The next step, a yes away."
+        body="Open a client, a project, or a file and the Core already has it in hand. It answers from everything your business has on record, from meeting notes to email threads, and shows where each answer came from. Then it takes the next step, drafting the follow-up and holding it for your yes."
         controls={
           <button type="button" onClick={replay} className={`product-replay ${lifted ? "is-ready" : ""}`} tabIndex={lifted ? 0 : -1}>
             Replay

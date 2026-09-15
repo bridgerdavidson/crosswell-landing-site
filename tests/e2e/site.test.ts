@@ -200,7 +200,7 @@ describe("chapter 02, ask the Core", () => {
       },
       { reducedMotion: true }
     );
-    expect(r.claim).toBe("Ask the Core about whatever you're looking at.");
+    expect(r.claim).toBe("Your whole business, a question away. The next step, a yes away.");
     expect(r.restChips).toBe(0);
     expect(r.who).toBe(1);
     expect(r.sendAfterWho).toBe(0);
@@ -246,7 +246,7 @@ describe("the agents chapter", () => {
     const run = r.order.slice(r.order.indexOf("Your morning, already assembled."));
     expect(run.slice(0, 5)).toEqual([
       "Your morning, already assembled.",
-      "Ask the Core about whatever you're looking at.",
+      "Your whole business, a question away. The next step, a yes away.",
       "One list, and the whole team is on it.",
       "Each one has a single job. They run while you don't.",
       "It looks like your company, not ours.",
