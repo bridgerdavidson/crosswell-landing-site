@@ -15,7 +15,7 @@
   /* the dashboard's chrome (its rail and the Core's column): a step darker
      than the page's ivory, so a window reads against the page without an
      outline */
-  --color-chrome: #e9e5dc;
+  --color-chrome: #e3dfd4;
 
   --font-serif: var(--font-newsreader), "Georgia", serif;
   --font-sans: var(--font-instrument), system-ui, sans-serif;
