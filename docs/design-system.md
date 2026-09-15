@@ -245,8 +245,10 @@ carries them). Nothing else on the page is amber, red, or blue.
   off" lands it.
 - Inside a frame the only text is what the product would show its own
   user. No informational pills, headers, captions, or feature labels
-  inside a frame. Every description sits outside: the claim, the body, the
-  caption "Interactive demo · Sample data".
+  inside a frame. Every description sits outside: the claim and the body.
+  No caption sits under a frame (the "Interactive demo · Sample data"
+  caption was removed in the hand-tuning pass, 2026-09-15); the run's one
+  fictional line carries the disclosure.
 
 ## Motion
 

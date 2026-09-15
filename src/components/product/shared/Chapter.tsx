@@ -25,9 +25,8 @@ type ChapterProps = {
  * the page that does; its reveal follows the band's by the site's one 80ms
  * step. Everything that
  * describes the product lives here, outside the frame; the frame only ever
- * shows the product. The demo caption and any site control (Replay, chapter
- * 06's swatches) sit under the frame in the caption row, outside it, per
- * the demo rules.
+ * shows the product. Any site control (Replay, chapter 06's swatches) sits
+ * under the frame in a row of its own, outside it.
  */
 export function Chapter({
   claim,
@@ -36,13 +35,8 @@ export function Chapter({
   controls,
   children,
 }: ChapterProps) {
-  const quiet = dark ? "text-ivory/60" : "text-ink/60";
-  const caption = (
-    <div className="mt-4 flex flex-wrap items-baseline gap-x-5 gap-y-1">
-      <p className={`type-caption ${quiet}`}>Interactive demo · Sample data</p>
-      {controls}
-    </div>
-  );
+  /* no caption under the frame; the run's one fictional line says it is sample data */
+  const caption = controls && <div className="mt-4 flex flex-wrap items-baseline gap-x-5 gap-y-1">{controls}</div>;
 
   return (
     <div>

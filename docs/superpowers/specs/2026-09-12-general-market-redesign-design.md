@@ -138,7 +138,7 @@ Interaction: a swatch cross-fades the accent everywhere in the mini dashboard ov
 ### 5.4 Demo rules (from Website Direction v6, unchanged)
 
 - Invented company, invented people, invented and rounded numbers. Nothing derived from a real client, even renamed.
-- "Interactive demo · Sample data" visible at every chapter, as a caption outside the frame.
+- ~~"Interactive demo · Sample data" visible at every chapter, as a caption outside the frame.~~ Removed from all six chapters in the hand-tuning pass (2026-09-15), pending Max; the fictional line below and the lead-in's "sample private lending company" carry the disclosure.
 - "Saguaro Capital is fictional. Every number is invented, rounded demo data." appears once, under the run.
 - The demo demonstrates the pattern (ask, cited answer, approval, hand-off). It promises nothing Crosswell would not build.
 - No control is ever labeled "Try the product."
@@ -323,4 +323,3 @@ The six chapters were animated over a dashboard that was never designed as a pro
 - The site's copy of the window and its parts lives in `src/components/dashboard/` (`ui.tsx`, `Home.tsx`, `worlds.ts`, `WindowFrame.tsx`). The prototype keeps its own copy and never imports site code: design changes land in the prototype, and a chapter copies what it needs and adapts it.
 - Chapter 01 renders the Home window, display only and static (nothing in it scrolls; its old entrance sequence and Replay went with the old markup), lit after Linear's treatment rather than dimming the whole frame and lifting one element. Tried and dropped along the way: a 600 crop dissolving on an L (bottom and right), which read as the picture ending beside an empty Core column, and a bottom-only fade of the whole crop, which cut the Core's message box off so the column read as a panel of text. As built: the whole window at 640 tall, its rail, top bar, and Core column crisp to its bottom edge, and the page inside it dissolving into the app's ground over its last 200 (`.dashboard-fade`). The Core's column shows it as a chat: one exchange ("Which draws are due this week?", the answer, its sources, "You" and "The Core" with the time, from `today.ask`) above its message box, empty on its placeholder. Chapter 03 keeps its own question, and may lift the Core out as a floating chat card over its dashboard (Linear's thread-over-board composition), held in reserve.
 - `WindowFrame`: the whole window at 640 tall; from lg it takes the frame's width, never under 1280 or over 1440, so from 1440 up it shows whole and below that its right side crops; below lg the 1280 by 640 window scales down whole (a phone pass is still owed).
-- Open: the caption "Interactive demo · Sample data" is inaccurate for chapter 01.

@@ -169,7 +169,7 @@ describe("product run", () => {
     expect(r.greeting).toBe(1);
     expect(r.filed).toBe(1);
     expect(r.window).toBe(1);
-    expect(r.captions).toBeGreaterThanOrEqual(1);
+    expect(r.captions).toBe(0);
   });
 });
 
@@ -276,7 +276,7 @@ describe("chapter 06 and the whole run", () => {
     expect(r.pageAccent).toBe("");
   });
 
-  it("carries six captions and the fictional line once", async () => {
+  it("carries no demo captions and the fictional line once", async () => {
     const r = await withPage(async (page) => {
       await page.goto(site.url, { waitUntil: "networkidle" });
       return {
@@ -286,7 +286,7 @@ describe("chapter 06 and the whole run", () => {
         indexes: await page.locator(".type-label-index").count(),
       };
     });
-    expect(r.captions).toBe(6);
+    expect(r.captions).toBe(0);
     expect(r.fictional).toBe(1);
     expect(r.bridge).toBe(1);
     expect(r.indexes).toBe(0);
@@ -430,7 +430,7 @@ describe("resilience", () => {
       { js: false }
     );
     expect(r.greeting).toBe(true);
-    expect(r.captions).toBe(6);
+    expect(r.captions).toBe(0);
     expect(r.answer).toBe(true);
   });
 
