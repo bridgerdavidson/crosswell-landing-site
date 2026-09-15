@@ -242,13 +242,13 @@ describe("the agents chapter", () => {
     });
     expect(r.bands).toBeGreaterThanOrEqual(1);
     expect(r.agents).toBe(1);
-    expect(r.claim).toBe("Each one has a single job. They run while you don't.");
+    expect(r.claim).toBe("You name the work. We build the agent that does it.");
     const run = r.order.slice(r.order.indexOf("Your morning, already assembled."));
     expect(run.slice(0, 5)).toEqual([
       "Your morning, already assembled.",
       "Your whole business, a question away. The next step, a yes away.",
       "One list, and the whole team is on it.",
-      "Each one has a single job. They run while you don't.",
+      "You name the work. We build the agent that does it.",
       "It looks like your company, not ours.",
     ]);
   });
