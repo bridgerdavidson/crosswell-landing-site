@@ -226,7 +226,7 @@ function LiftedCore({
   return (
     <aside
       aria-hidden={!lifted}
-      className={`absolute top-0 z-30 flex flex-col border border-ink/12 bg-ivory transition-[transform,box-shadow,border-radius] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
+      className={`absolute top-0 z-30 flex flex-col bg-chrome transition-[transform,box-shadow,border-radius] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
         lifted ? "rounded-xl" : "pointer-events-none invisible rounded-r-xl opacity-0"
       }`}
       style={{

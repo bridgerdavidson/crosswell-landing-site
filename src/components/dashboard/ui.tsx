@@ -149,7 +149,7 @@ export function AppWindow({
 
   return (
     <div
-      className={`flex ${size} overflow-hidden rounded-xl border border-ink/15 bg-ivory font-sans text-[13px] text-ink antialiased`}
+      className={`flex ${size} overflow-hidden rounded-xl bg-chrome font-sans text-[13px] text-ink antialiased`}
       style={vars}
     >
       <Rail theme={theme} pages={pages} active={active} />
@@ -222,7 +222,7 @@ function Rail({ theme, pages, active }: { theme: Theme; pages: Page[]; active: s
 /* the Core's column: empty until a chapter shows it at work */
 function CorePanel({ children, draft }: { children?: ReactNode; draft?: string }) {
   return (
-    <aside className="flex w-[384px] flex-none flex-col border-l border-ink/8 bg-ivory">
+    <aside className="flex w-[384px] flex-none flex-col border-l border-ink/8 bg-chrome">
       <div className="flex h-12 flex-none items-center border-b border-ink/8 pr-3 pl-5">
         <p className="text-[14px] font-semibold">The Core</p>
         <div className="ml-auto flex items-center text-ink/50">

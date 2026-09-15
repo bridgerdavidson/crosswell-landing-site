@@ -12,6 +12,10 @@
   --color-charcoal: #3d3a34;
   --color-charcoal-deep: #34312c;
   --color-ink: #1a1915;
+  /* the dashboard's chrome (its rail and the Core's column): a step darker
+     than the page's ivory, so a window reads against the page without an
+     outline */
+  --color-chrome: #e9e5dc;
 
   --font-serif: var(--font-newsreader), "Georgia", serif;
   --font-sans: var(--font-instrument), system-ui, sans-serif;
