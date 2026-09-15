@@ -93,6 +93,60 @@ export const today = {
   ],
 };
 
+/* a reply to one of chapter 02's questions: what the Core checked, what it
+   says, where that came from, and anything it prepared for a yes */
+export type CoreReply = {
+  working: string[];
+  answer: string;
+  sources: string[];
+  prepared?: { title: string; meta: string; body?: string; edit: string };
+};
+
+/* chapter 02, Ask the Core: Redrock Flips with its loan documents out and
+   gone quiet, the one card lit on the board. (Chapter 04 still shows it at
+   term sheet; reconcile when that chapter is rebuilt.) */
+export const core = {
+  selected: "redrock",
+  stage: "Docs out",
+  note: "Quiet 21 days",
+  numbers: [
+    { label: "Loan amount", value: "$385K" },
+    { label: "Rate", value: "12.25%" },
+    { label: "Days at stage", value: "21" },
+  ],
+  questions: ["Who is this?", "What's outstanding?", "Draft an update"],
+  replies: {
+    "Who is this?": {
+      working: ["Reading the borrower file", "Checking the broker's notes"],
+      answer:
+        "Redrock Flips is a first-time borrower, introduced by Canyon State Brokers in July. This deal is a Tempe fix and flip, $385K at 12.25% on a three-bedroom rehab. The loan documents went out August 27 and haven't come back signed.",
+      sources: ["broker intro", "deal record"],
+    },
+    "What's outstanding?": {
+      working: ["Reading the deal record", "Checking with the follow-up agent"],
+      answer:
+        "Two things. The signed loan documents and the entity's operating agreement are both still out, 21 days after the docs went out. The follow-up agent has a check-in drafted and waiting for your yes.",
+      sources: ["loan documents", "follow-up draft"],
+      prepared: {
+        title: "Check-in to Redrock Flips",
+        meta: "Drafted by the follow-up agent. Asks for the signed documents and the operating agreement by Friday.",
+        edit: "Review",
+      },
+    },
+    "Draft an update": {
+      working: ["Reading the deal record", "Writing it in your voice"],
+      answer: "Here's a short update for Redrock Flips. It picks up from the August 27 documents and asks for both signatures by Friday.",
+      sources: ["deal record", "your sent mail"],
+      prepared: {
+        title: "Update to Redrock Flips",
+        meta: "Draft, in your voice",
+        body: "Hi, following up on the loan documents we sent August 27. Once they're signed and we have the operating agreement, we can set a closing date. Could you send both back by Friday?",
+        edit: "Edit",
+      },
+    },
+  } satisfies Record<string, CoreReply>,
+};
+
 export const agenda = {
   yourDay: [
     { time: "8:30", title: "Approve Draw 4, Palo Verde", ref: "draw-4", done: true },

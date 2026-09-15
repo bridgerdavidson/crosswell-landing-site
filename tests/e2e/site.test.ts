@@ -104,14 +104,14 @@ describe("page column", () => {
               claim: left(document.querySelector("[data-chapter] h3, main h3.type-h2")),
               cards: left(document.querySelector("#why-crosswell .rounded-2xl")),
               footer: left(document.querySelector("footer img")),
-              frame: [...document.querySelectorAll(".product-frame, [data-window]")].map((f) => [left(f), right(f)]),
+              frame: [...document.querySelectorAll(".product-frame, [data-window], [data-core-stage]")].map((f) => [left(f), right(f)]),
               overflow: document.documentElement.scrollWidth - innerWidth,
             };
           });
         },
         { width }
       );
-    const frames = (n: number) => Array(6).fill([n, n]);
+    const frames = (n: number) => Array(7).fill([n, n]);
     expect(await edges(1024)).toEqual({ logo: 48, claim: 48, cards: 48, footer: 48, frame: frames(48), overflow: 0 });
     expect(await edges(1440)).toEqual({ logo: 80, claim: 80, cards: 80, footer: 80, frame: frames(48), overflow: 0 });
     expect(await edges(1728)).toEqual({ logo: 224, claim: 224, cards: 224, footer: 224, frame: frames(192), overflow: 0 });
@@ -173,7 +173,44 @@ describe("product run", () => {
   });
 });
 
-describe("chapter 02", () => {
+describe("chapter 02, ask the Core", () => {
+  it("waits for each click and gives each question its own reply", async () => {
+    const r = await withPage(
+      async (page) => {
+        await page.goto(site.url, { waitUntil: "networkidle" });
+        const chap = page.locator("[data-chapter='core']");
+        const claim = await chap.locator("h3").first().textContent();
+        const restChips = await chap.getByRole("button", { name: "Who is this?" }).count();
+        await chap.getByRole("button", { name: "Ask the Core" }).click();
+        await chap.getByRole("button", { name: "Who is this?" }).click();
+        const who = await chap.getByText("Redrock Flips is a first-time borrower", { exact: false }).count();
+        const sendAfterWho = await chap.getByRole("button", { name: "Send", exact: true }).count();
+        await chap.getByRole("button", { name: "What's outstanding?" }).click();
+        const outstanding = await chap.getByText("The signed loan documents and the entity's operating agreement", { exact: false }).count();
+        await chap.getByRole("button", { name: "Send", exact: true }).click();
+        return {
+          claim,
+          restChips,
+          who,
+          sendAfterWho,
+          outstanding,
+          nudged: await chap.getByText("Nudged today").count(),
+          left: await chap.getByRole("button", { name: "Draft an update" }).count(),
+        };
+      },
+      { reducedMotion: true }
+    );
+    expect(r.claim).toBe("Ask the Core about whatever you're looking at.");
+    expect(r.restChips).toBe(0);
+    expect(r.who).toBe(1);
+    expect(r.sendAfterWho).toBe(0);
+    expect(r.outstanding).toBe(1);
+    expect(r.nudged).toBe(1);
+    expect(r.left).toBe(1);
+  });
+});
+
+describe("the agenda chapter", () => {
   it("renders the agenda with Draw 4 checked and synced", async () => {
     const r = await withPage(async (page) => {
       await page.goto(site.url, { waitUntil: "networkidle" });

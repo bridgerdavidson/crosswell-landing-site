@@ -3,6 +3,7 @@ import Reveal from "@/components/Reveal";
 import { tie } from "@/components/tie";
 import CoreStack from "@/components/stack/CoreStack";
 import Today from "./today/Today";
+import Core from "./core/Core";
 import Agenda from "./agenda/Agenda";
 import Chat from "./chat/Chat";
 import Pipeline from "./pipeline/Pipeline";
@@ -14,10 +15,10 @@ import Brand from "./brand/Brand";
  * the stack draws the system under it (the Core, the work layer, the
  * dashboard); its frame holds through the scroll, so the beat to the
  * statement above and to the run below comes from the frame's own air.
- * Then six chapters of the Core, each a claim plus a fragment: 01 and 02
- * in the first container under a lead-in, chapter 03 its own full-bleed
- * dark band, and 04 to 06 closing the run before the fictional line and
- * the bridge into the brain section. The run sits in the page column
+ * Then the chapters, each a claim plus the product: Today, Ask the Core,
+ * and the agenda in the first container under a lead-in, the chat chapter
+ * its own full-bleed dark band, and the pipeline, agents, and brand closing
+ * the run before the fictional line and the bridge into the brain section. The run sits in the page column
  * (never wider than 1344, its words on a 1280 measure from 1440 up), and
  * each frame hangs out to the column's edge; the chapters fall on one
  * beat, 288 apart (192 on phones), with the dark band padded to match.
@@ -50,6 +51,7 @@ export default function ProductRun() {
         </Reveal>
         <div className="space-y-48 sm:space-y-72">
           <Today />
+          <Core />
           <Agenda />
         </div>
       </section>

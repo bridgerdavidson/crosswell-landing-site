@@ -553,6 +553,10 @@ carries them). Nothing else on the page is amber, red, or blue.
   values are a ledger, not cards: three columns on five shared rows
   (subgrid: rule, name, line, "What it costs", cost), so the labels sit on
   one line across the row whatever the lines above them wrap to.
+- Chapter 02, Ask the Core (spec section 18), draws the pipeline window lowered
+  under a wash and a bottom-left fall-off with one lit card, and lifts the
+  Core out of its column on click, the product's one shadow. It is the run's
+  one chapter a visitor steps through by clicking.
 - Chapter 01 draws the designed dashboard window (`src/components/dashboard`,
   spec section 17) instead of a cut fragment: the whole window at 640 tall,
   static, its page dissolving into the app's ground over its last 200
