@@ -412,7 +412,13 @@ export default function Core() {
   return (
     <div data-chapter="core">
       <Chapter
-        claim="Your whole business, a question away. The next step, a yes away."
+        claim={
+          /* each sentence takes its own lines, so the break falls between them, never inside the second */
+          <>
+            <span className="block">Your whole business, a question away.</span>{" "}
+            <span className="block">The next step, a yes away.</span>
+          </>
+        }
         body="Open a client, a project, or a file and the Core already has it in hand. It answers from everything your business has on record, from meeting notes to email threads, and shows where each answer came from. Then it takes the next step, drafting the follow-up and holding it for your yes."
         controls={
           <button type="button" onClick={replay} className={`product-replay ${lifted ? "is-ready" : ""}`} tabIndex={lifted ? 0 : -1}>
