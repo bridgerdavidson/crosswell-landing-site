@@ -531,16 +531,18 @@ describe("resilience", () => {
     expect(opacity).toBe("1");
   });
 
-  it("never scrolls horizontally on a phone", async () => {
-    const overflow = await withPage(
-      async (page) => {
+  it("never scrolls horizontally, with motion, under reduced motion, or without JavaScript", async () => {
+    const overflow = (opts: { width: number; reducedMotion?: boolean; js?: boolean }) =>
+      withPage(async (page) => {
         await page.goto(site.url, { waitUntil: "networkidle" });
         return page.evaluate(
           () => document.scrollingElement!.scrollWidth - document.documentElement.clientWidth
         );
-      },
-      { width: 390 }
-    );
-    expect(overflow).toBe(0);
+      }, opts);
+    for (const width of [390, 1024, 1280]) {
+      expect(await overflow({ width }), `motion at ${width}`).toBe(0);
+      expect(await overflow({ width, reducedMotion: true }), `reduced motion at ${width}`).toBe(0);
+      expect(await overflow({ width, js: false }), `no JavaScript at ${width}`).toBe(0);
+    }
   });
 });

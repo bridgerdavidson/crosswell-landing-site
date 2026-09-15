@@ -263,6 +263,11 @@ body {
    is the beat to the statement above and the run below. */
 .stack-scroll {
   padding-block: 96px;
+  /* the finished stack's plates run past the stage's box once they are
+     tilted, and past the window on narrow screens; with motion the sticky
+     frame clips them, and here the section does. clip, not hidden, so the
+     section is no scroll container and the frame can still stick */
+  overflow-x: clip;
 }
 .stack-frame {
   display: flex;
