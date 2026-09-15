@@ -560,7 +560,8 @@ carries them). Nothing else on the page is amber, red, or blue.
 - The agenda chapter (spec section 19) draws the dashboard's Agenda window,
   whole at 800 tall and static, with the morning lit: a 74% wash of the
   page's ground over everything but a soft oval at the top, and the window
-  dissolving into the page over its last 160.
+  dissolving into the page over its last 160 at the bottom and 420 at the
+  right.
 - Chapter 02, Ask the Core (spec section 18), draws the pipeline window lowered
   under a wash and a bottom-left fall-off with one lit card, and lifts the
   Core out of its column on click, the product's one shadow. It is the run's
