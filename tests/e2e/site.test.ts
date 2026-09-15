@@ -104,7 +104,7 @@ describe("page column", () => {
               claim: left(document.querySelector("[data-chapter] h3, main h3.type-h2")),
               cards: left(document.querySelector("#why-crosswell .rounded-2xl")),
               footer: left(document.querySelector("footer img")),
-              frame: [...document.querySelectorAll(".product-frame")].map((f) => [left(f), right(f)]),
+              frame: [...document.querySelectorAll(".product-frame, [data-window]")].map((f) => [left(f), right(f)]),
               overflow: document.documentElement.scrollWidth - innerWidth,
             };
           });
@@ -158,7 +158,8 @@ describe("product run", () => {
         claim: await run.locator("h3").first().textContent(),
         labels: await run.locator(".type-label").count(),
         greeting: await run.getByText("Good morning, Morgan.").count(),
-        filed: await run.getByText("14 filed overnight").count(),
+        filed: await run.getByText("Filed overnight").count(),
+        window: await run.locator("[data-window]").count(),
         captions: await page.getByText("Interactive demo · Sample data").count(),
       };
     });
@@ -167,6 +168,7 @@ describe("product run", () => {
     expect(r.labels).toBe(0);
     expect(r.greeting).toBe(1);
     expect(r.filed).toBe(1);
+    expect(r.window).toBe(1);
     expect(r.captions).toBeGreaterThanOrEqual(1);
   });
 });

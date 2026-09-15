@@ -551,6 +551,10 @@ carries them). Nothing else on the page is amber, red, or blue.
   values are a ledger, not cards: three columns on five shared rows
   (subgrid: rule, name, line, "What it costs", cost), so the labels sit on
   one line across the row whatever the lines above them wrap to.
+- Chapter 01 draws the designed dashboard window (`src/components/dashboard`,
+  spec section 17) instead of a cut fragment: full opacity, no masks, while
+  its lighting is reworked. The fragment rules above still govern chapters
+  02 to 06 until each is rebuilt on the dashboard.
 - The product run (its intro, the six chapters, the fictional line) sits
   in the page column like everything else. A chapter is a band and a
   frame: the title band on the words' measure (672 / 80 / 528 from 1440

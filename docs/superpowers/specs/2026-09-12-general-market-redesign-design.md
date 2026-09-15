@@ -315,3 +315,12 @@ The page ran to 48 gutters at every width, so on a 1728 or wider window the cont
 - The grid's right column moves from 576 to 528 so the title column stays 672 from 1440 up and no claim or title re-wraps; four ledes gain a line.
 - At 1440 the words move from x 48 to 80 and the frames stay at 48; at 1728 words 224, frames 192. Below xl nothing moves. The vertical system is untouched.
 - The hero's words are centred and 848 wide, so the cap never touches them; its drawing still runs the full window.
+
+## 17. The dashboard, designed first (hand-tuning pass, 2026-09-15)
+
+The six chapters were animated over a dashboard that was never designed as a product, so the product was designed first, page by page, in a local prototype (`/prototype/dashboard`, not shipped): Home, Agenda, Pipeline, and Agents for Saguaro Capital, and two other businesses' Homes for chapter 06. The structure follows Max's Saguaro demo; the look was restyled after a ui-ux-pro-max audit to move off a generated feel (one sans family and a tight scale, page titles in the top bar, no boxed stat cards or chips, the accent only where a decision or state lives). The Core is a column down the right of every page, empty until a chapter shows it at work. The rail is icons only and carries the company's own mark.
+
+- The shared window and its parts live in `src/components/dashboard/` (`ui.tsx`, `Home.tsx`, `worlds.ts`, `WindowFrame.tsx`); the prototype imports them.
+- Chapter 01 now renders the Home window at full opacity with no masks, display only (its old entrance sequence and Replay went with the old markup). Next: light one part of the page and let the rest recede into the app's own ground, after Linear's treatment, rather than dimming the whole frame and lifting one element.
+- `WindowFrame`: from lg the window takes the frame's width, never under 1280 or over 1440, 800 tall, so from 1440 up it shows whole and below that its right side crops; below lg the 1280 by 800 window scales down whole (a phone pass is still owed).
+- Open: the caption "Interactive demo · Sample data" is inaccurate for chapter 01.
