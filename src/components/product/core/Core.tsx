@@ -324,15 +324,22 @@ function LiftedCore({
  * under 1280 or over 1440) less 12 of room for the lifted Core to hang past
  * its right edge, with 24 above and below for it to hang past its top and
  * bottom. A frame narrower than that scales the whole stage down to fit, so
- * the Core is never cropped; it clips sideways only without JavaScript.
+ * the Core is never cropped. It clips sideways only until it has measured
+ * (and without JavaScript), when the unscaled stage could be wider than a
+ * phone; once measured nothing overflows, and the lifted Core's shadow is
+ * free to fall past the frame's edge.
  */
 function Stage({ children, style }: { children: ReactNode; style: CSSProperties }) {
   const box = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
+  const [measured, setMeasured] = useState(false);
 
   useLayoutEffect(() => {
     const el = box.current!;
-    const measure = () => setScale(Math.min(1, el.clientWidth / (WIN.min + WIN.room)));
+    const measure = () => {
+      setScale(Math.min(1, el.clientWidth / (WIN.min + WIN.room)));
+      setMeasured(true);
+    };
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(el);
@@ -340,7 +347,12 @@ function Stage({ children, style }: { children: ReactNode; style: CSSProperties 
   }, []);
 
   return (
-    <div ref={box} data-core-stage className="relative w-full overflow-x-clip" style={{ height: (WIN.h + WIN.over * 2) * scale, ...style }}>
+    <div
+      ref={box}
+      data-core-stage
+      className={`relative w-full ${measured ? "" : "overflow-x-clip"}`}
+      style={{ height: (WIN.h + WIN.over * 2) * scale, ...style }}
+    >
       <div
         className="absolute left-0 origin-top-left"
         style={{
