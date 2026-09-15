@@ -247,7 +247,7 @@ describe("the agents chapter", () => {
     expect(run.slice(0, 5)).toEqual([
       "Your morning, already assembled.",
       "Your whole business, a question away. The next step, a yes away.",
-      "One list, and the whole team is on it.",
+      "Your day, and everyone else's, without asking.",
       "You name the work. We build the agent that does it.",
       "It looks like your company, not ours.",
     ]);

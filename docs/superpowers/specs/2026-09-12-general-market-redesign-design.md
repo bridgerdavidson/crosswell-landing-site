@@ -100,7 +100,7 @@ Sequence on scroll-in: greeting rises; tiles count up over 900ms while the spark
 Interaction: none. Replay control outside the frame.
 
 **Chapter 02. Agenda.** The scroll-driven chapter.
-Claim: "One list, and the whole team is on it."
+Claim: "One list, and the whole team is on it." (superseded, see section 19)
 Frame: a horizontal track wider than the frame, pinned for about two viewport heights. Three panels: your day (the timed agenda), the team's week (one row per person, what each is on), the quarter's rocks (progress bars).
 Scroll behavior: scroll position scrubs the track sideways. Each panel assembles as it enters the frame. At the midpoint, one choreographed moment: "Approve Draw 4" gets its check in your day, the check propagates as the pan crosses the team panel (the site-walk row flips done) and the rocks panel (the deployment rock nudges from 68 to 70), and a status chip settles: "synced to Asana." Scrolling back reverses everything.
 Mobile (below 768px): no pinning, no scrub. The three panels stack vertically and animate in on scroll; the propagation plays once.
@@ -342,7 +342,8 @@ After chapter 01 a visitor's eye goes to the Core's column, so the run's second 
 The old chapter was built for a scroll: a pinned frame panning three list panels while Draw 4 checked off, Dana's row flipped, and a rock ticked from 68 to 70. Bridger found the lists confusing and not agenda-like, and the scroll mechanic is gone. The chapter now draws the dashboard's redesigned Agenda page (`src/components/dashboard/Agenda.tsx`, data in `agendaDay` in `src/lib/saguaro.ts`): the day on a clock from 8 am to 6 pm with a line at 9:40, meetings and focus time as blocks, a short to-do list, and "What the team is up to" (each teammate's current task, when they are free, and a strip of their day). Whole window at 800 tall, static, full opacity, the Core's column empty. Marcus's current task reads "Term sheet review, Ocotillo Commons" so it no longer contradicts chapter 02's Redrock Flips.
 
 - Lighting (chosen over lighting the team): the morning is lit. An even wash of the page's ground at 74% covers the whole window except a soft oval over its top (the date, the 9:40 line and the next call, the to-do list, the top of the team), heavy enough to read as deliberate, and the window dissolves into the page over its last 160 at the bottom and its last 420 at the right, so the empty Core's column falls away.
-- Open: whether anything is clickable; the chapter's body still names "the quarter's rocks", which the page no longer shows.
+- **The band** (reworded 2026-09-15). Claim: "Your day, and everyone else's, without asking." Body: "Your meetings, your focus time, and the list waiting on you, synced with the task tool your team already uses. Beside it, what everyone else is on right now and when they're free. Finish something anywhere and it checks off everywhere." The old band named "the quarter's rocks", a panel the redesign replaced with "What the team is up to", and the claim now leads with the thing a calendar cannot do. The sync line stays because the page shows it ("Synced to Asana" in the top bar).
+- Open: whether anything is clickable.
 
 ## 20. The agents chapter, redrawn in the dark dashboard (hand-tuning pass, 2026-09-15)
 
