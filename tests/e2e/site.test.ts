@@ -162,7 +162,7 @@ describe("product run", () => {
         captions: await page.getByText("Interactive demo · Sample data").count(),
       };
     });
-    expect(r.leadIn).toBe("Here's that screen at work, inside a sample company.");
+    expect(r.leadIn).toBe("Here's that screen at work, custom built for a sample private lending company.");
     expect(r.claim).toBe("Your morning, already assembled.");
     expect(r.labels).toBe(0);
     expect(r.greeting).toBe(1);

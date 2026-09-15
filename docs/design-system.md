@@ -417,8 +417,10 @@ carries them). Nothing else on the page is amber, red, or blue.
   hang their frames closer, 96 under the band (64 below lg), so a reader
   keeps a chapter's words and its product in one view (hand-tuning pass,
   2026-09-14); 288 still falls between chapters. The run opens under the
-  stack with a lead-in, "Here's that screen at work, inside a sample
-  company." (an accent line), 96 (64 on phones) over chapter 01's label. A company section pads 160 above its content and
+  stack with a lead-in, "Here's that screen at work, custom built for a sample private
+  lending company." (an accent line, which names the sample's kind of
+  business so the finance detail reads as an example), 96 (64 on phones)
+  over chapter 01's claim. A company section pads 160 above its content and
   128 below (96 and 96 on phones); the run's light sections pad 128 and
   the two dark bands (the chat chapter's and the closing) 160 on both
   sides (96 on phones), so every pair of neighbours adds up to 288. The

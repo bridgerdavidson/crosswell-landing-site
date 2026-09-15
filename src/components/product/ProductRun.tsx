@@ -41,10 +41,12 @@ export default function ProductRun() {
 
       <section className={`${CONTAINER} pb-24 sm:pb-32`}>
         {/* the lead-in into the run: it picks up the stack's last caption
-            (one screen) and says the chapters are a sample, 96 (64 on
-            phones) over chapter 01's label, the chapters' own hang */}
+            (one screen), says the chapters are a sample built for one kind
+            of business, and names it, so a visitor outside lending reads
+            the finance detail as an example rather than the audience; 96
+            (64 on phones) over chapter 01's claim, the chapters' own hang */}
         <Reveal className="mb-16 lg:mb-24">
-          <p className="type-accent text-ink">{tie("Here's that screen at work, inside a sample company.")}</p>
+          <p className="type-accent text-ink">{tie("Here's that screen at work, custom built for a sample private lending company.")}</p>
         </Reveal>
         <div className="space-y-48 sm:space-y-72">
           <Today />
