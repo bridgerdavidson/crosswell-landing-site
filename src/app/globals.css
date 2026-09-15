@@ -109,26 +109,14 @@ body {
 }
 
 /* ---------- The dashboard window's light ----------
-   A chapter lights the corner of the window it is about and lets the rest
-   recede into the page, the way a lamp lights a desk. Two fades, one up
-   from the bottom edge (--light-bottom deep) and one in from the right
-   edge (--light-right deep), multiplied where they meet, so the dissolve
-   is an L: its long arm runs the whole bottom, its short arm climbs the
-   right side, and the corner between them turns on a curve rather than a
-   mitre. Everything above and left of both arms is at full strength.
-   Double stops on purpose (the production minifier trap, see the hero
-   mask). */
+   A chapter's window stays clear across its top and dissolves into the
+   page along its bottom edge, --light-bottom deep, so the crop reads as a
+   page that runs on rather than a picture that ends. Double stops on
+   purpose (the production minifier trap, see the hero mask). */
 .window-light {
   --light-bottom: 240px;
-  --light-right: 360px;
-  -webkit-mask-image:
-    linear-gradient(to bottom, #000 0, #000 calc(100% - var(--light-bottom)), transparent 100%),
-    linear-gradient(to right, #000 0, #000 calc(100% - var(--light-right)), transparent 100%);
-  mask-image:
-    linear-gradient(to bottom, #000 0, #000 calc(100% - var(--light-bottom)), transparent 100%),
-    linear-gradient(to right, #000 0, #000 calc(100% - var(--light-right)), transparent 100%);
-  -webkit-mask-composite: source-in;
-  mask-composite: intersect;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--light-bottom)), transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--light-bottom)), transparent 100%);
 }
 
 /* ---------- Type roles ----------

@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { HomeWorld } from "./worlds";
 import { AppWindow, Button, Icon, Label, Sources, Status } from "./ui";
 
@@ -96,11 +97,12 @@ function HomeMain({ home }: { home: HomeWorld }) {
   );
 }
 
-export function HomeScreen({ home, size }: { home: HomeWorld; size?: string }) {
+export function HomeScreen({ home, size, core }: { home: HomeWorld; size?: string; core?: ReactNode }) {
   return (
     <AppWindow
       theme={home.theme}
       size={size}
+      core={core}
       active="home"
       actions={<Button icon="plus">{home.action}</Button>}
       main={<HomeMain home={home} />}

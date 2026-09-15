@@ -74,6 +74,15 @@ export const today = {
     { title: "Broker email, Canyon State", to: "deal record" },
     { title: "Appraisal invoice, Mesa Verde", to: "accounting" },
   ] satisfies { title: string; to: string }[],
+  /* the one exchange chapter 01 shows in the Core's column, so the first
+     dashboard a visitor sees already has the Core in it; chapter 03 asks
+     its own question */
+  ask: {
+    question: "Which draws are due this week?",
+    answer:
+      "Three. Draw 4 on the Palo Verde build is checked against budget and waiting on your yes, $130K. Copper Sky's third draw is set for Friday, and Cholla Creek's seventh is waiting on Tuesday's inspection.",
+    receipts: ["draw schedules", "inspection report"],
+  },
   calendar: [
     { time: "8:30", title: "Approve Draw 4, Palo Verde" },
     { time: "9:00", title: "Partner standup" },

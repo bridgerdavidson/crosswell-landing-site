@@ -552,11 +552,11 @@ carries them). Nothing else on the page is amber, red, or blue.
   (subgrid: rule, name, line, "What it costs", cost), so the labels sit on
   one line across the row whatever the lines above them wrap to.
 - Chapter 01 draws the designed dashboard window (`src/components/dashboard`,
-  spec section 17) instead of a cut fragment: cropped to its top 600 and lit
-  from the top-left, dissolving into the page on an L (240 up from the
-  bottom, 360 in from the right, multiplied so the corner curves;
-  `.window-light`). The fragment rules above still govern chapters 02 to 06
-  until each is rebuilt on the dashboard.
+  spec section 17) instead of a cut fragment: cropped to its top 600, clear
+  across its top, dissolving into the page over its bottom 240
+  (`.window-light`), with one exchange in the Core's column. The fragment
+  rules above still govern chapters 02 to 06 until each is rebuilt on the
+  dashboard.
 - The product run (its intro, the six chapters, the fictional line) sits
   in the page column like everything else. A chapter is a band and a
   frame: the title band on the words' measure (672 / 80 / 528 from 1440

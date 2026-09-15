@@ -112,8 +112,11 @@ export function AppWindow({
   controls,
   actions,
   main,
+  core,
   size = "h-[900px] w-[1440px]",
 }: {
+  /** what the Core's column holds; empty unless a chapter shows it at work */
+  core?: ReactNode;
   /** the window's box; the site's chapters size it to their frame */
   size?: string;
   theme: Theme;
@@ -160,7 +163,7 @@ export function AppWindow({
         </div>
         <div className="min-h-0 flex-1 overflow-y-auto">{main}</div>
       </div>
-      <CorePanel />
+      <CorePanel>{core}</CorePanel>
     </div>
   );
 }
@@ -207,7 +210,7 @@ function Rail({ theme, pages, active }: { theme: Theme; pages: Page[]; active: s
 }
 
 /* the Core's column: empty until a chapter shows it at work */
-function CorePanel() {
+function CorePanel({ children }: { children?: ReactNode }) {
   return (
     <aside className="flex w-[384px] flex-none flex-col border-l border-ink/8 bg-ivory">
       <div className="flex h-12 flex-none items-center border-b border-ink/8 pr-3 pl-5">
@@ -220,7 +223,9 @@ function CorePanel() {
           ))}
         </div>
       </div>
-      <div className="flex-1" />
+      <div className="min-h-0 flex-1 overflow-hidden px-5 py-5">
+        <div className="flex flex-col gap-4">{children}</div>
+      </div>
       <div className="flex-none p-3">
         <div className="rounded-lg border border-ink/12 bg-parchment">
           <p className="px-3 pt-2.5 pb-6 text-ink/45">Ask the Core, or tell it what to do</p>
@@ -242,6 +247,26 @@ function CorePanel() {
 }
 
 /* ---------- parts ---------- */
+
+/* the Core's side of a conversation: the person's question on the accent's
+   wash, the Core's answer as plain text, and where it came from */
+export function Exchange({ question, answer, receipts }: { question: string; answer: string; receipts: string[] }) {
+  return (
+    <>
+      <div className="flex justify-end">
+        <p className="max-w-[85%] rounded-xl rounded-br-sm bg-[var(--accent-wash)] px-3 py-2 leading-[1.5] [text-wrap:balance]">
+          {question}
+        </p>
+      </div>
+      <div>
+        <p className="leading-[1.6] text-ink/85 [text-wrap:pretty]">{answer}</p>
+        <div className="mt-2.5">
+          <Sources items={receipts} />
+        </div>
+      </div>
+    </>
+  );
+}
 
 /* a section's label: the working size, weight doing the work, a count in the
    secondary tone. Plain text, not a heading: the window sits inside the
