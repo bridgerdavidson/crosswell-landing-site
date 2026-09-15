@@ -555,7 +555,7 @@ carries them). Nothing else on the page is amber, red, or blue.
   spec section 17) instead of a cut fragment: the whole window at 640 tall,
   static, its page dissolving into the app's ground over its last 200
   (`.dashboard-fade`) while the rail and the Core's column stay crisp; the
-  Core's column holds one exchange and a half-typed message. The fragment
+  Core's column holds one exchange above its empty message box. The fragment
   rules above still govern chapters 02 to 06 until each is rebuilt on the
   dashboard.
 - The product run (its intro, the six chapters, the fictional line) sits

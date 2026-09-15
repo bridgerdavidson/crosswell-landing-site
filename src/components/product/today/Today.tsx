@@ -9,7 +9,7 @@ import { Chapter } from "../shared";
  * Chapter 01: the dashboard's Home, the real window from the dashboard
  * (src/components/dashboard), whole at 640 tall, its page dissolving into
  * the app's ground above the window's bottom edge. The Core's column holds
- * one exchange about this week and a half-typed next message, so the first
+ * one exchange about this week above its empty message box, so the first
  * dashboard a visitor sees shows the Core as a chat. Static, display only.
  */
 export default function Today() {
@@ -24,7 +24,6 @@ export default function Today() {
           size="h-[640px] w-full"
           mainClassName="dashboard-fade"
           core={<Exchange {...today.ask} />}
-          draft={today.ask.draft}
         />
       </WindowFrame>
     </Chapter>

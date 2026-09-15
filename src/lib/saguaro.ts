@@ -83,8 +83,6 @@ export const today = {
       "Three. Draw 4 on the Palo Verde build is checked against budget and waiting on your yes, $130K. Copper Sky's third draw is set for Friday, and Cholla Creek's seventh is waiting on Tuesday's inspection.",
     receipts: ["draw schedules", "inspection report"],
     time: "9:38 am",
-    /* what Morgan is halfway through typing next, so the column reads as a chat */
-    draft: "Draft the payoff letter for Cholla Cr",
   },
   calendar: [
     { time: "8:30", title: "Approve Draw 4, Palo Verde" },
