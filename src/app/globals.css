@@ -124,6 +124,18 @@ body {
   mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--dashboard-fade)), transparent 100%);
 }
 
+/* ---------- The dashboard, dark ----------
+   The same window on the run's dark band, flipped the way the light one is
+   built: text on ivory, the page a step lighter than the band, the chrome a
+   step darker. The window's utilities read these colours as variables, so
+   the scope is the whole change; the accent keeps its fern and reads its
+   soft tint for text (set by the chapter's theme). */
+.dashboard-dark {
+  --color-ink: #f1eee6;
+  --color-parchment: #3b3833;
+  --color-chrome: #2b2925;
+}
+
 /* ---------- Chapter 02: Ask the Core ----------
    What arrives inside the lifted Core rises 8 into place; the deal's tag
    settles into the message box a beat after the Core lifts. Under reduced

@@ -557,6 +557,9 @@ carries them). Nothing else on the page is amber, red, or blue.
   the agents on the run's one dark band, and the custom chapter. The chat and
   pipeline chapters were cut on 2026-09-15; the notes on chapters 03 and 04
   elsewhere in this document describe code that no longer ships.
+- The agents chapter (spec section 20) draws the dashboard's Agents window on
+  the dark band in the dashboard's dark colours (`.dashboard-dark`: page a
+  step lighter than the band, chrome a step darker, text on ivory).
 - The agenda chapter (spec section 19) draws the dashboard's Agenda window,
   whole at 800 tall and static, with the morning lit: a 74% wash of the
   page's ground over everything but a soft oval at the top, and the window

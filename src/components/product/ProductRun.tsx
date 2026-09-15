@@ -57,7 +57,7 @@ export default function ProductRun() {
       {/* the run's one dark band: the agents, working while you don't */}
       <section className="bg-charcoal-deep text-ivory">
         <div className={`${CONTAINER} py-24 sm:py-40`}>
-          <Agents dark />
+          <Agents />
         </div>
       </section>
 

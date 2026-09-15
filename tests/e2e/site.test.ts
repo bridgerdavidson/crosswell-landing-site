@@ -253,24 +253,21 @@ describe("the agents chapter", () => {
     ]);
   });
 
-  it("renders five agents and the hand-off", async () => {
-    // the settled roster; under motion the count opens on the live
-    // moment's value and ticks down to this one
-    const r = await withPage(
-      async (page) => {
-        await page.goto(site.url, { waitUntil: "networkidle" });
-        const run = page.locator("[data-chapter='05']");
-        return {
-          rows: await run.locator("[data-agent]").count(),
-          running: await run.getByText("1 running").count(),
-          handoff: await run.getByText("Hand it off").count(),
-        };
-      },
-      { reducedMotion: true }
-    );
-    expect(r.rows).toBe(5);
-    expect(r.running).toBe(1);
-    expect(r.handoff).toBe(1);
+  it("draws the Agents page in the dashboard's dark colours", async () => {
+    const r = await withPage(async (page) => {
+      await page.goto(site.url, { waitUntil: "networkidle" });
+      const chap = page.locator("[data-chapter='05']");
+      const dark = chap.locator(".dashboard-dark");
+      return {
+        window: await chap.locator("[data-window]").count(),
+        dark: await dark.count(),
+        agents: await chap.getByText(/^(Inbox|Follow-up|Report|Screening|Filing) agent$/).count(),
+        review: await chap.getByText("Review 3 drafts").count(),
+        spares: await chap.getByText("Ready to add").count(),
+        ink: await dark.evaluate((el) => getComputedStyle(el).getPropertyValue("--color-ink").trim()),
+      };
+    });
+    expect(r).toEqual({ window: 1, dark: 1, agents: 5, review: 1, spares: 1, ink: "#f1eee6" });
   });
 });
 
@@ -474,18 +471,11 @@ describe("resilience", () => {
     expect(motion).toEqual({ pins: 0, height: 800 });
   });
 
-  it("holds the agents and custom chapters finished under reduced motion, and composes them under motion", async () => {
-    const read = () => {
-      const roster = document.querySelector("[data-chapter='05']")!;
-      return {
-        count: roster.querySelector("[data-running]")!.textContent,
-        inbox: roster.querySelector("[data-agent='inbox'] [data-status]")!.textContent,
-        inboxLog: getComputedStyle(roster.querySelector("[data-agent='inbox'] [data-log]")!).display,
-        handoffRow: getComputedStyle(roster.querySelector("[data-handoff-row]")!).display,
-        accent: getComputedStyle(document.querySelector("[data-chapter='06'] .product-shell")!).getPropertyValue("--accent").trim(),
-        pressed: document.querySelector("[data-chapter='06'] button[aria-pressed='true']")!.textContent,
-      };
-    };
+  it("holds the custom chapter finished under reduced motion and under motion", async () => {
+    const read = () => ({
+      accent: getComputedStyle(document.querySelector("[data-chapter='06'] .product-shell")!).getPropertyValue("--accent").trim(),
+      pressed: document.querySelector("[data-chapter='06'] button[aria-pressed='true']")!.textContent,
+    });
     const reduced = await withPage(
       async (page) => {
         await page.goto(site.url, { waitUntil: "networkidle" });
@@ -493,20 +483,12 @@ describe("resilience", () => {
       },
       { reducedMotion: true }
     );
-    expect(reduced.count).toBe("1");
-    expect(reduced.inbox).toBe("3 drafts ready for your yes");
-    expect(reduced.inboxLog).toBe("grid");
-    expect(reduced.handoffRow).toBe("none");
     expect(reduced.accent).toBe("#4e7a4e");
     expect(reduced.pressed).toContain("Saguaro Capital");
     const motion = await withPage(async (page) => {
       await page.goto(site.url, { waitUntil: "networkidle" });
       return page.evaluate(read);
     });
-    expect(motion.count).toBe("2");
-    expect(motion.inbox).toBe("Reading 14 new");
-    expect(motion.inboxLog).toBe("none");
-    expect(motion.handoffRow).toBe("none");
     expect(motion.accent).toBe("#4e7a4e");
     expect(motion.pressed).toContain("Saguaro Capital");
   });

@@ -343,3 +343,10 @@ The old chapter was built for a scroll: a pinned frame panning three list panels
 
 - Lighting (chosen over lighting the team): the morning is lit. An even wash of the page's ground at 74% covers the whole window except a soft oval over its top (the date, the 9:40 line and the next call, the to-do list, the top of the team), heavy enough to read as deliberate, and the window dissolves into the page over its last 160 at the bottom and its last 420 at the right, so the empty Core's column falls away.
 - Open: whether anything is clickable; the chapter's body still names "the quarter's rocks", which the page no longer shows.
+
+## 20. The agents chapter, redrawn in the dark dashboard (hand-tuning pass, 2026-09-15)
+
+The old chapter played a six-second live moment over a fragment (rows arriving, the inbox counting down, statuses settling, a log opening), with rows that opened their logs and a "Hand it off" composer. It now draws the dashboard's redesigned Agents page (`src/components/dashboard/Agents.tsx`): the five agents with status, last result, and last run, the inbox agent's log open with "Review 3 drafts", the status filters, and "Ready to add". Handing off work belongs to the Core now, so the composer is gone.
+
+- The chapter keeps the run's one dark band, so the window is the dashboard in dark colours (chosen over a light window on the band, or moving the band): `.dashboard-dark` in globals.css overrides the window's colour variables in its scope, text on ivory, the page #3b3833 a step lighter than the band, the chrome #2b2925 a step darker, mirroring the light window. Saguaro's theme there reads fern-soft for text and the selected tab, a fern wash that reads on charcoal (#414b3e), and the mark in fern-soft (`public/demo/saguaro-mark-light.svg`).
+- Whole window at 800 tall, static, full opacity, the Core's column empty. Open: lighting and any interaction; the body still says "chasing the silent deal".
