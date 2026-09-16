@@ -17,12 +17,14 @@ const LIT = "radial-gradient(ellipse 620px 380px at 450px 260px, transparent 0%,
    right side, where the empty Core sits (agenda-fade, globals.css); below lg
    the window is whole and the frame's own right fade does the leaving */
 
-/* the phone's crop: from the window's corner across the day and the whole of
-   the to-do and team column's words, the Core's empty column off the screen;
-   the window is 640 tall there, the day dissolving into the app's ground
-   above its bottom edge (the page runs on), so the frame holds the morning,
-   the early afternoon, and the first of the team in about 330 */
-const PHONE = { x: 0, y: 0, width: 740, height: 640, fade: 72 };
+/* the phone's crop: from the window's corner across the day (400 wide below
+   lg, see AgendaScreen) and the whole of the to-do and team column, the fade
+   short so it takes only the column's empty right and the Core's column off
+   the screen; the window is 640 tall there, the day dissolving into the
+   app's ground above its bottom edge (the page runs on), so the frame holds
+   the morning, the early afternoon, the list, and the first of the team in
+   about 290 */
+const PHONE = { x: 0, y: 0, width: 850, height: 640, fade: 40 };
 
 /**
  * The agenda chapter: the dashboard's Agenda page, the real window from the

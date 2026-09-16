@@ -58,7 +58,8 @@ function DayView() {
               </p>
               <p className={`truncate text-[12px] ${past ? "" : "text-ink/62"} ${short ? "" : "mt-0.5"}`}>
                 {clock(b.from)} to {clock(b.to)}
-                {b === next && <span className="font-medium text-[var(--accent-deep)]">, {until(b.from)}</span>}
+                {/* the countdown hides below lg, where the day is narrower and the next call's line must still fit */}
+                {b === next && <span className="font-medium text-[var(--accent-deep)] max-lg:hidden">, {until(b.from)}</span>}
                 {b.note && !short && <span>, {b.note.toLowerCase()}</span>}
                 {b.note && short && b !== next && <span>, {b.note.toLowerCase()}</span>}
               </p>
@@ -113,7 +114,11 @@ export function AgendaScreen({ theme, size, mainClassName }: { theme: Theme; siz
         </>
       }
       main={
-        <div className="grid grid-cols-[minmax(0,1fr)_280px] gap-10 px-7 pt-6 pb-10">
+        /* from lg the day takes what the column leaves it; below lg, where the
+           window is cropped for a phone, the day is 400 wide (the standup's row
+           and the date line both still fit) with a tighter gap and a 264 aside,
+           so the to-do and team column sits inside the crop */
+        <div className="grid grid-cols-[minmax(0,1fr)_280px] gap-10 px-7 pt-6 pb-10 max-lg:grid-cols-[400px_264px] max-lg:gap-6">
           <section className="min-w-0">
             <div className="flex items-end justify-between gap-6">
               <div>
@@ -122,12 +127,13 @@ export function AgendaScreen({ theme, size, mainClassName }: { theme: Theme; siz
                   {meetings} meetings, {focus} blocks of focus time, and {open} things to do.
                 </p>
               </div>
+              {/* the day's arrows hide below lg, where the narrower day has room for the date and Today only */}
               <div className="flex items-center gap-1">
-                <span className="flex h-7 w-7 items-center justify-center rounded-md border border-ink/12 text-ink/62">
+                <span className="flex h-7 w-7 items-center justify-center rounded-md border border-ink/12 text-ink/62 max-lg:hidden">
                   <Icon name="back" size={14} />
                 </span>
                 <Button>Today</Button>
-                <span className="flex h-7 w-7 items-center justify-center rounded-md border border-ink/12 text-ink/62">
+                <span className="flex h-7 w-7 items-center justify-center rounded-md border border-ink/12 text-ink/62 max-lg:hidden">
                   <Icon name="chevron" size={14} />
                 </span>
               </div>
