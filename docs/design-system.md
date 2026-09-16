@@ -566,9 +566,11 @@ carries them). Nothing else on the page is amber, red, or blue.
   drawn line, blurred) takes the window's bottom-left corner.
 - The custom chapter (spec section 21) draws the real window and rebuilds the
   page inside it for three businesses in turn, looping while it is on screen
-  with nothing to click: the colours tween, the mark and the rail's pages
-  change, and every block travels from its counterpart's place in the last
-  layout. Blocks translate, never scale.
+  with nothing to click, in three beats: the page empties out to bare
+  sections, the sections travel and resize into the next business's layout
+  (with the colours, the mark and the rail's pages), and the new page fills
+  them in. Content is never scaled; the bare sections carry the change of
+  shape.
 - The agenda chapter (spec section 19) draws the dashboard's Agenda window,
   whole at 800 tall and static, with the morning lit: a 74% wash of the
   page's ground over everything but a soft oval at the top, and the window

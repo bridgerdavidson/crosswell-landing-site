@@ -317,10 +317,11 @@ describe("the custom chapter and the whole run", () => {
       const greeting = () => chap.locator("[data-morph='greet']").textContent();
       const first = await greeting();
       const controls = await chap.locator("button, [role='button']").count();
-      /* the businesses hold about four seconds each, so two waits cover all three */
-      await page.waitForTimeout(5200);
+      /* a business holds about four seconds and takes one more to rebuild,
+         so two waits past five seconds cover all three */
+      await page.waitForTimeout(5600);
       const second = await greeting();
-      await page.waitForTimeout(4700);
+      await page.waitForTimeout(5000);
       const third = await greeting();
       return {
         seen: [first, second, third],
@@ -524,7 +525,7 @@ describe("resilience", () => {
         await page.goto(site.url, { waitUntil: "networkidle" });
         const chap = page.locator("[data-chapter='06']");
         await chap.scrollIntoViewIfNeeded();
-        await page.waitForTimeout(5200);
+        await page.waitForTimeout(5600);
         return page.evaluate(read);
       },
       { reducedMotion: true }

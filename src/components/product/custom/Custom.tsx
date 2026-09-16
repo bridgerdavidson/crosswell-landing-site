@@ -13,17 +13,20 @@ import { Chapter } from "../shared";
 /**
  * Chapter 06: the same product, built three ways. The window never swaps
  * and there is nothing to click. While the chapter is on screen the page
- * inside it rebuilds itself, business by business: the colours tween, the
- * mark and the rail's pages change, and the body rearranges, every block
- * travelling from where it was in the last company's layout to where it
- * belongs in this one. What has no counterpart rises in behind it, which
- * is the part that reads as built for them. The lender's four numbers
- * stretch into the distributor's four trucks, then gather into the firm's
- * five days. Reduced motion holds the lender's page still.
+ * inside it rebuilds itself, business by business, in three beats: the
+ * page empties out, leaving its sections as bare blocks; those blocks
+ * travel and resize into the next business's layout, carrying the colours
+ * and the mark with them; then the new page fills them in. The lender's
+ * four numbers become the distributor's four trucks, then gather into the
+ * firm's five days. Reduced motion holds the lender's page still.
  */
 
 const HOLD = 3.8;
-const MORPH = 0.85;
+/* the three beats: empty, rearrange, fill */
+const CLEAR = 0.22;
+const MOVE = 0.58;
+const FILL = 0.34;
+const MORPH = CLEAR + MOVE + FILL;
 
 type Step = { id: string; theme: Theme; pages: Page[]; action: string; body: ReactNode };
 
@@ -40,7 +43,7 @@ const varsOf = (t: Theme) =>
 type Box = { left: number; top: number; width: number; height: number };
 type Rects = Map<string, Box>;
 
-/** every named block in the body, placed against the page's own box so a
+/** every named block in the page, placed against the window's own box so a
     scroll between one business and the next cannot skew the travel */
 function measure(page: HTMLElement | null, base: HTMLElement | null): Rects {
   const rects: Rects = new Map();
@@ -53,16 +56,12 @@ function measure(page: HTMLElement | null, base: HTMLElement | null): Rects {
   return rects;
 }
 
-/** the outgoing page, left in place as a copy so it can fall away under the new one */
-function ghostOf(page: HTMLElement, into: HTMLElement) {
-  const copy = page.firstElementChild?.cloneNode(true) as HTMLElement | undefined;
-  if (!copy) return null;
-  copy.setAttribute("aria-hidden", "true");
-  copy.style.position = "absolute";
-  copy.style.inset = "0";
-  copy.style.pointerEvents = "none";
-  into.appendChild(copy);
-  return copy;
+/** one bare section, the shape a block leaves behind when its content goes */
+function shellAt(box: Box, into: HTMLElement) {
+  const el = document.createElement("div");
+  el.style.cssText = `position:absolute;border-radius:8px;background:color-mix(in oklab, var(--color-ink) 7%, transparent);left:${box.left}px;top:${box.top}px;width:${box.width}px;height:${box.height}px;opacity:0`;
+  into.appendChild(el);
+  return el;
 }
 
 export default function Custom() {
@@ -72,7 +71,8 @@ export default function Custom() {
   const win = useRef<HTMLDivElement>(null);
   const main = useRef<HTMLDivElement>(null);
   const page = useRef<HTMLDivElement>(null);
-  const ghosts = useRef<HTMLDivElement>(null);
+  const layer = useRef<HTMLDivElement>(null);
+  const shells = useRef<Map<string, HTMLElement>>(new Map());
   const before = useRef<Rects>(new Map());
   const first = useRef(true);
 
@@ -82,18 +82,27 @@ export default function Custom() {
       setStill(true);
       return;
     }
-    let id: number | undefined;
+    let loop: number | undefined;
+    let swap: number | undefined;
+
+    /* beat one: the page empties out and its sections are left standing */
     const tick = () => {
-      before.current = measure(page.current, main.current);
-      if (page.current && ghosts.current) ghostOf(page.current, ghosts.current);
-      setStep((s) => (s + 1) % STEPS.length);
+      const from = measure(page.current, main.current);
+      before.current = from;
+      shells.current.clear();
+      layer.current!.replaceChildren();
+      from.forEach((box, key) => shells.current.set(key, shellAt(box, layer.current!)));
+      gsap.to(page.current, { opacity: 0, duration: CLEAR, ease: "power2.in" });
+      gsap.to([...shells.current.values()], { opacity: 1, duration: CLEAR * 0.8, ease: "power2.out" });
+      swap = window.setTimeout(() => setStep((s) => (s + 1) % STEPS.length), CLEAR * 1000);
     };
+
     const io = new IntersectionObserver(
       ([e]) => {
-        if (e.isIntersecting && id === undefined) id = window.setInterval(tick, (HOLD + MORPH) * 1000);
-        else if (!e.isIntersecting && id !== undefined) {
-          clearInterval(id);
-          id = undefined;
+        if (e.isIntersecting && loop === undefined) loop = window.setInterval(tick, (HOLD + MORPH) * 1000);
+        else if (!e.isIntersecting && loop !== undefined) {
+          clearInterval(loop);
+          loop = undefined;
         }
       },
       { threshold: 0.35 }
@@ -101,57 +110,62 @@ export default function Custom() {
     io.observe(root.current!);
     return () => {
       io.disconnect();
-      if (id !== undefined) clearInterval(id);
+      if (loop !== undefined) clearInterval(loop);
+      if (swap !== undefined) clearTimeout(swap);
     };
   }, []);
 
-  /* the morph, run against the page that just rendered */
+  /* beats two and three, against the page that just rendered: the bare
+     sections rearrange into this business's layout, then it fills them */
   useLayoutEffect(() => {
     if (first.current) {
       first.current = false;
       return;
     }
-    const now = measure(page.current, main.current);
-    const was = before.current;
+    const to = measure(page.current, main.current);
+    const from = before.current;
     const tweens: gsap.core.Tween[] = [];
+    const blocks = page.current!.querySelectorAll<HTMLElement>("[data-morph]");
 
-    /* blocks arrive in the order they are read, so the page rebuilds down the
-       screen rather than all at once */
-    const order = [...now.entries()].sort((a, b) => a[1].top - b[1].top);
-    order.forEach(([key, rect], i) => {
-      const el = page.current!.querySelector<HTMLElement>(`[data-morph="${CSS.escape(key)}"]`);
-      if (!el) return;
-      const delay = Math.min(0.3, i * 0.022);
-      const old = was.get(key);
-      if (!old) {
-        /* nothing to travel from: this block belongs to this business alone */
-        tweens.push(gsap.fromTo(el, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: MORPH * 0.6, delay: delay + MORPH * 0.45, ease: "power2.out", clearProps: "transform,opacity" }));
+    /* the new page waits, invisible, until its sections are in place */
+    gsap.set(page.current, { opacity: 0 });
+    gsap.set(blocks, { opacity: 0 });
+
+    /* sections travel in reading order, so the layout resolves down the screen */
+    const order = [...to.entries()].sort((a, b) => a[1].top - b[1].top);
+    order.forEach(([key, box], i) => {
+      const delay = Math.min(0.16, i * 0.012);
+      const shell = shells.current.get(key);
+      if (shell) {
+        tweens.push(gsap.to(shell, { left: box.left, top: box.top, width: box.width, height: box.height, duration: MOVE, delay, ease: "power2.inOut" }));
         return;
       }
-      /* a block that has a counterpart travels from where that one stood.
-         It never scales: a list row stretched into a timeline bar would
-         smear the text inside it, so the movement carries the change. It
-         travels the whole way but only fades up in the back half, once the
-         page it is replacing has cleared, so the two are never legible at
-         once. */
-      tweens.push(
-        gsap.fromTo(el, { x: old.left - rect.left, y: old.top - rect.top }, { x: 0, y: 0, duration: MORPH, delay, ease: "power3.inOut", clearProps: "transform" })
-      );
-      tweens.push(
-        gsap.fromTo(el, { opacity: 0 }, { opacity: 1, duration: MORPH * 0.45, delay: delay + MORPH * 0.3, ease: "power2.out", clearProps: "opacity" })
-      );
+      /* a section this business has and the last one did not: it arrives as
+         the others are still moving, so the new shape is whole before it fills */
+      const made = shellAt(box, layer.current!);
+      shells.current.set(key, made);
+      tweens.push(gsap.fromTo(made, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: MOVE * 0.6, delay: delay + MOVE * 0.3, ease: "power2.out" }));
     });
 
-    /* the page it was, fading out from where it stood */
-    const leaving = ghosts.current?.children;
-    if (leaving?.length)
-      tweens.push(gsap.to(leaving, { opacity: 0, duration: MORPH * 0.35, ease: "power1.out", onComplete: () => ghosts.current?.replaceChildren() }));
+    /* a section the last business had and this one does not simply goes */
+    from.forEach((_, key) => {
+      if (to.has(key)) return;
+      const shell = shells.current.get(key);
+      if (shell) tweens.push(gsap.to(shell, { opacity: 0, scale: 0.96, duration: MOVE * 0.5, ease: "power2.in" }));
+    });
 
-    /* the colours, and the chrome that carries the business's own marks */
-    tweens.push(gsap.to(win.current, { ...varsOf(STEPS[step].theme), duration: MORPH, ease: "power2.inOut" }));
-    tweens.push(gsap.fromTo(win.current!.querySelectorAll("[data-chrome]"), { opacity: 0.15 }, { opacity: 1, duration: MORPH * 0.8, ease: "power2.out" }));
+    /* the colours and the chrome move with the sections */
+    tweens.push(gsap.to(win.current, { ...varsOf(STEPS[step].theme), duration: MOVE, ease: "power2.inOut" }));
+    tweens.push(gsap.fromTo(win.current!.querySelectorAll("[data-chrome]"), { opacity: 0.15 }, { opacity: 1, duration: MOVE * 0.8, ease: "power2.out" }));
 
-    /* kill, never revert: the colours a tween leaves behind are the state */
+    /* beat three: the sections hand over to the page that fills them */
+    tweens.push(gsap.to(page.current, { opacity: 1, duration: FILL * 0.4, delay: MOVE, ease: "none" }));
+    tweens.push(gsap.to([...shells.current.values()], { opacity: 0, duration: FILL * 0.5, delay: MOVE, ease: "power2.in", onComplete: () => layer.current?.replaceChildren() }));
+    tweens.push(
+      gsap.to(blocks, { opacity: 1, duration: FILL * 0.8, delay: MOVE + FILL * 0.15, stagger: 0.015, ease: "power2.out", clearProps: "opacity" })
+    );
+
+    /* kill, never revert: what a tween leaves behind is the state */
     return () => tweens.forEach((t) => t.kill());
   }, [step]);
 
@@ -180,7 +194,7 @@ export default function Custom() {
               main={
                 <div ref={main} className="relative h-full">
                   <div ref={page}>{active.body}</div>
-                  <div ref={ghosts} aria-hidden className="pointer-events-none absolute inset-0" />
+                  <div ref={layer} aria-hidden className="pointer-events-none absolute inset-0" />
                 </div>
               }
             />
