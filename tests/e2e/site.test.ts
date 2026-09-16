@@ -445,7 +445,7 @@ describe("the landing page after the run", () => {
 });
 
 describe("the team page", () => {
-  it("carries the values, their costs, and the three bios, then the closing call", async () => {
+  it("carries the values and their costs, then the closing call, with no bios", async () => {
     const r = await withPage(async (page) => {
       await page.goto(`${site.url}/team`, { waitUntil: "networkidle" });
       return {
@@ -456,7 +456,8 @@ describe("the team page", () => {
         heading: await page.locator("#values h2").textContent(),
         valuesText: await page.locator("#values").textContent(),
         stewardship: await page.getByText("leaves with you in open files on the day you go").count(),
-        roles: await page.locator("#team h3 + p").allTextContents(),
+        team: await page.locator("#team").count(),
+        photos: await page.locator("img[src*='team-']").count(),
         closing: await page.getByText("Nothing off the shelf fits your business").count(),
         footer: await page.locator("footer").textContent(),
         h1: await page.locator("h1").count(),
@@ -473,11 +474,12 @@ describe("the team page", () => {
     expect(r.heading).toContain("To become the most sought after name");
     expect(r.valuesText).not.toMatch(/\b(Mission|Vision)\b/);
     expect(r.stewardship).toBe(1);
-    expect(r.roles).toEqual(["Business & strategy", "Software & engineering", "Finance & operations"]);
+    expect(r.team).toBe(0);
+    expect(r.photos).toBe(0);
     expect(r.closing).toBe(1);
     expect(r.footer).toContain("Custom agentic AI, built around how your team actually works. Arizona.");
     expect(r.h1).toBe(0);
-    expect(r.order).toEqual(["values", "team"]);
+    expect(r.order).toEqual(["values"]);
     expect(r.top).toBeGreaterThanOrEqual(112);
   });
 });

@@ -61,7 +61,7 @@ Top to bottom:
 9. **How we start.** Audit, install, custom layer, the thirty-minute line, one CTA.
 10. **Beyond Core.** "Your outsourced technology arm." Two cards (custom tools and automations, the support layer). Text only; no fragment, since the agents chapter already carries the custom-layer proof.
 11. **Values.** The vision line, then Trust, Stewardship, Continuity, each with its cost line. No "Mission" or "Vision" headings. Stewardship's cost line rewritten (section 7).
-12. **Team.** Three cards, Gen 6 bios. The headshot easter egg is untouched.
+12. **Team.** Three cards, Gen 6 bios. The headshot easter egg is untouched. (Removed 2026-09-16: `/team` keeps the values and the closing call only; the bios and headshots are gone.)
 13. **Insights.** A held slot: the heading, the one-line intro, and a "first pieces publishing this fall" line. Designed later from a separate brief.
 14. **Final CTA and footer.** Closing line and CTAs unchanged. Footer line from Gen 6.
 
