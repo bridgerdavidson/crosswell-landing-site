@@ -1,11 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Newsreader, Schibsted_Grotesk } from "next/font/google";
+import { Newsreader, Instrument_Sans } from "next/font/google";
 import SafeAreaTheme from "@/components/SafeAreaTheme";
+import { SITE, SITE_DESCRIPTION, SITE_TITLE, pageMetadata } from "@/lib/site";
 import "./globals.css";
 
-const schibsted = Schibsted_Grotesk({
+const instrument = Instrument_Sans({
   subsets: ["latin"],
-  variable: "--font-schibsted",
+  variable: "--font-instrument",
   display: "swap",
 });
 
@@ -16,10 +17,20 @@ const newsreader = Newsreader({
   display: "swap",
 });
 
+/* every page overrides this with its own (lib/site.ts, pageMetadata) */
 export const metadata: Metadata = {
-  title: "Crosswell | The operating layer for financial stewards",
-  description:
-    "Crosswell Core is your firm's institutional memory, built and managed for you. Knowledge flows in, anyone can ask it anything, and custom agentic software stands on top. Made for the firms the enterprise platforms weren't built for.",
+  metadataBase: new URL(SITE),
+  ...pageMetadata({ title: SITE_TITLE, description: SITE_DESCRIPTION, path: "/" }),
+};
+
+const organization = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Crosswell Consulting",
+  url: SITE,
+  logo: `${SITE}/xw-h-lockup-dark.svg`,
+  description: SITE_DESCRIPTION,
+  areaServed: "US",
 };
 
 // iOS Safari paints its chrome with theme-color; the base pins to the same
@@ -40,7 +51,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${schibsted.variable} ${newsreader.variable}`}
+      className={`${instrument.variable} ${newsreader.variable}`}
       suppressHydrationWarning
     >
       <head>
@@ -65,6 +76,10 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: "document.documentElement.classList.add('js');",
           }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organization) }}
         />
       </head>
       <body>

@@ -1,23 +1,47 @@
 import Image from "next/image";
+import Link from "next/link";
 import { CONTACT_EMAIL } from "@/lib/site";
+import { CONTAINER } from "./Band";
 
+/* every page, in the nav's order, with contact at the end */
+const pages = [
+  { href: "/the-core", label: "The Core" },
+  { href: "/what-we-build", label: "What we build" },
+  { href: "/how-we-start", label: "How we start" },
+  { href: "/team", label: "Team" },
+  { href: "/insights", label: "Insights" },
+  { href: "/contact", label: "Contact" },
+];
+
+/* Chrome under the closing band, 64 above and below its one row, in the
+   page column, so the lockup sits on the words' edge like the nav's. The lockup loads eagerly: next/image defaults to lazy,
+   which left the footer without its mark in any capture that never
+   scrolled there. */
 export default function Footer() {
   return (
     <footer className="border-t border-ivory/10 bg-charcoal-deep pb-[env(safe-area-inset-bottom)] text-ivory">
-      <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-8 px-6 py-12 sm:flex-row sm:items-center">
+      <div className={`${CONTAINER} flex flex-col items-start justify-between gap-8 py-16 lg:flex-row lg:items-center`}>
         <div className="flex flex-col items-start gap-2.5">
           <Image
             src="/xw-h-lockup-light.svg"
             alt="Crosswell"
             width={295}
             height={36}
+            loading="eager"
             className="h-6 w-auto"
           />
-          <p className="max-w-xs text-xs text-ivory/50">
-            The technology arm for the people who manage money. Arizona.
+          <p className="type-caption max-w-xs text-ivory/60">
+            Custom agentic AI, built around how your team actually works. Arizona.
           </p>
         </div>
-        <div className="flex flex-col items-start gap-1.5 text-sm sm:items-end">
+        <nav aria-label="Pages" className="type-text flex flex-wrap gap-x-6 gap-y-2">
+          {pages.map((p) => (
+            <Link key={p.href} href={p.href} className="text-ivory/80 transition-colors hover:text-fern-soft max-md:-m-3 max-md:inline-block max-md:p-3">
+              {p.label}
+            </Link>
+          ))}
+        </nav>
+        <div className="type-text flex flex-col items-start gap-1.5 sm:items-end">
           {/* phones: negative margins cancel the padding in layout, so the
               44px hit box comes free without moving anything visually */}
           <a
@@ -26,7 +50,7 @@ export default function Footer() {
           >
             {CONTACT_EMAIL}
           </a>
-          <p className="text-xs text-ivory/45">
+          <p className="type-caption text-ivory/60">
             © 2026 Crosswell. All rights reserved.
           </p>
         </div>

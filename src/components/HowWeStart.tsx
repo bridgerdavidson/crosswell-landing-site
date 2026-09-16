@@ -1,62 +1,78 @@
+import Band, { CONTAINER, GRID, HANG, SECTION } from "./Band";
 import Reveal from "./Reveal";
-import { AUDIT_MAILTO } from "@/lib/site";
+import { CALL_MAILTO } from "@/lib/site";
+import { tie } from "./tie";
 
 /* No prices anywhere in this section, per the messaging handoff: "two weeks,
    fixed scope" is the only cost signal that ships. */
-const engagements = [
+const steps = [
   {
-    title: "The knowledge audit",
-    body: "Two weeks, fixed scope. We map where your firm's information gets dropped and what it costs you. You keep the map either way.",
+    name: "The first call",
+    when: "Thirty minutes",
+    body: "We ask how your firm handles knowledge today and how the work actually moves. Then we tell you straight whether the audit is worth it.",
+    action: { label: "Set up a call", href: CALL_MAILTO },
   },
   {
-    title: "The Core install",
-    body: "Your firm's memory, provisioned, secured, and handed over running, your team onboarded.",
+    name: "The audit",
+    when: "Two weeks, fixed scope",
+    body: "We come in and sit with your team. Where does your business keep what it knows, how does the work actually move, and where does it get dropped? We map that and design your system from it.",
   },
   {
-    title: "Core plus the custom layer",
-    body: "We design, build, and run the agentic tools your firm names, on top of the Core.",
+    name: "Build and onboarding",
+    when: "Week three on",
+    body: "We build the Core around what the audit found, then get your team onboarded and working in it. The agents and automations your team named come next, on top of it. If something breaks, we fix it. As new needs surface, we keep automating.",
   },
 ];
 
+/**
+ * How we start: three steps, as three rows on the band's own grid, so the
+ * sequence reads down the page like the run and each step's words sit on
+ * the lede column above them. The band sells the order (each step shaped
+ * by the one before it), never the exits: nothing here says a firm can
+ * stop, since the one line that did read as insecurity. The first call is a step, not a note about
+ * the audit (it sat in the band's aside and read that way), so it leads
+ * the rows and carries the one action that starts everything. Each row is
+ * the step's name with its duration as a caption, then what happens.
+ * Hairlines between, no cards (the cards were the page's last
+ * fragment-era material) and no drawings (two were tried beside the names
+ * and read badly; the words carry it).
+ */
 export default function HowWeStart() {
   return (
-    <section id="how-we-start" className="border-b border-ink/8 bg-parchment">
-      <div className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
-        <Reveal>
-          <p className="type-kicker mb-4 text-fern-deep">How we start</p>
-          <h2 className="type-h2 max-w-2xl text-ink">
-            Start small, on purpose.
-          </h2>
-        </Reveal>
+    <section id="how-we-start" className="border-y border-ink/8 bg-parchment">
+      <div className={`${CONTAINER} ${SECTION}`}>
+        <Band
+          label="How we start"
+          title="We learn your business before we build for it."
+          lede="A thirty-minute call, two weeks with your team, then the build. Each step is shaped by the one before it."
+        />
 
-        <div className="mt-14 grid gap-6 sm:grid-cols-3">
-          {engagements.map((engagement, i) => (
-            <Reveal key={engagement.title} delay={i * 120}>
-              <div className="flex h-full flex-col rounded-2xl border border-warmgray/40 bg-ivory p-7 shadow-whisper transition-shadow hover:shadow-lifted sm:p-8">
-                <h3 className="type-h3 text-ink">{engagement.title}</h3>
-                <p className="mt-2.5 leading-relaxed text-ink/70">
-                  {engagement.body}
-                </p>
-              </div>
+        <ol className={`${HANG} border-t border-ink/8`}>
+          {steps.map((step, i) => (
+            <Reveal key={step.name} delay={i * 80}>
+              <li className={`${GRID} gap-y-6 border-b border-ink/8 py-10 lg:py-12`}>
+                <div>
+                  <h3 className="type-h3 text-ink">{step.name}</h3>
+                  <p className="type-caption mt-1.5 font-medium text-fern-deep">{step.when}</p>
+                </div>
+                {/* the lede column, its cap height on the name's; the first
+                    step's action sits under its words, since that is where
+                    the process starts */}
+                <div className="max-w-xl">
+                  <p className="type-body text-ink/80">{tie(step.body)}</p>
+                  {step.action && (
+                    <a
+                      href={step.action.href}
+                      className="type-text mt-6 inline-block rounded-lg bg-fern px-6 py-3 font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep"
+                    >
+                      {step.action.label}
+                    </a>
+                  )}
+                </div>
+              </li>
             </Reveal>
           ))}
-        </div>
-
-        <Reveal delay={150}>
-          <div className="mt-10 flex flex-col items-start gap-5">
-            <p className="text-sm text-ink/60">
-              The first call is thirty minutes. We ask how your firm handles
-              knowledge today, and we tell you straight whether the audit is
-              worth it.
-            </p>
-            <a
-              href={AUDIT_MAILTO}
-              className="rounded-lg bg-fern px-6 py-3.5 text-sm font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep"
-            >
-              Start with the audit
-            </a>
-          </div>
-        </Reveal>
+        </ol>
       </div>
     </section>
   );

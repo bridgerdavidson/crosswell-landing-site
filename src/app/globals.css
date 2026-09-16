@@ -12,12 +12,20 @@
   --color-charcoal: #3d3a34;
   --color-charcoal-deep: #34312c;
   --color-ink: #1a1915;
+  /* the dashboard's chrome (its rail and the Core's column): a step darker
+     than the page's ivory, so a window reads against the page without an
+     outline */
+  --color-chrome: #e6e2d8;
 
   --font-serif: var(--font-newsreader), "Georgia", serif;
-  --font-sans: var(--font-schibsted), system-ui, sans-serif;
+  --font-sans: var(--font-instrument), system-ui, sans-serif;
 
   --shadow-whisper: 0 1px 2px rgba(26, 25, 21, 0.05), 0 4px 16px rgba(26, 25, 21, 0.06);
   --shadow-lifted: 0 2px 4px rgba(26, 25, 21, 0.06), 0 12px 32px rgba(26, 25, 21, 0.1);
+
+  /* the one curve: every transition utility (hovers, the header's height)
+     runs on it unless it names its own; durations are the utilities' own */
+  --default-transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 html {
@@ -36,6 +44,9 @@ body {
   background: var(--color-ivory);
   color: var(--color-ink);
   font-family: var(--font-sans);
+  /* the body size; anything without a role inherits it */
+  font-size: 0.9375rem;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   /* viewport-fit=cover draws edge to edge; keep flow content clear of the
@@ -66,62 +77,331 @@ body {
   color: var(--color-ivory);
 }
 
-/* ---------- Type roles ----------
-   The typographic hierarchy for the whole site. Color, spacing, and width
-   stay in utilities; these classes own family, size, weight, and rhythm.
-   Small text uses plain utilities by convention: text-sm captions,
-   text-xs labels. */
-
-.type-kicker {
-  font-size: 0.875rem;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+/* ---------- The page column ----------
+   Every section's content sits in one column that never grows past 1344:
+   24 in from the window below lg and 48 at lg, and past 1440 the column
+   centres, so a wide window widens the margins, never the content (192 at
+   1728, 288 at 1920). From xl the column has two edges, as a printed page
+   does: the words step 32 further in (a 1280 measure past 1440), and only
+   the product's frames hang out to the column's own edge (page-wide), a
+   touch wider than the claim above them. Grounds, seams, and the hero's
+   drawing still run the full window; only content keeps the column. */
+:root {
+  --page-max: 1344px;
+  --page-gutter: 24px;
+  --page-inset: 0px;
 }
+
+@media (min-width: 1024px) {
+  :root {
+    --page-gutter: 48px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --page-inset: 32px;
+  }
+}
+
+.page {
+  padding-inline: calc(max(var(--page-gutter), (100% - var(--page-max)) / 2) + var(--page-inset));
+}
+
+.page-wide {
+  margin-inline: calc(var(--page-inset) * -1);
+}
+
+/* ---------- The dashboard's fade ----------
+   The window stays whole, its rail, top bar, and Core column crisp to its
+   bottom edge; the page inside it dissolves into the app's own ground over
+   its last --dashboard-fade, so it reads as a page running on under the
+   window rather than a picture that ends. Double stops on purpose (the
+   production minifier trap, see the hero mask). */
+.dashboard-fade {
+  --dashboard-fade: 200px;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--dashboard-fade)), transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--dashboard-fade)), transparent 100%);
+}
+
+/* ---------- The window off the phone's edge ----------
+   Below lg a cropped window runs off one side of the screen and fades as it
+   goes, over its last --bleed-fade (96 unless the chapter sets it), so the
+   only edges a visitor sees are the screen's and the window's own: its
+   corners, its whole bottom edge, never a border of the frame's. Chapter 01
+   leaves to the right, chapter 02 to the left. Double stops on purpose
+   (the production minifier trap, see the hero mask). From lg the frame is
+   the window's box and needs no mask. */
+.window-bleed-right,
+.window-bleed-left {
+  --bleed-fade: 96px;
+}
+.window-bleed-right {
+  -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - var(--bleed-fade)), transparent 100%);
+  mask-image: linear-gradient(to right, #000 0, #000 calc(100% - var(--bleed-fade)), transparent 100%);
+}
+.window-bleed-left {
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--bleed-fade), #000 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 var(--bleed-fade), #000 100%);
+}
+@media (min-width: 1024px) {
+  .window-bleed-right,
+  .window-bleed-left {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
+/* ---------- Chapter 02's lowered board ----------
+   From lg the pipeline window falls away toward its bottom-left corner,
+   its outline with it, strongest beside the Core. Below lg the window is
+   whole to its bottom edge (the phone's crop shows the bottom of the
+   dashboard) and the frame's own side fade does the receding. */
+.core-falloff {
+  -webkit-mask-image: radial-gradient(ellipse 118% 190% at 100% 0%, #000 0%, #000 54%, transparent 100%);
+  mask-image: radial-gradient(ellipse 118% 190% at 100% 0%, #000 0%, #000 54%, transparent 100%);
+}
+@media (max-width: 1023px) {
+  .core-falloff {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
+/* ---------- Tap room ----------
+   Below lg the product shows at about half scale, so a 28-tall control is
+   14 on the screen. A bigger control looked out of place beside its
+   desktop-sized neighbours, so the control keeps its size and its tap
+   area grows instead: an invisible 16 above and below and 8 to each side,
+   in the window's own pixels. */
+@media (max-width: 1023px) {
+  .tap-room {
+    position: relative;
+  }
+  .tap-room::before {
+    content: "";
+    position: absolute;
+    inset: -16px -8px;
+  }
+}
+
+/* ---------- Chapter 03's dissolve ----------
+   From lg the agenda window dissolves into the page along its bottom (160)
+   and up its right side (420), where the empty Core sits. Below lg the
+   window is whole to its edges and the frame's side fade does the
+   leaving. */
+.agenda-fade {
+  -webkit-mask-image:
+    linear-gradient(to bottom, #000 0, #000 calc(100% - 160px), transparent 100%),
+    linear-gradient(to right, #000 0, #000 calc(100% - 420px), transparent 100%);
+  mask-image:
+    linear-gradient(to bottom, #000 0, #000 calc(100% - 160px), transparent 100%),
+    linear-gradient(to right, #000 0, #000 calc(100% - 420px), transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+@media (max-width: 1023px) {
+  .agenda-fade {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
+/* ---------- Chapter 05's crescent ----------
+   From lg a long crescent fade takes the agents window's bottom-left
+   corner (the chapter draws it and hands it over as --crescent). Below lg
+   the window is whole to its edges and the frame's side fade does the
+   leaving. */
+.agents-crescent {
+  -webkit-mask-image: var(--crescent);
+  mask-image: var(--crescent);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+@media (max-width: 1023px) {
+  .agents-crescent {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
+/* ---------- The dashboard, dark ----------
+   The same window on the run's dark band, flipped the way the light one is
+   built: text on ivory, the page a step lighter than the band, the chrome a
+   step darker. The window's utilities read these colours as variables, so
+   the scope is the whole change; the accent keeps its fern and reads its
+   soft tint for text (set by the chapter's theme). */
+.dashboard-dark {
+  --color-ink: #f1eee6;
+  --color-parchment: #3b3833;
+  --color-chrome: #2b2925;
+}
+
+/* ---------- Chapter 02: Ask the Core ----------
+   What arrives inside the lifted Core rises 8 into place; the deal's tag
+   settles into the message box a beat after the Core lifts. Under reduced
+   motion everything simply appears. */
+@keyframes core-rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes core-attach {
+  from { opacity: 0; transform: translateY(6px) scale(0.92); }
+  to { opacity: 1; transform: none; }
+}
+.core-rise {
+  animation: core-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.core-attach {
+  animation: core-attach 0.45s 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .core-rise,
+  .core-attach {
+    animation: none;
+  }
+}
+
+/* ---------- Chapter 05: the agents ----------
+   The request waiting in the Core's message box keeps its caret blinking,
+   so the send button beside it reads as the thing to press. Rows that
+   arrive use chapter 02's rise. */
+@keyframes agents-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.agents-caret {
+  animation: agents-blink 1.1s steps(1) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .agents-caret {
+    animation: none;
+  }
+}
+
+/* ---------- Type roles ----------
+   Seven sizes carry the page at 1440 and above: 72, 48, 24, 20, 15, 13,
+   12. Every size has exactly one line-height (1.0, 1.05, 1.3, 1.3, 1.6,
+   1.5, 1.4), so two roles that share a size share their leading. The
+   display tier is 72 / 48 / 24; the serif accent lines and the product's
+   greeting sit on the lede's rung rather than a rung of their own.
+   Serif for display, titles, claims, accent lines, and the product's
+   greeting and panel titles; sans for everything else. Color, spacing,
+   and width stay in utilities; these classes own family, size, weight,
+   line-height, tracking, and wrapping. Titles balance, the lede rags
+   pretty. See docs/design-system.md for the table. */
 
 .type-display {
   font-family: var(--font-serif);
-  font-size: clamp(3rem, 2.35rem + 2.2vw, 4.5rem);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
+  /* 52 at 768, 72 at 1440 and above */
+  font-size: clamp(3.25rem, 1.82rem + 2.98vw, 4.5rem);
+  line-height: 1;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
 }
 
+/* section titles and the chapter claims */
 .type-h2 {
   font-family: var(--font-serif);
-  font-size: clamp(2.25rem, 1.95rem + 1vw, 3rem);
-  line-height: 1.15;
+  /* 36 at 768, 48 at 1440 and above */
+  font-size: clamp(2.25rem, 1.39rem + 1.79vw, 3rem);
+  line-height: 1.05;
   letter-spacing: -0.02em;
+  text-wrap: balance;
 }
 
-.type-h3 {
-  font-size: 1.125rem;
-  font-weight: 600;
-  line-height: 1.4;
-}
-
+/* the serif line that carries a section without a title (the sinks, the
+   industries, the pull quote, the bridge into the Core); the lede's size
+   and leading in the serif voice */
 .type-accent {
   font-family: var(--font-serif);
-  font-size: clamp(1.5rem, 1.35rem + 0.5vw, 1.875rem);
-  line-height: 1.35;
+  font-size: 1.5rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
 }
 
+/* the lede: the sentence or two under a title or claim, its companion.
+   Half the title, 1.6 times the body. Ink at 80 percent in the markup. */
 .type-body {
-  font-size: 1.125rem;
-  line-height: 1.75;
+  font-size: 1.5rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  /* balanced, like the titles: a lede's last line carries weight instead of
+     leaving a two-word runt under full lines */
+  text-wrap: balance;
 }
 
-/* Mobile: the desktop clamps bottom out around a 473px viewport, so nothing
-   in the type scale adapts across 320-430px phones. These overrides scale
-   within that range and meet the desktop floor exactly at 768px. */
+/* card and person titles; shares 20 with the product's panel titles */
+.type-h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+/* the body size: running text, card text, bios, the nav, the buttons */
+.type-text {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+/* card bodies, bios, and the values' lines: short blocks in narrow boxes,
+   balanced so their last lines carry weight too. A class of its own, since
+   type-text sits outside the utilities layer and a utility would lose */
+.type-text-balanced {
+  text-wrap: balance;
+}
+
+/* below 345 the two longest card bodies (why Crosswell's first, beyond the
+   Core's first) run seven lines, past the six that balance applies to; pretty
+   keeps their last line from standing alone there */
+@media (max-width: 344px) {
+  .type-text-balanced {
+    text-wrap: pretty;
+  }
+}
+
+/* the label size: section labels (sentence case, fern-deep in the
+   markup), captions, sources, and the product's UI text */
+.type-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.type-caption {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+/* Mobile: the desktop clamps bottom out at 768px, so nothing in the type
+   scale adapts across 320-430px phones. The display and h2 scale within
+   that range and meet the desktop floor exactly at 768px; the lede sits
+   on the h3 size, so the phone ladder is 42.5, 30.8, 24, 20, 15, 13, 12
+   at 390. */
+/* the hero's display wraps greedily below 345: there the balanced wrap
+   leaves "business" alone on its third line, and the greedy one sets "The
+   operating / layer your / business actually / runs on." */
+@media (max-width: 344px) {
+  .hero-display {
+    text-wrap: wrap;
+  }
+}
+
 @media (max-width: 767px) {
   .type-display {
-    font-size: clamp(2.375rem, 1rem + 6.8vw, 3rem);
+    font-size: clamp(2.375rem, 1rem + 6.8vw, 3.25rem);
   }
   .type-h2 {
     font-size: clamp(1.75rem, 1rem + 3.8vw, 2.25rem);
   }
-  .type-accent {
-    font-size: clamp(1.25rem, 0.9rem + 1.8vw, 1.5rem);
+  .type-body {
+    font-size: 1.25rem;
   }
 }
 
@@ -145,6 +425,111 @@ body {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+}
+
+/* ---------- What we do: the stack ----------
+   Reduced motion and no-JS get the finished stack, unpinned, beside its
+   four captions as a list. Under JS with motion the section is tall, its
+   frame holds (sticky) for the whole scroll while one timeline scrubs over
+   the stack, and the captions take turns in one place; the frame's own air
+   is the beat to the statement above and the run below. */
+.stack-scroll {
+  padding-block: 96px;
+  /* the finished stack's plates run past the stage's box once they are
+     tilted, and past the window on narrow screens; with motion the sticky
+     frame clips them, and here the section does. clip, not hidden, so the
+     section is no scroll container and the frame can still stick */
+  overflow-x: clip;
+}
+.stack-frame {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+.stack-caps {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+  order: 2;
+}
+.stack-stage {
+  position: relative;
+  height: 440px;
+  order: 1;
+}
+@media (min-width: 640px) {
+  .stack-stage {
+    height: 620px;
+  }
+}
+@media (min-width: 1024px) {
+  .stack-scroll {
+    padding-block: 192px;
+  }
+  .stack-frame {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: center;
+  }
+  .stack-caps {
+    order: 1;
+  }
+  .stack-stage {
+    order: 2;
+    height: 760px;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .js .stack-scroll {
+    padding-block: 0;
+    height: calc(100svh + var(--stack-units) * 3.6svh);
+  }
+  /* the frame is as tall as the viewport is right now (dvh), not the
+     small viewport (svh): on a phone the browser's toolbar folds away as
+     the visitor scrolls down, the visible area grows by the toolbar's
+     height, and a frame fixed at the small height sat high with a gap
+     under it until the toolbar came back. The section's own height stays
+     in svh so the scroll's length never changes under the finger. */
+  .js .stack-frame {
+    position: sticky;
+    top: 0;
+    height: 100dvh;
+    overflow: hidden;
+    padding-top: 64px;
+    padding-bottom: 32px;
+    gap: 16px;
+  }
+  .js .stack-caps {
+    display: block;
+    position: relative;
+    flex: none;
+    height: 19rem;
+  }
+  .js .stack-cap {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+  }
+  .js .stack-stage {
+    flex: 1;
+    min-height: 0;
+    height: auto;
+  }
+}
+@media (prefers-reduced-motion: no-preference) and (min-width: 1024px) {
+  .js .stack-scroll {
+    height: calc(100svh + var(--stack-units) * 5svh);
+  }
+  .js .stack-frame {
+    padding-block: 0;
+    gap: 48px;
+  }
+  .js .stack-caps {
+    height: 20rem;
+  }
+  .js .stack-stage {
+    height: 100%;
   }
 }
 
@@ -193,52 +578,6 @@ body {
     transform: none;
     animation: none;
   }
-}
-
-/* Core dashboard frame: hide before paint so the tour's scroll-in is a clean
-   fade, not a flash of the ivory page showing through the black frame (the
-   timeline fades it in from here). JS-gated so no-JS shows it; reduced-motion
-   shows it immediately since the tour never runs. */
-.js .cwd-frame {
-  opacity: 0;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .js .cwd-frame {
-    opacity: 1;
-  }
-}
-
-/* ---------- Chat demo ---------- */
-
-.chat-caret {
-  display: inline-block;
-  width: 2px;
-  height: 1.05em;
-  vertical-align: text-bottom;
-  background: var(--color-fern-deep);
-  animation: caret-blink 1s steps(1) infinite;
-}
-
-@keyframes caret-blink {
-  0%, 60% { opacity: 1; }
-  61%, 100% { opacity: 0; }
-}
-
-.chat-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 9999px;
-  background: var(--color-warmgray);
-  animation: chat-dot 1.2s ease-in-out infinite;
-}
-
-.chat-dot:nth-child(2) { animation-delay: 0.15s; }
-.chat-dot:nth-child(3) { animation-delay: 0.3s; }
-
-@keyframes chat-dot {
-  0%, 100% { opacity: 0.35; transform: translateY(0); }
-  40% { opacity: 1; transform: translateY(-3px); }
 }
 
 /* ---------- Hero: the rotating woven core ---------- */
@@ -351,328 +690,41 @@ body {
   }
 }
 
-/* ---------- Trust section: the secured route ----------
-
-   Base styles are the FINISHED diagram (sealed fern route, shield,
-   closed lock) so the markup reads without JS and under reduced
-   motion. JS arms the diagram (hidden), then data-state="play"
-   runs the entrance once, on scroll-into-view. Every entrance
-   animation declares explicit from/to states and uses fill-mode
-   "both" so elements hold their pre-animation state during delays. */
-
-.trust-diagram {
-  max-width: 420px;
-  margin-inline: auto;
-}
-
-.trust-diagram[data-state="armed"] svg {
-  opacity: 0;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .trust-diagram svg {
-    transition: opacity 0.6s ease;
-  }
-}
-
-/* resting states */
-.td-route {
-  fill: none;
-  stroke: var(--color-fern-soft);
-  stroke-opacity: 0.8;
-  stroke-width: 1;
-  stroke-linecap: round;
-  stroke-dasharray: none;
-}
-
-.td-rev {
-  fill: none;
-  stroke: #fff;
-  stroke-width: 8;
-  stroke-linecap: round;
-  stroke-dasharray: 100 100;
-  stroke-dashoffset: 0;
-}
-
-.td-node,
-.td-lock-body,
-.td-shield-pop,
-.td-confirm {
-  transform-box: fill-box;
-  transform-origin: center;
-}
-
-.td-shield-face {
-  fill: var(--color-charcoal);
-}
-
-.td-shield-warmth {
-  fill: var(--color-fern-soft);
-  opacity: 0.06;
-}
-
-.td-shield-outline {
-  fill: none;
-  stroke: var(--color-fern-soft);
-  stroke-width: 1;
-  stroke-opacity: 0.8;
-  stroke-dasharray: 1 1;
-  stroke-dashoffset: 0;
-}
-
-.td-shield-inner {
-  fill: none;
-  stroke: var(--color-fern-soft);
-  stroke-width: 0.7;
-  stroke-opacity: 0.3;
-  stroke-dasharray: 1 1;
-  stroke-dashoffset: 0;
-}
-
-.td-pulse {
-  opacity: 0;
-  fill: var(--color-fern-soft);
-  offset-rotate: 0deg;
-}
-
-.td-pulse-trunk {
-  offset-path: path("M46 150 L150 150");
-}
-
-.td-pulse-b1 {
-  offset-path: path("M150 150 C190 136 214 102 254 102");
-}
-
-.td-pulse-b2 {
-  offset-path: path("M150 150 C190 164 214 198 254 198");
-}
-
-.td-halo,
-.td-confirm {
-  fill: none;
-  stroke: var(--color-fern-soft);
-  opacity: 0;
-}
-
-/* the one-shot entrance + ambient relay */
-@media (prefers-reduced-motion: no-preference) {
-  .trust-diagram[data-state="play"] .td-node {
-    animation: td-node-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-  .trust-diagram[data-state="play"] .td-node-src {
-    animation-delay: 0.05s;
-  }
-  .trust-diagram[data-state="play"] .td-node-ep {
-    animation-delay: 1.4s;
-  }
-
-  .trust-diagram[data-state="play"] .td-rev-trunk {
-    animation: td-rev-draw 0.5s cubic-bezier(0.55, 0, 0.85, 0.45) 0.3s both;
-  }
-  .trust-diagram[data-state="play"] .td-rev-branch {
-    animation: td-rev-draw 0.65s cubic-bezier(0.15, 0.55, 0.35, 1) 0.8s both;
-  }
-
-  .trust-diagram[data-state="play"] .td-route {
-    animation: td-route-seal 1.2s cubic-bezier(0.5, 0, 0.3, 1) 3.5s both;
-  }
-
-  .trust-diagram[data-state="play"] .td-shield-face {
-    animation: td-appear 0.5s ease 2.3s both;
-  }
-  .trust-diagram[data-state="play"] .td-shield-warmth {
-    animation: td-warmth 1.2s ease 3.3s both;
-  }
-  .trust-diagram[data-state="play"] .td-shield-outline {
-    animation:
-      td-shield-draw 0.9s cubic-bezier(0.5, 0, 0.25, 1) 2s both,
-      td-shield-secure 1.6s ease 3.3s both,
-      td-shield-breathe 8s ease-in-out 6s infinite;
-  }
-  .trust-diagram[data-state="play"] .td-shield-inner {
-    animation: td-shield-draw 0.9s cubic-bezier(0.5, 0, 0.25, 1) 2.2s both;
-  }
-  .trust-diagram[data-state="play"] .td-shield-pop {
-    animation: td-shield-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 3.3s;
-  }
-
-  .trust-diagram[data-state="play"] .td-lock-body {
-    animation: td-node-in 0.4s ease 2.9s both;
-  }
-  .trust-diagram[data-state="play"] .td-shackle {
-    animation:
-      td-appear 0.01s linear 2.9s both,
-      td-shackle-drop 0.15s ease-in 3.3s both;
-  }
-
-  .trust-diagram[data-state="play"] .td-confirm-1 {
-    animation: td-confirm 0.9s ease-out 4.7s both;
-  }
-  .trust-diagram[data-state="play"] .td-confirm-2 {
-    animation: td-confirm 0.9s ease-out 4.9s both;
-  }
-
-  .trust-diagram[data-state="play"] .td-pulse-trunk {
-    animation: td-run-trunk 7s linear 6s infinite;
-  }
-  .trust-diagram[data-state="play"] .td-pulse-b1,
-  .trust-diagram[data-state="play"] .td-pulse-b2 {
-    animation: td-run-branch 7s linear 6s infinite;
-  }
-  .trust-diagram[data-state="play"] .td-halo {
-    animation: td-halo-blink 7s ease 6s infinite;
-  }
-}
-
-@keyframes td-node-in {
-  from {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes td-rev-draw {
-  from { stroke-dashoffset: 100; }
-  to { stroke-dashoffset: 0; }
-}
-
-@keyframes td-route-seal {
-  from {
-    stroke-dasharray: 2.2 5;
-    stroke: var(--color-warmgray);
-    stroke-opacity: 0.5;
-  }
-  to {
-    stroke-dasharray: 7.2 0;
-    stroke: var(--color-fern-soft);
-    stroke-opacity: 0.8;
-  }
-}
-
-@keyframes td-appear {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes td-warmth {
-  0% { opacity: 0; }
-  30% { opacity: 0.14; }
-  100% { opacity: 0.06; }
-}
-
-@keyframes td-shield-draw {
-  from { stroke-dashoffset: 1; }
-  to { stroke-dashoffset: 0; }
-}
-
-@keyframes td-shield-secure {
-  0% { stroke-opacity: 0.55; }
-  30% { stroke-opacity: 1; }
-  100% { stroke-opacity: 0.8; }
-}
-
-@keyframes td-shield-breathe {
-  0%, 100% { stroke-opacity: 0.8; }
-  50% { stroke-opacity: 0.55; }
-}
-
-@keyframes td-shield-pop {
-  0%, 100% { transform: scale(1); }
-  40% { transform: scale(1.035); }
-}
-
-@keyframes td-shackle-drop {
-  from { transform: translateY(-5px); }
-  to { transform: translateY(0); }
-}
-
-@keyframes td-confirm {
-  0% {
-    opacity: 0.55;
-    transform: scale(0.7);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.9);
-  }
-}
-
-@keyframes td-run-trunk {
-  0% {
-    offset-distance: 0%;
-    opacity: 0;
-  }
-  2% { opacity: 0.9; }
-  13% {
-    offset-distance: 100%;
-    opacity: 0.9;
-  }
-  15% {
-    offset-distance: 100%;
-    opacity: 0;
-  }
-  100% {
-    offset-distance: 100%;
-    opacity: 0;
-  }
-}
-
-@keyframes td-run-branch {
-  0%, 15% {
-    offset-distance: 0%;
-    opacity: 0;
-  }
-  17% { opacity: 0.9; }
-  30% {
-    offset-distance: 100%;
-    opacity: 0.9;
-  }
-  32% { opacity: 0; }
-  100% {
-    offset-distance: 100%;
-    opacity: 0;
-  }
-}
-
-@keyframes td-halo-blink {
-  0%, 29% { opacity: 0; }
-  34% { opacity: 0.6; }
-  44% { opacity: 0; }
-  100% { opacity: 0; }
-}
-
-/* ---------- Marquee of audiences ---------- */
-
-.drift-slow {
-  animation: drift 75s linear infinite;
-}
-
-@keyframes drift {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .drift-slow {
-    animation: none;
-  }
-}
-
 /* Behind the chat: the brain map (v3 soft drop) */
 .brain-stage {
   position: relative;
   width: 100%;
   height: clamp(500px, 54vw, 660px);
 }
-/* phones: the 500px floor leaves ~215px of dead space above a width-driven
-   graph; near-square tracks the disc instead */
+/* at lg the stage is its column's width at the still's own aspect (5:4, the
+   still's viewBox), so the still and the live field draw the same disc and
+   the box is cut close to the drawing instead of floating it in a tall
+   frame. It is lifted by 3.5 percent of its height, about the drawing's
+   own inset, so the disc's top meets the section's first line */
+@media (min-width: 1024px) {
+  .brain-stage {
+    height: auto;
+    aspect-ratio: 5 / 4;
+    transform: translateY(-3.5%);
+  }
+}
+/* below lg the stage hangs under the words, and its margins cancel the
+   drawing's own inset inside the box (13 percent of the disc's box above,
+   15 below, the still's), so the hang and the beat are measured to the
+   drawing rather than to an empty frame. Phones take a square box, which
+   tracks the disc (sized by the box's smaller side), so the still and the
+   live field agree; margins in percent resolve against the width, which a
+   square box shares with its height */
 @media (max-width: 767px) {
   .brain-stage {
-    height: min(440px, 112vw);
+    height: auto;
+    aspect-ratio: 1 / 1;
+    margin: -13% 0 -15%;
+  }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .brain-stage {
+    margin: calc(clamp(500px, 54vw, 660px) * -0.13) 0 calc(clamp(500px, 54vw, 660px) * -0.15);
   }
 }
 .brain-stage .brain-still,
@@ -699,47 +751,54 @@ body {
 .brain-card {
   position: absolute; left: 0; top: 0;
   width: min(340px, 84%); transform-origin: center center;
-  background: #24221c; color: var(--color-ivory);
+  background: var(--color-charcoal-deep); color: var(--color-ivory);
   border: 1px solid rgba(241, 238, 230, 0.08);
   border-radius: 14px; padding: 16px;
-  box-shadow: 0 26px 54px -30px rgba(26, 25, 21, 0.85);
   display: flex; flex-direction: column; overflow: hidden;
   opacity: 0; pointer-events: none;
 }
 .brain-card-inner { display: flex; flex-direction: column; flex: 1; min-height: 0; width: 100%; }
-.brain-card-head { display: flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600; flex: none; }
+.brain-card-head { display: flex; align-items: center; gap: 8px; font-size: 13px; line-height: 1.5; font-weight: 600; flex: none; }
 .brain-card-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-fern-soft); flex: none; }
 .brain-card-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.brain-card-badge { flex: none; font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--color-fern-soft); background: rgba(78, 122, 78, 0.22); padding: 3px 8px; border-radius: 6px; }
+.brain-card-badge { flex: none; font-size: 12px; line-height: 1.4; font-weight: 600; color: var(--color-fern-soft); background: rgba(78, 122, 78, 0.22); padding: 2px 8px; border-radius: 6px; }
 .brain-card-body { position: relative; flex: 1; min-height: 176px; margin-top: 12px; }
 .brain-card-raw { position: absolute; inset: 0; }
-.brain-card-line { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 11.5px; line-height: 1.75; color: rgba(241, 238, 230, 0.62); margin: 0; }
+.brain-card-line { font-size: 13px; line-height: 1.5; color: rgba(241, 238, 230, 0.62); margin: 0; }
 .brain-card-line + .brain-card-line { margin-top: 8px; }
 .brain-ph { border-radius: 3px; padding: 0 2px; transition: background 0.35s ease, color 0.35s ease; }
-.brain-ph.hot { background: rgba(78, 122, 78, 0.5); color: #eef4ee; }
+.brain-ph.hot { background: rgba(78, 122, 78, 0.5); color: var(--color-ivory); }
 .brain-card-sorted { position: absolute; inset: 0; opacity: 0; display: flex; flex-direction: column; }
-.brain-card-summary { font-size: 13.5px; line-height: 1.5; color: rgba(241, 238, 230, 0.96); margin: 0; }
-.brain-card-context { font-size: 12px; line-height: 1.5; color: rgba(241, 238, 230, 0.6); margin: 8px 0 0; }
+.brain-card-summary { font-size: 13px; line-height: 1.5; color: rgba(241, 238, 230, 0.96); margin: 0; }
+.brain-card-context { font-size: 12px; line-height: 1.4; color: rgba(241, 238, 230, 0.6); margin: 8px 0 0; }
 .brain-card-tags { position: absolute; left: 0; bottom: 0; display: flex; gap: 6px; }
-.brain-card-tag { font-size: 10.5px; font-weight: 600; padding: 3px 9px; border-radius: 6px; background: rgba(78, 122, 78, 0.28); color: rgba(241, 238, 230, 0.92); opacity: 0; }
+.brain-card-tag { font-size: 12px; line-height: 1.4; font-weight: 600; padding: 2px 9px; border-radius: 6px; background: rgba(78, 122, 78, 0.28); color: rgba(241, 238, 230, 0.92); opacity: 0; }
+/* Replay takes the chapter Replays' light-ground treatment (12 / 600,
+   fern-deep). Its box sits inside the section's content: its right edge's
+   ink on the column's right edge, its bottom on the words' last line at lg
+   (the stage hangs 96.5 percent of its height below the split's top, the
+   words end 27 above that at 1440 and 1728) and on the drawing's bottom
+   below lg (the stage's -15 percent margin), so the section's last ink is
+   still where the beat says */
 .brain-replay {
-  position: absolute; right: 8px; bottom: 8px;
-  font-size: 12px; font-weight: 600; color: var(--color-fern-soft);
+  position: absolute; right: -8px; bottom: 15%;
+  font-size: 12px; line-height: 1.4; font-weight: 600; color: var(--color-fern-deep);
   background: transparent; border: 0; cursor: pointer; padding: 6px 8px; opacity: 0;
   transition: opacity 0.4s ease;
   pointer-events: none;
+}
+@media (min-width: 1024px) {
+  .brain-replay { bottom: 6%; }
 }
 .brain-stage[data-mode="live"] .brain-replay { opacity: 1; pointer-events: auto; }
 .brain-replay:focus-visible { outline: 2px solid var(--color-fern-deep); outline-offset: 2px; border-radius: 6px; }
 /* phones: readable transcript, the raw/sorted layers stop above the tag row
    instead of colliding with it, and Replay gets a 44px hit box */
 @media (max-width: 767px) {
-  .brain-card-line { font-size: 12.5px; }
   .brain-card-raw,
   .brain-card-sorted { inset: 0 0 32px; }
   .brain-replay {
-    right: 2px;
-    bottom: 0;
+    right: -14px;
     padding: 15px 14px;
   }
 }
@@ -880,17 +939,16 @@ body {
   border-bottom: 1px solid rgba(241, 238, 230, 0.12);
 }
 
+/* the index sits on the label size; the link text carries type-h2 in the
+   markup, so it is the phone's title size */
 .menu-idx {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
+  font-size: 13px;
+  line-height: 1.5;
+  font-weight: 500;
   color: var(--color-fern-soft);
 }
 
 .menu-txt {
-  font-family: var(--font-serif);
-  font-size: 32px;
-  letter-spacing: -0.01em;
   color: var(--color-ivory);
 }
 
@@ -903,18 +961,8 @@ body {
   margin-top: 14px;
   text-align: center;
   font-size: 13px;
-  color: rgba(241, 238, 230, 0.5);
-}
-
-/* phones: pad the dashboard Replay hit box to 44px without moving its text
-   (top -2px + 14px padding puts the label back at the original 12px offset;
-   right 4px + 12px padding restores the original 16px) */
-@media (max-width: 767px) {
-  .cwd-replay {
-    top: -2px;
-    right: 4px;
-    padding: 14px 12px;
-  }
+  line-height: 1.5;
+  color: rgba(241, 238, 230, 0.6);
 }
 
 /* the two-line burger that morphs into an X */
@@ -941,3 +989,894 @@ body {
 
 .nav-burger-open span:first-child { transform: translateY(3.25px) rotate(45deg); }
 .nav-burger-open span:last-child { transform: translateY(-3.25px) rotate(-45deg); }
+
+/* ---------- Product run: the fragments ----------
+   Six chapters of the Core, each a real component cut by a frame. The
+   product has no container of its own: its canvas is the page's ivory,
+   and parchment goes to the one lit surface in a frame, so nothing on the
+   page reads as a rectangle placed on it. The rail's and top bar's
+   hairlines carry the app's structure. One accent (--accent, so chapter
+   06 can retint a scoped copy), and never a shadow. Every frame is 800
+   tall at lg and above so the run keeps one beat; a product shorter than
+   that runs on and is cut. Cut edges dissolve into the page with masks
+   written in pixels so every frame dissolves over the same distance (160
+   to the right, 120 at the bottom and both ways on phones), and where
+   the frame cuts the product no fill or hairline ends on the cut: it
+   dissolves, or the surface is inset. Double stops in every mask on
+   purpose: the production minifier collapses a single stop to 0 and
+   fades the whole frame (see the hero mask above). */
+
+.product-frame {
+  --fade-x: 160px;
+  --fade-y: 120px;
+  /* how far an overflowing shell runs past the frame's right edge, so the
+     app's top-right corner (the avatar) is out of frame, never half-faded */
+  --overhang: 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.product-frame-corner {
+  -webkit-mask-image:
+    linear-gradient(to right, #000 0, #000 calc(100% - var(--fade-x)), transparent 100%),
+    linear-gradient(to bottom, #000 0, #000 calc(100% - var(--fade-y)), transparent 100%);
+  mask-image:
+    linear-gradient(to right, #000 0, #000 calc(100% - var(--fade-x)), transparent 100%),
+    linear-gradient(to bottom, #000 0, #000 calc(100% - var(--fade-y)), transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+.product-frame-right {
+  -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - var(--fade-x)), transparent 100%);
+  mask-image: linear-gradient(to right, #000 0, #000 calc(100% - var(--fade-x)), transparent 100%);
+}
+
+.product-frame-bottom {
+  -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--fade-y)), transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--fade-y)), transparent 100%);
+}
+
+/* below lg every frame takes its product's own height, so no frame is
+   cut at the bottom and no bottom mask paints; a mask exists only where
+   the frame cuts the product. A shell that still overflows the frame's
+   width (the agenda's track at md) keeps the right fade; a shell that fits
+   its frame (fitted, fit-narrow below lg, fit-phone on phones) carries no
+   mask at all. */
+@media (max-width: 1023px) {
+  .product-frame {
+    -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - var(--fade-x)), transparent 100%);
+    mask-image: linear-gradient(to right, #000 0, #000 calc(100% - var(--fade-x)), transparent 100%);
+    -webkit-mask-composite: source-over;
+    mask-composite: add;
+  }
+  .product-frame-fit,
+  .product-frame-fitnarrow {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .product-frame-fitnarrow > .product-shell {
+    min-width: 0;
+    width: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  .product-frame {
+    --fade-x: 120px;
+    --fade-y: 120px;
+  }
+  .product-frame-fitphone {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .product-frame-fitphone > .product-shell {
+    min-width: 0;
+    width: 100%;
+  }
+}
+
+/* the product itself: no fill of its own, so the page is its canvas and
+   the frame has no edges but the ones its content and its cuts make.
+   Text tones and marks are variables so a region can be dimmed without
+   compounding opacities: the shell's default is the field, everything
+   readable at exactly the floor (ink 60, weight 400, no accent: dots,
+   bars, sparklines, checks, buttons and receipts take warm gray or
+   hairline forms), and .product-lit gives the one element the eye should
+   land on its parchment surface, full ink, the weights, and the accent. */
+.product-shell {
+  --accent: var(--color-fern);
+  --accent-deep: var(--color-fern-deep);
+  --accent-soft: var(--color-fern-soft);
+  --accent-wash: var(--color-fern-wash);
+  --line: rgba(184, 178, 167, 0.3);
+  --accent-dim: rgba(78, 122, 78, 0.28);
+  --panel: var(--color-parchment);
+  --t1: rgba(26, 25, 21, 0.6);
+  --t2: rgba(26, 25, 21, 0.6);
+  --t3: rgba(26, 25, 21, 0.6);
+  /* text of 20px and larger in the field (the greeting, the numbers, the
+     panel titles) reads strong even at 60, so it sits at the periphery
+     tone and the lit element wins the blur; nothing under 20px goes below 60 */
+  --t0: rgba(26, 25, 21, 0.4);
+  --mark: var(--color-warmgray);
+  --w-strong: 400;
+  --w-num: 400;
+  display: flex;
+  min-width: 960px;
+  min-height: 100%;
+  background: transparent;
+  color: var(--t1);
+  font-size: 13px;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+}
+
+.product-shell-dark {
+  --line: rgba(241, 238, 230, 0.1);
+  --panel: var(--color-charcoal);
+  --t1: rgba(241, 238, 230, 0.6);
+  --t2: rgba(241, 238, 230, 0.6);
+  --t3: rgba(241, 238, 230, 0.6);
+  --t0: rgba(241, 238, 230, 0.4);
+  --mark: rgba(241, 238, 230, 0.35);
+}
+
+/* the lit element: the one parchment surface in the frame, full ink, its
+   own secondary text at 75, its labels at 60, its weights, and every one
+   of the chapter's accent marks */
+.product-lit {
+  --t1: var(--color-ink);
+  --t0: var(--color-ink);
+  --t2: rgba(26, 25, 21, 0.75);
+  --t3: rgba(26, 25, 21, 0.6);
+  --mark: var(--accent);
+  --w-strong: 600;
+  --w-num: 500;
+  background: var(--panel);
+  color: var(--t1);
+}
+
+/* on the dark ground the accent is fern-soft: the lit element's marks (its
+   dot, its checks) and its send button take it, the chips already do */
+.product-shell-dark .product-lit {
+  --t1: var(--color-ivory);
+  --t0: var(--color-ivory);
+  --t2: rgba(241, 238, 230, 0.75);
+  --t3: rgba(241, 238, 230, 0.6);
+  --mark: var(--accent-soft);
+}
+
+/* chapter 04 below lg: the detail panel is out of the crop and the selected
+   card is the lit element instead */
+@media (max-width: 1023px) {
+  .product-lit-narrow {
+    --t1: var(--color-ink);
+    --t0: var(--color-ink);
+    --t2: rgba(26, 25, 21, 0.75);
+    --t3: rgba(26, 25, 21, 0.6);
+    --mark: var(--accent);
+    --w-strong: 600;
+    --w-num: 500;
+    background: var(--panel);
+    color: var(--t1);
+  }
+}
+
+/* a lit panel floating over its field at lg: inset below the top bar and
+   from the frame's right cut, so it never sits inside a fade and no edge of
+   it lands on the frame */
+@media (min-width: 1024px) {
+  .product-float {
+    position: absolute;
+    top: 24px;
+    right: calc(var(--fade-x) + var(--overhang) + 24px);
+    border-radius: 0.75rem;
+    overflow: hidden;
+  }
+}
+
+/* product periphery that is not the chapter's payload (a calendar column
+   inside a fade, the dashboard behind the chat panel) sits at 40 where a
+   fade or the lit panel covers it */
+.product-periphery {
+  --t1: rgba(26, 25, 21, 0.4);
+  --t2: rgba(26, 25, 21, 0.4);
+  --t3: rgba(26, 25, 21, 0.4);
+  --mark: rgba(184, 178, 167, 0.6);
+  color: var(--t1);
+}
+
+.product-shell-dark .product-periphery {
+  --t1: rgba(241, 238, 230, 0.4);
+  --t2: rgba(241, 238, 230, 0.4);
+  --t3: rgba(241, 238, 230, 0.4);
+  --mark: rgba(241, 238, 230, 0.25);
+}
+
+/* periphery takes 40 only under a fade or the lit panel; below lg no frame
+   fades an edge, so any periphery still visible renders at the field tone
+   and no readable text under 20px sits below 60 in the open */
+@media (max-width: 1023px) {
+  .product-periphery {
+    --t1: rgba(26, 25, 21, 0.6);
+    --t2: rgba(26, 25, 21, 0.6);
+    --t3: rgba(26, 25, 21, 0.6);
+    --t0: rgba(26, 25, 21, 0.4);
+    --mark: var(--color-warmgray);
+  }
+  .product-shell-dark .product-periphery {
+    --t1: rgba(241, 238, 230, 0.6);
+    --t2: rgba(241, 238, 230, 0.6);
+    --t3: rgba(241, 238, 230, 0.6);
+    --t0: rgba(241, 238, 230, 0.4);
+    --mark: rgba(241, 238, 230, 0.35);
+  }
+}
+
+/* secondary text (sublines, notes, a row's second line) and the floor
+   (labels, times, counts); a strong word or name */
+.product-t2 {
+  color: var(--t2);
+}
+
+.product-t3 {
+  color: var(--t3);
+}
+
+.product-strong {
+  font-weight: var(--w-strong);
+}
+
+/* at lg and above an overflowing shell runs past the frame's right edge by
+   the overhang; narrower, its 960 minimum already overflows every frame */
+@media (min-width: 1024px) {
+  .product-frame-corner > .product-shell,
+  .product-frame-right > .product-shell {
+    width: calc(100% + var(--overhang));
+  }
+}
+
+/* phones crop to a single column at real scale */
+@media (max-width: 767px) {
+  .product-shell {
+    min-width: 640px;
+  }
+}
+
+/* the narrow split layout fits the product to the frame at real scale */
+.product-shell-fit {
+  min-width: 0;
+  width: 100%;
+}
+
+/* demo controls that do nothing yet are presentation only */
+.product-shell button[aria-hidden] {
+  cursor: default;
+}
+
+/* the greeting shares the lede's size and leading, in the serif */
+.product-greeting {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--t0);
+}
+
+.product-title {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  line-height: 1.3;
+  color: var(--t0);
+}
+
+/* the product's numbers share the lede's size and leading */
+.product-num {
+  font-size: 1.5rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  font-weight: var(--w-num);
+  color: var(--t0);
+}
+
+/* the smaller number in a detail panel's tiles, on the panel-title size */
+.product-num-sm {
+  font-size: 1.25rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  font-weight: var(--w-num);
+  color: var(--t0);
+}
+
+/* the product's smallest text: tile labels, notes, the line under a row.
+   On the floor tone; never under 60 percent. */
+.product-label {
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--t3);
+}
+
+.product-rail {
+  border-right: 1px solid var(--line);
+}
+
+.product-rail-idle {
+  color: var(--t3);
+}
+
+/* the current view: a hairline-toned box, no accent in the field */
+.product-rail-active {
+  background: var(--line);
+  color: var(--t1);
+}
+
+.product-topbar {
+  border-bottom: 1px solid var(--line);
+}
+
+/* in a fitted (split) frame the top bar's rule stops 24 short of the frame's
+   right edge, with the avatar inside it, so no hairline ends on the cut;
+   below lg every shell fits its frame, so every rule stops short, the
+   rail's hairline ends 24 above the frame's bottom, and a floating panel
+   becomes an inset card in flow */
+.product-topbar-inset {
+  margin-right: 24px;
+}
+
+@media (max-width: 1023px) {
+  .product-topbar:not(.product-lit) {
+    margin-right: 24px;
+  }
+  .product-rail {
+    margin-bottom: 24px;
+  }
+  .product-float {
+    flex: 1 1 auto;
+    width: auto;
+    margin: 16px 24px 24px;
+    border-radius: 0.75rem;
+    overflow: hidden;
+  }
+}
+
+/* the lit top bar (chapter 06) is an inset card with no rule */
+.product-topbar.product-lit {
+  margin: 16px 24px 0;
+  padding: 0 16px;
+  border-bottom: 0;
+  border-radius: 0.75rem;
+}
+
+/* a lit bar in a cut-right frame ends before the fade, where the floating panels do */
+@media (min-width: 1024px) {
+  .product-topbar.product-lit.product-topbar-cut {
+    margin-right: calc(var(--fade-x) + var(--overhang) + 24px);
+  }
+}
+
+.product-aside {
+  border-left: 1px solid var(--line);
+}
+
+.product-avatar {
+  display: flex;
+  width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--line);
+  color: var(--t1);
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: var(--w-strong);
+}
+
+.product-lit .product-avatar {
+  background: var(--accent-wash);
+  color: var(--accent-deep);
+}
+
+.product-shell-dark .product-lit .product-avatar {
+  background: var(--accent-dim);
+  color: var(--color-fern-soft);
+}
+
+/* tiles and cards are hairline boxes on the canvas; only the lit element
+   has a surface */
+.product-tile {
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  background: transparent;
+}
+
+.product-shell-dark .product-tile {
+  background: rgba(241, 238, 230, 0.04);
+}
+
+.product-card {
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  padding: 0.75rem 0.85rem;
+  background: transparent;
+}
+
+.product-card-active {
+  border-color: var(--mark);
+}
+
+.product-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  font-size: 12px;
+  line-height: 1.4;
+  border: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+/* on phones a long chip wraps instead of being cut by its panel's edge */
+@media (max-width: 767px) {
+  .product-chip {
+    white-space: normal;
+    text-align: left;
+  }
+}
+
+/* a receipt is quiet by default and carries the accent only inside the lit
+   element, so one set of receipts is green, not every set */
+.product-chip-accent {
+  color: var(--t2);
+}
+
+.product-lit .product-chip-accent {
+  border-color: transparent;
+  background: var(--accent-wash);
+  color: var(--accent-deep);
+}
+
+.product-shell-dark .product-lit .product-chip-accent {
+  background: var(--accent-dim);
+  color: var(--color-fern-soft);
+}
+
+.product-dot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.product-dot-accent {
+  background: var(--mark);
+}
+
+.product-dot-watch {
+  background: var(--color-warmgray);
+}
+
+.product-dot-ink {
+  background: currentColor;
+}
+
+/* a button is a hairline control in the field and a fern block only inside
+   the lit element */
+.product-button {
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  background: transparent;
+  color: var(--t1);
+  font-size: 13px;
+  font-weight: var(--w-strong);
+  padding: calc(0.4rem - 1px) calc(0.8rem - 1px);
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.product-lit .product-button {
+  border-color: transparent;
+  background: var(--accent);
+  color: var(--color-ivory);
+}
+
+.product-lit .product-button-quiet {
+  border-color: var(--line);
+  background: transparent;
+  color: inherit;
+  font-weight: 500;
+}
+
+.product-send {
+  display: flex;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--t1);
+}
+
+.product-lit .product-send {
+  border-color: transparent;
+  background: var(--accent);
+  color: var(--color-ivory);
+}
+
+.product-shell-dark .product-lit .product-send,
+.product-shell-dark .product-lit .product-button {
+  background: var(--accent-soft);
+  color: var(--color-charcoal-deep);
+}
+
+.product-input {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  padding: 0.5rem 0.5rem 0.5rem 0.9rem;
+}
+
+/* the user's own message in a thread */
+.product-bubble {
+  width: fit-content;
+  max-width: 85%;
+  margin-left: auto;
+  border-radius: 1rem;
+  border-bottom-right-radius: 0.4rem;
+  padding: 0.5rem 0.9rem;
+  background: var(--accent-wash);
+  color: var(--accent-deep);
+}
+
+.product-shell-dark .product-bubble {
+  background: var(--accent-dim);
+  color: var(--color-ivory);
+}
+
+.product-hr {
+  border-top: 1px solid var(--line);
+}
+
+.product-rule > * + * {
+  border-top: 1px solid var(--line);
+}
+
+.product-bar {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.product-bar > span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--mark);
+}
+
+/* the agenda's horizontal track: three panels wider than the frame on
+   desktop; stacked on phones (no pinning, no scrub below 768px) */
+.product-track {
+  display: flex;
+  gap: 1.5rem;
+}
+
+@media (max-width: 767px) {
+  .product-track {
+    flex-direction: column;
+  }
+}
+
+/* chapter 06's swatches: the site's control under the frame, quiet */
+.product-swatch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid rgba(26, 25, 21, 0.1);
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: rgba(26, 25, 21, 0.6);
+  transition: border-color 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.product-swatch[aria-pressed="true"] {
+  border-color: rgba(26, 25, 21, 0.4);
+}
+
+.product-swatch:hover {
+  border-color: rgba(26, 25, 21, 0.4);
+}
+
+.product-swatch > span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+/* chapter 04's board. At lg five columns grow across the overflowing
+   shell and the detail panel floats over them (it lives in the selected
+   card's list item, out of the flow, and that item sits above the other
+   cards so the panel is never under a later column). Below lg the board is
+   a snap scroller: columns at real scale, three across where the width
+   allows, one and the next peeking at 390, the peek dissolving over the
+   scroller's own short fade and the previous column's tail dissolving in
+   the padding (the frame cuts nothing here, the product does); the detail
+   sits in the flow beneath the selected card. */
+.product-card-face {
+  display: block;
+  width: 100%;
+  padding: 0;
+  text-align: left;
+}
+
+.product-card-face:not([aria-hidden]),
+.product-button:not([aria-hidden]),
+.product-row:not([aria-hidden]),
+.product-swatch {
+  cursor: pointer;
+}
+
+.product-card-face:focus-visible,
+.product-button:focus-visible,
+.product-row:focus-visible {
+  outline: 2px solid var(--accent-deep);
+  outline-offset: 2px;
+  border-radius: 0.5rem;
+}
+
+@media (min-width: 1024px) {
+  /* the open card is a flex item, so z-index lifts it above the other
+     cards without positioning it (the panel keeps the content column as
+     its containing block) */
+  .product-card-open {
+    z-index: 1;
+  }
+  .product-detail {
+    display: flex;
+    width: 360px;
+    max-height: calc(800px - 24px - var(--fade-y) - 24px);
+    flex-direction: column;
+    padding: 24px;
+  }
+  .product-detail [data-tiles="2"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1023px) {
+  .product-board {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 24px;
+    scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 24px, #000 calc(100% - 40px), transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0, #000 24px, #000 calc(100% - 40px), transparent 100%);
+  }
+  .product-board::-webkit-scrollbar {
+    display: none;
+  }
+  .product-board > section {
+    flex: 0 0 auto;
+    width: max(200px, calc((100% - 32px) / 3));
+    scroll-snap-align: start;
+  }
+  .product-detail {
+    flex: none;
+    width: auto;
+    margin: 12px 0 0;
+    padding: 12px 0 0;
+    border-top: 1px solid var(--line);
+    border-radius: 0;
+    overflow: visible;
+  }
+}
+
+/* a thread on the light ground */
+.product-shell:not(.product-shell-dark) .product-thread {
+  scrollbar-color: rgba(26, 25, 21, 0.15) transparent;
+}
+
+/* chapter 05's rows are controls that open their logs */
+.product-row {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* chapter 06's carve-out: the whole mini dashboard is the lit region (full
+   ink, the accent on every mark), with no surface of its own, so the frame
+   never reads as a box; its one parchment surface stays the top bar's */
+.product-lit-region {
+  background: transparent;
+}
+
+.product-lit .product-rail-active {
+  background: var(--accent-wash);
+  color: var(--accent-deep);
+}
+
+/* ---------- Product run: choreography ----------
+   A chapter's sequence plays once on scroll-in and then holds still. The
+   elements that play in are hidden only when JS is present (the head
+   script sets .js), so no-JS paints the finished state, and reduced
+   motion paints it too; GSAP owns them from there. The Replay control
+   sits outside the frame, under it, and appears once the chapter's
+   sequence has finished. Reduced motion keeps it: the interactive
+   chapters (the Core's, the agents') are click-driven, so Replay is how
+   a visitor puts back what they changed. */
+
+.js [data-seq] {
+  opacity: 0;
+}
+
+.product-replay {
+  display: none;
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 600;
+  color: var(--color-fern-deep);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.js .product-replay {
+  display: inline;
+}
+
+.bg-charcoal-deep .product-replay {
+  color: var(--color-fern-soft);
+}
+
+.product-replay.is-ready {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.product-replay:focus-visible {
+  outline: 2px solid var(--color-fern-deep);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* chapter 02's pin. At md and above, under JS with motion, the frame holds
+   (sticky, 80 under the nav or centered when the viewport has the room)
+   while two viewport heights scroll past, and the scroll scrubs the track
+   inside it; the pin wrapper carries the two heights after the frame so
+   the chapter keeps its place in the run. No-JS and reduced motion get the
+   flat chapter: nothing pins, nothing scrubs. */
+@media (min-width: 768px) {
+  /* the two heights are content (a sticky box is held inside its parent's
+     content box, so padding would not extend the hold) */
+  .js .product-pin::after {
+    content: "";
+    display: block;
+    height: 200vh;
+  }
+  .js .product-pin > .product-frame {
+    position: sticky;
+    top: 80px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .js .product-pin > .product-frame {
+    top: max(80px, calc((100vh - 800px) / 2));
+  }
+}
+
+/* chapter 02's Replay belongs to its phone sequence; at md and above the
+   scroll is the replay */
+@media (min-width: 768px) {
+  .js .product-replay-phone {
+    display: none;
+  }
+}
+
+/* a mark a sequence turns: the watch dot it starts on and the check it
+   draws share one 14px slot, so a row never shifts. The dot exists only
+   under the .js gate with motion; the check is the finished state. */
+.product-mark {
+  position: relative;
+  display: inline-flex;
+  width: 14px;
+  height: 14px;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-mark-pre {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+}
+
+.js .product-mark-pre {
+  opacity: 1;
+}
+
+.product-mark-check {
+  display: flex;
+}
+
+/* chapter 05's status marks: the faces a live moment plays through share
+   the mark's 14px slot. Without JavaScript only the settled face shows;
+   under the .js gate the first live face shows and the settled face,
+   carrying data-seq, waits for the sequence. */
+.product-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-face:not(.product-face-final) {
+  opacity: 0;
+}
+
+.js .product-face-first {
+  opacity: 1;
+}
+
+/* chapter 03's thread grows piece by piece under its sequence (the panel
+   hugs it); at lg it stops before the frame's bottom fade and scrolls, so
+   the lit panel never reaches the cut */
+.product-thread {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(241, 238, 230, 0.2) transparent;
+}
+
+@media (min-width: 1024px) {
+  .product-thread {
+    max-height: 512px;
+  }
+}
+
+/* the composer's text: the placeholder on the floor tone, a composed
+   message at full ink */
+.product-input-text {
+  color: var(--t3);
+}
+
+.product-input-text.is-composed {
+  color: var(--t1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js [data-seq] {
+    opacity: 1;
+  }
+  .js .product-pin::after {
+    display: none;
+  }
+  .js .product-pin > .product-frame {
+    position: relative;
+    top: auto;
+  }
+  .js .product-mark-pre {
+    opacity: 0;
+  }
+  .js .product-face-first {
+    opacity: 0;
+  }
+}

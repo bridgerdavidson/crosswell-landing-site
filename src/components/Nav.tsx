@@ -2,19 +2,26 @@
 
 import { useEffect, useState, type CSSProperties, type MouseEvent } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { CALL_MAILTO, CONTACT_EMAIL } from "@/lib/site";
 import { setMenuInk } from "./SafeAreaTheme";
 
+/* the site's pages, not the landing page's sections, from the product to
+   the process to the people; contact lives in the footer, since the call
+   button beside these is the contact action */
 const links = [
-  { href: "#how-it-works", label: "How it works" },
-  { href: "#why-crosswell", label: "Why Crosswell" },
-  { href: "#security", label: "Security" },
-  { href: "#team", label: "Team" },
+  { href: "/the-core", label: "The Core" },
+  { href: "/what-we-build", label: "What we build" },
+  { href: "/how-we-start", label: "How we start" },
+  { href: "/team", label: "Team" },
+  { href: "/insights", label: "Insights" },
 ];
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -52,37 +59,22 @@ export default function Nav() {
     };
   }, [open]);
 
-  // Smooth-scroll a nav target so its title sits just below the nav (filling the
-  // screen from there), without writing a hash to the URL (which is what made
-  // reloads jump). The section's py-24/32 top padding lives on the section
-  // itself (#how-it-works) or on an inner wrapper (the rest); we align below
-  // whichever carries it, so there's no empty gap above the title.
-  const NAV_H = 64; // scrolled nav height (h-16)
-  const TOP_GAP = 20; // small breathing room under the nav
-  const goToSection = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
+  // The wordmark on the landing page scrolls back to the top without writing
+  // a hash to the URL (which is what made reloads jump); anywhere else it is
+  // a plain link home.
+  const goHome = (e: MouseEvent<HTMLAnchorElement>) => {
+    if (pathname !== "/") return;
     e.preventDefault();
     setOpen(false);
-    const id = href.slice(1);
-    if (id === "top") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      return;
-    }
-    const el = document.getElementById(id);
-    if (!el) return;
-    const padded =
-      (parseFloat(getComputedStyle(el).paddingTop) || 0) > 0
-        ? el
-        : el.firstElementChild ?? el;
-    const padTop = parseFloat(getComputedStyle(padded).paddingTop) || 0;
-    const contentTop =
-      padded.getBoundingClientRect().top + window.scrollY + padTop;
-    const target = contentTop - NAV_H - TOP_GAP;
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    window.scrollTo({ top: Math.max(0, Math.min(target, max)), behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
+  const current = (href: string) => (pathname === href ? "page" : undefined);
 
   // Open sits the header on the ink overlay, so it goes see-through with a
-  // light logo; otherwise the scrolled state gets the ivory blur bar.
+  // light logo; otherwise the scrolled state gets the opaque ivory bar. It
+  // was a frosted bar (ivory at 85 over a 12px blur, then 97 over 40px),
+  // but the product frames' tile seams and numbers ghosted through it at
+  // every translucency, so it is solid ivory with the hairline and no blur.
   // The literal rgba, not bg-transparent or bg-ivory/0: both of those
   // compute to zero-alpha BLACK, and Safari derives its status-bar color
   // from fixed elements at the viewport edges, so the see-through state
@@ -90,7 +82,7 @@ export default function Nav() {
   const headerChrome = open
     ? "border-transparent bg-[rgba(241,238,230,0)]"
     : scrolled
-      ? "border-ink/10 bg-ivory/85 backdrop-blur-md"
+      ? "border-ink/10 bg-ivory"
       : "border-transparent bg-[rgba(241,238,230,0)]";
 
   return (
@@ -103,15 +95,11 @@ export default function Nav() {
       className={`nav-enter fixed inset-x-0 top-0 z-50 border-b pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] pt-[env(safe-area-inset-top)] ${headerChrome}`}
     >
       <div
-        className={`mx-auto flex max-w-6xl items-center justify-between px-6 transition-[height] duration-300 ${
+        className={`page flex items-center justify-between transition-[height] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
           scrolled ? "h-16" : "h-20"
         }`}
       >
-        <a
-          href="#top"
-          className="flex items-center"
-          onClick={(e) => goToSection(e, "#top")}
-        >
+        <Link href="/" className="flex items-center" onClick={goHome}>
           <Image
             src={open ? "/xw-h-lockup-light.svg" : "/xw-h-lockup-dark.svg"}
             alt="Crosswell"
@@ -120,25 +108,25 @@ export default function Nav() {
             priority
             className="h-6 w-auto md:h-7"
           />
-        </a>
+        </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
           {links.map((link) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
-              onClick={(e) => goToSection(e, link.href)}
-              className="relative text-xs font-medium uppercase tracking-[0.15em] text-ink/75 transition-colors duration-200 hover:text-ink after:absolute after:inset-x-0 after:-bottom-1.5 after:h-px after:origin-left after:scale-x-0 after:bg-fern after:transition-transform after:duration-300 hover:after:scale-x-100"
+              aria-current={current(link.href)}
+              className="type-text relative font-medium text-ink/75 transition-colors duration-200 hover:text-ink after:absolute after:inset-x-0 after:-bottom-1.5 after:h-px after:origin-left after:scale-x-0 after:bg-fern after:transition-transform after:duration-200 hover:after:scale-x-100 aria-[current=page]:text-ink aria-[current=page]:after:scale-x-100"
             >
               {link.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
         <div className="flex items-center gap-3">
           <a
             href={CALL_MAILTO}
-            className="hidden rounded-lg bg-fern px-4 py-2 text-sm font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep md:inline-block"
+            className="type-text hidden rounded-lg bg-fern px-4 py-1.5 font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep md:inline-block"
           >
             Set up a call
           </a>
@@ -176,16 +164,17 @@ export default function Nav() {
     >
       <nav className="menu-links">
         {links.map((link, i) => (
-          <a
+          <Link
             key={link.href}
             href={link.href}
-            onClick={(e) => goToSection(e, link.href)}
+            aria-current={current(link.href)}
+            onClick={() => setOpen(false)}
             className="menu-link"
             style={{ "--i": i } as CSSProperties}
           >
             <span className="menu-idx">{String(i + 1).padStart(2, "0")}</span>
-            <span className="menu-txt">{link.label}</span>
-          </a>
+            <span className="menu-txt type-h2">{link.label}</span>
+          </Link>
         ))}
       </nav>
       <div
@@ -195,7 +184,7 @@ export default function Nav() {
         <a
           href={CALL_MAILTO}
           onClick={() => setOpen(false)}
-          className="block rounded-[10px] bg-fern px-4 py-4 text-center text-[15px] font-semibold text-ivory"
+          className="type-text block rounded-[10px] bg-fern px-4 py-4 text-center font-semibold text-ivory"
         >
           Set up a call
         </a>

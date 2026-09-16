@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "vitest run tests/unit",
+    "test:e2e": "next build && vitest run tests/e2e",
+    "check:copy": "node scripts/check-copy.mjs src",
+    "og": "node scripts/og-image.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
@@ -20,7 +24,9 @@
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "playwright": "^1.63.0",
     "tailwindcss": "^4.1.0",
-    "typescript": "^5.8.0"
+    "typescript": "^5.8.0",
+    "vitest": "^3.2.7"
   }
 }

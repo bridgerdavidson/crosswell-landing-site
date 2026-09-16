@@ -1,12 +1,21 @@
 import type { CSSProperties } from "react";
-import { AUDIT_MAILTO, CALL_MAILTO } from "@/lib/site";
+import { CALL_MAILTO } from "@/lib/site";
+import SeeHowItWorks from "./SeeHowItWorks";
 import HeroCore from "./HeroCore";
 
 export default function Hero() {
   return (
+    /* Below lg the hero is the viewport's height. At lg it shares the first
+       frame with the run intro: its least height is the viewport less 373
+       (the intro's share and 31 under its last line), its words stay
+       centred in that height on the woven core, and its edge sits at the
+       buttons, set 32 into the run's own 128, so the run intro's label sits
+       96 under them. With no label above it, the headline is the first
+       thing in the frame. The sphere dissolves under the buttons instead of
+       filling a band of its own. */
     <section
       id="top"
-      className="relative flex min-h-svh flex-col justify-center overflow-hidden pt-20"
+      className="relative flex min-h-svh flex-col justify-center overflow-hidden pt-20 lg:-mb-8 lg:min-h-[calc(100svh_-_373px)]"
     >
       <HeroCore />
       <div
@@ -21,53 +30,40 @@ export default function Hero() {
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-ivory via-ivory/70 to-transparent"
       />
-      <div className="relative mx-auto max-w-4xl px-6 py-20 text-center">
-        <p
-          className="hero-enter type-kicker mb-5 text-fern-deep"
-          style={{ "--enter-delay": "0.2s" } as CSSProperties}
-        >
-          Crosswell Core
-        </p>
+      <div className="relative mx-auto max-w-4xl px-6 py-20 text-center lg:pt-32 lg:pb-0">
         <h1
-          className="hero-enter type-display text-ink"
+          className="hero-enter hero-display type-display text-ink"
           style={{ "--enter-delay": "0.45s", "--enter-dur": "0.95s" } as CSSProperties}
         >
-          The operating layer for{" "}
-          <span className="italic text-fern-deep">financial stewards</span>.
+          The operating layer your business actually runs on.
         </h1>
         <p
-          className="hero-enter type-body mx-auto mt-6 max-w-2xl text-ink/70"
+          className="hero-enter type-body mx-auto mt-6 max-w-3xl text-ink/70"
           style={{ "--enter-delay": "0.75s" } as CSSProperties}
         >
-          Crosswell Core is your firm&apos;s institutional memory, built on
-          agentic AI (AI that does the work, not just answers questions) and
-          managed for you. Knowledge flows in, anyone can ask it anything, and
-          the busywork runs itself. Everything we build next stands on it. What
-          we sell is trust.
+          We build the{" "}
+          <span className="font-serif italic text-fern-deep">
+            workflows, automations, and agents
+          </span>{" "}
+          that run on it.
         </p>
         <div
-          className="hero-enter mt-9 flex flex-wrap items-center justify-center gap-4"
+          className="hero-enter mt-9 flex flex-wrap items-center justify-center gap-x-8 gap-y-4"
           style={{ "--enter-delay": "1s" } as CSSProperties}
         >
-          <a
-            href={AUDIT_MAILTO}
-            className="rounded-lg bg-fern px-6 py-3.5 text-sm font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep"
-          >
-            Start with the audit
-          </a>
+          {/* one ask: the work is consulting, custom and personal, and its
+              first step is always the call, so a button that starts with the
+              audit skipped step one. Beside it, for the visitor not ready to
+              ask, a quiet link down the page: company for the button without
+              a second ask */}
           <a
             href={CALL_MAILTO}
-            className="rounded-lg border border-ink/15 px-6 py-3.5 text-sm font-semibold text-ink transition-colors hover:border-fern hover:text-fern-deep"
+            className="type-text rounded-lg bg-fern px-6 py-3 font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep"
           >
             Set up a call
           </a>
+          <SeeHowItWorks />
         </div>
-        <p
-          className="hero-enter mt-6 text-sm text-ink/55"
-          style={{ "--enter-delay": "1.3s" } as CSSProperties}
-        >
-          Built by people who have worked inside funds.
-        </p>
       </div>
     </section>
   );
