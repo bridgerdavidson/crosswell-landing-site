@@ -235,7 +235,7 @@ function LiftedCore({
     const ro = new ResizeObserver(keep);
     ro.observe(t);
     return () => ro.disconnect();
-  });
+  }, []);
 
   return (
     <aside

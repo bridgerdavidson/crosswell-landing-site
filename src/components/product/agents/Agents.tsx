@@ -18,7 +18,7 @@ import { Chapter } from "../shared";
  * its steps while the Core answers; the draft arrives in the Core, and
  * approving sends it by email and to each person's own dashboard. Replay
  * resets it. A long crescent fade takes the window's bottom-left corner
- * from lg; on a phone the window is 560 tall and cropped to the Core's
+ * from lg; on a phone the window is 640 tall and cropped to the Core's
  * column (PHONE, below), whole to its edges.
  */
 
@@ -52,10 +52,11 @@ const CRESCENT_VAR = { "--crescent": LIGHT } as CSSProperties;
 
 /* the phone's crop: the Core's column whole, where the work is named and the
    draft comes back for a yes, with the roster's last columns running off the
-   left of the screen so the window reads as continuing; the window is 560
-   tall there, so the frame is about 390 at 0.69 on a phone, the column at 1:1
+   left of the screen so the window reads as continuing; the window is 640
+   tall there, enough for the whole email draft to stand in the thread when it
+   arrives, so the frame is about 400 at 0.63 on a phone, the column at 1:1
    on a tablet */
-const PHONE: Crop = { x: 760, y: 0, width: 548, height: 560, bleed: "left", fade: 40 };
+const PHONE: Crop = { x: 708, y: 0, width: 600, height: 640, bleed: "left", fade: 40 };
 
 type Live = { kind: StatusKind; text: string; result: string; run: string };
 type Row = { id: string; name: string; job: string; live: Live; log: string[]; fresh?: boolean };
@@ -213,7 +214,10 @@ function CoreColumn({ phase, s, onSend, onApprove }: { phase: Phase; s: number; 
   const thread = useRef<HTMLDivElement>(null);
 
   /* the thread is a scrolling chat, as in chapter 02: whatever arrives keeps
-     its newest line in view, and the visitor can scroll back through it */
+     its newest line in view, and the visitor can scroll back through it. The
+     observer is set once: this column re-renders on every tick of the
+     roster's loop, and keeping the bottom on every render snapped the thread
+     back the moment a visitor scrolled up */
   useLayoutEffect(() => {
     const b = box.current;
     const t = thread.current;
@@ -225,7 +229,7 @@ function CoreColumn({ phase, s, onSend, onApprove }: { phase: Phase; s: number; 
     const ro = new ResizeObserver(keep);
     ro.observe(t);
     return () => ro.disconnect();
-  });
+  }, []);
 
   const replied = phase !== "rest" && s >= 0.7;
   const drafted = phase === "draft" || phase === "approved";
@@ -259,7 +263,7 @@ function CoreColumn({ phase, s, onSend, onApprove }: { phase: Phase; s: number; 
                 <p className="font-semibold">Email draft</p>
                 <span className="ml-auto text-[11px] text-ink/62 max-lg:text-[13px]">{recap.agent.name}</span>
               </div>
-              <div className="px-3 pt-2.5 pb-3 text-[12.5px] leading-[1.55] max-lg:text-[15px]">
+              <div className="px-3 pt-2.5 pb-3 text-[12.5px] leading-[1.55] max-lg:text-[14px]">
                 <p className="flex items-center gap-2 text-ink/62">
                   To
                   <span className="flex gap-1">
@@ -438,7 +442,7 @@ export default function Agents() {
             <AppWindow
               theme={dark}
               active="agents"
-              size="h-[560px] w-full lg:h-[800px]"
+              size="h-[640px] w-full lg:h-[800px]"
               controls={
                 <span className="inline-flex h-7 items-center rounded-md border border-ink/10 p-0.5">
                   {FILTERS.map((f) => (
