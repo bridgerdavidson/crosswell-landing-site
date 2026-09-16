@@ -26,11 +26,11 @@ const LIFT = 1.06;
 /* the phone's crop: from inside the Underwriting column (so the board reads as
    running off the screen, fading as it goes) across Docs out with its lit card
    and Funded to the Core's column, whole, with the lifted Core's overhang
-   above and its shadow below the shorter window; half scale on a phone, whole
-   at 1:1 on a tablet. The fade is short, 20, so it takes the sliver of
+   above and 72 of room below the shorter window for the whole of its shadow;
+   half scale on a phone, whole at 1:1 on a tablet. The fade is short, 20, so it takes the sliver of
    Underwriting and the gap and stops at the lit card's edge, which stays crisp. The window's bottom-left fall-off is the desktop's
    (core-falloff, globals.css); below lg the window is whole to its bottom edge. */
-const PHONE: Crop = { x: 528, y: -WIN.over, width: 780, height: WIN.phoneH + WIN.over + 40, bleed: "left", fade: 20 };
+const PHONE: Crop = { x: 528, y: -WIN.over, width: 780, height: WIN.phoneH + WIN.over + 72, bleed: "left", fade: 20 };
 
 type Question = keyof typeof core.replies;
 type Stage = "idle" | "working" | "answer" | "done";
@@ -97,10 +97,13 @@ function SelectedCard({ lifted, nudged, onAsk }: { lifted: boolean; nudged: bool
 }
 
 function Board({ lifted, nudged, onAsk }: { lifted: boolean; nudged: boolean; onAsk: () => void }) {
+  /* below lg the window is short and whole to its bottom edge, so the columns
+     end 16 inside it (from lg they run past the window's bottom, under the
+     fall-off) and the edge reads as the dashboard's own */
   return (
-    <div className="grid grid-cols-5 gap-2 px-4 pt-4">
+    <div className="grid grid-cols-5 gap-2 px-4 pt-4 max-lg:h-full max-lg:pb-4">
       {STAGES.map((s) => (
-        <div key={s.name} className="min-w-0 rounded-lg bg-ink/[0.035] p-1.5">
+        <div key={s.name} className="min-w-0 rounded-lg bg-ink/[0.035] p-1.5 max-lg:overflow-hidden">
           <div className="flex h-8 items-center gap-1.5 px-1.5">
             <p className="font-semibold">{s.name}</p>
             <span className="tabular-nums text-ink/62">{s.cards.length}</span>
