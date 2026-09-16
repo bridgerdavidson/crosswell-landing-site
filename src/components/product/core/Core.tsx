@@ -85,7 +85,7 @@ function SelectedCard({ lifted, nudged, onAsk }: { lifted: boolean; nudged: bool
         type="button"
         onClick={onAsk}
         disabled={lifted}
-        className={`mt-2.5 inline-flex h-8 w-full items-center justify-center gap-1.5 rounded-md text-[12.5px] font-semibold transition-colors duration-150 active:scale-[0.97] max-lg:h-14 max-lg:text-[14px] ${
+        className={`mt-2.5 inline-flex h-8 w-full items-center justify-center gap-1.5 rounded-md text-[12.5px] font-semibold transition-colors duration-150 active:scale-[0.97] tap-room ${
           lifted ? "bg-[var(--accent-wash)] text-[var(--accent-deep)]" : "cursor-pointer bg-[var(--accent)] text-ivory hover:bg-[var(--accent-deep)]"
         }`}
       >
@@ -177,11 +177,11 @@ function Turn({ q, stage, work, sent, onSend }: { q: Question; stage: Stage; wor
             {sent ? <Status kind="done" text="Sent, and logged to the deal" /> : <Status kind="waiting" text="Waiting for your yes" />}
             {!sent && (
               <div className="ml-auto flex gap-1.5">
-                <Button className="max-lg:h-12 max-lg:px-5 max-lg:text-[16px]">{reply.prepared.edit}</Button>
+                <Button>{reply.prepared.edit}</Button>
                 <button
                   type="button"
                   onClick={onSend}
-                  className="inline-flex h-7 cursor-pointer items-center rounded-md bg-[var(--accent)] px-2.5 text-[12px] font-semibold text-ivory hover:bg-[var(--accent-deep)] active:scale-[0.97] max-lg:h-12 max-lg:px-5 max-lg:text-[16px]"
+                  className="tap-room inline-flex h-7 cursor-pointer items-center rounded-md bg-[var(--accent)] px-2.5 text-[12px] font-semibold text-ivory hover:bg-[var(--accent-deep)] active:scale-[0.97]"
                 >
                   Send
                 </button>
@@ -217,17 +217,19 @@ function LiftedCore({
   const idle = asked.length === 0 || stage === "done";
   const remaining = QUESTIONS.filter((q) => !asked.includes(q));
 
-  /* the thread keeps its newest line in view: once it outgrows the column it slides up, never scrolls */
+  /* the thread is a scrolling chat: whenever it grows (a question, a reply
+     streaming in, the pills coming back) it keeps its newest line in view,
+     and once it is longer than the column the visitor can scroll back up
+     through it, on a desktop or a phone */
   useLayoutEffect(() => {
     const b = box.current;
     const t = thread.current;
     if (!b || !t) return;
-    const move = () => {
-      const over = t.scrollHeight - b.clientHeight;
-      t.style.transform = over > 0 ? `translateY(${-over}px)` : "none";
+    const keep = () => {
+      b.scrollTop = b.scrollHeight;
     };
-    move();
-    const ro = new ResizeObserver(move);
+    keep();
+    const ro = new ResizeObserver(keep);
     ro.observe(t);
     return () => ro.disconnect();
   });
@@ -235,7 +237,8 @@ function LiftedCore({
   return (
     <aside
       aria-hidden={!lifted}
-      /* below lg, where the whole window shows at about half scale, the Core's words and controls run a size up */
+      /* below lg, where the whole window shows at about half scale, the Core's words run a size up and its
+         question pills grow; every other control keeps its size and takes tap room instead (globals.css) */
       className={`absolute top-0 z-30 flex h-[600px] flex-col bg-chrome transition-[transform,box-shadow,border-radius] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] max-lg:text-[16px] motion-reduce:transition-none lg:h-[800px] ${
         lifted ? "rounded-xl" : "pointer-events-none invisible rounded-r-xl opacity-0"
       }`}
@@ -257,8 +260,8 @@ function LiftedCore({
         </div>
       </div>
 
-      <div ref={box} className="min-h-0 flex-1 overflow-hidden px-5">
-        <div ref={thread} className="flex flex-col gap-4 py-5 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none">
+      <div ref={box} className="min-h-0 flex-1 overflow-y-auto px-5 [scrollbar-width:thin] motion-safe:[scroll-behavior:smooth]">
+        <div ref={thread} className="flex flex-col gap-4 py-5">
           <div
             className={`rounded-lg border border-ink/10 bg-parchment p-3 transition-[opacity,transform] duration-500 motion-reduce:transition-none ${lifted ? "translate-y-0 opacity-100" : "translate-y-1 opacity-0"}`}
             style={{ transitionDelay: lifted ? "300ms" : "0ms" }}

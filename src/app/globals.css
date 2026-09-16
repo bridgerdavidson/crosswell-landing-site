@@ -168,6 +168,23 @@ body {
   }
 }
 
+/* ---------- Tap room ----------
+   Below lg the product shows at about half scale, so a 28-tall control is
+   14 on the screen. A bigger control looked out of place beside its
+   desktop-sized neighbours, so the control keeps its size and its tap
+   area grows instead: an invisible 16 above and below and 8 to each side,
+   in the window's own pixels. */
+@media (max-width: 1023px) {
+  .tap-room {
+    position: relative;
+  }
+  .tap-room::before {
+    content: "";
+    position: absolute;
+    inset: -16px -8px;
+  }
+}
+
 /* ---------- The dashboard, dark ----------
    The same window on the run's dark band, flipped the way the light one is
    built: text on ivory, the page a step lighter than the band, the chrome a

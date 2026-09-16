@@ -319,12 +319,12 @@ export function Label({ children, count, aside, className = "" }: { children: Re
 }
 
 /* the one button that commits something: accent; everything else is quiet */
-export function Button({ children, icon, commit = false, className = "" }: { children: ReactNode; icon?: IconName; commit?: boolean; className?: string }) {
+export function Button({ children, icon, commit = false }: { children: ReactNode; icon?: IconName; commit?: boolean }) {
   return (
     <span
       className={`inline-flex h-7 flex-none items-center gap-1.5 rounded-md px-2.5 text-[12px] font-semibold ${
         commit ? "bg-[var(--accent)] text-ivory" : "border border-ink/12 text-ink/80"
-      } ${className}`}
+      }`}
     >
       {icon && <Icon name={icon} size={13} />}
       {children}
