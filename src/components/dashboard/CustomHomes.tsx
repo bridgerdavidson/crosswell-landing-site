@@ -29,10 +29,8 @@ const STOP = {
 function Deliveries() {
   const stops = juniper.trucks.reduce((n, t) => n + t.stops.length, 0);
   return (
-    <section className="mt-6">
-      <div data-morph="hero-label">
-        <Label aside={`${stops} stops, ${juniper.trucks.length} trucks, 1 running late`}>Deliveries today</Label>
-      </div>
+    <section data-morph="hero" className="mt-6">
+      <Label aside={`${stops} stops, ${juniper.trucks.length} trucks, 1 running late`}>Deliveries today</Label>
       <div className="border-t border-ink/8 pt-2">
         <div className="grid grid-cols-[96px_minmax(0,1fr)]">
           <span />
@@ -44,8 +42,8 @@ function Deliveries() {
             ))}
           </div>
         </div>
-        {juniper.trucks.map((t, i) => (
-          <div key={t.truck} data-morph={`hero-${i + 1}`} className="grid h-14 grid-cols-[96px_minmax(0,1fr)] items-center border-b border-ink/8">
+        {juniper.trucks.map((t) => (
+          <div key={t.truck} className="grid h-14 grid-cols-[96px_minmax(0,1fr)] items-center border-b border-ink/8">
             <div>
               <p className="font-medium">{t.truck}</p>
               <p className="text-[12px] text-ink/62">{t.driver}</p>
@@ -85,20 +83,16 @@ const STOCK_COLS = "grid grid-cols-[minmax(0,1fr)_78px_66px_58px] items-center g
 export function JuniperBody() {
   return (
     <div className="px-7 pt-7 pb-12">
-      <p data-morph="greet" className="text-[22px] leading-tight font-semibold tracking-[-0.01em]">
-        {juniper.theme.user.greeting}
-      </p>
-      <p data-morph="sub" className="mt-1 text-ink/62">
-        {juniper.subline}
-      </p>
+      <div data-morph="head">
+        <p className="text-[22px] leading-tight font-semibold tracking-[-0.01em]">{juniper.theme.user.greeting}</p>
+        <p className="mt-1 text-ink/62">{juniper.subline}</p>
+      </div>
 
       <Deliveries />
 
       <div className="mt-8 grid grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] gap-10">
-        <section className="min-w-0">
-          <div data-morph="left-label">
-            <Label aside={<Button commit>Approve 3 purchase orders</Button>}>Running low</Label>
-          </div>
+        <section data-morph="left" className="min-w-0">
+          <Label aside={<Button commit>Approve 3 purchase orders</Button>}>Running low</Label>
           <div className={`${STOCK_COLS} h-8 border-t border-ink/8 text-[12px] text-ink/62`}>
             <span>Item</span>
             <span>On hand</span>
@@ -106,8 +100,8 @@ export function JuniperBody() {
             <span className="text-right">Order</span>
           </div>
           <ul>
-            {juniper.lowStock.map((r, i) => (
-              <li key={r.item} data-morph={`left-${i + 1}`} className={`${STOCK_COLS} h-9 border-t border-ink/8`}>
+            {juniper.lowStock.map((r) => (
+              <li key={r.item} className={`${STOCK_COLS} h-9 border-t border-ink/8`}>
                 <span className="truncate">{r.item}</span>
                 <span className="tabular-nums text-ink/80">{r.onHand}</span>
                 <span className="tabular-nums text-ink/80">{r.runsOut}</span>
@@ -117,13 +111,11 @@ export function JuniperBody() {
           </ul>
         </section>
 
-        <section className="min-w-0">
-          <div data-morph="right-label">
-            <Label count={juniper.quotes.length}>Quotes to approve</Label>
-          </div>
+        <section data-morph="right" className="min-w-0">
+          <Label count={juniper.quotes.length}>Quotes to approve</Label>
           <ul className="border-t border-ink/8">
-            {juniper.quotes.map((q, i) => (
-              <li key={q.customer} data-morph={`right-${i + 1}`} className="flex items-center gap-4 border-b border-ink/8 py-2">
+            {juniper.quotes.map((q) => (
+              <li key={q.customer} className="flex items-center gap-4 border-b border-ink/8 py-2">
                 <div className="min-w-0">
                   <p className="font-medium">{q.customer}</p>
                   <p className="truncate text-[12px] text-ink/62">{q.job}</p>
@@ -146,20 +138,16 @@ export function JuniperBody() {
 export function KestrelBody() {
   return (
     <div className="px-7 pt-7 pb-12">
-      <p data-morph="greet" className="text-[22px] leading-tight font-semibold tracking-[-0.01em]">
-        {kestrel.theme.user.greeting}
-      </p>
-      <p data-morph="sub" className="mt-1 text-ink/62">
-        {kestrel.subline}
-      </p>
+      <div data-morph="head">
+        <p className="text-[22px] leading-tight font-semibold tracking-[-0.01em]">{kestrel.theme.user.greeting}</p>
+        <p className="mt-1 text-ink/62">{kestrel.subline}</p>
+      </div>
 
-      <section className="mt-6">
-        <div data-morph="hero-label">
-          <Label aside="12 deadlines, 7 done">This week</Label>
-        </div>
+      <section data-morph="hero" className="mt-6">
+        <Label aside="12 deadlines, 7 done">This week</Label>
         <div className="grid grid-cols-5 gap-2 border-t border-ink/8 pt-3">
-          {kestrel.week.map((d, i) => (
-            <div key={d.day} data-morph={`hero-${i + 1}`} className={`min-w-0 rounded-lg p-1.5 ${d.today ? "bg-[var(--accent-wash)]" : "bg-ink/[0.035]"}`}>
+          {kestrel.week.map((d) => (
+            <div key={d.day} className={`min-w-0 rounded-lg p-1.5 ${d.today ? "bg-[var(--accent-wash)]" : "bg-ink/[0.035]"}`}>
               <div className="flex h-7 items-baseline gap-1.5 px-1.5 pt-1">
                 <span className={`font-semibold ${d.today ? "text-[var(--accent-deep)]" : ""}`}>{d.day}</span>
                 <span className={`tabular-nums ${d.today ? "text-[var(--accent-deep)]" : "text-ink/62"}`}>{d.date}</span>
@@ -182,15 +170,13 @@ export function KestrelBody() {
       </section>
 
       <div className="mt-8 grid grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] gap-10">
-        <section className="min-w-0">
-          <div data-morph="left-label">
-            <Label count={kestrel.waiting.length} aside={<Button commit>Send 2 reminders</Button>}>
-              Waiting on clients
-            </Label>
-          </div>
+        <section data-morph="left" className="min-w-0">
+          <Label count={kestrel.waiting.length} aside={<Button commit>Send 2 reminders</Button>}>
+            Waiting on clients
+          </Label>
           <ul className="border-t border-ink/8">
-            {kestrel.waiting.map((w, i) => (
-              <li key={w.client} data-morph={`left-${i + 1}`} className="grid grid-cols-[minmax(0,1fr)_auto] gap-4 border-b border-ink/8 py-2">
+            {kestrel.waiting.map((w) => (
+              <li key={w.client} className="grid grid-cols-[minmax(0,1fr)_auto] gap-4 border-b border-ink/8 py-2">
                 <div className="min-w-0">
                   <p className="font-medium">{w.client}</p>
                   <p className="truncate text-[12px] text-ink/62">{w.missing}</p>
@@ -204,15 +190,13 @@ export function KestrelBody() {
           </ul>
         </section>
 
-        <section className="min-w-0">
-          <div data-morph="right-label">
-            <Label aside="Hours booked">Team this week</Label>
-          </div>
+        <section data-morph="right" className="min-w-0">
+          <Label aside="Hours booked">Team this week</Label>
           <ul className="border-t border-ink/8">
-            {kestrel.team.map((m, i) => {
+            {kestrel.team.map((m) => {
               const over = m.booked > m.of;
               return (
-                <li key={m.name} data-morph={`right-${i + 1}`} className="border-b border-ink/8 py-2">
+                <li key={m.name} className="border-b border-ink/8 py-2">
                   <div className="flex items-center gap-2.5">
                     <Avatar initials={m.initials} />
                     <span className="font-medium">{m.name}</span>

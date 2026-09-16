@@ -56,10 +56,22 @@ function measure(page: HTMLElement | null, base: HTMLElement | null): Rects {
   return rects;
 }
 
-/** one bare section, the shape a block leaves behind when its content goes */
+/** one bare section: the outline a block leaves behind when its content
+    goes, drawn in the dashboard's own hairline rather than as a grey fill,
+    which read as a page still loading */
 function shellAt(box: Box, into: HTMLElement) {
   const el = document.createElement("div");
-  el.style.cssText = `position:absolute;border-radius:8px;background:color-mix(in oklab, var(--color-ink) 7%, transparent);left:${box.left}px;top:${box.top}px;width:${box.width}px;height:${box.height}px;opacity:0`;
+  el.style.cssText = [
+    "position:absolute",
+    "border-radius:10px",
+    "border:1px solid color-mix(in oklab, var(--color-ink) 13%, transparent)",
+    "background:color-mix(in oklab, var(--color-ink) 2%, transparent)",
+    `left:${box.left}px`,
+    `top:${box.top}px`,
+    `width:${box.width}px`,
+    `height:${box.height}px`,
+    "opacity:0",
+  ].join(";");
   into.appendChild(el);
   return el;
 }
@@ -134,7 +146,7 @@ export default function Custom() {
     /* sections travel in reading order, so the layout resolves down the screen */
     const order = [...to.entries()].sort((a, b) => a[1].top - b[1].top);
     order.forEach(([key, box], i) => {
-      const delay = Math.min(0.16, i * 0.012);
+      const delay = i * 0.05;
       const shell = shells.current.get(key);
       if (shell) {
         tweens.push(gsap.to(shell, { left: box.left, top: box.top, width: box.width, height: box.height, duration: MOVE, delay, ease: "power2.inOut" }));
@@ -159,11 +171,9 @@ export default function Custom() {
     tweens.push(gsap.fromTo(win.current!.querySelectorAll("[data-chrome]"), { opacity: 0.15 }, { opacity: 1, duration: MOVE * 0.8, ease: "power2.out" }));
 
     /* beat three: the sections hand over to the page that fills them */
-    tweens.push(gsap.to(page.current, { opacity: 1, duration: FILL * 0.4, delay: MOVE, ease: "none" }));
-    tweens.push(gsap.to([...shells.current.values()], { opacity: 0, duration: FILL * 0.5, delay: MOVE, ease: "power2.in", onComplete: () => layer.current?.replaceChildren() }));
-    tweens.push(
-      gsap.to(blocks, { opacity: 1, duration: FILL * 0.8, delay: MOVE + FILL * 0.15, stagger: 0.015, ease: "power2.out", clearProps: "opacity" })
-    );
+    tweens.push(gsap.set(page.current, { opacity: 1, delay: MOVE }) as unknown as gsap.core.Tween);
+    tweens.push(gsap.to([...shells.current.values()], { opacity: 0, duration: FILL * 0.6, delay: MOVE + 0.06, ease: "power2.in", onComplete: () => layer.current?.replaceChildren() }));
+    tweens.push(gsap.to(blocks, { opacity: 1, duration: FILL * 0.9, delay: MOVE, stagger: 0.06, ease: "power2.out", clearProps: "opacity" }));
 
     /* kill, never revert: what a tween leaves behind is the state */
     return () => tweens.forEach((t) => t.kill());

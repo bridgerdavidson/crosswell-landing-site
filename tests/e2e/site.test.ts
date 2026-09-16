@@ -314,7 +314,7 @@ describe("the custom chapter and the whole run", () => {
       await page.goto(site.url, { waitUntil: "networkidle" });
       const chap = page.locator("[data-chapter='06']");
       await chap.scrollIntoViewIfNeeded();
-      const greeting = () => chap.locator("[data-morph='greet']").textContent();
+      const greeting = () => chap.locator("[data-morph='head'] p").first().textContent();
       const first = await greeting();
       const controls = await chap.locator("button, [role='button']").count();
       /* a business holds about four seconds and takes one more to rebuild,
@@ -517,7 +517,7 @@ describe("resilience", () => {
 
   it("holds the custom chapter on the first business under reduced motion", async () => {
     const read = () => ({
-      greeting: document.querySelector("[data-chapter='06'] [data-morph='greet']")!.textContent,
+      greeting: document.querySelector("[data-chapter='06'] [data-morph='head'] p")!.textContent,
       mark: document.querySelector("[data-chapter='06'] img[data-chrome]")!.getAttribute("src"),
     });
     const reduced = await withPage(
