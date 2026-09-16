@@ -6,7 +6,7 @@ import Today from "./today/Today";
 import Core from "./core/Core";
 import Agenda from "./agenda/Agenda";
 import Agents from "./agents/Agents";
-import Brand from "./brand/Brand";
+import Custom from "./custom/Custom";
 
 /**
  * What we do, then the product run. The statement opens the section and
@@ -63,12 +63,12 @@ export default function ProductRun() {
 
       <section className={`${CONTAINER} pt-24 pb-24 sm:pt-32 sm:pb-32`}>
         <div className="space-y-48 sm:space-y-72">
-          <Brand />
+          <Custom />
         </div>
         {/* the run's last content; the next section's lead-in ("Behind the
             chat is the Core.") sits the beat below it */}
         <p className="type-caption mt-12 text-ink/60">
-          Saguaro Capital is fictional. Every number is invented, rounded demo data.
+          Saguaro Capital, Juniper Row Supply, and Kestrel & Vane are fictional. Every number is invented, rounded demo data.
         </p>
       </section>
     </>

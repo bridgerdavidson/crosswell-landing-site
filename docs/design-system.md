@@ -564,6 +564,11 @@ carries them). Nothing else on the page is amber, red, or blue.
   rows answer a click, and the Core's typed request hands work to an email
   agent the visitor approves. A crescent fade (an SVG mask traced along a
   drawn line, blurred) takes the window's bottom-left corner.
+- The custom chapter (spec section 21) draws the real window and rebuilds the
+  page inside it for three businesses in turn, looping while it is on screen
+  with nothing to click: the colours tween, the mark and the rail's pages
+  change, and every block travels from its counterpart's place in the last
+  layout. Blocks translate, never scale.
 - The agenda chapter (spec section 19) draws the dashboard's Agenda window,
   whole at 800 tall and static, with the morning lit: a 74% wash of the
   page's ground over everything but a soft oval at the top, and the window

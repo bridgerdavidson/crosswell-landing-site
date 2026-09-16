@@ -120,6 +120,7 @@ export function AppWindow({
   coreColumn,
   draft,
   mainClassName = "",
+  tint = true,
   size = "h-[900px] w-[1440px]",
 }: {
   /** half-typed text in the Core's message box */
@@ -130,6 +131,8 @@ export function AppWindow({
   core?: ReactNode;
   /** a chapter's own Core column in the docked place, when the Core does more than hold a thread */
   coreColumn?: ReactNode;
+  /** false leaves the accent variables to an ancestor, for a chapter that tweens them itself */
+  tint?: boolean;
   /** the window's box; the site's chapters size it to their frame */
   size?: string;
   theme: Theme;
@@ -154,7 +157,7 @@ export function AppWindow({
   return (
     <div
       className={`flex ${size} overflow-hidden rounded-xl bg-chrome font-sans text-[13px] text-ink antialiased`}
-      style={vars}
+      style={tint ? vars : undefined}
     >
       <Rail theme={theme} pages={pages} active={active} />
       <div className="flex min-w-0 flex-1 flex-col border-l border-ink/8 bg-parchment">
@@ -162,7 +165,7 @@ export function AppWindow({
           <p className="text-[14px] font-semibold">{title ?? pages.find((n) => n.key === active)!.label}</p>
           {controls && <div className="ml-2 flex items-center gap-1">{controls}</div>}
           <div className="ml-auto flex items-center gap-2">
-            {actions}
+            <span data-chrome>{actions}</span>
             <span className="flex h-7 w-[200px] items-center gap-2 rounded-md border border-ink/10 px-2 text-ink/45">
               <Icon name="search" size={14} />
               Search
@@ -187,13 +190,13 @@ function Rail({ theme, pages, active }: { theme: Theme; pages: Page[]; active: s
     <nav aria-label="Pages" className="flex w-14 flex-none flex-col items-center pt-3 pb-4">
       {theme.mark ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={theme.mark} alt={theme.company} width={32} height={32} className="h-8 w-8" />
+        <img data-chrome src={theme.mark} alt={theme.company} width={32} height={32} className="h-8 w-8" />
       ) : (
-        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--accent)] font-serif text-[17px] leading-none text-ivory">
+        <span data-chrome className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--accent)] font-serif text-[17px] leading-none text-ivory">
           {theme.initial}
         </span>
       )}
-      <div className="mt-5 flex flex-col gap-1">
+      <div data-chrome className="mt-5 flex flex-col gap-1">
         {pages.map((n) => {
           const on = n.key === active;
           return (
@@ -215,7 +218,7 @@ function Rail({ theme, pages, active }: { theme: Theme; pages: Page[]; active: s
         <span title="Settings" aria-label="Settings" className="flex h-9 w-9 items-center justify-center text-ink/50">
           <Icon name="settings" size={18} />
         </span>
-        <span className="flex h-8 w-8 items-center justify-center rounded-full border border-ink/12 bg-parchment text-[11px] font-semibold text-ink/70">
+        <span data-chrome className="flex h-8 w-8 items-center justify-center rounded-full border border-ink/12 bg-parchment text-[11px] font-semibold text-ink/70">
           {theme.user.initials}
         </span>
       </div>

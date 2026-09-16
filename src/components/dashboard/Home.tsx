@@ -17,15 +17,23 @@ function Spark({ points }: { points: number[] }) {
   );
 }
 
-function HomeMain({ home }: { home: HomeWorld }) {
+/* The lender's Home, and the skeleton chapter 06 morphs between: a greeting,
+   a hero block (here the four numbers), and two sections under it. The
+   data-morph names are that skeleton (src/components/dashboard/CustomHomes.tsx
+   gives the other two businesses the same ones). */
+export function HomeBody({ home }: { home: HomeWorld }) {
   return (
     <div className="px-7 pt-7 pb-12">
-      <p className="text-[22px] leading-tight font-semibold tracking-[-0.01em]">{home.theme.user.greeting}</p>
-      <p className="mt-1 text-ink/62">{home.subline}</p>
+      <p data-morph="greet" className="text-[22px] leading-tight font-semibold tracking-[-0.01em]">
+        {home.theme.user.greeting}
+      </p>
+      <p data-morph="sub" className="mt-1 text-ink/62">
+        {home.subline}
+      </p>
 
       <dl className="mt-6 grid grid-cols-4 border-y border-ink/8">
         {home.tiles.map((t, i) => (
-          <div key={t.label} className={`py-3.5 pr-5 ${i ? "border-l border-ink/8 pl-5" : ""}`}>
+          <div key={t.label} data-morph={`hero-${i + 1}`} className={`py-3.5 pr-5 ${i ? "border-l border-ink/8 pl-5" : ""}`}>
             <dt className="text-[12px] text-ink/62">{t.label}</dt>
             <dd className="mt-2 flex items-center gap-3">
               <span className="text-[22px] leading-none font-semibold tabular-nums">{t.value}</span>
@@ -38,10 +46,12 @@ function HomeMain({ home }: { home: HomeWorld }) {
 
       <div className="mt-8 grid grid-cols-[minmax(0,1fr)_264px] gap-10">
         <section className="min-w-0">
-          <Label count={home.needsYou.length}>Needs you today</Label>
+          <div data-morph="left-label">
+            <Label count={home.needsYou.length}>Needs you today</Label>
+          </div>
           <ul className="border-t border-ink/8">
-            {home.needsYou.map((n) => (
-              <li key={n.id} className="grid grid-cols-[minmax(0,1fr)_auto] gap-8 border-b border-ink/8 py-3.5">
+            {home.needsYou.map((n, i) => (
+              <li key={n.id} data-morph={`left-${i + 1}`} className="grid grid-cols-[minmax(0,1fr)_auto] gap-8 border-b border-ink/8 py-3.5">
                 <div className="min-w-0">
                   <p className="font-semibold">{n.title}</p>
                   <p className="mt-1 leading-[1.55] text-ink/80 [text-wrap:pretty]">{n.body}</p>
@@ -58,8 +68,8 @@ function HomeMain({ home }: { home: HomeWorld }) {
             Filed overnight
           </Label>
           <ul className="border-t border-ink/8">
-            {home.filed.map((f) => (
-              <li key={f.title} className="flex h-9 items-center gap-2.5 border-b border-ink/8">
+            {home.filed.map((f, i) => (
+              <li key={f.title} data-morph={`left-${home.needsYou.length + i + 1}`} className="flex h-9 items-center gap-2.5 border-b border-ink/8">
                 <Icon name="file" size={14} className="text-ink/45" />
                 <span className="truncate">{f.title}</span>
                 <span className="ml-auto flex-none text-[12px] text-ink/62">{f.to}</span>
@@ -70,10 +80,12 @@ function HomeMain({ home }: { home: HomeWorld }) {
         </section>
 
         <aside className="min-w-0">
-          <Label>Today</Label>
+          <div data-morph="right-label">
+            <Label>Today</Label>
+          </div>
           <ol className="border-t border-ink/8">
             {home.calendar.map((c, i) => (
-              <li key={c.time} className="flex gap-3 border-b border-ink/8 py-2">
+              <li key={c.time} data-morph={`right-${i + 1}`} className="flex gap-3 border-b border-ink/8 py-2">
                 <span className="w-10 flex-none tabular-nums text-ink/62">{c.time}</span>
                 <span className={i === 0 ? "font-medium" : ""}>{c.title}</span>
               </li>
@@ -82,8 +94,8 @@ function HomeMain({ home }: { home: HomeWorld }) {
 
           <Label className="mt-8">Agents</Label>
           <ul className="border-t border-ink/8">
-            {home.overnight.map((a) => (
-              <li key={a.name} className="border-b border-ink/8 py-2">
+            {home.overnight.map((a, i) => (
+              <li key={a.name} data-morph={`right-${home.calendar.length + i + 1}`} className="border-b border-ink/8 py-2">
                 <p className="font-medium">{a.name}</p>
                 <p className="mt-0.5 text-[12px] text-ink/62">
                   <Status kind={a.status.kind} text={a.status.text} />
@@ -119,7 +131,7 @@ export function HomeScreen({
       mainClassName={mainClassName}
       active="home"
       actions={<Button icon="plus">{home.action}</Button>}
-      main={<HomeMain home={home} />}
+      main={<HomeBody home={home} />}
     />
   );
 }

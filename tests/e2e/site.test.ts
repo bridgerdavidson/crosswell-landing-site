@@ -249,7 +249,7 @@ describe("the agents chapter", () => {
       "Your whole business, a question away. The next step, a yes away.",
       "Your day, and everyone else’s, without asking.",
       "You name the work. We build the agent that does it.",
-      "It looks like your company, not ours.",
+      "The same product, built around how your business works.",
     ]);
   });
 
@@ -309,25 +309,31 @@ describe("the agents chapter", () => {
 });
 
 describe("the custom chapter and the whole run", () => {
-  it("renders four swatches with Saguaro pressed and the accent scoped", async () => {
+  it("rebuilds the page business by business, with nothing to click", async () => {
     const r = await withPage(async (page) => {
       await page.goto(site.url, { waitUntil: "networkidle" });
-      const run = page.locator("[data-chapter='06']");
+      const chap = page.locator("[data-chapter='06']");
+      await chap.scrollIntoViewIfNeeded();
+      const greeting = () => chap.locator("[data-morph='greet']").textContent();
+      const first = await greeting();
+      const controls = await chap.locator("button, [role='button']").count();
+      /* the businesses hold about four seconds each, so two waits cover all three */
+      await page.waitForTimeout(5200);
+      const second = await greeting();
+      await page.waitForTimeout(4700);
+      const third = await greeting();
       return {
-        swatches: await run.locator("button[aria-pressed]").count(),
-        pressed: await run.locator("button[aria-pressed='true']").textContent(),
-        accent: await run.locator(".product-shell").evaluate((el) =>
-          getComputedStyle(el).getPropertyValue("--accent").trim()
-        ),
-        pageAccent: await page.locator("body").evaluate((el) =>
-          getComputedStyle(el).getPropertyValue("--accent").trim()
-        ),
+        seen: [first, second, third],
+        controls,
+        marks: await chap.locator("img[data-chrome]").getAttribute("src"),
+        pageAccent: await page.locator("body").evaluate((el) => getComputedStyle(el).getPropertyValue("--accent").trim()),
       };
     });
-    expect(r.swatches).toBe(4);
-    expect(r.pressed).toContain("Saguaro Capital");
-    expect(r.accent).toBe("#4e7a4e");
+    expect(r.seen).toEqual(["Good morning, Morgan.", "Good morning, Nina.", "Good morning, Daniel."]);
+    /* the window's own buttons are the product's; the chapter adds none */
+    expect(r.marks).toBe("/demo/kestrel-mark.png");
     expect(r.pageAccent).toBe("");
+    expect(r.controls).toBeLessThan(4);
   });
 
   it("carries no demo captions and the fictional line once", async () => {
@@ -335,7 +341,7 @@ describe("the custom chapter and the whole run", () => {
       await page.goto(site.url, { waitUntil: "networkidle" });
       return {
         captions: await page.getByText("Interactive demo · Sample data").count(),
-        fictional: await page.getByText("Saguaro Capital is fictional").count(),
+        fictional: await page.getByText("Kestrel & Vane are fictional", { exact: false }).count(),
         bridge: await page.getByText("Behind the chat is the").count(),
         indexes: await page.locator(".type-label-index").count(),
       };
@@ -508,26 +514,22 @@ describe("resilience", () => {
     expect(motion).toEqual({ pins: 0, height: 800 });
   });
 
-  it("holds the custom chapter finished under reduced motion and under motion", async () => {
+  it("holds the custom chapter on the first business under reduced motion", async () => {
     const read = () => ({
-      accent: getComputedStyle(document.querySelector("[data-chapter='06'] .product-shell")!).getPropertyValue("--accent").trim(),
-      pressed: document.querySelector("[data-chapter='06'] button[aria-pressed='true']")!.textContent,
+      greeting: document.querySelector("[data-chapter='06'] [data-morph='greet']")!.textContent,
+      mark: document.querySelector("[data-chapter='06'] img[data-chrome]")!.getAttribute("src"),
     });
     const reduced = await withPage(
       async (page) => {
         await page.goto(site.url, { waitUntil: "networkidle" });
+        const chap = page.locator("[data-chapter='06']");
+        await chap.scrollIntoViewIfNeeded();
+        await page.waitForTimeout(5200);
         return page.evaluate(read);
       },
       { reducedMotion: true }
     );
-    expect(reduced.accent).toBe("#4e7a4e");
-    expect(reduced.pressed).toContain("Saguaro Capital");
-    const motion = await withPage(async (page) => {
-      await page.goto(site.url, { waitUntil: "networkidle" });
-      return page.evaluate(read);
-    });
-    expect(motion.accent).toBe("#4e7a4e");
-    expect(motion.pressed).toContain("Saguaro Capital");
+    expect(reduced).toEqual({ greeting: "Good morning, Morgan.", mark: "/demo/saguaro-mark.svg" });
   });
 
   it("shows reveals immediately under reduced motion", async () => {
