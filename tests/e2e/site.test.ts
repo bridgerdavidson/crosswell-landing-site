@@ -69,8 +69,8 @@ describe("nav", () => {
       };
       return { home, team };
     });
-    expect(r.home.labels).toEqual(["Team", "Insights"]);
-    expect(r.home.hrefs).toEqual(["/team", "/insights"]);
+    expect(r.home.labels).toEqual(["The Core", "What we build", "How we start", "Team", "Insights"]);
+    expect(r.home.hrefs).toEqual(["/the-core", "/what-we-build", "/how-we-start", "/team", "/insights"]);
     expect(r.home.current).toBe(0);
     expect(r.team.current).toBe("Team");
     expect(r.team.wordmark).toBe("/");
@@ -494,6 +494,58 @@ describe("the insights page", () => {
     expect(r.heading).toBe("Insights");
     expect(r.posts).toBe(0);
     expect(r.order).toEqual(["insights"]);
+  });
+});
+
+describe("the pages not yet written", () => {
+  it("stand as coming soon, with the call, out of search and the sitemap", async () => {
+    const r = await withPage(async (page) => {
+      const read = async (path: string) => {
+        await page.goto(`${site.url}${path}`, { waitUntil: "networkidle" });
+        return {
+          title: await page.title(),
+          label: await page.locator("main .type-label").first().textContent(),
+          heading: await page.locator("main h2").first().textContent(),
+          /* the band's own button; the nav and its menu carry the same words */
+          call: await page.locator("main section a", { hasText: "Set up a call" }).count(),
+          robots: await page.locator('meta[name="robots"]').getAttribute("content"),
+          current: await page.locator("header nav a[aria-current='page']").textContent(),
+        };
+      };
+      const sitemap = await (await page.request.get(`${site.url}/sitemap.xml`)).text();
+      return {
+        core: await read("/the-core"),
+        build: await read("/what-we-build"),
+        start: await read("/how-we-start"),
+        sitemap,
+      };
+    });
+    expect(r.core).toEqual({ title: "The Core | Crosswell", label: "Coming soon", heading: "How the Core works.", call: 1, robots: "noindex, follow", current: "The Core" });
+    expect(r.build.heading).toBe("What we build.");
+    expect(r.build.current).toBe("What we build");
+    expect(r.start.heading).toBe("How we start, in detail.");
+    expect(r.start.current).toBe("How we start");
+    for (const path of ["/the-core", "/what-we-build", "/how-we-start"]) expect(r.sitemap).not.toContain(`crosswellconsulting.com${path}`);
+  });
+
+  it("has a contact page that is whole, linked from the footer", async () => {
+    const r = await withPage(async (page) => {
+      await page.goto(`${site.url}/contact`, { waitUntil: "networkidle" });
+      return {
+        title: await page.title(),
+        heading: await page.locator("main h2").first().textContent(),
+        buttons: await page.locator("main section a").allTextContents(),
+        robots: await page.locator('meta[name="robots"]').count(),
+        footer: await page.locator("footer nav a").allTextContents(),
+        sitemap: await (await page.request.get(`${site.url}/sitemap.xml`)).text(),
+      };
+    });
+    expect(r.title).toBe("Contact | Crosswell");
+    expect(r.heading).toBe("Two ways in.");
+    expect(r.buttons).toEqual(["Set up a call", "Start with the audit", "hello@crosswellconsulting.com"]);
+    expect(r.robots).toBe(0);
+    expect(r.footer).toEqual(["The Core", "What we build", "How we start", "Team", "Insights", "Contact"]);
+    expect(r.sitemap).toContain("https://crosswellconsulting.com/contact");
   });
 });
 

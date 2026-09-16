@@ -385,3 +385,12 @@ The section's three cards (the audit, the Core install, the Core plus the custom
 
 - **Three rows on the band's grid** (chosen over side-by-side columns set like the values, which read as things rather than a sequence, and over a timeline, a diagram with little to diagram). The band is its title and a one-line lede, "Three steps, each small enough to stop after." Under it, hairline rows: each is the step's name in serif with its duration as a fern caption, then what happens, set in the lede column so it sits on the band's words. The first row carries the one action that starts everything, "Set up a call", under its words; the audit button moved out of the section (the hero and the closing call still offer it).
 - **No drawings.** Two were tried beside the names, in the stack's hand (the audit as three things the company knows with the route walked between them and the dropped place ringed; onboarding as the stack itself, installed and on), and read badly at 96 beside the serif names. The rows are the words.
+
+## 24. The nav filled out (hand-tuning pass, 2026-09-15)
+
+Two links read as a small site. The nav now runs from the product to the process to the people: The Core, What we build, How we start, Team, Insights, then the call button. Contact is in the footer, since the call button beside the links is the contact action; the footer lists every page in the nav's order with contact last.
+
+- **Three pages exist before they are written** (`components/ComingSoon`): `/the-core` (how the Core works, a layer down, where the parked brain map and value ledger will go), `/what-we-build` (the kinds of agents and workflows, by the work they do, for businesses outside lending), `/how-we-start` (the three steps in detail). Each is its name as a band under the nav, labelled "Coming soon", one honest line about what it will hold, and the call button, since the thirty-minute call covers the page until it is up. They are noindex and out of the sitemap, so nobody arrives from search to an empty page, while a visitor moving around the site sees a whole one. Each is a ten-line page.tsx.
+- **`/contact` is whole from day one**, since it needs no writing: the two ways in as the call and audit buttons, and the address. Indexed and in the sitemap. The scheduler replaces the mailto links when it is picked.
+- Considered and held: one page per industry (thin as placeholders; what we build covers it), and pricing (the site carries none by rule).
+

@@ -7,10 +7,13 @@ import { usePathname } from "next/navigation";
 import { CALL_MAILTO, CONTACT_EMAIL } from "@/lib/site";
 import { setMenuInk } from "./SafeAreaTheme";
 
-/* the site's pages, not the landing page's sections: the landing page
-   explains and asks in one read, and the two things a visitor might want
-   apart from it (the people, the writing) are pages of their own */
+/* the site's pages, not the landing page's sections, from the product to
+   the process to the people; contact lives in the footer, since the call
+   button beside these is the contact action */
 const links = [
+  { href: "/the-core", label: "The Core" },
+  { href: "/what-we-build", label: "What we build" },
+  { href: "/how-we-start", label: "How we start" },
   { href: "/team", label: "Team" },
   { href: "/insights", label: "Insights" },
 ];
