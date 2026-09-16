@@ -125,15 +125,17 @@ body {
 }
 
 /* ---------- The window off the phone's edge ----------
-   Below lg a cropped window runs off the right of the screen and its bottom
-   dissolves into the page's ground over its last 96, so the only edges a
-   visitor sees are the screen's and the window's own top-left corner: the
-   window is never cut by a border of the frame's. Double stops on purpose
-   (the production minifier trap, see the hero mask). From lg the frame is
-   the window's box and needs no mask. */
+   Below lg a cropped window runs off the screen's edge and its bottom
+   dissolves into the page's ground over its last --bleed-fade (96 where
+   the page runs on under the crop, less where the crop holds the window's
+   own bottom edge), so the only edges a visitor sees are the screen's and
+   the window's own: the window is never cut by a border of the frame's.
+   Double stops on purpose (the production minifier trap, see the hero
+   mask). From lg the frame is the window's box and needs no mask. */
 .window-bleed {
-  -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 96px), transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 96px), transparent 100%);
+  --bleed-fade: 96px;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--bleed-fade)), transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--bleed-fade)), transparent 100%);
 }
 @media (min-width: 1024px) {
   .window-bleed {

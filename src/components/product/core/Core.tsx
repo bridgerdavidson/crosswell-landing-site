@@ -4,6 +4,7 @@ import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type 
 import { AppWindow, Button, Icon, Sources, Status, Views } from "@/components/dashboard/ui";
 import { themeOf } from "@/components/dashboard/worlds";
 import { core, pipeline, type Card, type CoreReply } from "@/lib/saguaro";
+import type { Crop } from "@/components/dashboard/WindowFrame";
 import { Chapter } from "../shared";
 
 /**
@@ -22,6 +23,11 @@ import { Chapter } from "../shared";
 const WIN = { h: 800, core: 384, over: 24, room: 12, min: 1280, max: 1440 };
 const LIFT = 1.06;
 const FALLOFF = "radial-gradient(ellipse 118% 190% at 100% 0%, #000 0%, #000 54%, transparent 100%)";
+/* the phone's crop: from inside the Underwriting column (so the board reads as
+   running off the screen) across Docs out with its lit card and Funded to the
+   Core's column, whole, with the lifted Core's overhang above and its shadow
+   below; about half scale on a phone, whole at 1:1 on a tablet */
+const PHONE: Crop = { x: 540, y: -WIN.over, width: 768, height: WIN.h + WIN.over + 36 };
 
 type Question = keyof typeof core.replies;
 type Stage = "idle" | "working" | "answer" | "done";
@@ -328,38 +334,55 @@ function LiftedCore({
  * (and without JavaScript), when the unscaled stage could be wider than a
  * phone; once measured nothing overflows, and the lifted Core's shadow is
  * free to fall past the frame's edge.
+ *
+ * Below lg the stage shows a crop of itself instead, `phone`, a rectangle
+ * in the window's own pixels (y from -24, where the lifted Core's top
+ * lands), scaled as one to the phone's whole width, the same camera as
+ * WindowFrame's: the window is never cut by an edge of the frame's own
+ * (it runs off the left of the screen, its right corners and the lifted
+ * Core's shadow sit inside the frame, and a short fade softens the
+ * bottom), and nothing re-flows.
  */
-function Stage({ children, style }: { children: ReactNode; style: CSSProperties }) {
+function Stage({ children, style, phone }: { children: ReactNode; style: CSSProperties; phone?: Crop }) {
   const box = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
+  const [wide, setWide] = useState(true);
   const [measured, setMeasured] = useState(false);
+  const crop = !wide && phone ? phone : null;
 
   useLayoutEffect(() => {
     const el = box.current!;
+    const lg = window.matchMedia("(min-width: 1024px)");
     const measure = () => {
-      setScale(Math.min(1, el.clientWidth / (WIN.min + WIN.room)));
+      const fit = !lg.matches && phone ? phone.width : WIN.min + WIN.room;
+      setWide(lg.matches);
+      setScale(Math.min(1, el.clientWidth / fit));
       setMeasured(true);
     };
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
+    lg.addEventListener("change", measure);
+    return () => {
+      ro.disconnect();
+      lg.removeEventListener("change", measure);
+    };
+  }, [phone]);
 
   return (
     <div
       ref={box}
       data-core-stage
-      className={`relative w-full ${measured ? "" : "overflow-x-clip"}`}
-      style={{ height: (WIN.h + WIN.over * 2) * scale, ...style }}
+      className={`relative ${crop ? "window-bleed -mx-(--page-gutter)" : "w-full"} ${measured ? "" : "overflow-x-clip"}`}
+      style={{ height: (crop ? crop.height : WIN.h + WIN.over * 2) * scale, ...(crop ? { "--bleed-fade": "32px" } : null), ...style } as CSSProperties}
     >
       <div
         className="absolute left-0 origin-top-left"
         style={{
-          top: WIN.over * scale,
-          width: scale < 1 ? WIN.min + WIN.room : `clamp(${WIN.min + WIN.room}px, 100%, ${WIN.max + WIN.room}px)`,
+          top: crop ? 0 : WIN.over * scale,
+          width: scale < 1 || crop ? WIN.min + WIN.room : `clamp(${WIN.min + WIN.room}px, 100%, ${WIN.max + WIN.room}px)`,
           height: WIN.h,
-          transform: scale < 1 ? `scale(${scale})` : undefined,
+          transform: crop ? `translate(${-crop.x * scale}px, ${-crop.y * scale}px) scale(${scale})` : scale < 1 ? `scale(${scale})` : undefined,
         }}
       >
         {children}
@@ -438,7 +461,7 @@ export default function Core() {
           </button>
         }
       >
-        <Stage style={vars}>
+        <Stage style={vars} phone={PHONE}>
           {/* the dashboard falls away toward its bottom-left corner, its outline with it, strongest
               beside the Core: the fall-off is a mask on the whole window, so the page shows through */}
           <div className="relative h-full" style={{ marginRight: WIN.room, WebkitMaskImage: FALLOFF, maskImage: FALLOFF }}>
