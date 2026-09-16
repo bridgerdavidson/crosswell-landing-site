@@ -14,11 +14,12 @@ export default function FinalCta() {
         <Reveal>
           {/* deliberate reuse of the hero display scale as a closing bookend */}
           <h2 className="type-display mx-auto max-w-4xl">
-            {tie("Your firm already knows the answers.")}{" "}
-            <span className="italic text-fern-soft">{tie("Give it a memory.")}</span>
+            {/* the second sentence on lines of its own, so no line break falls inside it on a phone */}
+            {tie("Nothing off the shelf fits your business.")}{" "}
+            <span className="block italic text-fern-soft">{tie("So we build what does.")}</span>
           </h2>
           <p className="type-body mx-auto mt-6 max-w-2xl text-ivory/80">
-            {tie("The Core is built alongside the firms it serves. It starts with a thirty-minute call.")}
+            {tie("Built with your team, around how the work actually moves. It starts with a thirty-minute call.")}
           </p>
         </Reveal>
         <Reveal delay={80}>

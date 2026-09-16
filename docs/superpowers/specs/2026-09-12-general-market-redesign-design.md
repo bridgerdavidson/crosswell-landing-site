@@ -24,7 +24,7 @@ The site keeps its editorial character (ivory, serif, warm, no drop shadows, no 
 | Trust proof | A dark Security section with technical guarantees | Trust as a value with its cost named. No technical security claims anywhere. |
 | Team bios | Fund history | Crosswell roles only |
 | The offer | Audit, Core install, custom layer | Unchanged |
-| Closing line | Your firm already knows the answers. Give it a memory. | Unchanged |
+| Closing line | Your firm already knows the answers. Give it a memory. | Nothing off the shelf fits your business. So we build what does. (September 2026: "firm" and "memory" were the fund positioning) |
 
 **Non-goals.** No pricing, no client names, no case studies, no ship dates, no competitor names, no security or compliance claims, no blog build (the Insights slot is held, not built), no scheduler wiring (CTAs stay mailto).
 

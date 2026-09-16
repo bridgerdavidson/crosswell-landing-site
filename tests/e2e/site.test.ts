@@ -418,7 +418,7 @@ describe("the landing page after the run", () => {
         audit: await page.getByText("We map that and design your system from it").count(),
         /* the band sells the order, never the exits: the two lines that read as insecurity are gone */
         exits: await page.getByText("small enough to stop after").count() + (await page.getByText("You keep the map either way").count()),
-        closing: await page.getByText("Your firm already knows the answers").count(),
+        closing: await page.getByText("Nothing off the shelf fits your business").count(),
         /* moved to /team, /insights, or parked: none of it on the landing page */
         gone: await page.locator("#the-brain, #why-crosswell, #what-you-lose, #beyond-core, #values, #team, #insights").count(),
         offShelf: await page.getByText("Off the shelf fits nobody").count(),
@@ -457,7 +457,7 @@ describe("the team page", () => {
         valuesText: await page.locator("#values").textContent(),
         stewardship: await page.getByText("leaves with you in open files on the day you go").count(),
         roles: await page.locator("#team h3 + p").allTextContents(),
-        closing: await page.getByText("Your firm already knows the answers").count(),
+        closing: await page.getByText("Nothing off the shelf fits your business").count(),
         footer: await page.locator("footer").textContent(),
         h1: await page.locator("h1").count(),
         order: await page.evaluate(() => [...document.querySelectorAll("main section[id]")].map((s) => s.id)),
