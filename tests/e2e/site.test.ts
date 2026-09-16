@@ -54,12 +54,26 @@ describe("type", () => {
 });
 
 describe("nav", () => {
-  it("lists the five links, sentence case", async () => {
-    const labels = await withPage(async (page) => {
+  it("links to the site's two other pages, sentence case, and marks the current one", async () => {
+    const r = await withPage(async (page) => {
       await page.goto(site.url, { waitUntil: "networkidle" });
-      return page.locator("header nav a").allTextContents();
+      const home = {
+        labels: await page.locator("header nav a").allTextContents(),
+        hrefs: await page.locator("header nav a").evaluateAll((as) => as.map((a) => a.getAttribute("href"))),
+        current: await page.locator("header nav a[aria-current='page']").count(),
+      };
+      await page.goto(`${site.url}/team`, { waitUntil: "networkidle" });
+      const team = {
+        current: await page.locator("header nav a[aria-current='page']").textContent(),
+        wordmark: await page.locator("header a:has(img)").getAttribute("href"),
+      };
+      return { home, team };
     });
-    expect(labels).toEqual(["What we do", "Why Crosswell", "How we start", "Team", "Insights"]);
+    expect(r.home.labels).toEqual(["Team", "Insights"]);
+    expect(r.home.hrefs).toEqual(["/team", "/insights"]);
+    expect(r.home.current).toBe(0);
+    expect(r.team.current).toBe("Team");
+    expect(r.team.wordmark).toBe("/");
   });
 });
 
@@ -99,7 +113,7 @@ describe("page column", () => {
             return {
               logo: left(document.querySelector("header img")),
               claim: left(document.querySelector("[data-chapter] h3, main h3.type-h2")),
-              cards: left(document.querySelector("#why-crosswell .rounded-2xl")),
+              cards: left(document.querySelector("#how-we-start .rounded-2xl")),
               footer: left(document.querySelector("footer img")),
               frame: [...document.querySelectorAll(".product-frame, [data-window], [data-core-stage]")].map((f) => [left(f), right(f)]),
               overflow: document.documentElement.scrollWidth - innerWidth,
@@ -123,6 +137,7 @@ describe("what we do", () => {
       return {
         label: await page.locator("#what-we-do .type-label").first().textContent(),
         statement: await page.locator("#what-we-do h2").textContent(),
+        stats: await page.locator("#what-we-do #stats .type-h2").allTextContents(),
         captions: await stack.locator("h3").allTextContents(),
         legend: await stack.locator("li").allTextContents(),
         layers: await stack.locator(".core-group, .agents-group, .dash-group").count(),
@@ -133,6 +148,7 @@ describe("what we do", () => {
     expect(r.statement).toBe(
       "AI is only as useful as what it knows about your business. So we start there. Crosswell brings everything your company knows into one place, then builds the agents and automations that use it."
     );
+    expect(r.stats).toEqual(["75%", "78%"]);
     expect(r.captions).toEqual([
       "Everything your company knows, in one place.",
       "The work, built on what you know.",
@@ -343,13 +359,14 @@ describe("the custom chapter and the whole run", () => {
       return {
         captions: await page.getByText("Interactive demo · Sample data").count(),
         fictional: await page.getByText("Kestrel & Vane are fictional", { exact: false }).count(),
+        /* the Core's map, and its lead-in, are parked for a page of their own */
         bridge: await page.getByText("Behind the chat is the").count(),
         indexes: await page.locator(".type-label-index").count(),
       };
     });
     expect(r.captions).toBe(0);
     expect(r.fictional).toBe(1);
-    expect(r.bridge).toBe(1);
+    expect(r.bridge).toBe(0);
     expect(r.indexes).toBe(0);
   });
 });
@@ -381,41 +398,49 @@ describe("hero and the top of the company half", () => {
       "Manufacturing", "Healthcare", "Logistics", "Professional services", "Construction", "Private credit",
     ]);
     expect(r.stats).toEqual(["75%", "78%"]);
-    expect(r.order.slice(0, 6)).toEqual([
-      "top", "what-we-do", "the-brain", "who-its-for", "stats", "why-crosswell",
-    ]);
+    expect(r.order).toEqual(["top", "what-we-do", "who-its-for", "how-we-start"]);
   });
 });
 
-describe("company half, middle", () => {
-  it("carries the Gen 6 copy in the right order", async () => {
+describe("the landing page after the run", () => {
+  it("qualifies, says how we start, and asks, with nothing said twice", async () => {
     const r = await withPage(async (page) => {
       await page.goto(site.url, { waitUntil: "networkidle" });
       return {
-        why: await page.locator("#why-crosswell h2").textContent(),
-        cards: await page.locator("#why-crosswell h3").allTextContents(),
-        loses: await page.locator("#what-you-lose h2").textContent(),
-        firstSink: await page.locator("#what-you-lose .type-accent").first().textContent(),
-        worthMore: await page.getByText("And a firm that keeps its memory is worth more").count(),
+        who: await page.locator("#who-its-for h2").textContent(),
+        gap: await page.getByText("That gap is where we work").count(),
+        start: await page.locator("#how-we-start h2").textContent(),
+        cards: await page.locator("#how-we-start h3").allTextContents(),
+        retainer: await page.locator("#how-we-start").getByText("If something breaks, we fix it", { exact: false }).count(),
         audit: await page.getByText("Where every firm starts").count(),
-        beyond: await page.locator("#beyond-core h3").allTextContents(),
+        closing: await page.getByText("Your firm already knows the answers").count(),
+        /* moved to /team, /insights, or parked: none of it on the landing page */
+        gone: await page.locator("#the-brain, #why-crosswell, #what-you-lose, #beyond-core, #values, #team, #insights").count(),
+        offShelf: await page.getByText("Off the shelf fits nobody").count(),
+        loses: await page.getByText("What a business actually loses").count(),
+        vision: await page.getByText("To become the most sought after name in agentic AI").count(),
       };
     });
-    expect(r.why).toContain("Off the shelf fits nobody");
-    expect(r.cards).toEqual(["Built around your work", "We sell trust", "You work directly with us"]);
-    expect(r.loses).toContain("What a business actually loses");
-    expect(r.firstSink).toContain("departing employee");
-    expect(r.worthMore).toBe(1);
+    expect(r.who).toBe("Built for businesses that run on what they know.");
+    expect(r.gap).toBe(1);
+    expect(r.start).toBe("Start small, on purpose.");
+    expect(r.cards).toEqual(["The knowledge audit", "The Core install", "The Core plus the custom layer"]);
+    expect(r.retainer).toBe(1);
     expect(r.audit).toBe(1);
-    expect(r.beyond).toEqual(["Custom tools and automations", "The support layer"]);
+    expect(r.closing).toBe(1);
+    expect(r.gone).toBe(0);
+    expect(r.offShelf).toBe(0);
+    expect(r.loses).toBe(0);
+    expect(r.vision).toBe(0);
   });
 });
 
-describe("company half, bottom", () => {
-  it("carries the values, the new bios, the Insights slot, and the footer line", async () => {
+describe("the team page", () => {
+  it("carries the values, their costs, and the three bios, then the closing call", async () => {
     const r = await withPage(async (page) => {
-      await page.goto(site.url, { waitUntil: "networkidle" });
+      await page.goto(`${site.url}/team`, { waitUntil: "networkidle" });
       return {
+        title: await page.title(),
         vision: await page.getByText("To become the most sought after name in agentic AI").count(),
         values: await page.locator("#values h3").allTextContents(),
         costs: await page.locator("#values").getByText("What it costs").count(),
@@ -423,14 +448,15 @@ describe("company half, bottom", () => {
         valuesText: await page.locator("#values").textContent(),
         stewardship: await page.getByText("leaves with you in open files on the day you go").count(),
         roles: await page.locator("#team h3 + p").allTextContents(),
-        insights: await page.locator("#insights h2").textContent(),
-        posts: await page.locator("#insights article").count(),
+        closing: await page.getByText("Your firm already knows the answers").count(),
         footer: await page.locator("footer").textContent(),
-        order: await page.evaluate(() =>
-          [...document.querySelectorAll("main section[id]")].map((s) => s.id)
-        ),
+        h1: await page.locator("h1").count(),
+        order: await page.evaluate(() => [...document.querySelectorAll("main section[id]")].map((s) => s.id)),
+        /* the first band clears the fixed nav */
+        top: await page.locator("#values").evaluate((el) => Math.round(el.getBoundingClientRect().top + parseFloat(getComputedStyle(el).paddingTop))),
       };
     });
+    expect(r.title).toBe("Team | Crosswell");
     expect(r.vision).toBe(1);
     expect(r.values).toEqual(["Trust", "Stewardship", "Continuity"]);
     expect(r.costs).toBe(3);
@@ -439,13 +465,29 @@ describe("company half, bottom", () => {
     expect(r.valuesText).not.toMatch(/\b(Mission|Vision)\b/);
     expect(r.stewardship).toBe(1);
     expect(r.roles).toEqual(["Business & strategy", "Software & engineering", "Finance & operations"]);
-    expect(r.insights).toBe("Insights");
-    expect(r.posts).toBe(0);
+    expect(r.closing).toBe(1);
     expect(r.footer).toContain("Custom agentic AI, built around how your team actually works. Arizona.");
-    expect(r.order).toEqual([
-      "top", "what-we-do", "the-brain", "who-its-for", "stats", "why-crosswell",
-      "what-you-lose", "how-we-start", "beyond-core", "values", "team", "insights",
-    ]);
+    expect(r.h1).toBe(0);
+    expect(r.order).toEqual(["values", "team"]);
+    expect(r.top).toBeGreaterThanOrEqual(112);
+  });
+});
+
+describe("the insights page", () => {
+  it("holds the slot for the blog", async () => {
+    const r = await withPage(async (page) => {
+      await page.goto(`${site.url}/insights`, { waitUntil: "networkidle" });
+      return {
+        title: await page.title(),
+        heading: await page.locator("#insights h2").textContent(),
+        posts: await page.locator("#insights article").count(),
+        order: await page.evaluate(() => [...document.querySelectorAll("main section[id]")].map((s) => s.id)),
+      };
+    });
+    expect(r.title).toBe("Insights | Crosswell");
+    expect(r.heading).toBe("Insights");
+    expect(r.posts).toBe(0);
+    expect(r.order).toEqual(["insights"]);
   });
 });
 
@@ -460,12 +502,27 @@ describe("metadata", () => {
         twitter: document.querySelector('meta[name="twitter:card"]')?.getAttribute("content"),
         ld: document.querySelector('script[type="application/ld+json"]')?.textContent,
       }));
+      const canonicals = await page.locator('link[rel="canonical"]').count();
       const robots = await (await page.request.get(`${site.url}/robots.txt`)).text();
       const sitemap = await (await page.request.get(`${site.url}/sitemap.xml`)).text();
       const og = await page.request.get(`${site.url}/og-image.jpg`);
-      return { ...head, robots, sitemap, ogStatus: og.status() };
+      /* each page names itself, in its canonical and its Open Graph url */
+      const own = async (path: string) => {
+        await page.goto(`${site.url}${path}`, { waitUntil: "networkidle" });
+        return page.evaluate(() => ({
+          canonical: document.querySelector('link[rel="canonical"]')?.getAttribute("href"),
+          inHead: document.querySelector('head link[rel="canonical"]') !== null,
+          ogUrl: document.querySelector('meta[property="og:url"]')?.getAttribute("content"),
+        }));
+      };
+      return { ...head, canonicals, robots, sitemap, ogStatus: og.status(), team: await own("/team"), insights: await own("/insights") };
     });
     expect(r.canonical).toBe("https://crosswellconsulting.com/");
+    expect(r.canonicals).toBe(1);
+    expect(r.team).toEqual({ canonical: "https://crosswellconsulting.com/team", inHead: true, ogUrl: "https://crosswellconsulting.com/team" });
+    expect(r.insights).toEqual({ canonical: "https://crosswellconsulting.com/insights", inHead: true, ogUrl: "https://crosswellconsulting.com/insights" });
+    expect(r.sitemap).toContain("https://crosswellconsulting.com/team");
+    expect(r.sitemap).toContain("https://crosswellconsulting.com/insights");
     expect(r.ogTitle).toContain("The operating layer your business actually runs on");
     expect(r.ogImage).toContain("/og-image.jpg");
     expect(r.twitter).toBe("summary_large_image");

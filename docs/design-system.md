@@ -564,6 +564,13 @@ carries them). Nothing else on the page is amber, red, or blue.
   rows answer a click, and the Core's typed request hands work to an email
   agent the visitor approves. A crescent fade (an SVG mask traced along a
   drawn line, blurred) takes the window's bottom-left corner.
+- The site is three pages (spec section 22): the landing page (hero, what we
+  do with the two figures under it and the stack, the run, who it's for, how
+  we start, the closing call), `/team` (values, bios, the closing call) and
+  `/insights` (the blog's held slot). The nav links to the pages, not to
+  sections. The brain section and the value ledger are parked for a future
+  page on the Core; notes on them elsewhere in this document describe
+  components that no longer ship.
 - The custom chapter (spec section 21) draws the real window and rebuilds the
   page inside it for three businesses in turn, looping while it is on screen
   with nothing to click, in three beats: the page empties out to bare

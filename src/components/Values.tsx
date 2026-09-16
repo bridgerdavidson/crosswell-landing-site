@@ -24,9 +24,12 @@ const values = [
   },
 ];
 
-export default function Values() {
+/* The team page opens on this section, so it can sit under the nav with no
+   seam above it (first): the nav's 80 plus 32, or 80 from sm, before the
+   label. Anywhere else it keeps the page's seam and section padding. */
+export default function Values({ first = false }: { first?: boolean }) {
   return (
-    <section id="values" className={`${SEAM} ${CONTAINER} ${SECTION}`}>
+    <section id="values" className={first ? `${CONTAINER} pt-28 pb-24 sm:pt-40 sm:pb-32` : `${SEAM} ${CONTAINER} ${SECTION}`}>
       <Band
         label="Values"
         title={

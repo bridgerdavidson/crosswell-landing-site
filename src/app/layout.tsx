@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Newsreader, Instrument_Sans } from "next/font/google";
 import SafeAreaTheme from "@/components/SafeAreaTheme";
+import { SITE, SITE_DESCRIPTION, SITE_TITLE, pageMetadata } from "@/lib/site";
 import "./globals.css";
 
 const instrument = Instrument_Sans({
@@ -16,30 +17,10 @@ const newsreader = Newsreader({
   display: "swap",
 });
 
-const SITE = "https://crosswellconsulting.com";
-const TITLE = "Crosswell | The operating layer your business actually runs on";
-/* New copy, pending Max (spec section 12, item 7). */
-const DESCRIPTION =
-  "Crosswell builds custom agentic AI around how your team actually works. The Core is the memory and operating layer your business runs on, and the workflows, automations, and agents we build run on it. Arizona.";
-
+/* every page overrides this with its own (lib/site.ts, pageMetadata) */
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
-  title: TITLE,
-  description: DESCRIPTION,
-  openGraph: {
-    type: "website",
-    url: `${SITE}/`,
-    siteName: "Crosswell Consulting",
-    title: TITLE,
-    description: DESCRIPTION,
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "Crosswell" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: TITLE,
-    description: DESCRIPTION,
-    images: ["/og-image.jpg"],
-  },
+  ...pageMetadata({ title: SITE_TITLE, description: SITE_DESCRIPTION, path: "/" }),
 };
 
 const organization = {
@@ -48,7 +29,7 @@ const organization = {
   name: "Crosswell Consulting",
   url: SITE,
   logo: `${SITE}/xw-h-lockup-dark.svg`,
-  description: DESCRIPTION,
+  description: SITE_DESCRIPTION,
   areaServed: "US",
 };
 
@@ -74,12 +55,6 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        {/* Hand-authored instead of metadata.alternates.canonical: for a root
-            path, Next's own resolver (resolveAbsoluteUrlWithPathname) collapses
-            the URL to the bare origin and only re-adds the trailing slash when
-            next.config sets trailingSlash, which this static export doesn't set.
-            This tag carries the trailing-slash canonical directly. */}
-        <link rel="canonical" href={`${SITE}/`} />
         {/* start the hero JPEG downloading immediately, in parallel with the
             HTML, so its decode-gated fade finishes sooner; media-split so a
             phone never fetches the 2.2MB desktop original */}

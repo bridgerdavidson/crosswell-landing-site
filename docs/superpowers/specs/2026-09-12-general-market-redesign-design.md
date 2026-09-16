@@ -368,3 +368,14 @@ The old chapter 06 was a fragment of chapter 01's morning in four swatches, with
 - **It loops while on screen** (about 3.8s a business) and stops when it scrolls away, chosen over a switcher with chips: the chapter's argument is that the product is built around the business, and a visitor who never clicks should still see it happen. Reduced motion holds the lender's page still. The window keeps the run's bottom fade, since the firm's week runs past 800.
 - The chapter's own fragment components (Frame, Rail, TopBar, Tile, Chip, SendButton, inert, useSequence in `src/components/product/shared`) were the last of the fragment era and are deleted with it; only Chapter remains.
 
+## 22. The site's pages (hand-tuning pass, 2026-09-15)
+
+With the run finished, the landing page was read top to bottom and found saying its second half twice: after the custom chapter a visitor has seen the Core, the agents, the dashboard, and that it is built custom, and the brain map, Why Crosswell, the value ledger, and Beyond the Core then said those things again in prose (Why Crosswell's three points were the values, one of them word for word). The page is now one read that explains, qualifies, and asks, and the two things a visitor might want apart from it are pages of their own.
+
+- **The landing page (`/`)**: hero; what we do, with the two figures directly under the statement (they say AI is coming into the business either way, and mostly without its context, which is what the statement answers, so they carry no heading of their own) and the stack; the run's five chapters; who it's for; how we start, whose third card now carries Beyond the Core's one new idea, the support retainer, as a sentence; the closing call; the footer.
+- **`/team`**: the values with what each costs, then the three bios, then the closing call. It opens on the values band under the nav, with no hero.
+- **`/insights`**: the blog's home, a held slot until the first pieces publish.
+- **Parked, not deleted**: the Core's map (`components/brain/BrainSection`, "Nothing your firm knows sits alone.", with its lead-in "Behind the chat is the Core.") and the value ledger (`components/TimeBack`, the four pain and fix pairs), both for a future page on how the Core works. Deleted: Why Crosswell (`Edge`) and Beyond the Core, folded as above.
+- **The nav** links to pages, not sections: Team, Insights, and the call button; the wordmark goes home (on the landing page it scrolls to the top without a hash). The current page's link carries `aria-current` and its underline.
+- **Each page names itself**: its title, description, and Open Graph url come from `pageMetadata` in `lib/site.ts`; its canonical link is rendered by the page (`components/Canonical`), because Next's resolver drops the root's trailing slash from `metadata.alternates.canonical`. The sitemap lists all three.
+

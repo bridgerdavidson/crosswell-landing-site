@@ -1,4 +1,4 @@
-import { CONTAINER, GRID, SECTION } from "./Band";
+import { GRID } from "./Band";
 import Reveal from "./Reveal";
 import { tie } from "./tie";
 
@@ -19,27 +19,23 @@ const stats = [
   },
 ];
 
-/* The quiet parchment band that sets up Why Crosswell (spec 6.5): it opens
-   the band Why Crosswell sits in, on the page's beat, with the two figures
-   on the grid's two column lines (the band's title column and its lede
-   column); why Crosswell's top edge carries the seam hairline between
-   them. */
+/* The two figures under the what-we-do statement, on the band's two column
+   lines (the title column and the lede column), with no heading of their
+   own: read together they say AI is coming into the business either way,
+   and mostly without its context, which is what the statement above them
+   answers. They hang 64 under the statement (96 from lg). */
 export default function Stats() {
   return (
-    <section id="stats" className="border-t border-ink/8 bg-parchment">
-      <div className={`${CONTAINER} ${SECTION}`}>
-        <div className={`${GRID} gap-y-10 sm:max-lg:grid-cols-2 sm:max-lg:gap-x-6`}>
-          {stats.map((stat, i) => (
-            <Reveal key={stat.figure} delay={i * 80}>
-              <div>
-                <p className="type-h2 text-fern-deep">{stat.figure}</p>
-                <p className="type-text mt-2 max-w-[40ch] text-ink/70">{tie(stat.body)}</p>
-                <p className="type-caption mt-3 text-ink/60">{stat.source}</p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </div>
-    </section>
+    <div id="stats" className={`${GRID} mt-16 gap-y-10 sm:max-lg:grid-cols-2 sm:max-lg:gap-x-6 lg:mt-24`}>
+      {stats.map((stat, i) => (
+        <Reveal key={stat.figure} delay={i * 80}>
+          <div>
+            <p className="type-h2 text-fern-deep">{stat.figure}</p>
+            <p className="type-text mt-2 max-w-[40ch] text-ink/70">{tie(stat.body)}</p>
+            <p className="type-caption mt-3 text-ink/60">{stat.source}</p>
+          </div>
+        </Reveal>
+      ))}
+    </div>
   );
 }

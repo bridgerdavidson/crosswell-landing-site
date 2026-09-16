@@ -17,7 +17,7 @@ const engagements = [
   },
   {
     title: "The Core plus the custom layer",
-    body: "We design, build, and run the agentic tools your firm names, on top of the Core.",
+    body: "We design, build, and run the agentic tools your firm names, on top of the Core. If something breaks, we fix it. As new needs surface, we keep automating, so your technology keeps improving without a hire.",
   },
 ];
 

@@ -20,7 +20,7 @@ The public marketing site for Crosswell and Crosswell Core. Rebuilt fresh in Jul
 
 ## Page order (2026-09-12 general-market redesign)
 
-Nav, Hero, the product run (six chapters: Today, Agenda, the Core chat on the dark band, Pipeline, Agents, Your brand), Behind the chat (brain map), Who it's for, Stats, Why Crosswell, What a business actually loses, How we start, Beyond Core, Values, Team, Insights (held slot), Final CTA (dark), Footer.
+Three pages. `/`: Nav, Hero, what we do (the statement, the two figures, the stack), the product run (five chapters: Today, Ask the Core, Agenda, Agents on the dark band, Custom), Who it's for, How we start, Final CTA (dark), Footer. `/team`: Values, Team, Final CTA, Footer. `/insights`: the blog's held slot, Footer. The brain map and the value ledger are parked in the repo for a future page on the Core.
 
 Spec: `docs/superpowers/specs/2026-09-12-general-market-redesign-design.md`. Plan: `docs/superpowers/plans/2026-09-12-general-market-redesign.md`. The Security section, the GSAP dashboard tour, and the audience marquee were removed in this pass; the fictional Saguaro dataset every chapter reads from is `src/lib/saguaro.ts`. Chapter choreography lands through the design loop, not this plan.
 

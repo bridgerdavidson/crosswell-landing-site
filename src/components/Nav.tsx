@@ -2,20 +2,23 @@
 
 import { useEffect, useState, type CSSProperties, type MouseEvent } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { CALL_MAILTO, CONTACT_EMAIL } from "@/lib/site";
 import { setMenuInk } from "./SafeAreaTheme";
 
+/* the site's pages, not the landing page's sections: the landing page
+   explains and asks in one read, and the two things a visitor might want
+   apart from it (the people, the writing) are pages of their own */
 const links = [
-  { href: "#what-we-do", label: "What we do" },
-  { href: "#why-crosswell", label: "Why Crosswell" },
-  { href: "#how-we-start", label: "How we start" },
-  { href: "#team", label: "Team" },
-  { href: "#insights", label: "Insights" },
+  { href: "/team", label: "Team" },
+  { href: "/insights", label: "Insights" },
 ];
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -53,34 +56,16 @@ export default function Nav() {
     };
   }, [open]);
 
-  // Smooth-scroll a nav target so its title sits just below the nav (filling the
-  // screen from there), without writing a hash to the URL (which is what made
-  // reloads jump). The section's py-24/32 top padding lives on the section
-  // itself (#what-we-do) or on an inner wrapper (the rest); we align below
-  // whichever carries it, so there's no empty gap above the title.
-  const NAV_H = 64; // scrolled nav height (h-16)
-  const TOP_GAP = 20; // small breathing room under the nav
-  const goToSection = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
+  // The wordmark on the landing page scrolls back to the top without writing
+  // a hash to the URL (which is what made reloads jump); anywhere else it is
+  // a plain link home.
+  const goHome = (e: MouseEvent<HTMLAnchorElement>) => {
+    if (pathname !== "/") return;
     e.preventDefault();
     setOpen(false);
-    const id = href.slice(1);
-    if (id === "top") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      return;
-    }
-    const el = document.getElementById(id);
-    if (!el) return;
-    const padded =
-      (parseFloat(getComputedStyle(el).paddingTop) || 0) > 0
-        ? el
-        : el.firstElementChild ?? el;
-    const padTop = parseFloat(getComputedStyle(padded).paddingTop) || 0;
-    const contentTop =
-      padded.getBoundingClientRect().top + window.scrollY + padTop;
-    const target = contentTop - NAV_H - TOP_GAP;
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    window.scrollTo({ top: Math.max(0, Math.min(target, max)), behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
+  const current = (href: string) => (pathname === href ? "page" : undefined);
 
   // Open sits the header on the ink overlay, so it goes see-through with a
   // light logo; otherwise the scrolled state gets the opaque ivory bar. It
@@ -111,11 +96,7 @@ export default function Nav() {
           scrolled ? "h-16" : "h-20"
         }`}
       >
-        <a
-          href="#top"
-          className="flex items-center"
-          onClick={(e) => goToSection(e, "#top")}
-        >
+        <Link href="/" className="flex items-center" onClick={goHome}>
           <Image
             src={open ? "/xw-h-lockup-light.svg" : "/xw-h-lockup-dark.svg"}
             alt="Crosswell"
@@ -124,18 +105,18 @@ export default function Nav() {
             priority
             className="h-6 w-auto md:h-7"
           />
-        </a>
+        </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
           {links.map((link) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
-              onClick={(e) => goToSection(e, link.href)}
-              className="type-text relative font-medium text-ink/75 transition-colors duration-200 hover:text-ink after:absolute after:inset-x-0 after:-bottom-1.5 after:h-px after:origin-left after:scale-x-0 after:bg-fern after:transition-transform after:duration-200 hover:after:scale-x-100"
+              aria-current={current(link.href)}
+              className="type-text relative font-medium text-ink/75 transition-colors duration-200 hover:text-ink after:absolute after:inset-x-0 after:-bottom-1.5 after:h-px after:origin-left after:scale-x-0 after:bg-fern after:transition-transform after:duration-200 hover:after:scale-x-100 aria-[current=page]:text-ink aria-[current=page]:after:scale-x-100"
             >
               {link.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
@@ -180,16 +161,17 @@ export default function Nav() {
     >
       <nav className="menu-links">
         {links.map((link, i) => (
-          <a
+          <Link
             key={link.href}
             href={link.href}
-            onClick={(e) => goToSection(e, link.href)}
+            aria-current={current(link.href)}
+            onClick={() => setOpen(false)}
             className="menu-link"
             style={{ "--i": i } as CSSProperties}
           >
             <span className="menu-idx">{String(i + 1).padStart(2, "0")}</span>
             <span className="menu-txt type-h2">{link.label}</span>
-          </a>
+          </Link>
         ))}
       </nav>
       <div

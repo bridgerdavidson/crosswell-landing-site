@@ -1,5 +1,6 @@
 import { CONTAINER } from "@/components/Band";
 import Reveal from "@/components/Reveal";
+import Stats from "@/components/Stats";
 import { tie } from "@/components/tie";
 import CoreStack from "@/components/stack/CoreStack";
 import Today from "./today/Today";
@@ -34,6 +35,7 @@ export default function ProductRun() {
             </span>
           </h2>
         </Reveal>
+        <Stats />
       </section>
 
       <CoreStack />
