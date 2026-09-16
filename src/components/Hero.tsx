@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { AUDIT_MAILTO, CALL_MAILTO } from "@/lib/site";
+import { CALL_MAILTO } from "@/lib/site";
 import HeroCore from "./HeroCore";
 
 export default function Hero() {
@@ -50,15 +50,12 @@ export default function Hero() {
           className="hero-enter mt-9 flex flex-wrap items-center justify-center gap-4"
           style={{ "--enter-delay": "1s" } as CSSProperties}
         >
-          <a
-            href={AUDIT_MAILTO}
-            className="type-text rounded-lg bg-fern px-6 py-3 font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep"
-          >
-            Start with the audit
-          </a>
+          {/* one ask: the work is consulting, custom and personal, and its
+              first step is always the call, so a button that starts with the
+              audit skipped step one */}
           <a
             href={CALL_MAILTO}
-            className="type-text rounded-lg border border-ink/15 px-6 py-3 font-semibold text-ink transition-colors hover:border-fern hover:text-fern-deep"
+            className="type-text rounded-lg bg-fern px-6 py-3 font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep"
           >
             Set up a call
           </a>

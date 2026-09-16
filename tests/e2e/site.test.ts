@@ -497,6 +497,22 @@ describe("the insights page", () => {
   });
 });
 
+describe("the one call to action", () => {
+  it("asks for the call and nothing else, in the hero and the closing band", async () => {
+    const r = await withPage(async (page) => {
+      await page.goto(site.url, { waitUntil: "networkidle" });
+      return {
+        hero: await page.locator("#top a").allTextContents(),
+        closing: await page.locator("main section.bg-charcoal a").allTextContents(),
+        audit: await page.getByText("Start with the audit").count(),
+      };
+    });
+    expect(r.hero).toEqual(["Set up a call"]);
+    expect(r.closing).toEqual(["Set up a call"]);
+    expect(r.audit).toBe(0);
+  });
+});
+
 describe("the pages not yet written", () => {
   it("stand as coming soon, with the call, out of search and the sitemap", async () => {
     const r = await withPage(async (page) => {
@@ -541,8 +557,8 @@ describe("the pages not yet written", () => {
       };
     });
     expect(r.title).toBe("Contact | Crosswell");
-    expect(r.heading).toBe("Two ways in.");
-    expect(r.buttons).toEqual(["Set up a call", "Start with the audit", "hello@crosswellconsulting.com"]);
+    expect(r.heading).toBe("It starts with a call.");
+    expect(r.buttons).toEqual(["Set up a call", "hello@crosswellconsulting.com"]);
     expect(r.robots).toBe(0);
     expect(r.footer).toEqual(["The Core", "What we build", "How we start", "Team", "Insights", "Contact"]);
     expect(r.sitemap).toContain("https://crosswellconsulting.com/contact");

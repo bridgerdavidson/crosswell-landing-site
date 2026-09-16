@@ -32,17 +32,13 @@ export function pageMetadata({ title, description, path }: { title: string; desc
 
 /**
  * Single place to change contact wiring.
- * All CTAs are mailto links until the scheduler is picked (Max owns the pick);
- * per the messaging handoff, a mailto button says "Set up a call", never
- * "Book a call".
+ * Every call to action is the one call, a mailto link until the scheduler
+ * is picked (Max owns the pick); per the messaging handoff, the button says
+ * "Set up a call", never "Book a call". The work is consulting, custom and
+ * personal, and its first step is always the call, so there is no second
+ * ask (the audit button skipped step one and is gone).
  */
 export const CONTACT_EMAIL = "hello@crosswellconsulting.com";
-
-export const AUDIT_MAILTO = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
-  "Start with the audit"
-)}&body=${encodeURIComponent(
-  "Hi Crosswell team,\n\nWe’d like to start with the two-week knowledge audit.\n\nFirm:\nRole:\n"
-)}`;
 
 export const CALL_MAILTO = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
   "Set up a call with Crosswell"
