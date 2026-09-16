@@ -1,4 +1,4 @@
-import Band, { CONTAINER, HANG, SEAM, SECTION } from "./Band";
+import Band, { CONTAINER, SEAM, SECTION } from "./Band";
 import Reveal from "./Reveal";
 import { tie } from "./tie";
 
@@ -25,13 +25,18 @@ export default function WhoItsFor() {
         }
       />
       <Reveal delay={80}>
-        {/* the industries hang from the band by the section's hang, their
-            rule at the hang and the row 32 under it, at the container's full
-            width (at xl the six names spread from edge to edge of it); an
-            accent line, roman at full ink */}
-        <ul className={`type-accent ${HANG} flex flex-wrap gap-x-8 gap-y-3 border-t border-ink/8 pt-8 text-ink xl:justify-between`}>
+        {/* from lg the industries hang from the band by the section's hang,
+            their rule at the hang and the row 32 under it, at the container's
+            full width (at xl the six names spread from edge to edge of it); an
+            accent line, roman at full ink. Below lg a wrapped row ragged and
+            the hang read as a hole, so the six sit as three rows of two on
+            aligned columns, a hairline above and between the rows, hanging
+            64 from the band */}
+        <ul className="type-accent mt-16 grid grid-cols-2 gap-x-8 border-t border-ink/8 text-ink lg:mt-48 lg:flex lg:flex-wrap lg:gap-y-3 lg:pt-8 xl:justify-between">
           {industries.map((name) => (
-            <li key={name}>{name}</li>
+            <li key={name} className="border-b border-ink/8 py-4 [&:nth-last-child(-n+2)]:border-b-0 lg:border-b-0 lg:py-0">
+              {name}
+            </li>
           ))}
         </ul>
       </Reveal>

@@ -67,9 +67,9 @@ export default function ProductRun() {
         <div className="space-y-48 sm:space-y-72">
           <Custom />
         </div>
-        {/* the run's last content; the next section's lead-in ("Behind the
-            chat is the Core.") sits the beat below it */}
-        <p className="type-caption mt-12 text-ink/60">
+        {/* the run's last content, as fine print: it has to be there, not be
+            read first, so it is the smallest size on the page at low ink */}
+        <p className="mt-12 text-[12px] leading-[1.5] text-ink/45">
           Saguaro Capital, Juniper Row Supply, and Kestrel & Vane are fictional. Every number is invented, rounded demo data.
         </p>
       </section>

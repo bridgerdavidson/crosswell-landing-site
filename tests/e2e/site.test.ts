@@ -415,7 +415,9 @@ describe("the landing page after the run", () => {
         art: await page.locator("#how-we-start ol svg").count(),
         call: await page.locator("#how-we-start ol a", { hasText: "Set up a call" }).count(),
         retainer: await page.locator("#how-we-start").getByText("If something breaks, we fix it", { exact: false }).count(),
-        audit: await page.getByText("You keep the map either way").count(),
+        audit: await page.getByText("We map that and design your system from it").count(),
+        /* the band sells the order, never the exits: the two lines that read as insecurity are gone */
+        exits: await page.getByText("small enough to stop after").count() + (await page.getByText("You keep the map either way").count()),
         closing: await page.getByText("Your firm already knows the answers").count(),
         /* moved to /team, /insights, or parked: none of it on the landing page */
         gone: await page.locator("#the-brain, #why-crosswell, #what-you-lose, #beyond-core, #values, #team, #insights").count(),
@@ -426,7 +428,8 @@ describe("the landing page after the run", () => {
     });
     expect(r.who).toBe("Built for businesses that run on what they know.");
     expect(r.gap).toBe(1);
-    expect(r.start).toBe("Start small, on purpose.");
+    expect(r.start).toBe("We learn your business before we build for it.");
+    expect(r.exits).toBe(0);
     expect(r.cards).toEqual(["The first call", "The audit", "Build and onboarding"]);
     expect(r.when).toEqual(["Thirty minutes", "Two weeks, fixed scope", "Week three on"]);
     expect(r.art).toBe(0);

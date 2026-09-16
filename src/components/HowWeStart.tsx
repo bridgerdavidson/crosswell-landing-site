@@ -15,7 +15,7 @@ const steps = [
   {
     name: "The audit",
     when: "Two weeks, fixed scope",
-    body: "We come in and sit with your team. Where does your business keep what it knows, how does the work actually move, and where does it get dropped? We map that and design your system from it. You keep the map either way.",
+    body: "We come in and sit with your team. Where does your business keep what it knows, how does the work actually move, and where does it get dropped? We map that and design your system from it.",
   },
   {
     name: "Build and onboarding",
@@ -27,7 +27,9 @@ const steps = [
 /**
  * How we start: three steps, as three rows on the band's own grid, so the
  * sequence reads down the page like the run and each step's words sit on
- * the lede column above them. The first call is a step, not a note about
+ * the lede column above them. The band sells the order (each step shaped
+ * by the one before it), never the exits: nothing here says a firm can
+ * stop, since the one line that did read as insecurity. The first call is a step, not a note about
  * the audit (it sat in the band's aside and read that way), so it leads
  * the rows and carries the one action that starts everything. Each row is
  * the step's name with its duration as a caption, then what happens.
@@ -39,7 +41,11 @@ export default function HowWeStart() {
   return (
     <section id="how-we-start" className="border-y border-ink/8 bg-parchment">
       <div className={`${CONTAINER} ${SECTION}`}>
-        <Band label="How we start" title="Start small, on purpose." lede="Three steps, each small enough to stop after." />
+        <Band
+          label="How we start"
+          title="We learn your business before we build for it."
+          lede="A thirty-minute call, two weeks with your team, then the build. Each step is shaped by the one before it."
+        />
 
         <ol className={`${HANG} border-t border-ink/8`}>
           {steps.map((step, i) => (
