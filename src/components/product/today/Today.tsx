@@ -12,13 +12,16 @@ import { Chapter } from "../shared";
  * one exchange about this week above its empty message box, so the first
  * dashboard a visitor sees shows the Core as a chat. Static, display only.
  *
- * On a phone the frame holds the page's left side: the greeting, the
- * morning's numbers, and the list of what needs a person, with its Approve
- * and Review buttons at the crop's right edge (the list ends at 564, plus
- * the page's own breathing room). The rail and the Core's column wait
- * outside the frame; the top bar stays, so it still reads as the app.
+ * On a phone the frame starts at the window's own corner and shows the rail,
+ * the greeting, the morning's numbers, and the whole list of what needs a
+ * person, Approve and Review included, with the day's column starting at
+ * the screen's edge; the Core's column waits off-screen to the right. 690
+ * of the window's width sets the scale (about 0.55 on a phone, Linear's
+ * proportion for a product shot: the whole first screen in a frame about
+ * 350 tall), so the phone reads the page's structure more than its
+ * sentences.
  */
-const PHONE = { x: 69, y: 0, width: 511, height: 640 };
+const PHONE = { x: 0, y: 0, width: 690, height: 640 };
 
 export default function Today() {
   return (

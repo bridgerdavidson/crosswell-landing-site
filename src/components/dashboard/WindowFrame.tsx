@@ -16,11 +16,15 @@ export type Crop = { x: number; y: number; width: number; height: number };
  * the product the chapter's claim is about, at 1:1 where the frame is wide
  * enough for it (a tablet) and scaled down as one where it is not (a phone),
  * never re-flowed. The window keeps its shape and its layout; the frame
- * moves over it like a camera, the way a product shot on a phone shows one
- * panel at its real size rather than the whole app at a quarter. The frame
- * runs 12 past the words on each side there, its one phone-width echo of
- * page-wide. Without a crop the whole 1280-wide window scales to the
- * frame's width, the old fallback.
+ * moves over it like a camera. And the window is never cut by an edge of
+ * its own: the crop starts at the window's top-left corner, so its own
+ * corners show there; it runs off the right of the screen (the frame
+ * starts 12 past the words and ends at the viewport's edge); and its bottom
+ * fades into the page's ground (`window-bleed`, globals.css) instead of
+ * ending on a border. That is how Linear's phone product shots hold their
+ * shape: the only edges a visitor sees are the screen's and the window's.
+ * Without a crop the whole 1280-wide window scales to the frame's width,
+ * the old fallback.
  *
  * What recedes is the chapter's to say, inside the window (globals.css,
  * "The dashboard's fade").
@@ -53,7 +57,9 @@ export default function WindowFrame({ children, height = 640, phone }: { childre
     <div
       ref={box}
       data-window
-      className={`relative -mx-3 overflow-hidden rounded-xl lg:mx-0 lg:aspect-auto lg:h-(--window-h) ${phone ? "h-(--crop-h)" : "aspect-(--window-ratio)"}`}
+      className={`relative overflow-hidden lg:mx-0 lg:aspect-auto lg:h-(--window-h) ${
+        phone ? "window-bleed -mr-(--page-gutter) -ml-3 h-(--crop-h)" : "-mx-3 aspect-(--window-ratio)"
+      }`}
       style={
         {
           "--window-h": `${height}px`,

@@ -8,7 +8,8 @@
  */
 
 export type Tile = { label: string; value: string; note: string; spark?: number[] };
-export type NeedsYou = { id: string; title: string; body: string; receipts: string[]; action?: string };
+/* `phone` is the same item in one line, for the window cropped on a phone (chapter 01), where a three-line body is grey at half scale */
+export type NeedsYou = { id: string; title: string; body: string; phone?: string; receipts: string[]; action?: string };
 export type AgendaItem = { time: string; title: string; ref?: string; done?: boolean };
 export type TeamRow = { name: string; initials: string; items: { title: string; ref?: string; done?: boolean }[] };
 export type Rock = { title: string; pct: number; note?: string; ref?: string; was?: number };
@@ -49,6 +50,7 @@ export const today = {
       id: "draw-4",
       title: "Draw approval",
       body: "Draw 4, the Palo Verde build. Computed and checked against budget: $130K, balance after $1.3M, LTC 79%. Inspection report attached. Ready for your yes.",
+      phone: "Draw 4, Palo Verde. Checked and ready for your yes.",
       receipts: ["draw sheet", "inspection report"],
       action: "Approve",
     },
@@ -56,12 +58,14 @@ export const today = {
       id: "cactus-wren",
       title: "New deal",
       body: "The Cactus Wren flip screened overnight. Passes borrower exposure at 4% of book, concentration inside limits. Full screen filed to the deal record.",
+      phone: "Cactus Wren flip screened overnight. Inside limits.",
       receipts: ["exposure model", "deal screen"],
     },
     {
       id: "maturities",
       title: "Maturities",
       body: "Two loans mature inside 30 days. Payoff letters drafted for both. One borrower wants an extension, and the fee decision from August 12 is attached so nobody has to remember it.",
+      phone: "Two loans mature inside 30 days. Payoff letters drafted.",
       receipts: ["servicing", "partner meeting, Aug 12"],
     },
   ] satisfies NeedsYou[],

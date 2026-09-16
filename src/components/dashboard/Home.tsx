@@ -50,7 +50,17 @@ export function HomeBody({ home }: { home: HomeWorld }) {
               <li key={n.id} className="grid grid-cols-[minmax(0,1fr)_auto] gap-8 border-b border-ink/8 py-3.5">
                 <div className="min-w-0">
                   <p className="font-semibold">{n.title}</p>
-                  <p className="mt-1 leading-[1.55] text-ink/80 [text-wrap:pretty]">{n.body}</p>
+                  {/* the one-line item below lg, where the window is cropped at about half scale */}
+                  <p className="mt-1 leading-[1.55] text-ink/80 [text-wrap:pretty]">
+                    {n.phone ? (
+                      <>
+                        <span className="lg:hidden">{n.phone}</span>
+                        <span className="hidden lg:inline">{n.body}</span>
+                      </>
+                    ) : (
+                      n.body
+                    )}
+                  </p>
                   <div className="mt-2">
                     <Sources items={n.receipts} />
                   </div>

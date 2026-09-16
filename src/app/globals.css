@@ -124,6 +124,24 @@ body {
   mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--dashboard-fade)), transparent 100%);
 }
 
+/* ---------- The window off the phone's edge ----------
+   Below lg a cropped window runs off the right of the screen and its bottom
+   dissolves into the page's ground over its last 96, so the only edges a
+   visitor sees are the screen's and the window's own top-left corner: the
+   window is never cut by a border of the frame's. Double stops on purpose
+   (the production minifier trap, see the hero mask). From lg the frame is
+   the window's box and needs no mask. */
+.window-bleed {
+  -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 96px), transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 96px), transparent 100%);
+}
+@media (min-width: 1024px) {
+  .window-bleed {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
 /* ---------- The dashboard, dark ----------
    The same window on the run's dark band, flipped the way the light one is
    built: text on ivory, the page a step lighter than the band, the chrome a
