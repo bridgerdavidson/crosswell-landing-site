@@ -498,6 +498,8 @@ export const agents = {
   recap: {
     request: "Send the team a recap of this morning’s standup, with who owns what.",
     reply: "The email agent is on it. It’s pulling this morning’s standup notes and writing a recap with owners and dates.",
+    /* the agent's steps as the Core shows them in the thread while it works, in the roster's order and time */
+    working: ["Reading this morning’s standup notes", "Drafting the recap to 4 people"],
     agent: { name: "Email agent", job: "Standup recap to the team" },
     log: ["9:48 am  Read this morning’s standup notes", "9:48 am  Drafted a recap to 4 people", "9:52 am  Sent by email and to 4 dashboards"],
     to: ["DW", "ML", "PS", "JR"],

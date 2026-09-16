@@ -256,6 +256,23 @@ function CoreColumn({ phase, s, onSend, onApprove }: { phase: Phase; s: number; 
             </div>
           )}
           {replied && <p className="core-rise leading-[1.6] text-ink/85 [text-wrap:pretty]">{recap.reply}</p>}
+          {/* the agent at work, in the thread as well as in the roster: the step it is on
+              spins, the steps behind it are checked, on the roster's own clock (emailRow) */}
+          {replied && (
+            <ul className="core-rise flex flex-col gap-1">
+              {recap.working.map((w, i) => {
+                const begun = i === 0 || s >= 1.6;
+                const done = drafted || s >= (i === 0 ? 1.6 : DRAFTED);
+                if (!begun) return null;
+                return (
+                  <li key={w} className="flex items-center gap-2 text-[12px] text-ink/62 max-lg:text-[14px]">
+                    {done ? <Icon name="check" size={12} className="text-[var(--accent-deep)]" /> : <Icon name="spin" size={12} className="animate-spin motion-reduce:animate-none" />}
+                    {w}
+                  </li>
+                );
+              })}
+            </ul>
+          )}
           {drafted && (
             <div className="core-rise rounded-lg border border-ink/10 bg-parchment">
               <div className="flex items-center gap-2 border-b border-ink/8 px-3 py-2">
