@@ -2,7 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import { AppWindow, Button, Icon, Label, type StatusKind } from "@/components/dashboard/ui";
-import WindowFrame from "@/components/dashboard/WindowFrame";
+import WindowFrame, { type Crop } from "@/components/dashboard/WindowFrame";
 import { themeOf } from "@/components/dashboard/worlds";
 import { agents } from "@/lib/saguaro";
 import { Chapter } from "../shared";
@@ -17,7 +17,9 @@ import { Chapter } from "../shared";
  * to an email agent, which joins the top of the roster and works through
  * its steps while the Core answers; the draft arrives in the Core, and
  * approving sends it by email and to each person's own dashboard. Replay
- * resets it. A long crescent fade takes the window's bottom-left corner.
+ * resets it. A long crescent fade takes the window's bottom-left corner
+ * from lg; on a phone the window is 560 tall and cropped to the Core's
+ * column (PHONE, below), whole to its edges.
  */
 
 /* Saguaro Capital on the dark band: the fern accent, its soft tint for text and the selected tab, a
@@ -45,7 +47,15 @@ const LIGHT_SVG =
   "<feGaussianBlur stdDeviation='100'/></filter>" +
   `<path filter='url(#soft)' d='${CRESCENT}'/></svg>`;
 const LIGHT = `url("data:image/svg+xml,${encodeURIComponent(LIGHT_SVG)}")`;
-const FADE = { WebkitMaskImage: LIGHT, maskImage: LIGHT, WebkitMaskSize: "100% 100%", maskSize: "100% 100%", WebkitMaskRepeat: "no-repeat", maskRepeat: "no-repeat" } as CSSProperties;
+/* the crescent is the desktop's: agents-crescent (globals.css) reads it from lg and drops it below */
+const CRESCENT_VAR = { "--crescent": LIGHT } as CSSProperties;
+
+/* the phone's crop: the Core's column whole, where the work is named and the
+   draft comes back for a yes, with the roster's last columns running off the
+   left of the screen so the window reads as continuing; the window is 560
+   tall there, so the frame is about 390 at 0.69 on a phone, the column at 1:1
+   on a tablet */
+const PHONE: Crop = { x: 760, y: 0, width: 548, height: 560, bleed: "left", fade: 40 };
 
 type Live = { kind: StatusKind; text: string; result: string; run: string };
 type Row = { id: string; name: string; job: string; live: Live; log: string[]; fresh?: boolean };
@@ -202,20 +212,27 @@ function CoreColumn({ phase, s, onSend, onApprove }: { phase: Phase; s: number; 
   const box = useRef<HTMLDivElement>(null);
   const thread = useRef<HTMLDivElement>(null);
 
-  /* the thread keeps its newest line in view: it slides up, never scrolls */
+  /* the thread is a scrolling chat, as in chapter 02: whatever arrives keeps
+     its newest line in view, and the visitor can scroll back through it */
   useLayoutEffect(() => {
     const b = box.current;
     const t = thread.current;
     if (!b || !t) return;
-    const over = t.scrollHeight - b.clientHeight;
-    t.style.transform = over > 0 ? `translateY(${-over}px)` : "none";
+    const keep = () => {
+      b.scrollTop = b.scrollHeight;
+    };
+    keep();
+    const ro = new ResizeObserver(keep);
+    ro.observe(t);
+    return () => ro.disconnect();
   });
 
   const replied = phase !== "rest" && s >= 0.7;
   const drafted = phase === "draft" || phase === "approved";
 
   return (
-    <aside className="flex w-[384px] flex-none flex-col border-l border-ink/8 bg-chrome">
+    /* below lg, where the column shows at about two thirds, its words run a size up */
+    <aside className="flex w-[384px] flex-none flex-col border-l border-ink/8 bg-chrome max-lg:text-[16px]">
       <div className="flex h-12 flex-none items-center border-b border-ink/8 pr-3 pl-5">
         <p className="text-[14px] font-semibold">The Core</p>
         <div className="ml-auto flex items-center text-ink/50">
@@ -227,8 +244,8 @@ function CoreColumn({ phase, s, onSend, onApprove }: { phase: Phase; s: number; 
         </div>
       </div>
 
-      <div ref={box} className="min-h-0 flex-1 overflow-hidden px-5">
-        <div ref={thread} className="flex flex-col gap-4 py-5 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none">
+      <div ref={box} className="min-h-0 flex-1 overflow-y-auto px-5 [scrollbar-width:thin] motion-safe:[scroll-behavior:smooth]">
+        <div ref={thread} className="flex flex-col gap-4 py-5">
           {phase !== "rest" && (
             <div className="core-rise flex justify-end">
               <p className="max-w-[88%] rounded-xl rounded-br-sm bg-[var(--accent-wash)] px-3 py-2 leading-[1.5] [text-wrap:balance]">{recap.request}</p>
@@ -240,9 +257,9 @@ function CoreColumn({ phase, s, onSend, onApprove }: { phase: Phase; s: number; 
               <div className="flex items-center gap-2 border-b border-ink/8 px-3 py-2">
                 <Icon name="mail" size={13} className="text-ink/62" />
                 <p className="font-semibold">Email draft</p>
-                <span className="ml-auto text-[11px] text-ink/62">{recap.agent.name}</span>
+                <span className="ml-auto text-[11px] text-ink/62 max-lg:text-[13px]">{recap.agent.name}</span>
               </div>
-              <div className="px-3 pt-2.5 pb-3 text-[12.5px] leading-[1.55]">
+              <div className="px-3 pt-2.5 pb-3 text-[12.5px] leading-[1.55] max-lg:text-[15px]">
                 <p className="flex items-center gap-2 text-ink/62">
                   To
                   <span className="flex gap-1">
@@ -267,13 +284,13 @@ function CoreColumn({ phase, s, onSend, onApprove }: { phase: Phase; s: number; 
               </div>
               <div className="border-t border-ink/8 px-3 py-2.5">
                 {phase === "approved" ? (
-                  <p className="flex items-center gap-2 text-[12px] text-ink/80">
+                  <p className="flex items-center gap-2 text-[12px] text-ink/80 max-lg:text-[14px]">
                     <Icon name="check" size={13} className="text-[var(--accent-deep)]" />
                     Sent by email and to 4 dashboards
                   </p>
                 ) : (
                   <>
-                    <p className="flex items-center gap-1.5 text-[11.5px] text-ink/62">
+                    <p className="flex items-center gap-1.5 text-[11.5px] text-ink/62 max-lg:text-[13px]">
                       <Icon name="mail" size={12} />
                       <Icon name="home" size={12} />
                       Goes by email and to each person’s dashboard
@@ -286,7 +303,7 @@ function CoreColumn({ phase, s, onSend, onApprove }: { phase: Phase; s: number; 
                       <button
                         type="button"
                         onClick={onApprove}
-                        className="inline-flex h-7 cursor-pointer items-center rounded-md bg-[var(--accent)] px-2.5 text-[12px] font-semibold whitespace-nowrap text-ivory hover:brightness-110 active:scale-[0.97]"
+                        className="tap-room inline-flex h-7 cursor-pointer items-center rounded-md bg-[var(--accent)] px-2.5 text-[12px] font-semibold whitespace-nowrap text-ivory hover:brightness-110 active:scale-[0.97]"
                       >
                         Approve and send
                       </button>
@@ -322,7 +339,7 @@ function CoreColumn({ phase, s, onSend, onApprove }: { phase: Phase; s: number; 
               onClick={onSend}
               disabled={phase !== "rest"}
               aria-label="Send"
-              className={`ml-auto flex h-7 w-7 items-center justify-center rounded-md transition-colors ${
+              className={`tap-room ml-auto flex h-7 w-7 items-center justify-center rounded-md transition-colors ${
                 phase === "rest" ? "cursor-pointer bg-[var(--accent)] text-ivory hover:brightness-110 active:scale-[0.95]" : "bg-ink/8 text-ink/45"
               }`}
             >
@@ -416,12 +433,12 @@ export default function Agents() {
           </button>
         }
       >
-        <WindowFrame height={800}>
-          <div className="dashboard-dark" style={FADE}>
+        <WindowFrame height={800} phone={PHONE}>
+          <div className="dashboard-dark agents-crescent" style={CRESCENT_VAR}>
             <AppWindow
               theme={dark}
               active="agents"
-              size="h-[800px] w-full"
+              size="h-[560px] w-full lg:h-[800px]"
               controls={
                 <span className="inline-flex h-7 items-center rounded-md border border-ink/10 p-0.5">
                   {FILTERS.map((f) => (

@@ -188,10 +188,8 @@ body {
 /* ---------- Chapter 03's dissolve ----------
    From lg the agenda window dissolves into the page along its bottom (160)
    and up its right side (420), where the empty Core sits. Below lg the
-   window is whole to its edges; the frame's side fade does the leaving,
-   and the page inside dissolves into the app's ground over its last 120
-   (dashboard-fade-phone), the same device chapter 01 uses on every
-   screen, since the window is shorter than the day. */
+   window is whole to its edges and the frame's side fade does the
+   leaving. */
 .agenda-fade {
   -webkit-mask-image:
     linear-gradient(to bottom, #000 0, #000 calc(100% - 160px), transparent 100%),
@@ -207,10 +205,25 @@ body {
     -webkit-mask-image: none;
     mask-image: none;
   }
-  .dashboard-fade-phone {
-    --dashboard-fade: 120px;
-    -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--dashboard-fade)), transparent 100%);
-    mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--dashboard-fade)), transparent 100%);
+}
+
+/* ---------- Chapter 05's crescent ----------
+   From lg a long crescent fade takes the agents window's bottom-left
+   corner (the chapter draws it and hands it over as --crescent). Below lg
+   the window is whole to its edges and the frame's side fade does the
+   leaving. */
+.agents-crescent {
+  -webkit-mask-image: var(--crescent);
+  mask-image: var(--crescent);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+@media (max-width: 1023px) {
+  .agents-crescent {
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 }
 
