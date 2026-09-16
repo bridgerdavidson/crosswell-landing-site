@@ -25,7 +25,7 @@ export default function SeeHowItWorks() {
   return (
     <a href="#what-we-do" onClick={go} className="type-text group font-medium text-ink/75 transition-colors hover:text-ink">
       See how it works{" "}
-      <span aria-hidden className="inline-block transition-transform duration-200 group-hover:translate-y-0.5">
+      <span aria-hidden className="ml-1.5 inline-block transition-transform duration-200 group-hover:translate-y-0.5">
         ↓
       </span>
     </a>
