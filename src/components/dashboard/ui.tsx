@@ -319,12 +319,12 @@ export function Label({ children, count, aside, className = "" }: { children: Re
 }
 
 /* the one button that commits something: accent; everything else is quiet */
-export function Button({ children, icon, commit = false }: { children: ReactNode; icon?: IconName; commit?: boolean }) {
+export function Button({ children, icon, commit = false, className = "" }: { children: ReactNode; icon?: IconName; commit?: boolean; className?: string }) {
   return (
     <span
       className={`inline-flex h-7 flex-none items-center gap-1.5 rounded-md px-2.5 text-[12px] font-semibold ${
         commit ? "bg-[var(--accent)] text-ivory" : "border border-ink/12 text-ink/80"
-      }`}
+      } ${className}`}
     >
       {icon && <Icon name={icon} size={13} />}
       {children}
@@ -352,9 +352,9 @@ export function Views({ items, active }: { items: { label: string; icon?: IconNa
 }
 
 /* where an item's facts came from: quiet text, not chips */
-export function Sources({ items }: { items: string[] }) {
+export function Sources({ items, className = "" }: { items: string[]; className?: string }) {
   return (
-    <p className="flex items-center gap-1.5 text-[12px] text-ink/62">
+    <p className={`flex items-center gap-1.5 text-[12px] text-ink/62 ${className}`}>
       <Icon name="clip" size={12} className="text-ink/45" />
       {items.join(", ")}
     </p>

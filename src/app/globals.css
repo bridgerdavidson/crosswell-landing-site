@@ -125,20 +125,44 @@ body {
 }
 
 /* ---------- The window off the phone's edge ----------
-   Below lg a cropped window runs off the screen's edge and its bottom
-   dissolves into the page's ground over its last --bleed-fade (96 where
-   the page runs on under the crop, less where the crop holds the window's
-   own bottom edge), so the only edges a visitor sees are the screen's and
-   the window's own: the window is never cut by a border of the frame's.
-   Double stops on purpose (the production minifier trap, see the hero
-   mask). From lg the frame is the window's box and needs no mask. */
-.window-bleed {
+   Below lg a cropped window runs off one side of the screen and fades as it
+   goes, over its last --bleed-fade (96 unless the chapter sets it), so the
+   only edges a visitor sees are the screen's and the window's own: its
+   corners, its whole bottom edge, never a border of the frame's. Chapter 01
+   leaves to the right, chapter 02 to the left. Double stops on purpose
+   (the production minifier trap, see the hero mask). From lg the frame is
+   the window's box and needs no mask. */
+.window-bleed-right,
+.window-bleed-left {
   --bleed-fade: 96px;
-  -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--bleed-fade)), transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--bleed-fade)), transparent 100%);
+}
+.window-bleed-right {
+  -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - var(--bleed-fade)), transparent 100%);
+  mask-image: linear-gradient(to right, #000 0, #000 calc(100% - var(--bleed-fade)), transparent 100%);
+}
+.window-bleed-left {
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--bleed-fade), #000 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 var(--bleed-fade), #000 100%);
 }
 @media (min-width: 1024px) {
-  .window-bleed {
+  .window-bleed-right,
+  .window-bleed-left {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
+/* ---------- Chapter 02's lowered board ----------
+   From lg the pipeline window falls away toward its bottom-left corner,
+   its outline with it, strongest beside the Core. Below lg the window is
+   whole to its bottom edge (the phone's crop shows the bottom of the
+   dashboard) and the frame's own side fade does the receding. */
+.core-falloff {
+  -webkit-mask-image: radial-gradient(ellipse 118% 190% at 100% 0%, #000 0%, #000 54%, transparent 100%);
+  mask-image: radial-gradient(ellipse 118% 190% at 100% 0%, #000 0%, #000 54%, transparent 100%);
+}
+@media (max-width: 1023px) {
+  .core-falloff {
     -webkit-mask-image: none;
     mask-image: none;
   }

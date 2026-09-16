@@ -15,13 +15,14 @@ import { Chapter } from "../shared";
  * On a phone the frame starts at the window's own corner and shows the rail,
  * the greeting, the morning's numbers, and the whole list of what needs a
  * person, Approve and Review included, with the day's column starting at
- * the screen's edge; the Core's column waits off-screen to the right. 690
+ * the screen's edge and fading over the last 72 (short enough that the
+ * column's times still read); the Core's column waits off-screen. 690
  * of the window's width sets the scale (about 0.55 on a phone, Linear's
  * proportion for a product shot: the whole first screen in a frame about
  * 350 tall), so the phone reads the page's structure more than its
  * sentences.
  */
-const PHONE = { x: 0, y: 0, width: 690, height: 640 };
+const PHONE = { x: 0, y: 0, width: 690, height: 640, fade: 72 };
 
 export default function Today() {
   return (

@@ -20,14 +20,17 @@ import { Chapter } from "../shared";
  * reply; a Send closes the loop on the board. Interactive; Replay resets it.
  */
 
-const WIN = { h: 800, core: 384, over: 24, room: 12, min: 1280, max: 1440 };
+/* the window is 800 tall from lg and 600 below it, where the phone crop ends just under the last funded deal */
+const WIN = { h: 800, phoneH: 600, core: 384, over: 24, room: 12, min: 1280, max: 1440 };
 const LIFT = 1.06;
-const FALLOFF = "radial-gradient(ellipse 118% 190% at 100% 0%, #000 0%, #000 54%, transparent 100%)";
 /* the phone's crop: from inside the Underwriting column (so the board reads as
-   running off the screen) across Docs out with its lit card and Funded to the
-   Core's column, whole, with the lifted Core's overhang above and its shadow
-   below; about half scale on a phone, whole at 1:1 on a tablet */
-const PHONE: Crop = { x: 540, y: -WIN.over, width: 768, height: WIN.h + WIN.over + 36 };
+   running off the screen, fading as it goes) across Docs out with its lit card
+   and Funded to the Core's column, whole, with the lifted Core's overhang
+   above and its shadow below the shorter window; half scale on a phone, whole
+   at 1:1 on a tablet. The fade is short, 20, so it takes the sliver of
+   Underwriting and the gap and stops at the lit card's edge, which stays crisp. The window's bottom-left fall-off is the desktop's
+   (core-falloff, globals.css); below lg the window is whole to its bottom edge. */
+const PHONE: Crop = { x: 528, y: -WIN.over, width: 780, height: WIN.phoneH + WIN.over + 40, bleed: "left", fade: 20 };
 
 type Question = keyof typeof core.replies;
 type Stage = "idle" | "working" | "answer" | "done";
@@ -82,7 +85,7 @@ function SelectedCard({ lifted, nudged, onAsk }: { lifted: boolean; nudged: bool
         type="button"
         onClick={onAsk}
         disabled={lifted}
-        className={`mt-2.5 inline-flex h-8 w-full items-center justify-center gap-1.5 rounded-md text-[12.5px] font-semibold transition-colors duration-150 active:scale-[0.97] ${
+        className={`mt-2.5 inline-flex h-8 w-full items-center justify-center gap-1.5 rounded-md text-[12.5px] font-semibold transition-colors duration-150 active:scale-[0.97] max-lg:h-14 max-lg:text-[14px] ${
           lifted ? "bg-[var(--accent-wash)] text-[var(--accent-deep)]" : "cursor-pointer bg-[var(--accent)] text-ivory hover:bg-[var(--accent-deep)]"
         }`}
       >
@@ -145,7 +148,7 @@ function Turn({ q, stage, work, sent, onSend }: { q: Question; stage: Stage; wor
             const done = work > i || shown;
             if (!done && work !== i) return null;
             return (
-              <li key={w} className="flex items-center gap-2 text-[12px] text-ink/62">
+              <li key={w} className="flex items-center gap-2 text-[12px] text-ink/62 max-lg:text-[14px]">
                 {done ? <Icon name="check" size={12} className="text-[var(--accent-deep)]" /> : <Icon name="spin" size={12} className="animate-spin" />}
                 {w}
               </li>
@@ -159,7 +162,7 @@ function Turn({ q, stage, work, sent, onSend }: { q: Question; stage: Stage; wor
           <p className="leading-[1.6] text-ink/85">{streaming ? text : reply.answer}</p>
           {stage === "done" && (
             <div className="core-rise mt-2.5">
-              <Sources items={reply.sources} />
+              <Sources items={reply.sources} className="max-lg:text-[14px]" />
             </div>
           )}
         </div>
@@ -168,17 +171,17 @@ function Turn({ q, stage, work, sent, onSend }: { q: Question; stage: Stage; wor
       {stage === "done" && reply.prepared && (
         <div className="core-rise rounded-lg border border-ink/10 bg-parchment p-3">
           <p className="font-semibold">{reply.prepared.title}</p>
-          <p className="mt-0.5 text-[12px] leading-[1.5] text-ink/62">{reply.prepared.meta}</p>
-          {reply.prepared.body && <p className="mt-2.5 rounded-md bg-ivory px-2.5 py-2 text-[12.5px] leading-[1.55] text-ink/80">{reply.prepared.body}</p>}
+          <p className="mt-0.5 text-[12px] leading-[1.5] text-ink/62 max-lg:text-[14px]">{reply.prepared.meta}</p>
+          {reply.prepared.body && <p className="mt-2.5 rounded-md bg-ivory px-2.5 py-2 text-[12.5px] leading-[1.55] text-ink/80 max-lg:text-[15px]">{reply.prepared.body}</p>}
           <div className="mt-3 flex items-center gap-2">
             {sent ? <Status kind="done" text="Sent, and logged to the deal" /> : <Status kind="waiting" text="Waiting for your yes" />}
             {!sent && (
               <div className="ml-auto flex gap-1.5">
-                <Button>{reply.prepared.edit}</Button>
+                <Button className="max-lg:h-12 max-lg:px-5 max-lg:text-[16px]">{reply.prepared.edit}</Button>
                 <button
                   type="button"
                   onClick={onSend}
-                  className="inline-flex h-7 cursor-pointer items-center rounded-md bg-[var(--accent)] px-2.5 text-[12px] font-semibold text-ivory hover:bg-[var(--accent-deep)] active:scale-[0.97]"
+                  className="inline-flex h-7 cursor-pointer items-center rounded-md bg-[var(--accent)] px-2.5 text-[12px] font-semibold text-ivory hover:bg-[var(--accent-deep)] active:scale-[0.97] max-lg:h-12 max-lg:px-5 max-lg:text-[16px]"
                 >
                   Send
                 </button>
@@ -232,13 +235,13 @@ function LiftedCore({
   return (
     <aside
       aria-hidden={!lifted}
-      className={`absolute top-0 z-30 flex flex-col bg-chrome transition-[transform,box-shadow,border-radius] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
+      /* below lg, where the whole window shows at about half scale, the Core's words and controls run a size up */
+      className={`absolute top-0 z-30 flex h-[600px] flex-col bg-chrome transition-[transform,box-shadow,border-radius] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] max-lg:text-[16px] motion-reduce:transition-none lg:h-[800px] ${
         lifted ? "rounded-xl" : "pointer-events-none invisible rounded-r-xl opacity-0"
       }`}
       style={{
         right: WIN.room,
         width: WIN.core + 1,
-        height: WIN.h,
         transform: lifted ? `scale(${LIFT})` : "none",
         boxShadow: lifted ? "0 2px 4px rgba(26,25,21,0.05), 0 30px 70px -20px rgba(26,25,21,0.35)" : "none",
       }}
@@ -262,13 +265,13 @@ function LiftedCore({
           >
             <div className="flex items-baseline gap-2">
               <p className="font-semibold">{redrock.name}</p>
-              <span className="ml-auto text-[12px] text-ink/62">{core.stage}</span>
+              <span className="ml-auto text-[12px] text-ink/62 max-lg:text-[14px]">{core.stage}</span>
             </div>
             <dl className="mt-2.5 grid grid-cols-3 gap-2">
               {core.numbers.map((n) => (
                 <div key={n.label}>
-                  <dt className="text-[11px] text-ink/62">{n.label}</dt>
-                  <dd className="mt-0.5 text-[15px] font-semibold tabular-nums">{n.value}</dd>
+                  <dt className="text-[11px] text-ink/62 max-lg:text-[13px]">{n.label}</dt>
+                  <dd className="mt-0.5 text-[15px] font-semibold tabular-nums max-lg:text-[18px]">{n.value}</dd>
                 </div>
               ))}
             </dl>
@@ -286,7 +289,7 @@ function LiftedCore({
                   key={q}
                   type="button"
                   onClick={() => onAsk(q)}
-                  className="cursor-pointer rounded-full border border-ink/12 bg-parchment px-2.5 py-1 text-[12px] text-ink/80 transition-colors duration-150 hover:border-[var(--accent)] hover:bg-[var(--accent-wash)] hover:text-[var(--accent-deep)]"
+                  className="cursor-pointer rounded-full border border-ink/12 bg-parchment px-2.5 py-1 text-[12px] text-ink/80 transition-colors duration-150 hover:border-[var(--accent)] hover:bg-[var(--accent-wash)] hover:text-[var(--accent-deep)] max-lg:px-4 max-lg:py-2.5 max-lg:text-[16px]"
                 >
                   {q}
                 </button>
@@ -300,7 +303,7 @@ function LiftedCore({
         <div className="rounded-lg border border-ink/12 bg-parchment">
           {lifted && (
             <div className="flex px-2.5 pt-2.5">
-              <span className="core-attach inline-flex items-center gap-1.5 rounded-md bg-[var(--accent-wash)] px-2 py-1 text-[12px] font-medium text-[var(--accent-deep)]">
+              <span className="core-attach inline-flex items-center gap-1.5 rounded-md bg-[var(--accent-wash)] px-2 py-1 text-[12px] font-medium text-[var(--accent-deep)] max-lg:text-[14px]">
                 <Icon name="pipeline" size={12} />
                 {redrock.name}
                 <Icon name="close" size={11} />
@@ -340,8 +343,10 @@ function LiftedCore({
  * lands), scaled as one to the phone's whole width, the same camera as
  * WindowFrame's: the window is never cut by an edge of the frame's own
  * (it runs off the left of the screen, its right corners and the lifted
- * Core's shadow sit inside the frame, and a short fade softens the
- * bottom), and nothing re-flows.
+ * Core's shadow sit inside the frame, and the board fades as it leaves
+ * the screen), and nothing re-flows. The window itself is 600 tall there
+ * instead of 800, ending just under the last funded deal, so the frame
+ * holds the whole dashboard without the empty run below the cards.
  */
 function Stage({ children, style, phone }: { children: ReactNode; style: CSSProperties; phone?: Crop }) {
   const box = useRef<HTMLDivElement>(null);
@@ -373,15 +378,14 @@ function Stage({ children, style, phone }: { children: ReactNode; style: CSSProp
     <div
       ref={box}
       data-core-stage
-      className={`relative ${crop ? "window-bleed -mx-(--page-gutter)" : "w-full"} ${measured ? "" : "overflow-x-clip"}`}
-      style={{ height: (crop ? crop.height : WIN.h + WIN.over * 2) * scale, ...(crop ? { "--bleed-fade": "32px" } : null), ...style } as CSSProperties}
+      className={`relative ${crop ? "window-bleed-left -mx-(--page-gutter)" : "w-full"} ${measured ? "" : "overflow-x-clip"}`}
+      style={{ height: (crop ? crop.height : WIN.h + WIN.over * 2) * scale, ...(crop?.fade ? { "--bleed-fade": `${crop.fade}px` } : null), ...style } as CSSProperties}
     >
       <div
-        className="absolute left-0 origin-top-left"
+        className="absolute left-0 h-[600px] origin-top-left lg:h-[800px]"
         style={{
           top: crop ? 0 : WIN.over * scale,
           width: scale < 1 || crop ? WIN.min + WIN.room : `clamp(${WIN.min + WIN.room}px, 100%, ${WIN.max + WIN.room}px)`,
-          height: WIN.h,
           transform: crop ? `translate(${-crop.x * scale}px, ${-crop.y * scale}px) scale(${scale})` : scale < 1 ? `scale(${scale})` : undefined,
         }}
       >
@@ -464,11 +468,11 @@ export default function Core() {
         <Stage style={vars} phone={PHONE}>
           {/* the dashboard falls away toward its bottom-left corner, its outline with it, strongest
               beside the Core: the fall-off is a mask on the whole window, so the page shows through */}
-          <div className="relative h-full" style={{ marginRight: WIN.room, WebkitMaskImage: FALLOFF, maskImage: FALLOFF }}>
+          <div className="core-falloff relative h-full" style={{ marginRight: WIN.room }}>
             <AppWindow
               theme={theme}
               active="pipeline"
-              size="h-[800px] w-full"
+              size="h-[600px] w-full lg:h-[800px]"
               controls={
                 <Views
                   items={[

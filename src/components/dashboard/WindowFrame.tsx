@@ -2,8 +2,10 @@
 
 import { useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 
-/** a rectangle of the window, in the window's own pixels (the window is 1280 wide) */
-export type Crop = { x: number; y: number; width: number; height: number };
+/** a rectangle of the window, in the window's own pixels (the window is 1280
+ *  wide); the side where the window leaves the screen, which fades; and how
+ *  long that fade is on the screen (96 unless the chapter says) */
+export type Crop = { x: number; y: number; width: number; height: number; bleed?: "left" | "right"; fade?: number };
 
 /*
  * The frame a chapter shows the dashboard in: the whole window (640 tall
@@ -18,11 +20,13 @@ export type Crop = { x: number; y: number; width: number; height: number };
  * never re-flowed. The window keeps its shape and its layout; the frame
  * moves over it like a camera. And the window is never cut by an edge of
  * its own: the crop starts at the window's top-left corner, so its own
- * corners show there; it runs off the right of the screen (the frame
- * starts 12 past the words and ends at the viewport's edge); and its bottom
- * fades into the page's ground (`window-bleed`, globals.css) instead of
- * ending on a border. That is how Linear's phone product shots hold their
- * shape: the only edges a visitor sees are the screen's and the window's.
+ * corners show there; the crop holds the window's whole height, bottom
+ * edge included; and the window runs off the right of the screen (the
+ * frame starts 12 past the words and ends at the viewport's edge), fading
+ * as it goes (`window-bleed-right`, globals.css; a crop that runs off the
+ * left fades there instead). That is how Linear's phone product shots
+ * hold their shape: the only edges a visitor sees are the screen's and
+ * the window's.
  * Without a crop the whole 1280-wide window scales to the frame's width,
  * the old fallback.
  *
@@ -58,13 +62,14 @@ export default function WindowFrame({ children, height = 640, phone }: { childre
       ref={box}
       data-window
       className={`relative overflow-hidden lg:mx-0 lg:aspect-auto lg:h-(--window-h) ${
-        phone ? "window-bleed -mr-(--page-gutter) -ml-3 h-(--crop-h)" : "-mx-3 aspect-(--window-ratio)"
+        phone ? `window-bleed-${phone.bleed ?? "right"} -mr-(--page-gutter) -ml-3 h-(--crop-h)` : "-mx-3 aspect-(--window-ratio)"
       }`}
       style={
         {
           "--window-h": `${height}px`,
           "--window-ratio": `1280 / ${height}`,
           "--crop-h": phone ? `${phone.height * scale}px` : undefined,
+          "--bleed-fade": phone?.fade ? `${phone.fade}px` : undefined,
         } as CSSProperties
       }
     >
