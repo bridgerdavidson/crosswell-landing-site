@@ -413,6 +413,7 @@ describe("the landing page after the run", () => {
         cards: await page.locator("#how-we-start h3").allTextContents(),
         when: await page.locator("#how-we-start ol .type-caption").allTextContents(),
         art: await page.locator("#how-we-start ol svg").count(),
+        call: await page.locator("#how-we-start ol a", { hasText: "Set up a call" }).count(),
         retainer: await page.locator("#how-we-start").getByText("If something breaks, we fix it", { exact: false }).count(),
         audit: await page.getByText("You keep the map either way").count(),
         closing: await page.getByText("Your firm already knows the answers").count(),
@@ -426,9 +427,10 @@ describe("the landing page after the run", () => {
     expect(r.who).toBe("Built for businesses that run on what they know.");
     expect(r.gap).toBe(1);
     expect(r.start).toBe("Start small, on purpose.");
-    expect(r.cards).toEqual(["The audit", "Onboarding"]);
-    expect(r.when).toEqual(["Two weeks, fixed scope", "Week three on"]);
+    expect(r.cards).toEqual(["The first call", "The audit", "Build and setup"]);
+    expect(r.when).toEqual(["Thirty minutes", "Two weeks, fixed scope", "Week three on"]);
     expect(r.art).toBe(0);
+    expect(r.call).toBe(1);
     expect(r.retainer).toBe(1);
     expect(r.audit).toBe(1);
     expect(r.closing).toBe(1);
