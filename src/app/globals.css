@@ -485,10 +485,16 @@ body {
     padding-block: 0;
     height: calc(100svh + var(--stack-units) * 3.6svh);
   }
+  /* the frame is as tall as the viewport is right now (dvh), not the
+     small viewport (svh): on a phone the browser's toolbar folds away as
+     the visitor scrolls down, the visible area grows by the toolbar's
+     height, and a frame fixed at the small height sat high with a gap
+     under it until the toolbar came back. The section's own height stays
+     in svh so the scroll's length never changes under the finger. */
   .js .stack-frame {
     position: sticky;
     top: 0;
-    height: 100svh;
+    height: 100dvh;
     overflow: hidden;
     padding-top: 64px;
     padding-bottom: 32px;
