@@ -427,7 +427,7 @@ describe("the landing page after the run", () => {
     expect(r.who).toBe("Built for businesses that run on what they know.");
     expect(r.gap).toBe(1);
     expect(r.start).toBe("Start small, on purpose.");
-    expect(r.cards).toEqual(["The first call", "The audit", "Build and setup"]);
+    expect(r.cards).toEqual(["The first call", "The audit", "Build and onboarding"]);
     expect(r.when).toEqual(["Thirty minutes", "Two weeks, fixed scope", "Week three on"]);
     expect(r.art).toBe(0);
     expect(r.call).toBe(1);

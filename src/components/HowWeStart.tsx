@@ -18,9 +18,9 @@ const steps = [
     body: "We come in and sit with your team. Where does your business keep what it knows, how does the work actually move, and where does it get dropped? We map that and design your system from it. You keep the map either way.",
   },
   {
-    name: "Build and setup",
+    name: "Build and onboarding",
     when: "Week three on",
-    body: "We build the Core around what the audit found, install it, and hand it over running, with your team onboarded. The agents and automations your team named come next, on top of it. If something breaks, we fix it. As new needs surface, we keep automating.",
+    body: "We build the Core around what the audit found, then get your team onboarded and working in it. The agents and automations your team named come next, on top of it. If something breaks, we fix it. As new needs surface, we keep automating.",
   },
 ];
 
