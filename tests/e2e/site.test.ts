@@ -113,7 +113,7 @@ describe("page column", () => {
             return {
               logo: left(document.querySelector("header img")),
               claim: left(document.querySelector("[data-chapter] h3, main h3.type-h2")),
-              cards: left(document.querySelector("#how-we-start .rounded-2xl")),
+              cards: left(document.querySelector("#how-we-start ol h3")?.closest("li")!),
               footer: left(document.querySelector("footer img")),
               frame: [...document.querySelectorAll(".product-frame, [data-window], [data-core-stage]")].map((f) => [left(f), right(f)]),
               overflow: document.documentElement.scrollWidth - innerWidth,
@@ -411,8 +411,10 @@ describe("the landing page after the run", () => {
         gap: await page.getByText("That gap is where we work").count(),
         start: await page.locator("#how-we-start h2").textContent(),
         cards: await page.locator("#how-we-start h3").allTextContents(),
+        when: await page.locator("#how-we-start ol .type-caption").allTextContents(),
+        art: await page.locator("#how-we-start ol svg").count(),
         retainer: await page.locator("#how-we-start").getByText("If something breaks, we fix it", { exact: false }).count(),
-        audit: await page.getByText("Where every firm starts").count(),
+        audit: await page.getByText("You keep the map either way").count(),
         closing: await page.getByText("Your firm already knows the answers").count(),
         /* moved to /team, /insights, or parked: none of it on the landing page */
         gone: await page.locator("#the-brain, #why-crosswell, #what-you-lose, #beyond-core, #values, #team, #insights").count(),
@@ -424,7 +426,9 @@ describe("the landing page after the run", () => {
     expect(r.who).toBe("Built for businesses that run on what they know.");
     expect(r.gap).toBe(1);
     expect(r.start).toBe("Start small, on purpose.");
-    expect(r.cards).toEqual(["The knowledge audit", "The Core install", "The Core plus the custom layer"]);
+    expect(r.cards).toEqual(["The audit", "Onboarding"]);
+    expect(r.when).toEqual(["Two weeks, fixed scope", "Week three on"]);
+    expect(r.art).toBe(2);
     expect(r.retainer).toBe(1);
     expect(r.audit).toBe(1);
     expect(r.closing).toBe(1);
