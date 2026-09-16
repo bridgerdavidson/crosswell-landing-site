@@ -187,7 +187,7 @@ export default function Custom() {
     <div ref={root} data-chapter="06">
       <Chapter
         claim="The same product, built around how your business works."
-        body="One company’s morning is a list of what needs a yes, another’s is a board of trucks on the road, another’s is the week’s deadlines. Same Core underneath, same agents, same screen your team opens. What sits on it is built around your work, in your colours, under your name."
+        body="One company’s morning is a list of what needs a yes, another’s is a board of trucks on the road, another’s is the week’s deadlines. Same Core underneath, same agents, same screen your team opens. What sits on it is built around your work, in your colors, under your name."
       >
         <WindowFrame height={800}>
           {/* the accent variables start on the first business and are the morph's
