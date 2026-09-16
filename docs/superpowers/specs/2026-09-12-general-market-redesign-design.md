@@ -61,7 +61,7 @@ Top to bottom:
 9. **How we start.** Audit, install, custom layer, the thirty-minute line, one CTA.
 10. **Beyond Core.** "Your outsourced technology arm." Two cards (custom tools and automations, the support layer). Text only; no fragment, since the agents chapter already carries the custom-layer proof.
 11. **Values.** The vision line, then Trust, Stewardship, Continuity, each with its cost line. No "Mission" or "Vision" headings. Stewardship's cost line rewritten (section 7).
-12. **Team.** Three cards, Gen 6 bios. The headshot easter egg is untouched. (Removed 2026-09-16: `/team` keeps the values and the closing call only; the bios and headshots are gone.)
+12. **Team.** Three cards, Gen 6 bios. The headshot easter egg is untouched. (Removed 2026-09-16, then rebuilt the same day without cards or bios: names and roles only, three across on the values' columns from md and a hairline row per person below it, portrait and role placeholders. It opens `/team`; the values band is labelled Vision, and the three values hang under a Values label of their own.)
 13. **Insights.** A held slot: the heading, the one-line intro, and a "first pieces publishing this fall" line. Designed later from a separate brief.
 14. **Final CTA and footer.** Closing line and CTAs unchanged. Footer line from Gen 6.
 
@@ -169,7 +169,7 @@ Gen 6 copy as written, with the tags from section 3. Beyond Core loses nothing f
 Gen 6 vision line and the three values with their cost lines, no headings. Stewardship's cost line is replaced (section 7).
 
 ### 6.8 Team
-Gen 6 bios. Roles: Business & Strategy; Software & Engineering; Finance & Operations.
+Gen 6 bios. Roles: Business & Strategy; Software & Engineering; Finance & Operations. (Superseded 2026-09-16: no bios; the roles are placeholders until decided. Band: "The team" / "The people you’ll work with." / "You work directly with the people who build and run your Core. Nobody stands between you and the work.")
 
 ### 6.9 Insights, closing, footer
 Insights: heading and intro line from Gen 6, no post cards. Closing: unchanged. Footer line: "Custom agentic AI, built around how your team actually works. Arizona."

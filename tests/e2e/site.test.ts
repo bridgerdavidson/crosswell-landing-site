@@ -445,41 +445,46 @@ describe("the landing page after the run", () => {
 });
 
 describe("the team page", () => {
-  it("carries the values and their costs, then the closing call, with no bios", async () => {
+  it("opens on the three people, then the vision and the values with their costs, then the closing call", async () => {
     const r = await withPage(async (page) => {
       await page.goto(`${site.url}/team`, { waitUntil: "networkidle" });
       return {
         title: await page.title(),
+        names: await page.locator("#team h3").allTextContents(),
+        portraits: await page.locator("#team [data-portrait]").count(),
+        bios: await page.locator("#team p").allTextContents(),
+        labels: await page.locator("#values .type-label").allTextContents(),
         vision: await page.getByText("To become the most sought after name in agentic AI").count(),
         values: await page.locator("#values h3").allTextContents(),
         costs: await page.locator("#values").getByText("What it costs").count(),
         heading: await page.locator("#values h2").textContent(),
         valuesText: await page.locator("#values").textContent(),
         stewardship: await page.getByText("leaves with you in open files on the day you go").count(),
-        team: await page.locator("#team").count(),
-        photos: await page.locator("img[src*='team-']").count(),
         closing: await page.getByText("Nothing off the shelf fits your business").count(),
         footer: await page.locator("footer").textContent(),
         h1: await page.locator("h1").count(),
         order: await page.evaluate(() => [...document.querySelectorAll("main section[id]")].map((s) => s.id)),
         /* the first band clears the fixed nav */
-        top: await page.locator("#values").evaluate((el) => Math.round(el.getBoundingClientRect().top + parseFloat(getComputedStyle(el).paddingTop))),
+        top: await page.locator("#team").evaluate((el) => Math.round(el.getBoundingClientRect().top + parseFloat(getComputedStyle(el).paddingTop))),
       };
     });
     expect(r.title).toBe("Team | Crosswell");
+    expect(r.names).toEqual(["Max Marohn", "Bridger Davidson", "Michael Zamora"]);
+    expect(r.portraits).toBe(3);
+    /* the lede and three roles, and no bios: nothing in the team's paragraphs runs past a line */
+    expect(r.bios.filter((t) => t.length > 120)).toEqual([]);
+    expect(r.labels).toEqual(["Vision", "Values"]);
     expect(r.vision).toBe(1);
     expect(r.values).toEqual(["Trust", "Stewardship", "Continuity"]);
     expect(r.costs).toBe(3);
-    // the vision line is the section's own title; no "Mission" or "Vision" heading
+    // the vision line is the section's own title under the Vision label; no "Mission" heading
     expect(r.heading).toContain("To become the most sought after name");
-    expect(r.valuesText).not.toMatch(/\b(Mission|Vision)\b/);
+    expect(r.valuesText).not.toMatch(/\bMission\b/);
     expect(r.stewardship).toBe(1);
-    expect(r.team).toBe(0);
-    expect(r.photos).toBe(0);
     expect(r.closing).toBe(1);
     expect(r.footer).toContain("Custom agentic AI, built around how your team actually works. Arizona.");
     expect(r.h1).toBe(0);
-    expect(r.order).toEqual(["values"]);
+    expect(r.order).toEqual(["team", "values"]);
     expect(r.top).toBeGreaterThanOrEqual(112);
   });
 });

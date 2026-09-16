@@ -137,13 +137,13 @@ carries them). Nothing else on the page is amber, red, or blue.
   The primary buttons (the hero's and how-we-start's "Start with the
   audit" and the nav's "Set up a call") carry shadow-whisper. Content
   cards and primary buttons are the only shadows on the page.
-- The team card is the one card whose picture bleeds: the portrait fills
-  the card's top edge to edge, with no padding around it (square at lg
-  and below md, 4:5 between), and the text block under it pads 32 (28
-  below md, 20 from md to lg, where three cards share 720 to 976), the
-  name on the block's first line, the discipline label 2
-  under the name, the bio 12 under the label. Every other card holds the
-  card rule below (32 inside, the body 10 under the title).
+- The team (rebuilt 2026-09-16) has no cards: from md the three people sit
+  on the values' three column lines, each a 4:5 portrait placeholder at
+  most 360 wide from the column's left edge (rounded-2xl, warm gray 40
+  hairline, warm gray 25 fill until the photographs exist), the name in the
+  serif accent 20 under it and the role in the body size, fern-deep, 4
+  under the name. Below md a hairline row per person: a 96-wide portrait
+  (rounded-xl) beside the name and role, 20 between. No bios.
 - Product fragments: parchment panels on ivory. The product has no
   container of its own: its canvas is the page's ivory, and the one
   parchment surface in a frame is the lit element's (the chat panel, the
@@ -566,7 +566,7 @@ carries them). Nothing else on the page is amber, red, or blue.
   drawn line, blurred) takes the window's bottom-left corner.
 - The site is three pages (spec section 22): the landing page (hero, what we
   do with the two figures under it and the stack, the run, who it's for, how
-  we start, the closing call), `/team` (values, bios, the closing call) and
+  we start, the closing call), `/team` (the team, the vision and values, the closing call) and
   `/insights` (the blog's held slot). The nav links to the pages, not to
   sections. The brain section and the value ledger are parked for a future
   page on the Core; notes on them elsewhere in this document describe
