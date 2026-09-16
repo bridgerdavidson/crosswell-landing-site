@@ -91,7 +91,7 @@ function DayView() {
   );
 }
 
-export function AgendaScreen({ theme, size }: { theme: Theme; size?: string }) {
+export function AgendaScreen({ theme, size, mainClassName }: { theme: Theme; size?: string; mainClassName?: string }) {
   const meetings = BLOCKS.filter((b) => b.kind === "meeting").length;
   const focus = BLOCKS.filter((b) => b.kind === "focus").length;
   const open = TODO.filter((t) => !t.done).length;
@@ -100,6 +100,7 @@ export function AgendaScreen({ theme, size }: { theme: Theme; size?: string }) {
     <AppWindow
       theme={theme}
       size={size}
+      mainClassName={mainClassName}
       active="agenda"
       controls={<Views items={[{ label: "Day" }, { label: "Week" }]} active="Day" />}
       actions={

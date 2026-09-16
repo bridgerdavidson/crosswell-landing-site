@@ -185,6 +185,35 @@ body {
   }
 }
 
+/* ---------- Chapter 03's dissolve ----------
+   From lg the agenda window dissolves into the page along its bottom (160)
+   and up its right side (420), where the empty Core sits. Below lg the
+   window is whole to its edges; the frame's side fade does the leaving,
+   and the page inside dissolves into the app's ground over its last 120
+   (dashboard-fade-phone), the same device chapter 01 uses on every
+   screen, since the window is shorter than the day. */
+.agenda-fade {
+  -webkit-mask-image:
+    linear-gradient(to bottom, #000 0, #000 calc(100% - 160px), transparent 100%),
+    linear-gradient(to right, #000 0, #000 calc(100% - 420px), transparent 100%);
+  mask-image:
+    linear-gradient(to bottom, #000 0, #000 calc(100% - 160px), transparent 100%),
+    linear-gradient(to right, #000 0, #000 calc(100% - 420px), transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+@media (max-width: 1023px) {
+  .agenda-fade {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .dashboard-fade-phone {
+    --dashboard-fade: 120px;
+    -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--dashboard-fade)), transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--dashboard-fade)), transparent 100%);
+  }
+}
+
 /* ---------- The dashboard, dark ----------
    The same window on the run's dark band, flipped the way the light one is
    built: text on ivory, the page a step lighter than the band, the chrome a

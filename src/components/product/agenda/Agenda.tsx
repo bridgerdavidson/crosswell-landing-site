@@ -13,16 +13,22 @@ import { Chapter } from "../shared";
  */
 const WASH = "rgba(241, 238, 230, 0.74)";
 const LIT = "radial-gradient(ellipse 620px 380px at 450px 260px, transparent 0%, transparent 58%, #000 100%)";
-/* the window dissolves into the page along its bottom and up its right side, where the empty Core sits */
-const FADE = [
-  "linear-gradient(to bottom, #000 0, #000 calc(100% - 160px), transparent 100%)",
-  "linear-gradient(to right, #000 0, #000 calc(100% - 420px), transparent 100%)",
-].join(", ");
+/* from lg the window dissolves into the page along its bottom and up its
+   right side, where the empty Core sits (agenda-fade, globals.css); below lg
+   the window is whole and the frame's own right fade does the leaving */
+
+/* the phone's crop: from the window's corner across the day and the whole of
+   the to-do and team column's words, the Core's empty column off the screen;
+   the window is 640 tall there, the day dissolving into the app's ground
+   above its bottom edge (the page runs on), so the frame holds the morning,
+   the early afternoon, and the first of the team in about 330 */
+const PHONE = { x: 0, y: 0, width: 740, height: 640, fade: 72 };
 
 /**
  * The agenda chapter: the dashboard's Agenda page, the real window from the
  * dashboard (src/components/dashboard), whole at 800 tall so the day runs
  * 8 am to 6 pm, with the morning lit (above). The Core's column is empty.
+ * On a phone it is 640 tall and cropped (PHONE, below).
  */
 export default function Agenda() {
   return (
@@ -31,9 +37,9 @@ export default function Agenda() {
         claim="Your day, and everyone else’s, without asking."
         body="Your meetings, your focus time, and the list waiting on you, synced with the task tool your team already uses. Beside it, what everyone else is on right now and when they’re free. Finish something anywhere and it checks off everywhere."
       >
-        <WindowFrame height={800}>
-          <div className="relative" style={{ WebkitMaskImage: FADE, maskImage: FADE, WebkitMaskComposite: "source-in", maskComposite: "intersect" }}>
-            <AgendaScreen theme={themeOf("saguaro")} size="h-[800px] w-full" />
+        <WindowFrame height={800} phone={PHONE}>
+          <div className="agenda-fade relative">
+            <AgendaScreen theme={themeOf("saguaro")} size="h-[640px] w-full lg:h-[800px]" mainClassName="dashboard-fade-phone" />
             <div
               aria-hidden
               className="pointer-events-none absolute inset-0 rounded-xl"
