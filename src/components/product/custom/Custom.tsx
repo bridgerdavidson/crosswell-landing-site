@@ -21,6 +21,13 @@ import { Chapter } from "../shared";
  * firm's five days. Reduced motion holds the lender's page still.
  */
 
+/* the phone's crop: chapter 01's, from the window's corner across the rail
+   (where the mark changes), the top bar (where the action changes), the
+   greeting, the numbers, and the left list, the right column starting at the
+   screen's edge; the window is 640 tall there like chapter 01's, every page
+   ending in the window's own fade, so the frame is about 350 */
+const PHONE = { x: 0, y: 0, width: 690, height: 640, fade: 72 };
+
 const HOLD = 3.8;
 /* the three beats: empty, rearrange, fill */
 const CLEAR = 0.22;
@@ -49,9 +56,13 @@ function measure(page: HTMLElement | null, base: HTMLElement | null): Rects {
   const rects: Rects = new Map();
   if (!page || !base) return rects;
   const box = base.getBoundingClientRect();
+  /* the shells are placed in the container's own pixels, so the rects come
+     back out of whatever scale the frame has put on the window (the phone
+     crop scales the whole window down as one) */
+  const k = base.offsetWidth ? box.width / base.offsetWidth : 1;
   page.querySelectorAll<HTMLElement>("[data-morph]").forEach((el) => {
     const r = el.getBoundingClientRect();
-    rects.set(el.dataset.morph!, { left: r.left - box.left, top: r.top - box.top, width: r.width, height: r.height });
+    rects.set(el.dataset.morph!, { left: (r.left - box.left) / k, top: (r.top - box.top) / k, width: r.width / k, height: r.height / k });
   });
   return rects;
 }
@@ -189,7 +200,7 @@ export default function Custom() {
         claim="The same product, built around how your business works."
         body="One company’s morning is a list of what needs a yes, another’s is a board of trucks on the road, another’s is the week’s deadlines. Same Core underneath, same agents, same screen your team opens. What sits on it is built around your work, in your colors, under your name."
       >
-        <WindowFrame height={800}>
+        <WindowFrame height={800} phone={PHONE}>
           {/* the accent variables start on the first business and are the morph's
               to move from there, so they are set once and never re-rendered */}
           <div ref={win} style={varsOf(STEPS[0].theme)}>
@@ -198,7 +209,7 @@ export default function Custom() {
               theme={active.theme}
               pages={active.pages}
               active="home"
-              size="h-[800px] w-full"
+              size="h-[640px] w-full lg:h-[800px]"
               /* the firm's week runs past 800, so every page ends in the
                  window's own fade rather than on a half-cut row */
               mainClassName="dashboard-fade"
