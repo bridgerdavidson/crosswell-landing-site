@@ -143,20 +143,22 @@ export default function Custom() {
     gsap.set(page.current, { opacity: 0 });
     gsap.set(blocks, { opacity: 0 });
 
-    /* sections travel in reading order, so the layout resolves down the screen */
+    /* every section travels on one clock, with no stagger between them.
+       Two sections that are clear of each other in both layouts stay clear
+       the whole way only if they move at the same rate: give one a head
+       start and the one below it is still where the one above is going. */
     const order = [...to.entries()].sort((a, b) => a[1].top - b[1].top);
     order.forEach(([key, box], i) => {
-      const delay = i * 0.05;
       const shell = shells.current.get(key);
       if (shell) {
-        tweens.push(gsap.to(shell, { left: box.left, top: box.top, width: box.width, height: box.height, duration: MOVE, delay, ease: "power2.inOut" }));
+        tweens.push(gsap.to(shell, { left: box.left, top: box.top, width: box.width, height: box.height, duration: MOVE, ease: "power2.inOut" }));
         return;
       }
       /* a section this business has and the last one did not: it arrives as
          the others are still moving, so the new shape is whole before it fills */
       const made = shellAt(box, layer.current!);
       shells.current.set(key, made);
-      tweens.push(gsap.fromTo(made, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: MOVE * 0.6, delay: delay + MOVE * 0.3, ease: "power2.out" }));
+      tweens.push(gsap.fromTo(made, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: MOVE * 0.6, delay: MOVE * 0.3 + i * 0.02, ease: "power2.out" }));
     });
 
     /* a section the last business had and this one does not simply goes */
