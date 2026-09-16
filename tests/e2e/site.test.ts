@@ -503,11 +503,14 @@ describe("the one call to action", () => {
       await page.goto(site.url, { waitUntil: "networkidle" });
       return {
         hero: await page.locator("#top a").allTextContents(),
+        /* the quiet link beside the button goes down the page, not out */
+        see: await page.locator("#top a", { hasText: "See how it works" }).getAttribute("href"),
         closing: await page.locator("main section.bg-charcoal a").allTextContents(),
         audit: await page.getByText("Start with the audit").count(),
       };
     });
-    expect(r.hero).toEqual(["Set up a call"]);
+    expect(r.hero.map((t) => t.trim())).toEqual(["Set up a call", "See how it works ↓"]);
+    expect(r.see).toBe("#what-we-do");
     expect(r.closing).toEqual(["Set up a call"]);
     expect(r.audit).toBe(0);
   });

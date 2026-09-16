@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import { CALL_MAILTO } from "@/lib/site";
+import SeeHowItWorks from "./SeeHowItWorks";
 import HeroCore from "./HeroCore";
 
 export default function Hero() {
@@ -47,18 +48,21 @@ export default function Hero() {
           that run on it.
         </p>
         <div
-          className="hero-enter mt-9 flex flex-wrap items-center justify-center gap-4"
+          className="hero-enter mt-9 flex flex-wrap items-center justify-center gap-x-8 gap-y-4"
           style={{ "--enter-delay": "1s" } as CSSProperties}
         >
           {/* one ask: the work is consulting, custom and personal, and its
               first step is always the call, so a button that starts with the
-              audit skipped step one */}
+              audit skipped step one. Beside it, for the visitor not ready to
+              ask, a quiet link down the page: company for the button without
+              a second ask */}
           <a
             href={CALL_MAILTO}
             className="type-text rounded-lg bg-fern px-6 py-3 font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep"
           >
             Set up a call
           </a>
+          <SeeHowItWorks />
         </div>
       </div>
     </section>
