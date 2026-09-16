@@ -10,9 +10,13 @@ export type Crop = { x: number; y: number; width: number; height: number; bleed?
 /*
  * The frame a chapter shows the dashboard in: the whole window (640 tall
  * by default, as tall as the page needs), so the rail, the top bar, and the
- * Core's column with its message box all read as an app. From lg the window
- * takes the frame's width, never less than 1280 or more than 1440 (below
- * 1440 its right side crops).
+ * Core's column with its message box all read as an app. From 1376 of
+ * viewport the window takes the frame's width, never more than 1440. On a
+ * laptop between lg and there the column is narrower than the window, so
+ * the whole window scales down as one to fit it (0.93 at 1280, 0.73 at
+ * 1024): a laptop sees the whole dashboard a little smaller, never a
+ * dashboard cut by the frame's edge. That is how Linear's product shots
+ * behave at laptop widths, and what the Core's stage already did.
  *
  * Below lg the frame shows a crop of the same window, `phone`: the piece of
  * the product the chapter's claim is about, at 1:1 where the frame is wide
@@ -26,9 +30,8 @@ export type Crop = { x: number; y: number; width: number; height: number; bleed?
  * as it goes (`window-bleed-right`, globals.css; a crop that runs off the
  * left fades there instead). That is how Linear's phone product shots
  * hold their shape: the only edges a visitor sees are the screen's and
- * the window's.
- * Without a crop the whole 1280-wide window scales to the frame's width,
- * the old fallback.
+ * the window's. Without a crop the whole 1280-wide window scales to the
+ * frame's width, the old fallback.
  *
  * What recedes is the chapter's to say, inside the window (globals.css,
  * "The dashboard's fade").
@@ -36,22 +39,37 @@ export type Crop = { x: number; y: number; width: number; height: number; bleed?
 export default function WindowFrame({ children, height = 640, phone }: { children: ReactNode; height?: number; phone?: Crop }) {
   const box = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
-  /* the width the frame must hold at 1:1: the crop's, or the whole window's */
+  const [wide, setWide] = useState(true);
+  /* the width the frame must hold at 1:1 below lg: the crop's, or the whole window's */
   const fit = phone ? phone.width : 1280;
 
   useLayoutEffect(() => {
     const el = box.current!;
-    const wide = window.matchMedia("(min-width: 1024px)");
-    const measure = () => setScale(wide.matches ? 1 : Math.min(1, el.clientWidth / fit));
+    const lg = window.matchMedia("(min-width: 1024px)");
+    const measure = () => {
+      setWide(lg.matches);
+      setScale(Math.min(1, el.clientWidth / (lg.matches ? 1280 : fit)));
+    };
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(el);
-    wide.addEventListener("change", measure);
+    lg.addEventListener("change", measure);
     return () => {
       ro.disconnect();
-      wide.removeEventListener("change", measure);
+      lg.removeEventListener("change", measure);
     };
   }, [fit]);
+
+  /* a laptop column narrower than the window: the whole window, scaled to it */
+  if (wide && scale < 1) {
+    return (
+      <div ref={box} data-window className="relative overflow-hidden" style={{ height: height * scale }}>
+        <div className="absolute top-0 left-0 w-[1280px] origin-top-left" style={{ transform: `scale(${scale})` }}>
+          {children}
+        </div>
+      </div>
+    );
+  }
 
   /* the crop's top-left corner lands on the frame's; from lg the classes
      drop the transform and the frame's height together */
