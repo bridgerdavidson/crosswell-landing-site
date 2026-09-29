@@ -135,7 +135,9 @@ export type Person = {
 };
 ```
 
-The team page (`Team.tsx`) reads from this file instead of its inline array, keeping its order and its placeholders, so a role or photo changes in one place. The author block uses the same portrait placeholder as the team page until photographs exist, and omits the LinkedIn link when `linkedin` is absent.
+The team page (`Team.tsx`) reads from this file instead of its inline array, keeping its order and its placeholders, so a role or photo changes in one place. The LinkedIn link is omitted when `linkedin` is absent.
+
+**One photo per person, used everywhere.** Each person's photograph is one file, `public/team/<id>.jpg`, named in `portrait`. Adding it is the only step: the team page and every place a post shows its author (the rail, the byline below lg, the end block, the index's featured post and list rows) pick it up on the next build, with no change to any post. A single `Portrait` component renders it in every place: the team page's 4:5 frame, and a round crop for the author placements (`object-fit: cover`, focused on the upper third of the 4:5 photo, where the face sits). Until a photo exists, `Portrait` draws the same placeholder the team page shows today.
 
 ## 4. Loading and rendering
 
@@ -211,6 +213,8 @@ The drawings approved in session are the reference. Measurements below are at 14
 
 `src/components/Insights.tsx` becomes the index band and takes the post list.
 
+`src/components/Portrait.tsx` (shared, section 3): a person's photo or the placeholder, in the team frame or the round author crop. `Team.tsx` and every author placement render through it.
+
 ## 8. The call to action and the scheduler seam
 
 A new `src/components/CallLink.tsx` renders the site's call link. Today it is an anchor to `CALL_MAILTO` with the caller's children and classes. Every place that links to the call moves onto it in this build: the nav (both links), the hero, `FinalCta`, `ComingSoon`, the contact page, the how-we-start cards (their `action` becomes a flag the card renders as `CallLink`), and the article end.
@@ -280,6 +284,7 @@ The same command on an existing slug starts from the repo file, which is now the
 - `insights-jsonld.test.ts`: Article and FAQPage shapes; no FAQPage without an FAQ.
 - `copy-guard.test.ts` (extended): a `.md` fixture with an em dash fails; a `.md` fixture with straight apostrophes passes.
 - The index renders the held slot for zero posts.
+- `portrait.test.tsx`: for a person with a `portrait`, the team page's image and the author block's image have the same `src`; for a person without one, both render the placeholder.
 
 ### End to end (`tests/e2e/`)
 
