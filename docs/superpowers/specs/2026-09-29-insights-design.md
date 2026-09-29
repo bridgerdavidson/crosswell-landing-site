@@ -74,7 +74,7 @@ related: [another-post, a-third-post]
 | `published` | yes | `YYYY-MM-DD`, not later than the build date (compared in UTC, which is never behind Arizona's date). |
 | `updated` | no | `YYYY-MM-DD`, on or after `published`. Set only for substantive changes. |
 | `takeaways` | no | 2 to 5 short items when present. |
-| `cover` | no | A `.jpg`, `.png`, or `.webp` in the post's media folder. |
+| `cover` | no | A `.jpg` or `.png` in the post's media folder (the share-card renderer cannot read WebP). |
 | `coverAlt` | with `cover` | Required whenever `cover` is set. |
 | `related` | no | Up to 3 existing slugs, never the post's own. |
 
@@ -116,7 +116,7 @@ data:
 | `unit` | no | A suffix on values and axis labels (`%`, ` hrs`). |
 | `source` | yes | Shown under the chart. |
 | `sourceUrl` | yes | The source's link. Every statistic on the site is sourced. |
-| `data` | yes | 2 to 12 label and number pairs, in display order. |
+| `data` | yes | 2 to 12 label and number pairs, in display order, each value zero or more. |
 
 Charts render at build as static inline SVG in the Fern palette (a fern line or bars, hairline gridlines, the first and last values labeled, the source as a caption), matching the drawing approved in session. They ship no client JavaScript.
 
@@ -147,7 +147,7 @@ All of this runs at build time. None of it ships to the browser.
 
 | Module | Does |
 |---|---|
-| `load.ts` | Reads the content directory, calls `parsePost` for each file, checks cross-post rules (duplicate slugs, related slugs exist), sorts newest first by `published`, ties broken by slug. Exports `getAllPosts()` and `getPost(slug)`. |
+| `load.ts` | Reads the content directory, calls `parsePost` for each file, checks that every related slug is a post (filenames are the slugs, so the file system already rules out duplicates), sorts newest first by `published`, ties broken by slug. Exports `getAllPosts()` and `getPost(slug)`. |
 | `parse.ts` | `parsePost(filename, source, people, mediaExists)`: pure. Parses frontmatter and body, validates, returns a `Post` or throws an `InsightError`. |
 | `render.tsx` | Turns a post's Markdown tree into React elements with the site's components. |
 | `chart.ts` | Parses and validates a chart block's data. |
@@ -167,19 +167,19 @@ Every error is an `InsightError` whose message follows one pattern: `<file>: <fi
 
 ### Pipeline
 
-remark-parse, remark-gfm, remark-smartypants, then our own remark plugin (turns `chart` code blocks into chart nodes, marks the FAQ section, collects the `##` outline), then remark-rehype, rehype-slug (heading ids), then `hast-util-to-jsx-runtime` with a component map: headings, links, images and captions, tables, blockquotes, chart nodes to `Chart`, the FAQ to `Faq`. remark-smartypants curls every straight apostrophe and quote, so authors never type a typographic one.
+remark-parse, remark-gfm, remark-smartypants (with dashes off, so a typed `--` never becomes an em dash), then our own transform (gives every heading its id from one github-slugger, so the outline's links and the headings' ids cannot disagree; turns `chart` code blocks into chart nodes; wraps the FAQ section; resolves images into the media folder), then remark-rehype, then `hast-util-to-jsx-runtime` with a component map: headings, links, images and captions, tables, blockquotes, chart nodes to `Chart`, the FAQ to `Faq`. remark-smartypants curls every straight apostrophe and quote, so authors never type a typographic one. Frontmatter text (title, description, takeaways, alt text) goes through retext-smartypants, the same curling without Markdown parsing.
 
 ### New dependencies
 
-Runtime (build only): `gray-matter`, `yaml`, `unified`, `remark-parse`, `remark-gfm`, `remark-smartypants`, `remark-rehype`, `rehype-slug`, `hast-util-to-jsx-runtime`. Dev: `tsx` (runs `scripts/check-insights.ts` with the repo's path aliases).
+Runtime (build only): `gray-matter`, `yaml`, `unified`, `remark-parse`, `remark-gfm`, `remark-smartypants`, `remark-rehype`, `retext`, `retext-smartypants`, `github-slugger`, `mdast-util-to-string`, `unist-util-visit`, `hast-util-to-jsx-runtime`. Dev: `tsx` (runs the two scripts with the repo's path aliases), `@types/mdast`, `@types/hast`, `@fontsource/newsreader`, `@fontsource/instrument-sans` (the share cards' fonts, as `.woff`).
 
 ## 5. Routes
 
 | Route | File | Notes |
 |---|---|---|
 | `/insights` | `src/app/insights/page.tsx` | The index. |
-| `/insights/<slug>` | `src/app/insights/[slug]/page.tsx` | `generateStaticParams` from the loader, `dynamicParams = false`, `generateMetadata` per post. |
-| share card | `src/app/insights/[slug]/opengraph-image.tsx` | `next/og` `ImageResponse`, 1200 by 630, PNG. See section 14 for the first-task check. |
+| `/insights/<slug>` | `src/app/insights/[slug]/page.tsx` | `generateStaticParams` from the loader, `dynamicParams = false`, `generateMetadata` per post. With zero posts it returns one placeholder, `_none`, whose page is the site's not-found page: a static export refuses a dynamic route with no params (confirmed by a probe build), and `_` can never start a real slug. |
+| share card | `public/media/insights/<slug>/card.png` | Written by `scripts/insight-cards.ts`, which `npm run build` runs before `next build`. Git-ignored, regenerated every build. |
 
 ## 6. Page design
 
@@ -224,7 +224,7 @@ When the scheduler exists, `CallLink` is the one file that changes, whether it b
 ## 9. Search and share previews
 
 - **Metadata.** `pageMetadata()` gains an `article` option (published and modified times, author name). With it the page's Open Graph type is `article` and the site-wide `og-image.jpg` is not emitted, so the post's own card is the only image. Title: `<post title> | Crosswell`. Description: the frontmatter's. Canonical: the existing `Canonical` component.
-- **Share card.** `opengraph-image.tsx`: with a cover, the cover cropped to 1200 by 630; without one, the typographic card in the style of the existing `og-image.jpg` (ivory ground, the dark lockup, the title in Newsreader, the author's name under it). The two fonts are committed as `.ttf` files under `src/app/insights/[slug]/fonts/` (both are open-licensed), so building a card needs no network.
+- **Share card.** `scripts/insight-cards.ts` renders each post's card with `next/og`'s `ImageResponse` (it runs outside Next, confirmed by a probe) to `public/media/insights/<slug>/card.png`: with a cover, the cover cropped to 1200 by 630; without one, the typographic card in the style of the existing `og-image.jpg` (ivory ground, the dark lockup, the title in Newsreader, the author's name under it). The fonts are the Fontsource packages' `.woff` files, read from `node_modules`, so building a card needs no network. Both `og:image` and `twitter:image` name the card; a probe showed a page otherwise inherits the site-wide `twitter:image`. The card is a real `.png` because `next/og`'s `opengraph-image.tsx` route exports an extension-less file, which a static host serves without an image content type.
 - **Structured data.** One `<script type="application/ld+json">` per article: an `Article` (headline, description, `datePublished`, `dateModified`, `author` as a `Person` with name and LinkedIn URL, Crosswell as `publisher`, the share image, `mainEntityOfPage`), plus an `FAQPage` when the post has an FAQ, built from the same FAQ parse as the visible rows.
 - **Sitemap.** `sitemap.ts` adds every post, `lastModified` from `updated`, else `published`.
 - **Robots.** `robots.ts` keeps the allow-all rule and adds explicit allow rules for `GPTBot`, `ClaudeBot`, and `PerplexityBot`. No `llms.txt`.
@@ -278,7 +278,7 @@ The same command on an existing slug starts from the repo file, which is now the
 ### Unit (vitest, `tests/unit/`)
 
 - `insights-parse.test.ts`: a valid post parses to the expected `Post`; each rule in section 3 fails with its own message (missing field, unknown field, unknown author, description too long, bad or future date, `updated` before `published`, cover without alt, missing image file, bad slug, `#` in the body, raw HTML, empty FAQ).
-- `insights-load.test.ts`: duplicate slugs and unknown related slugs fail; posts sort newest first; `README.md` and `_` files are skipped; zero posts returns an empty list.
+- `insights-load.test.ts`: unknown related slugs fail; posts sort newest first; `README.md` and `_` files are skipped; zero posts returns an empty list.
 - `insights-render.test.ts`: apostrophes and quotes are curled; a chart block becomes a chart node with parsed data, and a malformed one names the post and chart; FAQ items are extracted; the outline lists the `##` headings with their ids; external links carry `rel` and `target`.
 - `insights-related.test.ts`: the explicit list wins; otherwise the newest others; never the post itself; at most three.
 - `insights-jsonld.test.ts`: Article and FAQPage shapes; no FAQPage without an FAQ.
@@ -317,7 +317,7 @@ Posts themselves are cleared per post, in review. The August drafts are written 
 
 ## 14. Risks and the first task
 
-- **Share cards in a static export.** The build's first task proves that `opengraph-image.tsx` under `[slug]` with `generateStaticParams` emits a real PNG per post in `out/`, that the page's `og:image` URL points at it, and that on a Vercel preview both `/insights/<slug>` (the page) and the card URL resolve with the right content types, given that the card sits in a same-named folder beside the page. If any of that fails, the fallback is a prebuild script (`scripts/insight-cards.mjs`, satori plus resvg) that writes `public/media/insights/<slug>/card.png`, and `pageMetadata`'s `article` option points `og:image` at it.
+- **Share cards in a static export: resolved by probe builds (2026-09-29).** `opengraph-image.tsx` exported an extension-less PNG and left `twitter:image` on the site-wide image, and an empty `generateStaticParams` failed the export. Section 5 and section 9 carry the fixes: a build script writes `card.png`, the metadata names it twice, and zero posts builds a `_none` placeholder.
 - **Authors without repo access** cannot run step 5; they can still convert and preview, and hand the branch to someone who can.
 - **The never-publish file drifts** between authors' machines. Max's master list is the reference; the command states which file it read.
 
