@@ -371,6 +371,52 @@ describe("the insights index", () => {
   });
 });
 
+describe("without JavaScript", () => {
+  it("shows the whole post, and an outline link still lands its heading clear of the nav", async () => {
+    const r = await withPage(
+      async (page) => {
+        await page.goto(`${site.url}${LONG}`, { waitUntil: "networkidle" });
+        const visible = (sel: string) => page.locator(sel).first().evaluate((el) => getComputedStyle(el).opacity === "1");
+        const end = await visible("#insight [data-portrait]");
+        const related = await visible("[aria-labelledby='keep-reading'] a");
+        await page.locator("nav[aria-label='On this page'] a", { hasText: "The tenth section" }).click();
+        await page.waitForTimeout(400);
+        const top = await page.locator("#the-tenth-section").evaluate((el) => Math.round(el.getBoundingClientRect().top));
+        await page.locator("[data-footnote-ref]").first().click();
+        await page.waitForTimeout(400);
+        const note = await page.locator("#user-content-fn-1").evaluate((el) => Math.round(el.getBoundingClientRect().top));
+        return { end, related, top, note, current: await page.locator("nav[aria-label='On this page'] a[aria-current]").count() };
+      },
+      // reduced motion: the page's own smooth scroll keeps a hash jump
+      // gliding while the driver looks for a still target
+      { js: false, reducedMotion: true }
+    );
+    expect(r).toMatchObject({ end: true, related: true, current: 0 });
+    expect(r.top).toBeGreaterThanOrEqual(80);
+    expect(r.top).toBeLessThanOrEqual(100);
+    expect(r.note).toBeGreaterThanOrEqual(80);
+    expect(r.note).toBeLessThanOrEqual(100);
+  });
+});
+
+describe("the not-found page", () => {
+  it("is the site's own, with the two ways on", async () => {
+    // the static export's 404.html is what Vercel serves for any address
+    // that is not a page, the insights route's _none placeholder included
+    const r = await withPage(async (page) => {
+      await page.goto(`${site.url}/404`, { waitUntil: "networkidle" });
+      return {
+        h1: await page.locator("h1").textContent(),
+        ways: await page.locator("#not-found a").evaluateAll((as) => as.map((a) => a.getAttribute("href"))),
+        nav: await page.locator("header nav a").count(),
+        footer: await page.locator("footer").count(),
+        dash: await page.evaluate(() => document.body.innerText.includes("—")),
+      };
+    });
+    expect(r).toEqual({ h1: "There’s nothing at this address.", ways: ["/insights", "/"], nav: 5, footer: 1, dash: false });
+  });
+});
+
 describe("search", () => {
   it("lists every post in the sitemap and lets the AI crawlers in", () => {
     const sitemap = readFileSync(join("out", "sitemap.xml"), "utf8");
