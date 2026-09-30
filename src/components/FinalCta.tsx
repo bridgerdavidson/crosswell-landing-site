@@ -1,6 +1,6 @@
 import { CONTAINER } from "./Band";
 import Reveal from "./Reveal";
-import { CALL_MAILTO } from "@/lib/site";
+import CallLink from "./CallLink";
 import { tie } from "./tie";
 
 /* The closing bookend: the hero's display, subline and one button again,
@@ -24,12 +24,7 @@ export default function FinalCta() {
         </Reveal>
         <Reveal delay={80}>
           <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
-            <a
-              href={CALL_MAILTO}
-              className="type-text rounded-lg bg-fern px-7 py-3.5 font-semibold text-ivory transition-colors hover:bg-fern-deep"
-            >
-              Set up a call
-            </a>
+            <CallLink className="type-text rounded-lg bg-fern px-7 py-3.5 font-semibold text-ivory transition-colors hover:bg-fern-deep" />
           </div>
         </Reveal>
       </div>

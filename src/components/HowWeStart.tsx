@@ -1,6 +1,6 @@
 import Band, { CONTAINER, GRID, HANG, SECTION } from "./Band";
 import Reveal from "./Reveal";
-import { CALL_MAILTO } from "@/lib/site";
+import CallLink from "./CallLink";
 import { tie } from "./tie";
 
 /* No prices anywhere in this section, per the messaging handoff: "two weeks,
@@ -10,7 +10,7 @@ const steps = [
     name: "The first call",
     when: "Thirty minutes",
     body: "We ask how your firm handles knowledge today and how the work actually moves. Then we tell you straight whether the audit is worth it.",
-    action: { label: "Set up a call", href: CALL_MAILTO },
+    call: true,
   },
   {
     name: "The audit",
@@ -60,13 +60,8 @@ export default function HowWeStart() {
                     the process starts */}
                 <div className="max-w-xl">
                   <p className="type-body text-ink/80">{tie(step.body)}</p>
-                  {step.action && (
-                    <a
-                      href={step.action.href}
-                      className="type-text mt-6 inline-block rounded-lg bg-fern px-6 py-3 font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep"
-                    >
-                      {step.action.label}
-                    </a>
+                  {"call" in step && step.call && (
+                    <CallLink className="type-text mt-6 inline-block rounded-lg bg-fern px-6 py-3 font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep" />
                   )}
                 </div>
               </li>

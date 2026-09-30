@@ -1,8 +1,9 @@
 import Band, { CONTAINER } from "@/components/Band";
 import Canonical from "@/components/Canonical";
+import CallLink from "@/components/CallLink";
 import Footer from "@/components/Footer";
 import Nav from "@/components/Nav";
-import { CALL_MAILTO, CONTACT_EMAIL, pageMetadata } from "@/lib/site";
+import { CONTACT_EMAIL, pageMetadata } from "@/lib/site";
 import { tie } from "@/components/tie";
 
 export const metadata = pageMetadata({
@@ -12,8 +13,8 @@ export const metadata = pageMetadata({
 });
 
 /* The contact page: the one way in and the address, whole from day one
-   since it needs no writing. The scheduler replaces the mailto links when
-   it is picked (lib/site.ts). The band fills the window so the footer sits
+   since it needs no writing. The scheduler replaces the call link when it
+   is picked (components/CallLink.tsx). The band fills the window so the footer sits
    at the bottom. */
 export default function ContactPage() {
   return (
@@ -30,12 +31,7 @@ export default function ContactPage() {
                 <p className="type-body text-ink/80">
                   {tie("Thirty minutes. We ask how your firm handles knowledge today and how the work actually moves, and we tell you straight whether the audit is worth it. It starts with an email.")}
                 </p>
-                <a
-                  href={CALL_MAILTO}
-                  className="type-text rounded-lg bg-fern px-6 py-3 font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep"
-                >
-                  Set up a call
-                </a>
+                <CallLink className="type-text rounded-lg bg-fern px-6 py-3 font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep" />
                 <a href={`mailto:${CONTACT_EMAIL}`} className="type-text text-ink/70 transition-colors hover:text-fern-deep">
                   {CONTACT_EMAIL}
                 </a>

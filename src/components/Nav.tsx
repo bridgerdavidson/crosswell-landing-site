@@ -4,8 +4,9 @@ import { useEffect, useState, type CSSProperties, type MouseEvent } from "react"
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CALL_MAILTO, CONTACT_EMAIL } from "@/lib/site";
+import { CONTACT_EMAIL } from "@/lib/site";
 import { setMenuInk } from "./SafeAreaTheme";
+import CallLink from "./CallLink";
 
 /* the site's pages, not the landing page's sections, from the product to
    the process to the people; contact lives in the footer, since the call
@@ -124,12 +125,7 @@ export default function Nav() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <a
-            href={CALL_MAILTO}
-            className="type-text hidden rounded-lg bg-fern px-4 py-1.5 font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep md:inline-block"
-          >
-            Set up a call
-          </a>
+          <CallLink className="type-text hidden rounded-lg bg-fern px-4 py-1.5 font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep md:inline-block" />
 
           <button
             type="button"
@@ -181,13 +177,10 @@ export default function Nav() {
         className="menu-bottom"
         style={{ "--i": links.length } as CSSProperties}
       >
-        <a
-          href={CALL_MAILTO}
+        <CallLink
           onClick={() => setOpen(false)}
           className="type-text block rounded-[10px] bg-fern px-4 py-4 text-center font-semibold text-ivory"
-        >
-          Set up a call
-        </a>
+        />
         <p className="menu-mail">{CONTACT_EMAIL}</p>
       </div>
     </div>

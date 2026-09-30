@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { CALL_MAILTO } from "@/lib/site";
+import CallLink from "./CallLink";
 import SeeHowItWorks from "./SeeHowItWorks";
 import HeroCore from "./HeroCore";
 
@@ -56,12 +56,7 @@ export default function Hero() {
               audit skipped step one. Beside it, for the visitor not ready to
               ask, a quiet link down the page: company for the button without
               a second ask */}
-          <a
-            href={CALL_MAILTO}
-            className="type-text rounded-lg bg-fern px-6 py-3 font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep"
-          >
-            Set up a call
-          </a>
+          <CallLink className="type-text rounded-lg bg-fern px-6 py-3 font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep" />
           <SeeHowItWorks />
         </div>
       </div>
