@@ -42,9 +42,12 @@ export function parsePost(file: string, source: string, ctx: ParseContext): Post
     say("filename", `"${slug}" is not a valid slug. Use lowercase words joined by hyphens, at most 80 characters, like what-firms-keep.md.`);
   }
 
+  // one line ending: gray-matter leaves a \r on the last frontmatter value
+  // of a file saved with Windows endings, which then fails as "other-post\r"
+  const src = source.replace(/^﻿/, "").replace(/\r\n?/g, "\n");
+
   // without the --- markers gray-matter reads the whole file as the body
   // and every field is "missing"; name the real cause instead
-  const src = source.replace(/^﻿/, "");
   if (!/^---[ \t]*\r?\n/.test(src)) {
     say("frontmatter", "none found. The file must start with --- on its first line, then the fields, then --- on its own line.");
     throw new InsightError(problems);
@@ -64,7 +67,7 @@ export function parsePost(file: string, source: string, ctx: ParseContext): Post
   } catch (e) {
     // the YAML's line numbers are the file's: gray-matter hands the parser
     // everything after the opening ---, starting with its line break
-    throw new InsightError([`${file}: frontmatter: is not valid YAML (${yamlWhat(e)}). ${yamlHint(e, "frontmatter", source.split("\n"))}`]);
+    throw new InsightError([`${file}: frontmatter: is not valid YAML (${yamlWhat(e)}). ${yamlHint(e, "frontmatter", src.split("\n"))}`]);
   }
 
   for (const key of Object.keys(fm)) {

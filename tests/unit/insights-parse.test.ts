@@ -38,6 +38,16 @@ describe("a post", () => {
     expect(post.cover).toEqual({ file: "cover.jpg", src: "/media/insights/a-test-post/cover.jpg", alt: "The team’s desk" });
   });
 
+  it("reads Windows line endings, leaving no stray return on the last field", () => {
+    const post = parsePost(
+      F,
+      "---\r\ntitle: x\r\ndescription: x\r\nauthor: max\r\npublished: 2026-09-20\r\nrelated:\r\n  - other-post\r\n---\r\n\r\nText.\r\n\r\n## A section\r\n\r\nMore.\r\n",
+      TEST_CONTEXT
+    );
+    expect(post.related).toEqual(["other-post"]);
+    expect(post.outline).toEqual([{ id: "a-section", text: "A section" }]);
+  });
+
   it("keeps updated, related, and an upper-case cover extension", () => {
     const post = makePost({ updated: "2026-09-25", related: "[other-post]", cover: "Cover.JPG", coverAlt: "A desk" });
     expect(post.updated).toBe("2026-09-25");
