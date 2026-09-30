@@ -2070,8 +2070,9 @@ body {
 .chart-grid {
   stroke: rgb(26 25 21 / 0.08);
 }
+/* the axis at 65 (5.1:1 on ivory): 12px text needs 4.5:1, and 50 gave 3.3 */
 .chart-axis {
-  fill: rgb(26 25 21 / 0.5);
+  fill: rgb(26 25 21 / 0.65);
   font-family: var(--font-sans);
   font-size: 12px;
 }
