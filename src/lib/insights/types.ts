@@ -22,3 +22,9 @@ export class InsightError extends Error {
     this.problems = problems;
   }
 }
+
+/** One FAQ question, its heading's id, and its answer as plain text (for FAQPage). */
+export type FaqItem = { id: string; question: string; answer: string };
+
+/** One ## section: the rail's outline links to it by id. */
+export type OutlineItem = { id: string; text: string };
