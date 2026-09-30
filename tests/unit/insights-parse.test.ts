@@ -118,6 +118,21 @@ describe("a post's problems", () => {
     expect(problems({ title: "", author: "nobody" })).toHaveLength(2);
   });
 
+  it("names a file that does not start with frontmatter as one problem, not four missing fields", () => {
+    const fm = "title: x\ndescription: x\nauthor: max\npublished: 2026-09-20";
+    const none = `${F}: frontmatter: none found. The file must start with --- on its first line, then the fields, then --- on its own line.`;
+    expect(problemsOf(() => parsePost(F, `\n---\n${fm}\n---\n\nText.`, TEST_CONTEXT))).toEqual([none]);
+    expect(problemsOf(() => parsePost(F, "# A note\n\nText.", TEST_CONTEXT))).toEqual([none]);
+    expect(problemsOf(() => parsePost(F, "", TEST_CONTEXT))).toEqual([none]);
+    expect(problemsOf(() => parsePost(F, `---\n${fm}\n\nText.`, TEST_CONTEXT))).toEqual([
+      `${F}: frontmatter: the opening --- has no closing ---. End the fields with --- on its own line.`,
+    ]);
+  });
+
+  it("reads a file that starts with a byte order mark", () => {
+    expect(parsePost(F, "﻿---\ntitle: x\ndescription: x\nauthor: max\npublished: 2026-09-20\n---\n\nText.", TEST_CONTEXT).title).toBe("x");
+  });
+
   it("names frontmatter it cannot read", () => {
     expect(problemsOf(() => parsePost(F, "---\ntitle: [unclosed\n---\n\nText.", TEST_CONTEXT))[0]).toMatch(
       new RegExp(`^${F}: frontmatter: is not valid YAML`)

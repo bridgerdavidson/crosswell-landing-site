@@ -42,10 +42,22 @@ export function parsePost(file: string, source: string, ctx: ParseContext): Post
     say("filename", `"${slug}" is not a valid slug. Use lowercase words joined by hyphens, at most 80 characters, like what-firms-keep.md.`);
   }
 
+  // without the --- markers gray-matter reads the whole file as the body
+  // and every field is "missing"; name the real cause instead
+  const src = source.replace(/^﻿/, "");
+  if (!/^---[ \t]*\r?\n/.test(src)) {
+    say("frontmatter", "none found. The file must start with --- on its first line, then the fields, then --- on its own line.");
+    throw new InsightError(problems);
+  }
+  if (!/\r?\n---[ \t]*(\r?\n|$)/.test(src.slice(3))) {
+    say("frontmatter", "the opening --- has no closing ---. End the fields with --- on its own line.");
+    throw new InsightError(problems);
+  }
+
   let fm: Record<string, unknown>;
   let content: string;
   try {
-    const parsed = matter(source, { engines: { yaml: (s: string) => YAML.parse(s) ?? {} } });
+    const parsed = matter(src, { engines: { yaml: (s: string) => YAML.parse(s) ?? {} } });
     if (typeof parsed.data !== "object" || Array.isArray(parsed.data)) throw new Error("the frontmatter is not a list of fields");
     fm = parsed.data as Record<string, unknown>;
     content = parsed.content;
