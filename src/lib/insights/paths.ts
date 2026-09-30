@@ -10,6 +10,17 @@ export const postPath = (slug: string) => `/insights/${slug}`;
 export const mediaPath = (slug: string, file: string) => `/media/insights/${slug}/${file}`;
 export const cardPath = (slug: string) => mediaPath(slug, "card.png");
 
+/** whether a media file's name can travel in a web address as written */
+export const isWebName = (file: string) => /^[A-Za-z0-9._-]+$/.test(file);
+
+/** the name to suggest instead: lowercase, spaces to hyphens, nothing else */
+export const webName = (file: string) =>
+  file
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9._-]/g, "");
+
 /** the [slug] route's params: one per post, or the placeholder */
 export function staticParams(slugs: string[]): { slug: string }[] {
   return slugs.length ? slugs.map((slug) => ({ slug })) : [{ slug: NO_POSTS }];

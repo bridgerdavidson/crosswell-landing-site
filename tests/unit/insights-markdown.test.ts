@@ -210,6 +210,22 @@ describe("vault-only syntax", () => {
   it("leaves those characters alone inside code", () => {
     expect(ok("Use `[[x]]`, `%%`, and `==` in code.\n\n```\n> [!note]\n```").outline).toEqual([]);
   });
+
+  it("rejects an image whose file name has spaces, which Markdown reads as text", () => {
+    expect(parse("![A screenshot](Screenshot 2026-09-30 at 10.00.png)").problems).toEqual([
+      'body: image "Screenshot 2026-09-30 at 10.00.png" has spaces in its file name, so Markdown reads the line as text. Rename the file screenshot-2026-09-30-at-10.00.png and write ![A screenshot](screenshot-2026-09-30-at-10.00.png).',
+    ]);
+  });
+
+  it("rejects a forced line break from trailing spaces or a backslash, and a task list", () => {
+    expect(parse("Trailing spaces  \nnext line.").problems).toEqual([
+      'body: a line ends with two spaces or a backslash, which forces a line break inside "Trailing spaces next line.". Remove them, or start a new paragraph.',
+    ]);
+    expect(parse("Backslash\\\nnext line.").problems).toHaveLength(1);
+    expect(parse("- [ ] a task\n- [x] done").problems).toEqual([
+      'body: "- [ ] a task" is a task list, which would show a checkbox on the page. Write a plain list.',
+    ]);
+  });
 });
 
 describe("static params", () => {

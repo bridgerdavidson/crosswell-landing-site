@@ -121,6 +121,14 @@ describe("a post's problems", () => {
     expect(problems({ takeaways: "[Only one]" })).toEqual([`${F}: takeaways: has 1 item. Use 2 to 5, or leave takeaways out.`]);
     expect(problems({ related: "[a-test-post]" })).toEqual([`${F}: related: lists this post itself.`]);
     expect(problems({ related: "[a, b, c, d]" })).toEqual([`${F}: related: lists 4 posts. Use at most 3.`]);
+    expect(problems({ related: "[a-post, a-post]" })).toEqual([`${F}: related: lists "a-post" twice.`]);
+  });
+
+  it("refuses a media file name a web address cannot carry, for the cover and for body images", () => {
+    const carry = (what: string, name: string, like: string) =>
+      `${F}: ${what} "${name}" has a character a web address cannot carry (a space, #, ?, or %). Rename it with letters, digits, hyphens, and dots, like ${like}.`;
+    expect(problems({ cover: "My Photo.jpg", coverAlt: "x" })).toEqual([carry("cover:", "My Photo.jpg", "my-photo.jpg")]);
+    expect(problems({}, "![A shot](a#b.png)")).toEqual([carry("body: image", "a#b.png", "ab.png")]);
   });
 
   it("names a filename that is not a slug", () => {

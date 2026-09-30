@@ -3,7 +3,7 @@ import matter from "gray-matter";
 import YAML from "yaml";
 import type { Person } from "@/lib/people";
 import { parseBody } from "./markdown";
-import { mediaPath } from "./paths";
+import { isWebName, mediaPath, webName } from "./paths";
 import { smart } from "./smart";
 import { InsightError, type Post } from "./types";
 import { yamlHint, yamlWhat } from "./yaml";
@@ -133,19 +133,29 @@ export function parsePost(file: string, source: string, ctx: ParseContext): Post
     }
   }
 
-  // card.png is the share card the build writes into the media folder, and
-  // .gitignore keeps it out of git, so a cover or image by that name passes
-  // every local check and then is missing from the deploy
-  const isCard = (f: string) => basename(f).toLowerCase() === "card.png";
-  const cardTaken = (f: string) =>
-    `"${f}" is the share card the build writes to public/media/insights/${slug}/, and git ignores it, so it could never reach the site. Name the file something else.`;
+  // what a media file may be called, for the cover and the body's images:
+  // just its name (it lives in the post's folder); not card.png, the share
+  // card the build writes there and .gitignore keeps out of git, so a cover
+  // by that name passed every local check and was missing from the deploy;
+  // and nothing a web address cannot carry, since "a#b.png" cuts the URL
+  const badName = (f: string): string | undefined => {
+    if (/[\\/]/.test(f)) return `"${f}" must be just the file's name, with the file in public/media/insights/${slug}/.`;
+    if (basename(f).toLowerCase() === "card.png") {
+      return `"${f}" is the share card the build writes to public/media/insights/${slug}/, and git ignores it, so it could never reach the site. Name the file something else.`;
+    }
+    if (!isWebName(f)) {
+      return `"${f}" has a character a web address cannot carry (a space, #, ?, or %). Rename it with letters, digits, hyphens, and dots, like ${webName(f)}.`;
+    }
+    return undefined;
+  };
 
   const coverFile = text("cover");
   const coverAlt = text("coverAlt");
   let cover: Post["cover"];
   if (coverFile) {
-    if (isCard(coverFile)) {
-      say("cover", cardTaken(coverFile));
+    const bad = badName(coverFile);
+    if (bad) {
+      say("cover", bad);
     } else if (!/\.(jpe?g|png)$/i.test(coverFile)) {
       say("cover", `"${coverFile}" must be a .jpg or .png (share cards cannot read other formats).`);
     } else if (!ctx.mediaExists(slug, coverFile)) {
@@ -166,6 +176,8 @@ export function parsePost(file: string, source: string, ctx: ParseContext): Post
       say("related", `lists ${rel.length} posts. Use at most 3.`);
     } else if (rel.includes(slug)) {
       say("related", "lists this post itself.");
+    } else if (new Set(rel).size !== rel.length) {
+      say("related", `lists "${rel.find((x, i) => rel.indexOf(x) !== i)}" twice.`);
     } else {
       related = rel as string[];
     }
@@ -176,8 +188,9 @@ export function parsePost(file: string, source: string, ctx: ParseContext): Post
   const body = parseBody(content, {
     slug,
     mediaExists: (f) => {
-      if (!isCard(f)) return ctx.mediaExists(slug, f);
-      say("body", `image ${cardTaken(f)}`);
+      const bad = badName(f);
+      if (!bad) return ctx.mediaExists(slug, f);
+      say("body", `image ${bad}`);
       return true;
     },
   });

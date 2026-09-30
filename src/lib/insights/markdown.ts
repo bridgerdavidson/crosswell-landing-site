@@ -10,7 +10,7 @@ import type { Heading, Root, RootContent } from "mdast";
 import type { Root as HastRoot } from "hast";
 import { SITE } from "@/lib/site";
 import { parseChart } from "./chart";
-import { mediaPath } from "./paths";
+import { mediaPath, webName } from "./paths";
 import { curlContractions, smart } from "./smart";
 import type { ChartSpec, FaqItem, OutlineItem } from "./types";
 
@@ -120,6 +120,30 @@ export function parseBody(source: string, ctx: BodyContext): { value?: Body; pro
       problems.push(`body: "${found}" is an Obsidian ${thing}, which the site would print as typed. ${fix.replace("<file>", found.slice(3, -2))}`);
       return;
     }
+    // an image whose file name has spaces (every macOS screenshot) never
+    // parses as an image, so it too would print as typed
+    const spaced = node.value.match(/!\[([^\]]*)\]\(([^)<>]*\s[^)<>]*)\)/);
+    if (spaced) {
+      const name = webName(spaced[2]);
+      problems.push(
+        `body: image "${spaced[2]}" has spaces in its file name, so Markdown reads the line as text. Rename the file ${name} and write ![${spaced[1]}](${name}).`
+      );
+    }
+  });
+
+  // a hard break (two trailing spaces, or a backslash) is nearly always
+  // pasted by accident, and breaks the paragraph mid-sentence on the page
+  visit(tree, "break", (_node, _index, parent) => {
+    const where = (parent?.children ?? []).map((c) => (c.type === "break" ? " " : toString(c))).join("").trim().slice(0, 40);
+    problems.push(`body: a line ends with two spaces or a backslash, which forces a line break inside "${where}". Remove them, or start a new paragraph.`);
+  });
+
+  // a checklist from a note would show disabled checkboxes on the page;
+  // one problem per list, quoting its first checkbox item
+  visit(tree, "list", (node) => {
+    const item = node.children.find((li) => li.checked !== null && li.checked !== undefined);
+    if (!item) return;
+    problems.push(`body: "- [${item.checked ? "x" : " "}] ${toString(item).slice(0, 40)}" is a task list, which would show a checkbox on the page. Write a plain list.`);
   });
 
   // a chart block becomes an element the renderer draws; dataChart is its
