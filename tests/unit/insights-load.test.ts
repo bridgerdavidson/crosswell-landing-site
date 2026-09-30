@@ -1,4 +1,4 @@
-import { mkdtempSync, rmSync, writeFileSync, existsSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -41,6 +41,18 @@ describe("the loader", () => {
   it("returns nothing for an empty or missing folder", () => {
     expect(loadPosts(tmp({}))).toEqual([]);
     expect(loadPosts(join(tmpdir(), "no-such-insights-folder"))).toEqual([]);
+  });
+
+  it("checks a media file's name by exact case, so a build on Linux cannot miss what macOS forgave", () => {
+    const dir = tmp({ "a-post.md": source({ cover: "cover.jpg", coverAlt: "x" }) });
+    const media = tmp({});
+    mkdirSync(join(media, "a-post"));
+    writeFileSync(join(media, "a-post", "Cover.jpg"), "x");
+    vi.stubEnv("INSIGHTS_MEDIA_DIR", media);
+    const load = () => loadPosts(dir, { people: TEST_PEOPLE, today: "2026-09-29" });
+    expect(problemsOf(load)).toEqual([`${join(dir, "a-post.md")}: cover: "cover.jpg" is not in public/media/insights/a-post/.`]);
+    renameSync(join(media, "a-post", "Cover.jpg"), join(media, "a-post", "cover.jpg"));
+    expect(problemsOf(load)).toEqual([]);
   });
 
   it("names a related slug that is not a post", () => {

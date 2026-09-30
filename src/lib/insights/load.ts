@@ -24,10 +24,21 @@ export function postFiles(dir: string): string[] {
  * Throws one InsightError listing every problem in every file. Filenames are
  * the slugs, so the file system already rules out duplicates.
  */
+/**
+ * Whether a media file exists under the name the post uses, letter for
+ * letter: existsSync forgives case on macOS, and a cover.jpg that passed
+ * here as Cover.jpg is missing on the Linux build.
+ */
+export function mediaFileExists(slug: string, file: string): boolean {
+  const folder = join(mediaRoot(), slug);
+  if (!existsSync(folder)) return false;
+  return readdirSync(folder).includes(file);
+}
+
 export function loadPosts(dir = contentDir(), ctx: Partial<ParseContext> = {}): Post[] {
   const context: ParseContext = {
     people: ctx.people ?? PEOPLE,
-    mediaExists: ctx.mediaExists ?? ((slug, file) => existsSync(join(mediaRoot(), slug, file))),
+    mediaExists: ctx.mediaExists ?? mediaFileExists,
     today: ctx.today ?? new Date().toISOString().slice(0, 10),
   };
   const problems: string[] = [];
