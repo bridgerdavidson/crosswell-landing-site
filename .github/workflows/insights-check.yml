@@ -1,0 +1,27 @@
+# The check every Insights post waits on: the site's own post and copy
+# checks, run on any pull request that adds or changes a post or its media.
+# The vault's Insights Post skill watches it with `gh pr checks --watch`.
+name: Insights check
+
+on:
+  pull_request:
+    paths:
+      - "content/insights/**"
+      - "public/media/insights/**"
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: insights check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run check:insights
+      - run: npm run check:copy
