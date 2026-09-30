@@ -489,24 +489,6 @@ describe("the team page", () => {
   });
 });
 
-describe("the insights page", () => {
-  it("holds the slot for the blog", async () => {
-    const r = await withPage(async (page) => {
-      await page.goto(`${site.url}/insights`, { waitUntil: "networkidle" });
-      return {
-        title: await page.title(),
-        heading: await page.locator("#insights h2").textContent(),
-        posts: await page.locator("#insights article").count(),
-        order: await page.evaluate(() => [...document.querySelectorAll("main section[id]")].map((s) => s.id)),
-      };
-    });
-    expect(r.title).toBe("Insights | Crosswell");
-    expect(r.heading).toBe("Insights");
-    expect(r.posts).toBe(0);
-    expect(r.order).toEqual(["insights"]);
-  });
-});
-
 describe("the one call to action", () => {
   it("asks for the call and nothing else, in the hero and the closing band", async () => {
     const r = await withPage(async (page) => {

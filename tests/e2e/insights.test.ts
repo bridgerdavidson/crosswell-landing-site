@@ -179,3 +179,43 @@ describe("an insight", () => {
     ]);
   });
 });
+
+describe("the insights index", () => {
+  it("features the newest post, then lists the rest newest first", async () => {
+    const r = await withPage(async (page) => {
+      await page.goto(`${site.url}/insights`, { waitUntil: "networkidle" });
+      const section = page.locator("#insights");
+      return {
+        title: await page.title(),
+        h1: await page.locator("h1").allTextContents(),
+        posts: await section.locator("article").count(),
+        featured: await section.locator("[data-featured] h2").textContent(),
+        cover: await section.locator("[data-featured] img.insight-cover").count(),
+        rows: await section.locator("[data-row] h2").allTextContents(),
+        links: await section.locator("article h2 a").evaluateAll((as) => as.map((a) => a.getAttribute("href"))),
+        portraits: await section.locator("[data-portrait]").count(),
+        order: await page.evaluate(() => [...document.querySelectorAll("main section[id]")].map((s) => s.id)),
+      };
+    });
+    expect(r.title).toBe("Insights | Crosswell");
+    expect(r.h1).toEqual(["Insights"]);
+    expect(r.posts).toBe(3);
+    expect(r.featured).toBe("What a sample team learned from its first month of notes");
+    expect(r.cover).toBe(1);
+    expect(r.rows).toEqual(["How a sample team spends its week", "A plain research note"]);
+    expect(r.links).toEqual(["/insights/fixture-field-notes", "/insights/fixture-bar-chart", "/insights/fixture-plain-note"]);
+    expect(r.portraits).toBe(3);
+    expect(r.order).toEqual(["insights"]);
+  });
+
+  it("fits a phone", async () => {
+    const overflow = await withPage(
+      async (page) => {
+        await page.goto(`${site.url}/insights`, { waitUntil: "networkidle" });
+        return page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
+      },
+      { width: 390 }
+    );
+    expect(overflow).toBe(0);
+  });
+});
