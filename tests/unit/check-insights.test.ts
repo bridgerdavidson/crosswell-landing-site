@@ -9,7 +9,7 @@ describe("npm run check:insights", () => {
     const r = run({ INSIGHTS_DIR: "tests/fixtures/insights", INSIGHTS_MEDIA_DIR: "tests/fixtures/insights/media" });
     expect(r.stderr).toBe("");
     expect(r.status).toBe(0);
-    expect(r.stdout).toContain("insights: 3 posts checked, all valid (tests/fixtures/insights)");
+    expect(r.stdout).toContain("insights: 4 posts checked, all valid (tests/fixtures/insights)");
   });
 
   it("passes the real content folder, however many posts it holds", () => {

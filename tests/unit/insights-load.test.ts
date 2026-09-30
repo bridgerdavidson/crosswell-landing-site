@@ -25,7 +25,7 @@ afterEach(() => {
 
 describe("the loader", () => {
   it("loads the fixture posts newest first", () => {
-    expect(load().map((p) => p.slug)).toEqual(["fixture-field-notes", "fixture-bar-chart", "fixture-plain-note"]);
+    expect(load().map((p) => p.slug)).toEqual(["fixture-field-notes", "fixture-bar-chart", "fixture-long-read", "fixture-plain-note"]);
   });
 
   it("breaks a tie on the date by slug", () => {
@@ -75,14 +75,14 @@ describe("the loader", () => {
 
 describe("related posts", () => {
   it("uses the post's own list when it has one", () => {
-    const [notes, , plain] = load();
+    const [notes, , , plain] = load();
     expect(relatedPosts(notes, load()).map((p) => p.slug)).toEqual([plain.slug]);
   });
 
   it("otherwise fills in the newest other posts, never the post itself, at most three", () => {
     const posts = load();
-    expect(relatedPosts(posts[2], posts).map((p) => p.slug)).toEqual(["fixture-field-notes", "fixture-bar-chart"]);
-    const many = Array.from({ length: 5 }, (_, i) => ({ ...posts[2], slug: `p${i}`, related: [] }));
+    expect(relatedPosts(posts[3], posts).map((p) => p.slug)).toEqual(["fixture-field-notes", "fixture-bar-chart", "fixture-long-read"]);
+    const many = Array.from({ length: 5 }, (_, i) => ({ ...posts[3], slug: `p${i}`, related: [] }));
     expect(relatedPosts(many[0], many).map((p) => p.slug)).toEqual(["p1", "p2", "p3"]);
   });
 });
