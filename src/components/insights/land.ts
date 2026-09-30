@@ -11,7 +11,8 @@ export const LAND = 88;
  * tabindex -1 first.
  */
 export function landOn(el: HTMLElement) {
-  window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - LAND, behavior: "smooth" });
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - LAND, behavior: reduce ? "auto" : "smooth" });
   if (!el.hasAttribute("tabindex") && !(el instanceof HTMLAnchorElement)) el.tabIndex = -1;
   el.focus({ preventScroll: true });
 }
