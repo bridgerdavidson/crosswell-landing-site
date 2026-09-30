@@ -7,14 +7,47 @@ export const SITE_TITLE = "Crosswell | The operating layer your business actuall
 export const SITE_DESCRIPTION =
   "Crosswell builds custom agentic AI around how your team actually works. The Core is the memory and operating layer your business runs on, and the workflows, automations, and agents we build run on it. Arizona.";
 
+/** a post's Open Graph extras; its image is the post's own share card */
+type ArticleMeta = { published: string; modified?: string; author: string; image: string };
+
 /**
  * A page's metadata: its title in the tab, its description, and Open Graph
  * and Twitter cards that name its own URL. The canonical link is not here:
  * Next's resolver drops the root's trailing slash, so each page renders
- * its own (components/Canonical.tsx).
+ * its own (components/Canonical.tsx). A post passes `article`: its type is
+ * article, and its own card replaces the site-wide og-image.jpg in both
+ * cards (a page that sets no twitter images inherits the site's).
  */
-export function pageMetadata({ title, description, path }: { title: string; description: string; path: string }): Metadata {
+export function pageMetadata({
+  title,
+  description,
+  path,
+  article,
+}: {
+  title: string;
+  description: string;
+  path: string;
+  article?: ArticleMeta;
+}): Metadata {
   const url = `${SITE}${path}`;
+  if (article) {
+    return {
+      title,
+      description,
+      openGraph: {
+        type: "article",
+        url,
+        siteName: "Crosswell Consulting",
+        title,
+        description,
+        publishedTime: article.published,
+        modifiedTime: article.modified ?? article.published,
+        authors: [article.author],
+        images: [{ url: article.image, width: 1200, height: 630, alt: title }],
+      },
+      twitter: { card: "summary_large_image", title, description, images: [article.image] },
+    };
+  }
   return {
     title,
     description,
