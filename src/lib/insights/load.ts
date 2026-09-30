@@ -20,11 +20,6 @@ export function postFiles(dir: string): string[] {
 }
 
 /**
- * Every post in a folder, parsed and checked, newest first (ties by slug).
- * Throws one InsightError listing every problem in every file. Filenames are
- * the slugs, so the file system already rules out duplicates.
- */
-/**
  * Whether a media file exists under the name the post uses, letter for
  * letter: existsSync forgives case on macOS, and a cover.jpg that passed
  * here as Cover.jpg is missing on the Linux build.
@@ -35,6 +30,11 @@ export function mediaFileExists(slug: string, file: string): boolean {
   return readdirSync(folder).includes(file);
 }
 
+/**
+ * Every post in a folder, parsed and checked, newest first (ties by slug).
+ * Throws one InsightError listing every problem in every file. Filenames are
+ * the slugs, so the file system already rules out duplicates.
+ */
 export function loadPosts(dir = contentDir(), ctx: Partial<ParseContext> = {}): Post[] {
   const context: ParseContext = {
     people: ctx.people ?? PEOPLE,
