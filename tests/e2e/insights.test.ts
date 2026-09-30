@@ -219,3 +219,20 @@ describe("the insights index", () => {
     expect(overflow).toBe(0);
   });
 });
+
+describe("search", () => {
+  it("lists every post in the sitemap and lets the AI crawlers in", () => {
+    const sitemap = readFileSync(join("out", "sitemap.xml"), "utf8");
+    const robots = readFileSync(join("out", "robots.txt"), "utf8");
+    for (const slug of ["fixture-field-notes", "fixture-bar-chart", "fixture-plain-note"]) {
+      expect(sitemap).toContain(`<loc>${SITE}/insights/${slug}</loc>`);
+    }
+    expect(sitemap).toMatch(/fixture-field-notes<\/loc>\s*<lastmod>2026-09-27/);
+    expect(sitemap).toMatch(/fixture-plain-note<\/loc>\s*<lastmod>2026-09-10/);
+    expect(sitemap).not.toContain("_none");
+    for (const bot of ["GPTBot", "ClaudeBot", "PerplexityBot"]) {
+      expect(robots).toMatch(new RegExp(`User-Agent: ${bot}\\nAllow: /`, "i"));
+    }
+    expect(robots).toMatch(/User-Agent: \*\nAllow: \//i);
+  });
+});
