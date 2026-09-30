@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest run tests/unit",
-    "test:e2e": "next build && vitest run tests/e2e",
+    "test:e2e": "node scripts/e2e-build.mjs && vitest run tests/e2e",
     "check:copy": "node scripts/check-copy.mjs src && node scripts/check-copy.mjs content",
     "check:insights": "tsx scripts/check-insights.ts",
     "og": "node scripts/og-image.mjs"

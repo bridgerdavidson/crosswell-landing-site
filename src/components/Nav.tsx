@@ -69,7 +69,8 @@ export default function Nav() {
     setOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-  const current = (href: string) => (pathname === href ? "page" : undefined);
+  // a post under /insights still marks Insights as the current page
+  const current = (href: string) => (pathname === href || pathname.startsWith(`${href}/`) ? "page" : undefined);
 
   // Open sits the header on the ink overlay, so it goes see-through with a
   // light logo; otherwise the scrolled state gets the opaque ivory bar. It
