@@ -65,6 +65,13 @@ describe("the body", () => {
     ]);
   });
 
+  it("rejects a heading with no letters or digits, which could not get an id", () => {
+    expect(parse("## ???\n\ntext").problems).toEqual([
+      'body: the heading "???" has no letters or digits, so it cannot get an id for the outline. Add a word to it.',
+    ]);
+    expect(ok("## Über uns\n\ntext").outline).toEqual([{ id: "über-uns", text: "Über uns" }]);
+  });
+
   it("rejects raw HTML", () => {
     expect(parse('<div class="x">hi</div>').problems[0]).toMatch(/^body: raw HTML \(<div class="x">hi<\/div>\) is not allowed/);
   });
@@ -119,6 +126,26 @@ describe("the FAQ", () => {
     expect(rows.map((r) => r.properties.className)).toEqual([["faq-item"], ["faq-item"]]);
     expect(text(wrapper)).not.toContain("Not an answer.");
     expect(outline.map((o) => o.text)).toEqual(["Frequently asked questions", "After the FAQ"]);
+  });
+
+  it("flags a heading that looks like the FAQ heading but is not exactly it, which would lose the FAQ silently", () => {
+    for (const h of ["Frequently asked questions:", "FAQ", "Frequently asked questions (FAQ)", "FAQs"]) {
+      expect(parse(`## ${h}\n\n### Q?\n\nA.`).problems).toEqual([
+        `body: "## ${h}" looks like the FAQ heading but is not exactly "Frequently asked questions". Rename it so the questions show as FAQ rows and reach search engines.`,
+      ]);
+    }
+    expect(ok("## What the FAQ taught us is simple\n\ntext").faq).toEqual([]);
+  });
+
+  it("flags a second FAQ section, whose questions would otherwise be plain headings", () => {
+    expect(parse(`${faq}\n\n## Frequently asked questions\n\n### Again?\n\nYes.`).problems).toEqual([
+      'body: there are 2 "Frequently asked questions" sections. Merge them into one.',
+    ]);
+  });
+
+  it("keeps the items of a list answer apart in the FAQ text", () => {
+    const { faq: items } = ok("## Frequently asked questions\n\n### Q?\n\n- one\n- two\n\nAfter.");
+    expect(items[0].answer).toBe("one\ntwo\n\nAfter.");
   });
 
   it("rejects an FAQ with no questions, and a question with no answer", () => {

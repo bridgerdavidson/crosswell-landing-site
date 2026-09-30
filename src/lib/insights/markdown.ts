@@ -39,6 +39,14 @@ const custom = (type: string, hName: string, children: unknown[], hProperties: R
   ({ type, data: { hName, hProperties }, children }) as unknown as RootContent;
 
 const FAQ = /^frequently asked questions$/i;
+/** the FAQ heading with decoration: "FAQ", "FAQs", a trailing colon, "(FAQ)" after it */
+const faqLike = (text: string) =>
+  /^(faqs?|frequently asked questions?)$/.test(
+    text.toLowerCase().replace(/\(.*?\)/g, "").replace(/[^a-z]+/g, " ").trim()
+  );
+
+/** a node's text for the FAQPage answer: list items on their own lines */
+const plain = (n: RootContent): string => (n.type === "list" ? n.children.map((li) => toString(li)).join("\n") : toString(n));
 
 /**
  * A post's Markdown body, transformed and checked (spec section 4): curled
@@ -67,7 +75,18 @@ export function parseBody(source: string, ctx: BodyContext): { value?: Body; pro
     if (node.depth > 3) {
       problems.push(`body: "${"#".repeat(node.depth)} ${text}" is deeper than ###. Use ## for sections and ### inside them.`);
     }
+    // "## FAQ" or a trailing colon would quietly leave the questions as
+    // plain headings, with no rows and no FAQPage
+    if (node.depth === 2 && !FAQ.test(text.trim()) && faqLike(text)) {
+      problems.push(
+        `body: "## ${text}" looks like the FAQ heading but is not exactly "Frequently asked questions". Rename it so the questions show as FAQ rows and reach search engines.`
+      );
+    }
     const id = slugger.slug(text);
+    if (!id) {
+      problems.push(`body: the heading "${text}" has no letters or digits, so it cannot get an id for the outline. Add a word to it.`);
+      return;
+    }
     props(node, { id });
     if (node.depth === 2) outline.push({ id, text });
   });
@@ -126,7 +145,10 @@ export function parseBody(source: string, ctx: BodyContext): { value?: Body; pro
   // the FAQ: every ### under "## Frequently asked questions" is a question,
   // up to the next ## section
   const faq: FaqItem[] = [];
-  const start = tree.children.findIndex((n) => n.type === "heading" && n.depth === 2 && FAQ.test(toString(n).trim()));
+  const isFaq = (n: RootContent) => n.type === "heading" && n.depth === 2 && FAQ.test(toString(n).trim());
+  const sections = tree.children.filter(isFaq).length;
+  if (sections > 1) problems.push(`body: there are ${sections} "Frequently asked questions" sections. Merge them into one.`);
+  const start = tree.children.findIndex(isFaq);
   if (start !== -1) {
     const next = tree.children.findIndex((n, i) => i > start && n.type === "heading" && n.depth <= 2);
     const end = next === -1 ? tree.children.length : next;
@@ -145,7 +167,7 @@ export function parseBody(source: string, ctx: BodyContext): { value?: Body; pro
       faq.push({
         id: String((question.data as HData | undefined)?.hProperties?.id ?? ""),
         question: toString(question),
-        answer: answer.map((n) => toString(n)).join("\n\n").trim(),
+        answer: answer.map(plain).join("\n\n").trim(),
       });
     }
     const rows = items.map(({ question, answer }) => custom("faqItem", "div", [question, ...answer], { className: ["faq-item"] }));
