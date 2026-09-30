@@ -104,6 +104,24 @@ export function parseBody(source: string, ctx: BodyContext): { value?: Body; pro
     problems.push(`body: raw HTML (${node.value.trim().slice(0, 40)}) is not allowed. Write it in Markdown.`);
   });
 
+  // Obsidian's own syntax is plain text to Markdown, so a callout, wiki
+  // link, embed, comment, or highlight left in a note would print as typed
+  const vault: [RegExp, string, string][] = [
+    [/!\[\[[^\]]*\]\]/, "embed", `Write ![what the image shows](<file>) with the file in public/media/insights/${ctx.slug}/.`],
+    [/\[\[[^\]]*\]\]/, "wiki link", "Write plain text, or a Markdown link to a page on the site."],
+    [/^\[!\w+\]/, "callout", "Remove it, or make it a paragraph."],
+    [/%%[\s\S]*?%%/, "comment", "Remove it."],
+    [/==[^=\n]+==/, "highlight", "Use *emphasis* or plain text."],
+  ];
+  visit(tree, "text", (node) => {
+    for (const [re, thing, fix] of vault) {
+      const found = node.value.match(re)?.[0];
+      if (!found) continue;
+      problems.push(`body: "${found}" is an Obsidian ${thing}, which the site would print as typed. ${fix.replace("<file>", found.slice(3, -2))}`);
+      return;
+    }
+  });
+
   // a chart block becomes an element the renderer draws; dataChart is its
   // place in charts
   const charts: ChartSpec[] = [];

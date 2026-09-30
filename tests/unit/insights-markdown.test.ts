@@ -192,6 +192,26 @@ describe("images and links", () => {
   });
 });
 
+describe("vault-only syntax", () => {
+  const printed = (what: string, thing: string, fix: string) => `body: "${what}" is an Obsidian ${thing}, which the site would print as typed. ${fix}`;
+
+  it("rejects a callout, a wiki link, an embed, a comment, and a highlight, which would all print as typed", () => {
+    expect(parse("> [!note] Heads up\n> Body.").problems).toEqual([printed("[!note]", "callout", "Remove it, or make it a paragraph.")]);
+    expect(parse("See [[Other note]] here.").problems).toEqual([
+      printed("[[Other note]]", "wiki link", "Write plain text, or a Markdown link to a page on the site."),
+    ]);
+    expect(parse("![[image.png]]").problems).toEqual([
+      printed("![[image.png]]", "embed", "Write ![what the image shows](image.png) with the file in public/media/insights/a-test-post/."),
+    ]);
+    expect(parse("Text %% a comment %% more.").problems).toEqual([printed("%% a comment %%", "comment", "Remove it.")]);
+    expect(parse("Some ==highlighted== text.").problems).toEqual([printed("==highlighted==", "highlight", "Use *emphasis* or plain text.")]);
+  });
+
+  it("leaves those characters alone inside code", () => {
+    expect(ok("Use `[[x]]`, `%%`, and `==` in code.\n\n```\n> [!note]\n```").outline).toEqual([]);
+  });
+});
+
 describe("static params", () => {
   it("builds one page per post, or the placeholder when there are none", () => {
     expect(staticParams(["a", "b"])).toEqual([{ slug: "a" }, { slug: "b" }]);
