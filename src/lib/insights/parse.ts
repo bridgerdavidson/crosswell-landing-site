@@ -82,6 +82,7 @@ export function parsePost(file: string, source: string, ctx: ParseContext): Post
 
   const title = text("title");
   if (!title) say("title", "is missing.");
+  else if (title.length > 120) say("title", `is ${title.length} characters. Keep it to 120 or fewer.`);
 
   const description = text("description");
   if (!description) say("description", "is missing. Write one line for the index card and the share preview.");

@@ -66,6 +66,11 @@ describe("a post's problems", () => {
     ]);
   });
 
+  it("keeps the title to 120 characters, for the share card and the schema headline", () => {
+    expect(problems({ title: "x".repeat(121) })).toEqual([`${F}: title: is 121 characters. Keep it to 120 or fewer.`]);
+    expect(problems({ title: "x".repeat(120) })).toEqual([]);
+  });
+
   it("keeps the description to 160 characters", () => {
     expect(problems({ description: "x".repeat(161) })).toEqual([
       `${F}: description: is 161 characters. Keep it to 160 or fewer.`,
