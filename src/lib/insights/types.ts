@@ -1,3 +1,6 @@
+import type { Root as HastRoot } from "hast";
+import type { Person } from "@/lib/people";
+
 /** One chart block, checked (spec section 3, Charts). */
 export type ChartSpec = {
   type: "line" | "bar";
@@ -28,3 +31,22 @@ export type FaqItem = { id: string; question: string; answer: string };
 
 /** One ## section: the rail's outline links to it by id. */
 export type OutlineItem = { id: string; text: string };
+
+/** One post, parsed and checked. */
+export type Post = {
+  slug: string;
+  /** the post's file, as the error messages name it */
+  file: string;
+  title: string;
+  description: string;
+  author: Person;
+  published: string;
+  updated?: string;
+  takeaways: string[];
+  cover?: { file: string; src: string; alt: string };
+  related: string[];
+  body: HastRoot;
+  charts: ChartSpec[];
+  faq: FaqItem[];
+  outline: OutlineItem[];
+};
