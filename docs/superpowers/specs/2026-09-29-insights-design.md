@@ -1,7 +1,7 @@
 # Insights: design spec
 
 Date: 2026-09-29
-Status: draft for review, brainstormed and approved section by section in session
+Status: built on branch insights (plan docs/superpowers/plans/2026-09-29-insights.md); copy in section 13 pending Max
 Builds on: the general-market redesign spec (2026-09-12), which held `/insights` as an empty slot. Branch `insights`, cut from `team-page` because the people file below feeds the rebuilt team page.
 
 ## 1. Purpose
