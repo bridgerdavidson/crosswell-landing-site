@@ -1,5 +1,7 @@
 // Copy guard: the site's standing copy rules, enforced on a directory.
 // Usage: node scripts/check-copy.mjs <dir>
+// Markdown posts (.md) get the em dash rule only: the build curls their
+// apostrophes and quotes, and their words are the author's.
 // Rules: no em dash anywhere; no "brain" or "mind" in .tsx copy lines; the
 // site’s apostrophe is typographic (’), so a straight one between letters
 // in copy is a hit, as is an &apos; entity
@@ -88,7 +90,7 @@ function walk(dir, acc = []) {
   for (const name of readdirSync(dir)) {
     const p = join(dir, name);
     if (statSync(p).isDirectory()) walk(p, acc);
-    else if (/\.(tsx?|css|mjs)$/.test(name)) acc.push(p);
+    else if (/\.(tsx?|css|mjs|md)$/.test(name)) acc.push(p);
   }
   return acc;
 }
@@ -97,6 +99,7 @@ const hits = [];
 for (const file of walk(root)) {
   const rel = relative(process.cwd(), file);
   const isTsx = file.endsWith(".tsx");
+  const isMd = file.endsWith(".md");
   const skipCopy = SKIP_COPY_DIRS.some((d) => rel.startsWith(d));
   let open = false;
   readFileSync(file, "utf8").split("\n").forEach((line, i) => {
@@ -104,6 +107,7 @@ for (const file of walk(root)) {
     const copyLine = stripped.line;
     open = stripped.open;
     for (const rule of rules) {
+      if (isMd && rule.name !== "em dash") continue;
       if (rule.scope === "copy") {
         if (!isTsx || skipCopy || NOT_COPY.test(line)) continue;
         if (rule.re.test(copyLine)) hits.push(`${rel}:${i + 1}: ${rule.name}`);
