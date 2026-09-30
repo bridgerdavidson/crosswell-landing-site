@@ -12,6 +12,12 @@ afterAll(() => site.close());
 
 const FULL = "/insights/fixture-field-notes";
 const PLAIN = "/insights/fixture-plain-note";
+/* the long read: the hard cases (a long title, twelve-point charts,
+   footnotes, a portrait and a landscape image, a wide table, code, and
+   fourteen sections) */
+const LONG = "/insights/fixture-long-read";
+const LONG_TITLE =
+  "Why the sample businesses that keep the most notes are also the ones that keep asking the same questions about what they wrote down";
 const SITE = "https://crosswellconsulting.com";
 
 /** a PNG's width and height, from its header */
@@ -104,7 +110,7 @@ describe("an insight", () => {
       };
     });
     expect(r).toMatchObject({ takeaways: 0, charts: 0, faq: 0, cover: 0, outline: 0 });
-    expect(r.related).toEqual(["/insights/fixture-field-notes", "/insights/fixture-bar-chart"]);
+    expect(r.related).toEqual(["/insights/fixture-field-notes", "/insights/fixture-bar-chart", LONG]);
     expect(r.ld).toEqual(["Organization", "Article"]);
     expect(pngSize(join("out", "media", "insights", "fixture-plain-note", "card.png"))).toEqual({ width: 1200, height: 630 });
   });
@@ -199,12 +205,12 @@ describe("the insights index", () => {
     });
     expect(r.title).toBe("Insights | Crosswell");
     expect(r.h1).toEqual(["Insights"]);
-    expect(r.posts).toBe(3);
+    expect(r.posts).toBe(4);
     expect(r.featured).toBe("What a sample team learned from its first month of notes");
     expect(r.cover).toBe(1);
-    expect(r.rows).toEqual(["How a sample team spends its week", "A plain research note"]);
-    expect(r.links).toEqual(["/insights/fixture-field-notes", "/insights/fixture-bar-chart", "/insights/fixture-plain-note"]);
-    expect(r.portraits).toBe(3);
+    expect(r.rows).toEqual(["How a sample team spends its week", LONG_TITLE, "A plain research note"]);
+    expect(r.links).toEqual(["/insights/fixture-field-notes", "/insights/fixture-bar-chart", LONG, "/insights/fixture-plain-note"]);
+    expect(r.portraits).toBe(4);
     expect(r.order).toEqual(["insights"]);
   });
 
@@ -224,7 +230,7 @@ describe("search", () => {
   it("lists every post in the sitemap and lets the AI crawlers in", () => {
     const sitemap = readFileSync(join("out", "sitemap.xml"), "utf8");
     const robots = readFileSync(join("out", "robots.txt"), "utf8");
-    for (const slug of ["fixture-field-notes", "fixture-bar-chart", "fixture-plain-note"]) {
+    for (const slug of ["fixture-field-notes", "fixture-bar-chart", "fixture-long-read", "fixture-plain-note"]) {
       expect(sitemap).toContain(`<loc>${SITE}/insights/${slug}</loc>`);
     }
     expect(sitemap).toMatch(/fixture-field-notes<\/loc>\s*<lastmod>2026-09-27/);
