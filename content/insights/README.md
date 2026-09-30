@@ -26,7 +26,7 @@ related: [another-post, a-third-post]
 - `author` is an id from `src/lib/people.ts` (max, bridger, michael).
 - Dates are `YYYY-MM-DD`. `published` cannot be in the future: the site only rebuilds when a pull request merges. Set `updated` only when a change is substantive, not for a typo.
 - `takeaways` is 2 to 5 short lines, shown in a box at the top of the post.
-- `cover` is a `.jpg` or `.png` in `public/media/insights/<slug>/`, and needs `coverAlt`.
+- `cover` is a `.jpg` or `.png` in `public/media/insights/<slug>/`, and needs `coverAlt`. Never name a file `card.png`: the build writes the share card there, and git ignores it.
 - `related` is up to 3 other posts. Leave it out and the newest posts fill in.
 - Titles and headings are sentence case. Straight apostrophes and quotes are fine: the site curls them.
 - A value with `: ` in it, or one starting with `%` or `#`, goes in double quotes: `title: "AI: what it keeps"`. Use double quotes rather than single ones, so an apostrophe inside is fine.

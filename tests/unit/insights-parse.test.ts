@@ -99,6 +99,14 @@ describe("a post's problems", () => {
     expect(problems({ coverAlt: "x" })).toEqual([`${F}: coverAlt: is set but there is no cover.`]);
   });
 
+  it("refuses card.png as a cover or a body image, since the build writes and git ignores that name", () => {
+    const taken = (what: string, name: string) =>
+      `${F}: ${what} "${name}" is the share card the build writes to public/media/insights/a-test-post/, and git ignores it, so it could never reach the site. Name the file something else.`;
+    expect(problems({ cover: "card.png", coverAlt: "x" })).toEqual([taken("cover:", "card.png")]);
+    expect(problems({ cover: "Card.PNG", coverAlt: "x" })).toEqual([taken("cover:", "Card.PNG")]);
+    expect(problems({}, "![The card](card.png)")).toEqual([taken("body: image", "card.png")]);
+  });
+
   it("checks takeaways and related", () => {
     expect(problems({ takeaways: "[Only one]" })).toEqual([`${F}: takeaways: has 1 item. Use 2 to 5, or leave takeaways out.`]);
     expect(problems({ related: "[a-test-post]" })).toEqual([`${F}: related: lists this post itself.`]);

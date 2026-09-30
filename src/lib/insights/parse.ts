@@ -130,11 +130,20 @@ export function parsePost(file: string, source: string, ctx: ParseContext): Post
     }
   }
 
+  // card.png is the share card the build writes into the media folder, and
+  // .gitignore keeps it out of git, so a cover or image by that name passes
+  // every local check and then is missing from the deploy
+  const isCard = (f: string) => basename(f).toLowerCase() === "card.png";
+  const cardTaken = (f: string) =>
+    `"${f}" is the share card the build writes to public/media/insights/${slug}/, and git ignores it, so it could never reach the site. Name the file something else.`;
+
   const coverFile = text("cover");
   const coverAlt = text("coverAlt");
   let cover: Post["cover"];
   if (coverFile) {
-    if (!/\.(jpe?g|png)$/i.test(coverFile)) {
+    if (isCard(coverFile)) {
+      say("cover", cardTaken(coverFile));
+    } else if (!/\.(jpe?g|png)$/i.test(coverFile)) {
       say("cover", `"${coverFile}" must be a .jpg or .png (share cards cannot read other formats).`);
     } else if (!ctx.mediaExists(slug, coverFile)) {
       say("cover", `"${coverFile}" is not in public/media/insights/${slug}/.`);
@@ -159,7 +168,16 @@ export function parsePost(file: string, source: string, ctx: ParseContext): Post
     }
   }
 
-  const body = parseBody(content, { slug, mediaExists: (f) => ctx.mediaExists(slug, f) });
+  // the body's images go through the same file-name rule as the cover; the
+  // image block itself stays about images
+  const body = parseBody(content, {
+    slug,
+    mediaExists: (f) => {
+      if (!isCard(f)) return ctx.mediaExists(slug, f);
+      say("body", `image ${cardTaken(f)}`);
+      return true;
+    },
+  });
   for (const p of body.problems) problems.push(`${file}: ${p}`);
 
   if (problems.length || !body.value || !title || !description || !author || !published) {
