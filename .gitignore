@@ -18,3 +18,6 @@ public/prototype/
 # generated at build: each post's share card, and the e2e build's fixture media
 public/media/insights/*/card.png
 public/media/insights/fixture-*/
+
+# local-only files, such as the never-publish list the publishing command reads
+*.local.*
