@@ -10,6 +10,7 @@
     "test": "vitest run tests/unit",
     "test:e2e": "next build && vitest run tests/e2e",
     "check:copy": "node scripts/check-copy.mjs src",
+    "check:insights": "tsx scripts/check-insights.ts",
     "og": "node scripts/og-image.mjs"
   },
   "dependencies": {
@@ -27,6 +28,7 @@
     "remark-smartypants": "^3.0.3",
     "retext": "^9.0.0",
     "retext-smartypants": "^6.2.0",
+    "tsx": "^4.23.15",
     "unified": "^11.0.5",
     "unist-util-visit": "^5.1.0",
     "yaml": "^2.9.1"

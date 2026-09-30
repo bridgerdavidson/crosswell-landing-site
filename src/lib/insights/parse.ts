@@ -18,7 +18,13 @@ export type ParseContext = {
 const FIELDS = ["title", "description", "author", "published", "updated", "takeaways", "cover", "coverAlt", "related"];
 const SLUG = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
-const isDate = (s: string) => DATE.test(s) && new Date(`${s}T00:00:00Z`).toISOString().slice(0, 10) === s;
+/* a real calendar day: a month of 13 is an invalid Date, and February 30
+   rolls over into March, so both fail the round trip */
+const isDate = (s: string) => {
+  if (!DATE.test(s)) return false;
+  const d = new Date(`${s}T00:00:00Z`);
+  return !Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === s;
+};
 
 /**
  * One post file, parsed and checked against spec section 3. Throws one

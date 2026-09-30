@@ -74,6 +74,7 @@ describe("a post's problems", () => {
 
   it("checks the dates", () => {
     expect(problems({ published: "2026-02-30" })).toEqual([`${F}: published: "2026-02-30" is not a date. Use YYYY-MM-DD.`]);
+    expect(problems({ published: "2026-13-01" })).toEqual([`${F}: published: "2026-13-01" is not a date. Use YYYY-MM-DD.`]);
     expect(problems({ published: "2026-10-01" })).toEqual([
       `${F}: published: 2026-10-01 is after today (2026-09-29). The site only rebuilds on merge, so a future date does not schedule anything; use today's date.`,
     ]);
