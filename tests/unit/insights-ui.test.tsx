@@ -19,3 +19,10 @@ describe("footnotes in the rendered body", () => {
     expect(post).not.toContain("sr-only");
   });
 });
+
+describe("tables in the rendered body", () => {
+  it("sit in a box that scrolls sideways rather than pushing the page", () => {
+    const post = html("| a | b |\n| --- | --- |\n| 1 | 2 |");
+    expect(post).toContain('<div class="table-scroll"><table>');
+  });
+});

@@ -12,7 +12,7 @@ type Props = Record<string, unknown> & { children?: ReactNode };
  * A post's body as React: the site's own components for its charts and its
  * FAQ, plain elements for everything else. A footnote's links land without
  * a hash (FootnoteLink), the footnotes' heading shows as a label rather
- * than a hidden heading.
+ * than a hidden heading, and a table sits in a box that scrolls sideways.
  * Runs at build; the only client JavaScript is the footnote links'.
  */
 export function renderBody(post: Post): ReactNode {
@@ -25,6 +25,11 @@ export function renderBody(post: Post): ReactNode {
     a: (props: Props) =>
       "data-footnote-ref" in props || "data-footnote-backref" in props ? <FootnoteLink {...props} /> : <a {...props} />,
     h2: ({ className, ...props }: Props) => (props.id === "footnote-label" ? <h2 {...props} /> : <h2 className={className as string} {...props} />),
+    table: (props: Props) => (
+      <div className="table-scroll">
+        <table {...props} />
+      </div>
+    ),
   } as unknown as Partial<Components>;
   return toJsxRuntime(post.body, { Fragment, jsx: jsx as Jsx, jsxs: jsxs as Jsx, components });
 }

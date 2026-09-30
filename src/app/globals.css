@@ -1892,6 +1892,9 @@ body {
   color: rgb(26 25 21 / 0.88);
   font-size: 1.0625rem;
   line-height: 1.65;
+  /* an address or a word longer than the column breaks rather than running
+     under the rail or off a phone */
+  overflow-wrap: anywhere;
 }
 @media (min-width: 640px) {
   .article-body {
@@ -1960,10 +1963,24 @@ body {
   border-left: 2px solid var(--color-fern-soft);
   padding-left: 1.25rem;
 }
+.article-body .table-scroll {
+  overflow-x: auto;
+  /* where a wide table runs on past its box a soft ink edge shows, and
+     slides away as the rows scroll there: two ivory covers travel with the
+     rows (attachment local) over two ink fades that stay put */
+  background:
+    linear-gradient(90deg, var(--color-ivory) 40%, rgb(241 238 230 / 0)) left / 32px 100% no-repeat local,
+    linear-gradient(270deg, var(--color-ivory) 40%, rgb(241 238 230 / 0)) right / 32px 100% no-repeat local,
+    linear-gradient(90deg, rgb(26 25 21 / 0.1), rgb(26 25 21 / 0)) left / 20px 100% no-repeat scroll,
+    linear-gradient(270deg, rgb(26 25 21 / 0.1), rgb(26 25 21 / 0)) right / 20px 100% no-repeat scroll;
+}
 .article-body table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.9375rem;
+  /* a cell's words stay whole; a table wider than the column scrolls in
+     its box instead */
+  overflow-wrap: normal;
 }
 .article-body :is(th, td) {
   text-align: left;
@@ -1989,6 +2006,23 @@ body {
   background: var(--color-fern-wash);
   border-radius: 0.25rem;
   padding: 0.1em 0.3em;
+}
+/* a code block: on the wash at the label size, its lines wrapping so
+   nothing hides past a phone's edge and nothing needs a scroll */
+.article-body pre {
+  background: var(--color-fern-wash);
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.article-body pre code {
+  font-size: inherit;
+  background: none;
+  border-radius: 0;
+  padding: 0;
 }
 .article-body hr {
   border: 0;
