@@ -85,4 +85,9 @@ describe("curled text", () => {
   it("curls apostrophes and quotes and leaves hyphens alone", () => {
     expect(smart(`It's a "test" -- really`)).toBe("It’s a “test” -- really");
   });
+
+  it("curls a leading apostrophe in a contraction toward the missing letters, not like an opening quote", () => {
+    expect(smart("'em, rock 'n' roll, 'til the '90s, 'cause 'tis 'twas")).toBe("’em, rock ’n’ roll, ’til the ’90s, ’cause ’tis ’twas");
+    expect(smart("'quoted' word, 'Em, and 'Emma'")).toBe("‘quoted’ word, ’Em, and ‘Emma’");
+  });
 });

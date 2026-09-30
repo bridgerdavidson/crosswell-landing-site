@@ -11,11 +11,19 @@ import type { Root as HastRoot } from "hast";
 import { SITE } from "@/lib/site";
 import { parseChart } from "./chart";
 import { mediaPath } from "./paths";
-import { smart } from "./smart";
+import { curlContractions, smart } from "./smart";
 import type { ChartSpec, FaqItem, OutlineItem } from "./types";
 
+/* after smartypants, the apostrophe that opens a contraction ('em, 'til)
+   curls toward its missing letters; text nodes only, so code is untouched */
+const contractions = () => (tree: Root) => {
+  visit(tree, "text", (node) => {
+    node.value = curlContractions(node.value);
+  });
+};
+
 /* dashes off: a typed "--" stays two hyphens and never becomes an em dash */
-const markdown = unified().use(remarkParse).use(remarkGfm).use(remarkSmartypants, { dashes: false });
+const markdown = unified().use(remarkParse).use(remarkGfm).use(remarkSmartypants, { dashes: false }).use(contractions);
 const toHast = unified().use(remarkRehype);
 
 export type BodyContext = {

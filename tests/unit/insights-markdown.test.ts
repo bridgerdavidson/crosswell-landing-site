@@ -30,6 +30,12 @@ describe("the body", () => {
     expect(text(elements(body, "p")[0])).toBe("It’s “quoted”.");
   });
 
+  it("curls a leading apostrophe in a contraction toward the missing letters", () => {
+    const { body, outline } = ok("Give 'em rock 'n' roll 'til the '90s, 'cause 'tis so.\n\n## Why 'em?\n\ntext");
+    expect(text(elements(body, "p")[0])).toBe("Give ’em rock ’n’ roll ’til the ’90s, ’cause ’tis so.");
+    expect(outline[0].text).toBe("Why ’em?");
+  });
+
   it("never turns hyphens into dashes", () => {
     const { body } = ok("a -- b --- c");
     const t = text(elements(body, "p")[0]);
