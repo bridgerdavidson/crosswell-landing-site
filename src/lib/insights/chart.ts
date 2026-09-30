@@ -1,6 +1,7 @@
 import YAML from "yaml";
 import { smart } from "./smart";
 import type { ChartSpec } from "./types";
+import { yamlHint, yamlWhat } from "./yaml";
 
 const FIELDS = ["type", "title", "unit", "source", "sourceUrl", "data"];
 
@@ -14,9 +15,7 @@ export function parseChart(source: string): { chart?: ChartSpec; problems: strin
   try {
     top = YAML.parse(source, { mapAsMap: true });
   } catch (e) {
-    return {
-      problems: [`is not valid YAML (${(e as Error).message.split("\n")[0]}). Check the indentation under data.`],
-    };
+    return { problems: [`is not valid YAML (${yamlWhat(e)}). ${yamlHint(e, "chart", source.split("\n"))}`] };
   }
   if (!(top instanceof Map)) return { problems: ["must be fields like type:, title:, and data:, one per line."] };
   const fields: Map<unknown, unknown> = top;
@@ -56,7 +55,8 @@ export function parseChart(source: string): { chart?: ChartSpec; problems: strin
     for (const [key, value] of raw) {
       const label = String(key);
       if (typeof value !== "number" || !Number.isFinite(value)) {
-        problems.push(`data value "${String(value)}" for "${label}" is not a number.`);
+        const attached = typeof value === "string" && /^\d/.test(value) ? " Write the number alone and put the unit in unit:." : "";
+        problems.push(`data value "${String(value)}" for "${label}" is not a number.${attached}`);
       } else if (value < 0) {
         problems.push(`data value ${value} for "${label}" is below zero. Charts plot zero and up.`);
       } else {

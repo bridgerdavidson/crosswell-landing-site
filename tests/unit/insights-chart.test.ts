@@ -41,6 +41,20 @@ describe("chart blocks", () => {
     expect(parseChart("type: [line").problems[0]).toMatch(/^is not valid YAML/);
   });
 
+  it("matches the YAML hint to the cause: an unquoted %, a repeated label, and indentation only when it is indentation", () => {
+    const hint = (src: string) => parseChart(src).problems[0].replace(/^.*\)\. /, "");
+    expect(hint(valid.replace('unit: "%"', "unit: %"))).toBe('A value starting with % or # needs quotes, like unit: "%".');
+    expect(hint(valid.replace("2023: 21", "2026: 21"))).toBe("A label is repeated. Each label under data appears once.");
+    expect(hint(valid.replace("  2023: 21", " 2023: 21"))).toBe("Check the indentation: every line under data: is indented the same amount.");
+    expect(hint(valid.replace("title: Share", "title: Share: the"))).toBe('A value with ": " in it needs quotes, like title: "Share: the of employees using AI".');
+  });
+
+  it("points a value with its unit attached at the unit field", () => {
+    expect(parseChart(valid.replace("2023: 21", "2023: 21%")).problems).toEqual([
+      'data value "21%" for "2023" is not a number. Write the number alone and put the unit in unit:.',
+    ]);
+  });
+
   it("names a value that is not a number", () => {
     expect(parseChart(valid.replace("2023: 21", "2023: twenty-one")).problems).toContain(
       'data value "twenty-one" for "2023" is not a number.'
