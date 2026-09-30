@@ -174,7 +174,7 @@ describe("an insight", () => {
       const read = async (path: string) => {
         await page.goto(`${site.url}${path}`, { waitUntil: "networkidle" });
         return page.evaluate(() => ({
-          dash: document.body.innerText.includes("—"),
+          dash: document.body.innerText.includes("\u2014"),
           uppercase: [...document.querySelectorAll("main *")].filter((el) => getComputedStyle(el).textTransform === "uppercase").length,
         }));
       };
@@ -410,7 +410,7 @@ describe("the not-found page", () => {
         ways: await page.locator("#not-found a").evaluateAll((as) => as.map((a) => a.getAttribute("href"))),
         nav: await page.locator("header nav a").count(),
         footer: await page.locator("footer").count(),
-        dash: await page.evaluate(() => document.body.innerText.includes("—")),
+        dash: await page.evaluate(() => document.body.innerText.includes("\u2014")),
       };
     });
     expect(r).toEqual({ h1: "There’s nothing at this address.", ways: ["/insights", "/"], nav: 5, footer: 1, dash: false });

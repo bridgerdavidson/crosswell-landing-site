@@ -38,7 +38,7 @@ describe("the rendered body", () => {
     expect(html).toContain('<h2 id="why-its-here">Why it’s here</h2>');
     expect(html).toContain('<a href="https://example.com" target="_blank" rel="noopener noreferrer">a source</a>');
     expect(html).toContain('<a href="/team">the team</a>');
-    expect(html).not.toContain("—");
+    expect(html).not.toContain("\u2014");
   });
 });
 

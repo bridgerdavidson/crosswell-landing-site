@@ -40,7 +40,7 @@ describe("the body", () => {
     const { body } = ok("a -- b --- c");
     const t = text(elements(body, "p")[0]);
     expect(t).toBe("a -- b --- c");
-    expect(t).not.toMatch(/[–—]/);
+    expect(t).not.toMatch(/[\u2013\u2014]/);
   });
 
   it("gives every heading an id and outlines the ## sections", () => {

@@ -26,7 +26,7 @@ describe("the publishing command", () => {
   it("names no private paths and carries no em dash", () => {
     for (const text of [skill, setup]) {
       expect(text).not.toMatch(/\/Users\/|Documents\/|ai-os/);
-      expect(text).not.toContain("—");
+      expect(text).not.toContain("\u2014");
     }
   });
 
