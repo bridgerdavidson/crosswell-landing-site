@@ -1,5 +1,5 @@
 ---
-title: Why the sample businesses that keep the most notes are also the ones that keep asking the same questions about what they wrote down
+title: Why the sample businesses that keep the most notes are also the ones that keep asking the same questions about the notes
 description: A made-up post for testing the long cases. Twelve-point charts, footnotes, a portrait and a landscape image, a wide table, code, and many sections.
 author: max
 published: 2026-09-15

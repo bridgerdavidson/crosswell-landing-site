@@ -17,7 +17,7 @@ const PLAIN = "/insights/fixture-plain-note";
    fourteen sections) */
 const LONG = "/insights/fixture-long-read";
 const LONG_TITLE =
-  "Why the sample businesses that keep the most notes are also the ones that keep asking the same questions about what they wrote down";
+  "Why the sample businesses that keep the most notes are also the ones that keep asking the same questions about the notes";
 const SITE = "https://crosswellconsulting.com";
 
 /** a PNG's width and height, from its header */
