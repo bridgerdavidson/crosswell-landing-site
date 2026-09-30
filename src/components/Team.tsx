@@ -6,9 +6,8 @@ import { PEOPLE, type Person } from "@/lib/people";
 /* Names and roles only. The bios came out in September 2026 and are not
    coming back. The people, their roles, and their photographs come from
    lib/people.ts, the file every post's author block reads, so a role or a
-   photograph changes in one place. Roles are placeholders until they are
-   decided, and each portrait is a 4:5 placeholder until its photograph
-   exists. */
+   photograph changes in one place. Each portrait is a 4:5 placeholder
+   until its photograph exists. */
 
 /**
  * The team. The page opens on it, under the nav with no seam above it (the

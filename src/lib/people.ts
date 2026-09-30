@@ -14,11 +14,11 @@ export type Person = {
 /*
  * Everyone on the site, in the team page's order. A photograph is one file,
  * public/team/<id>.jpg, named here in portrait: the team page and every
- * post's byline pick it up on the next build. Roles are placeholders until
- * they are decided (spec section 13).
+ * post's byline pick it up on the next build. Roles set by Bridger on
+ * 2026-09-30.
  */
 export const PEOPLE: Person[] = [
-  { id: "max", name: "Max Marohn", role: "Role goes here" },
-  { id: "bridger", name: "Bridger Davidson", role: "Role goes here" },
-  { id: "michael", name: "Michael Zamora", role: "Role goes here" },
+  { id: "max", name: "Max Marohn", role: "Founding partner" },
+  { id: "bridger", name: "Bridger Davidson", role: "Founding partner, engineering" },
+  { id: "michael", name: "Michael Zamora", role: "Founding partner" },
 ];

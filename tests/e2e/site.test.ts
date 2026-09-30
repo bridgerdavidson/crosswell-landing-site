@@ -451,6 +451,7 @@ describe("the team page", () => {
       return {
         title: await page.title(),
         names: await page.locator("#team h3").allTextContents(),
+        roles: await page.locator("#team h3 + p").allTextContents(),
         portraits: await page.locator("#team [data-portrait]").count(),
         bios: await page.locator("#team p").allTextContents(),
         labels: await page.locator("#values .type-label").allTextContents(),
@@ -470,6 +471,7 @@ describe("the team page", () => {
     });
     expect(r.title).toBe("Team | Crosswell");
     expect(r.names).toEqual(["Max Marohn", "Bridger Davidson", "Michael Zamora"]);
+    expect(r.roles).toEqual(["Founding partner", "Founding partner, engineering", "Founding partner"]);
     expect(r.portraits).toBe(3);
     /* the lede and three roles, and no bios: nothing in the team's paragraphs runs past a line */
     expect(r.bios.filter((t) => t.length > 120)).toEqual([]);
