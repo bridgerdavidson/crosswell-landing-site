@@ -1918,7 +1918,9 @@ body {
   color: var(--color-ink);
   margin-top: 2rem;
 }
-.article-body :is(h2, h3) {
+/* anything a link can land on (a heading, a footnote, its reference) lands
+   under the fixed nav, for a pasted #anchor and for no-JS */
+.article-body [id] {
   scroll-margin-top: 6rem;
 }
 .article-body :is(h2, h3) + * {
@@ -2039,10 +2041,44 @@ body {
   font-size: 14px;
   font-weight: 600;
 }
+/* a footnote's reference: a small numeral in the accent, raised on its
+   own without opening the line it sits in, and no underline */
+.article-body sup {
+  font-size: 0.7em;
+  line-height: 0;
+  vertical-align: baseline;
+  position: relative;
+  top: -0.55em;
+}
+.article-body [data-footnote-ref] {
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0 0.15em;
+}
+/* the notes at the end: a hairline, "Footnotes" on the label size, then
+   the numbered notes at the caption size, each with its return arrow */
 .article-body .footnotes {
   font-size: 0.875rem;
+  line-height: 1.6;
   color: rgb(26 25 21 / 0.7);
   border-top: 1px solid rgb(26 25 21 / 0.08);
   padding-top: 1.25rem;
   margin-top: 3rem;
+}
+.article-body .footnotes h2 {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0;
+  color: rgb(26 25 21 / 0.6);
+  margin-top: 0;
+}
+.article-body .footnotes ol {
+  margin-top: 0.75rem;
+  padding-left: 1.25rem;
+}
+.article-body [data-footnote-backref] {
+  text-decoration: none;
+  padding: 0 0.25em;
 }

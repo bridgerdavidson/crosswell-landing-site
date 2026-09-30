@@ -3,12 +3,17 @@ import { Fragment, jsx, jsxs } from "react/jsx-runtime";
 import { toJsxRuntime, type Components, type Jsx } from "hast-util-to-jsx-runtime";
 import Chart from "@/components/insights/Chart";
 import Faq from "@/components/insights/Faq";
+import FootnoteLink from "@/components/insights/FootnoteLink";
 import type { Post } from "./types";
+
+type Props = Record<string, unknown> & { children?: ReactNode };
 
 /**
  * A post's body as React: the site's own components for its charts and its
- * FAQ, plain elements for everything else. Runs at build; ships no client
- * JavaScript.
+ * FAQ, plain elements for everything else. A footnote's links land without
+ * a hash (FootnoteLink), the footnotes' heading shows as a label rather
+ * than a hidden heading.
+ * Runs at build; the only client JavaScript is the footnote links'.
  */
 export function renderBody(post: Post): ReactNode {
   const components = {
@@ -17,6 +22,9 @@ export function renderBody(post: Post): ReactNode {
       return chart ? <Chart chart={chart} /> : null;
     },
     "x-faq": ({ children }: { children?: ReactNode }) => <Faq>{children}</Faq>,
+    a: (props: Props) =>
+      "data-footnote-ref" in props || "data-footnote-backref" in props ? <FootnoteLink {...props} /> : <a {...props} />,
+    h2: ({ className, ...props }: Props) => (props.id === "footnote-label" ? <h2 {...props} /> : <h2 className={className as string} {...props} />),
   } as unknown as Partial<Components>;
   return toJsxRuntime(post.body, { Fragment, jsx: jsx as Jsx, jsxs: jsxs as Jsx, components });
 }
