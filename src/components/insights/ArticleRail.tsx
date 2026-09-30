@@ -8,13 +8,14 @@ import type { Post } from "@/lib/insights/types";
    more than one section. On a screen too short for a long outline the rail
    takes the height under the nav and scrolls inside itself, so no section
    is out of reach while it is pinned (the outline keeps the current link in
-   view). */
+   view). The scroll box would clip a focus ring at its edges, so it runs 8
+   wider on each side and pads the same back. */
 export default function ArticleRail({ post }: { post: Post }) {
   return (
     <aside
       data-rail
       aria-label="About this post"
-      className="hidden lg:sticky lg:top-24 lg:block lg:max-h-[calc(100dvh-6rem)] lg:self-start lg:overflow-y-auto lg:overscroll-contain lg:pb-6"
+      className="hidden lg:sticky lg:top-24 lg:-mx-2 lg:block lg:max-h-[calc(100dvh-6rem)] lg:self-start lg:overflow-y-auto lg:overscroll-contain lg:px-2 lg:pb-6"
     >
       <AuthorBlock person={post.author} variant="rail" />
       <p className="type-caption mt-5 text-ink/60">

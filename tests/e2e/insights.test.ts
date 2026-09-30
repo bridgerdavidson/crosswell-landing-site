@@ -140,11 +140,13 @@ describe("an insight", () => {
           overflow: document.documentElement.scrollWidth - innerWidth,
           byline: getComputedStyle(document.querySelector("[data-byline]")!).display,
           rail: getComputedStyle(document.querySelector("[data-rail]")!).display,
+          // the label's link back to the index is a thumb's target
+          label: document.querySelector("#insight .type-label a")!.getBoundingClientRect().height >= 24,
         }));
       },
       { width: 390 }
     );
-    expect(r).toEqual({ overflow: 0, byline: "flex", rail: "none" });
+    expect(r).toEqual({ overflow: 0, byline: "flex", rail: "none", label: true });
   });
 
   it("scrolls to a section from the outline without writing a hash", async () => {
@@ -184,6 +186,38 @@ describe("an insight", () => {
       { dash: false, uppercase: 0 },
       { dash: false, uppercase: 0 },
     ]);
+  });
+
+  it("shows keyboard focus as the accent ring, not the browser's blue", async () => {
+    const r = await withPage(
+      async (page) => {
+        await page.goto(`${site.url}${FULL}`, { waitUntil: "networkidle" });
+        const rings: Record<string, string> = {};
+        for (let i = 0; i < 60 && Object.keys(rings).length < 3; i++) {
+          await page.keyboard.press("Tab");
+          // past the links' 150ms colour transition, which eases the ring in
+          await page.waitForTimeout(250);
+          const hit = await page.evaluate(() => {
+            const el = document.activeElement as HTMLElement | null;
+            if (!el || !el.matches(":focus-visible")) return null;
+            const which = el.closest("nav[aria-label='On this page']")
+              ? "outline"
+              : el.closest(".article-body")
+                ? "body"
+                : el.matches("a[href^='mailto:']") && !el.closest("header")
+                  ? "call"
+                  : null;
+            const s = getComputedStyle(el);
+            return which ? [which, `${s.outlineStyle} ${s.outlineWidth} ${s.outlineColor}`] : null;
+          });
+          if (hit && !(hit[0] in rings)) rings[hit[0]] = hit[1];
+        }
+        return rings;
+      },
+      { reducedMotion: true }
+    );
+    const fern = "solid 2px rgb(61, 99, 61)";
+    expect(r).toEqual({ outline: fern, body: fern, call: fern });
   });
 
   it("moves focus to the section an outline link opens", async () => {
