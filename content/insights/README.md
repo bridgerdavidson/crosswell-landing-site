@@ -29,6 +29,7 @@ related: [another-post, a-third-post]
 - `cover` is a `.jpg` or `.png` in `public/media/insights/<slug>/`, and needs `coverAlt`.
 - `related` is up to 3 other posts. Leave it out and the newest posts fill in.
 - Titles and headings are sentence case. Straight apostrophes and quotes are fine: the site curls them.
+- A value with `: ` in it, or one starting with `%` or `#`, goes in double quotes: `title: "AI: what it keeps"`. Use double quotes rather than single ones, so an apostrophe inside is fine.
 
 ## The body
 

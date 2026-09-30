@@ -123,4 +123,37 @@ describe("a post's problems", () => {
       new RegExp(`^${F}: frontmatter: is not valid YAML`)
     );
   });
+
+  describe("frontmatter YAML hints", () => {
+    const REST = "description: x\nauthor: max\npublished: 2026-09-20";
+    const problem = (fm: string) => problemsOf(() => parsePost(F, `---\n${fm}\n---\n\nText.`, TEST_CONTEXT))[0];
+    /** the sentence after the parser's own words */
+    const hint = (fm: string) => problem(fm).replace(/^.*\)\. /, "");
+
+    it("tells the author to quote a value with a colon in it, showing the quoted line", () => {
+      expect(problem(`title: AI: what it keeps\n${REST}`)).toBe(
+        `${F}: frontmatter: is not valid YAML (Nested mappings are not allowed in compact mappings at line 2, column 8). A value with ": " in it needs quotes, like title: "AI: what it keeps".`
+      );
+      expect(hint(`title: x\n${REST}\ncoverAlt: A photo: the team\ncover: cover.jpg`)).toBe('A value with ": " in it needs quotes, like coverAlt: "A photo: the team".');
+    });
+
+    it("catches a takeaway with a colon in it, which YAML reads as a field rather than a line", () => {
+      expect(problem(`title: x\n${REST}\ntakeaways:\n  - One: two\n  - Three`)).toBe(
+        `${F}: takeaways: a line with ": " in it needs quotes, like - "One: two".`
+      );
+    });
+
+    it("matches the hint to the cause: an apostrophe in single quotes, a repeated field, tabs, a missing quote, a missing ]", () => {
+      expect(hint(`title: 'It's here'\n${REST}`)).toBe(`A value in single quotes cannot hold an apostrophe. Use double quotes, like title: "It's here".`);
+      expect(hint(`title: x\ntitle: y\n${REST}`)).toBe("A field is repeated. Each field appears once.");
+      expect(hint(`title: x\n${REST}\ntakeaways:\n\t- one\n\t- two`)).toBe("Indent with spaces, not tabs.");
+      expect(hint(`title: "unclosed\n${REST}`)).toBe("A quoted value is missing its closing quote.");
+      expect(hint(`title: x\n${REST}\ntakeaways:\n  - %one\n  - two`)).toBe('A value starting with % or # needs quotes, like - "%one".');
+      expect(hint(`title: x\n${REST}\nrelated: [unclosed`)).toBe("A list in brackets needs its closing ], like related: [a-post, b-post].");
+    });
+
+    it("falls back to the general hint when the cause is something else", () => {
+      expect(hint(`title\n${REST}`)).toBe("Check the lines between the --- markers: each one is a field, a colon, and its value.");
+    });
+  });
 });

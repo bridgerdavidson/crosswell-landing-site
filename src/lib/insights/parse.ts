@@ -6,6 +6,7 @@ import { parseBody } from "./markdown";
 import { mediaPath } from "./paths";
 import { smart } from "./smart";
 import { InsightError, type Post } from "./types";
+import { yamlHint, yamlWhat } from "./yaml";
 
 export type ParseContext = {
   people: Person[];
@@ -49,9 +50,9 @@ export function parsePost(file: string, source: string, ctx: ParseContext): Post
     fm = parsed.data as Record<string, unknown>;
     content = parsed.content;
   } catch (e) {
-    throw new InsightError([
-      `${file}: frontmatter: is not valid YAML (${(e as Error).message.split("\n")[0]}). Check the lines between the --- markers.`,
-    ]);
+    // the YAML's line numbers are the file's: gray-matter hands the parser
+    // everything after the opening ---, starting with its line break
+    throw new InsightError([`${file}: frontmatter: is not valid YAML (${yamlWhat(e)}). ${yamlHint(e, "frontmatter", source.split("\n"))}`]);
   }
 
   for (const key of Object.keys(fm)) {
@@ -101,7 +102,13 @@ export function parsePost(file: string, source: string, ctx: ParseContext): Post
   let takeaways: string[] = [];
   const t = fm.takeaways;
   if (t !== undefined && t !== null) {
-    if (!Array.isArray(t) || t.some((x) => typeof x !== "string" || !x.trim())) {
+    // "- One: two" is valid YAML, a list item holding a field, so it never
+    // reaches the YAML hint; name the quote fix here
+    const field = Array.isArray(t) ? t.find((x) => x && typeof x === "object" && !Array.isArray(x)) : undefined;
+    if (field) {
+      const [k, v] = Object.entries(field as Record<string, unknown>)[0] ?? ["", ""];
+      say("takeaways", `a line with ": " in it needs quotes, like - "${k}: ${String(v ?? "")}".`);
+    } else if (!Array.isArray(t) || t.some((x) => typeof x !== "string" || !x.trim())) {
       say("takeaways", "must be a list of lines, each starting with '- '.");
     } else if (t.length < 2 || t.length > 5) {
       say("takeaways", `has ${t.length} item${t.length === 1 ? "" : "s"}. Use 2 to 5, or leave takeaways out.`);
