@@ -176,13 +176,124 @@ describe("an insight", () => {
           uppercase: [...document.querySelectorAll("main *")].filter((el) => getComputedStyle(el).textTransform === "uppercase").length,
         }));
       };
-      return [await read(FULL), await read(PLAIN), await read("/insights/fixture-bar-chart")];
+      return [await read(FULL), await read(PLAIN), await read("/insights/fixture-bar-chart"), await read(LONG)];
     });
     expect(r).toEqual([
       { dash: false, uppercase: 0 },
       { dash: false, uppercase: 0 },
       { dash: false, uppercase: 0 },
+      { dash: false, uppercase: 0 },
     ]);
+  });
+
+  it("moves focus to the section an outline link opens", async () => {
+    const r = await withPage(
+      async (page) => {
+        await page.goto(`${site.url}${FULL}`, { waitUntil: "networkidle" });
+        await page.locator("nav[aria-label='On this page'] a", { hasText: "What changed by the end of the month?" }).click();
+        await page.waitForTimeout(800);
+        return page.evaluate(() => ({
+          focused: document.activeElement?.id,
+          tag: document.activeElement?.tagName,
+        }));
+      },
+      { reducedMotion: true }
+    );
+    expect(r).toEqual({ focused: "what-changed-by-the-end-of-the-month", tag: "H2" });
+  });
+
+  it("follows a footnote and comes back without writing a hash, landing clear of the nav", async () => {
+    const r = await withPage(
+      async (page) => {
+        await page.goto(`${site.url}${LONG}`, { waitUntil: "networkidle" });
+        const at = (sel: string) => page.locator(sel).evaluate((el) => Math.round(el.getBoundingClientRect().top));
+        const state = async () => ({
+          hash: await page.evaluate(() => location.hash),
+          focused: await page.evaluate(() => document.activeElement?.id),
+        });
+        await page.locator("[data-footnote-ref]").first().click();
+        await page.waitForTimeout(1200);
+        const there = { ...(await state()), top: await at("#user-content-fn-1") };
+        await page.locator("#user-content-fn-1 [data-footnote-backref]").click();
+        await page.waitForTimeout(1200);
+        const back = { ...(await state()), top: await at("#user-content-fnref-1") };
+        return { there, back };
+      },
+      { reducedMotion: true }
+    );
+    expect(r.there).toMatchObject({ hash: "", focused: "user-content-fn-1" });
+    expect(r.there.top).toBeGreaterThanOrEqual(80);
+    expect(r.there.top).toBeLessThanOrEqual(100);
+    expect(r.back).toMatchObject({ hash: "", focused: "user-content-fnref-1" });
+    expect(r.back.top).toBeGreaterThanOrEqual(80);
+    expect(r.back.top).toBeLessThanOrEqual(100);
+  });
+
+  it("keeps a long word, a long address, code, and a wide table inside the text column", async () => {
+    const probe = (width: number) =>
+      withPage(
+        async (page) => {
+          await page.goto(`${site.url}${LONG}`, { waitUntil: "networkidle" });
+          return page.evaluate(() => {
+            const body = document.querySelector(".article-body")!;
+            const edge = Math.round(body.getBoundingClientRect().right);
+            // a wide table's rows may run past the edge inside its own
+            // scroll box; the box itself must not
+            const past = [...body.querySelectorAll("*")]
+              .filter((el) => !el.closest(".table-scroll") || el.classList.contains("table-scroll"))
+              .filter((el) => Math.round(el.getBoundingClientRect().right) > edge + 1)
+              .map((el) => el.tagName.toLowerCase());
+            const box = body.querySelector(".table-scroll")!;
+            return {
+              overflow: document.documentElement.scrollWidth - innerWidth,
+              past: [...new Set(past)],
+              tableScrolls: getComputedStyle(box).overflowX === "auto" && box.scrollWidth > box.clientWidth,
+            };
+          });
+        },
+        { width }
+      );
+    expect(await probe(390)).toEqual({ overflow: 0, past: [], tableScrolls: true });
+    expect(await probe(1024)).toEqual({ overflow: 0, past: [], tableScrolls: true });
+  });
+
+  it("reserves a body image's space before it loads, portrait and landscape", async () => {
+    const r = await withPage(async (page) => {
+      // the images never arrive: the space must already be there
+      await page.route(/\/media\/insights\/.*\.(png|jpg)$/, (route) => route.abort());
+      await page.goto(`${site.url}${LONG}`, { waitUntil: "networkidle" });
+      return page.locator(".article-body figure img").evaluateAll((imgs) =>
+        imgs.map((img) => {
+          const { width, height } = img.getBoundingClientRect();
+          return { attrs: [img.getAttribute("width"), img.getAttribute("height")], ratio: Number((width / height).toFixed(2)) };
+        })
+      );
+    });
+    expect(r).toEqual([
+      { attrs: ["600", "800"], ratio: 0.75 },
+      { attrs: ["900", "450"], ratio: 2 },
+    ]);
+  });
+
+  it("scrolls a long outline inside the rail on a short screen and keeps the current section in view", async () => {
+    const r = await withPage(async (page) => {
+      await page.setViewportSize({ width: 1440, height: 700 });
+      await page.goto(`${site.url}${LONG}`, { waitUntil: "networkidle" });
+      // mid-article, where the rail is still pinned (at the end it lifts with the page)
+      await page.locator("#the-tenth-section").evaluate((el) => window.scrollTo(0, el.getBoundingClientRect().top + scrollY - 88));
+      await page.waitForTimeout(600);
+      return page.evaluate(() => {
+        const rail = document.querySelector("[data-rail]")!;
+        const current = document.querySelector("nav[aria-label='On this page'] a[aria-current='location']")!;
+        const box = current.getBoundingClientRect();
+        return {
+          current: current.textContent,
+          railFits: Math.round(rail.getBoundingClientRect().bottom) <= innerHeight,
+          currentInView: box.top >= 0 && box.bottom <= innerHeight,
+        };
+      });
+    });
+    expect(r).toEqual({ current: "The tenth section", railFits: true, currentInView: true });
   });
 });
 
