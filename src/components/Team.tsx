@@ -2,12 +2,12 @@ import Band, { CONTAINER, HANG } from "./Band";
 import Reveal from "./Reveal";
 
 /* Names and roles only. The bios came out in September 2026 and are not
-   coming back. The roles are placeholders until they are decided, and the
-   portraits are 4:5 placeholders until the new photographs exist. */
+   coming back. The roles were set by Bridger on 2026-09-30; the portraits
+   are 4:5 placeholders until the new photographs exist. */
 const people = [
-  { name: "Max Marohn", role: "Role goes here" },
-  { name: "Bridger Davidson", role: "Role goes here" },
-  { name: "Michael Zamora", role: "Role goes here" },
+  { name: "Max Marohn", role: "Founding partner" },
+  { name: "Bridger Davidson", role: "Founding partner, engineering" },
+  { name: "Michael Zamora", role: "Founding partner" },
 ];
 
 /**
