@@ -2017,6 +2017,9 @@ body {
 }
 .article-body figure img {
   width: 100%;
+  /* the file's width and height attributes reserve its space; auto keeps
+     the height following the width rather than the attribute */
+  height: auto;
   border-radius: 1rem;
 }
 .article-body figcaption {
@@ -2112,7 +2115,11 @@ body {
 .article-body [data-footnote-ref] {
   text-decoration: none;
   font-weight: 600;
-  padding: 0 0.15em;
+  /* an inline's padding widens its touch target; the vertical costs the
+     line nothing, and the negative side margins give the sides' back, so
+     the numeral stays tight to its word and a comma after it stays close */
+  padding: 0.75em 0.35em;
+  margin: 0 -0.25em;
 }
 /* the notes at the end: a hairline, "Footnotes" on the label size, then
    the numbered notes at the caption size, each with its return arrow */
@@ -2139,5 +2146,5 @@ body {
 }
 .article-body [data-footnote-backref] {
   text-decoration: none;
-  padding: 0 0.25em;
+  padding: 0.5em 0.35em;
 }

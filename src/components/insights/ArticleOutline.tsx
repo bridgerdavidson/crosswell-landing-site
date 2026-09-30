@@ -18,7 +18,9 @@ const LINE = 120;
  * view.
  */
 export default function ArticleOutline({ items }: { items: OutlineItem[] }) {
-  const [active, setActive] = useState(items[0]?.id);
+  // no section is current until the page can tell which one is, so the
+  // served markup (and no-JS) marks none rather than always the first
+  const [active, setActive] = useState<string | undefined>();
   const nav = useRef<HTMLElement>(null);
 
   useEffect(() => {

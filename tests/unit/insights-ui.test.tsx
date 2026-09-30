@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
+import ArticleOutline from "@/components/insights/ArticleOutline";
 import { renderBody } from "@/lib/insights/render";
 import { makePost } from "../helpers/post";
 
@@ -24,5 +25,13 @@ describe("tables in the rendered body", () => {
   it("sit in a box that scrolls sideways rather than pushing the page", () => {
     const post = html("| a | b |\n| --- | --- |\n| 1 | 2 |");
     expect(post).toContain('<div class="table-scroll"><table>');
+  });
+});
+
+describe("the outline as served", () => {
+  it("marks no section current until the page can tell which one is", () => {
+    const html = renderToStaticMarkup(<ArticleOutline items={[{ id: "a", text: "A" }, { id: "b", text: "B" }]} />);
+    expect(html).toContain('href="#a"');
+    expect(html).not.toContain("aria-current");
   });
 });

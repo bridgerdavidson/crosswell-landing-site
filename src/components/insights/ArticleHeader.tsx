@@ -12,7 +12,9 @@ export default function ArticleHeader({ post }: { post: Post }) {
     <div>
       <Band
         label={
-          <Link href="/insights" className="transition-colors hover:text-fern">
+          /* phones: negative margins cancel the padding in layout, so the
+             thumb's target comes free without moving the label */
+          <Link href="/insights" className="transition-colors hover:text-fern max-md:-m-3 max-md:inline-block max-md:p-3">
             Insights
           </Link>
         }
