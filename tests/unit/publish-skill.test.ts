@@ -33,4 +33,21 @@ describe("the publishing command", () => {
   it("keeps the never-publish list out of git", () => {
     expect(readFileSync(".gitignore", "utf8")).toContain("*.local.*");
   });
+
+  it("calls a post an update only when its slug is on origin/main, and continues an unshipped branch", () => {
+    expect(skill).toContain("git cat-file -e origin/main:content/insights/<slug>.md");
+    expect(skill).not.toMatch(/already exists in `content\/insights\/`/);
+    expect(skill).toMatch(/branch already exists[\s\S]{0,300}`git switch insights\/<slug>`/);
+  });
+
+  it("has the reviewer set published to the merge day, and tells the author so", () => {
+    expect(skill).toMatch(/set `published` to the merge day/);
+    expect(setup).toMatch(/merge day/);
+  });
+
+  it("adds the media folder only when the post has images, and keeps the note's path out of the pull request", () => {
+    expect(skill).not.toContain("git add content/insights/<slug>.md public/media/insights/<slug>");
+    expect(skill).toMatch(/only when the post has a cover or images/);
+    expect(skill).toMatch(/never name the note's path/);
+  });
 });

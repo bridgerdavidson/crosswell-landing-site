@@ -21,7 +21,7 @@ Anyone on the team can publish a post to crosswellconsulting.com/insights. You k
 2. Confirm the address it proposes (the slug). It is permanent once published.
 3. Answer its questions: the cover image, alt text, anything it flagged.
 4. Look at the page it opens. Ask for changes, or edit your note and say "re-sync". Refresh the page after each change.
-5. When it is right, say "ship it". You get a pull request link. Bridger reviews it and merges it, and the post goes live a minute or two later.
+5. When it is right, say "ship it". You get a pull request link. Bridger reviews it and merges it, and the post goes live a minute or two later. The post's date is the day you ran the command; if it merges on a later day, Bridger sets `published` to the merge day before merging, so the page shows the day it went live.
 
 ## Updating a published post
 
