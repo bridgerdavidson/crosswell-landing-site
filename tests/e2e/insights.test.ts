@@ -12,6 +12,12 @@ afterAll(() => site.close());
 
 const FULL = "/insights/fixture-field-notes";
 const PLAIN = "/insights/fixture-plain-note";
+/* the long read: the hard cases (a long title, twelve-point charts,
+   footnotes, a portrait and a landscape image, a wide table, code, and
+   fourteen sections) */
+const LONG = "/insights/fixture-long-read";
+const LONG_TITLE =
+  "Why the sample businesses that keep the most notes are also the ones that keep asking the same questions about what they wrote down";
 const SITE = "https://crosswellconsulting.com";
 
 /** a PNG's width and height, from its header */
@@ -104,7 +110,7 @@ describe("an insight", () => {
       };
     });
     expect(r).toMatchObject({ takeaways: 0, charts: 0, faq: 0, cover: 0, outline: 0 });
-    expect(r.related).toEqual(["/insights/fixture-field-notes", "/insights/fixture-bar-chart"]);
+    expect(r.related).toEqual(["/insights/fixture-field-notes", "/insights/fixture-bar-chart", LONG]);
     expect(r.ld).toEqual(["Organization", "Article"]);
     expect(pngSize(join("out", "media", "insights", "fixture-plain-note", "card.png"))).toEqual({ width: 1200, height: 630 });
   });
@@ -134,11 +140,13 @@ describe("an insight", () => {
           overflow: document.documentElement.scrollWidth - innerWidth,
           byline: getComputedStyle(document.querySelector("[data-byline]")!).display,
           rail: getComputedStyle(document.querySelector("[data-rail]")!).display,
+          // the label's link back to the index is a thumb's target
+          label: document.querySelector("#insight .type-label a")!.getBoundingClientRect().height >= 24,
         }));
       },
       { width: 390 }
     );
-    expect(r).toEqual({ overflow: 0, byline: "flex", rail: "none" });
+    expect(r).toEqual({ overflow: 0, byline: "flex", rail: "none", label: true });
   });
 
   it("scrolls to a section from the outline without writing a hash", async () => {
@@ -170,13 +178,156 @@ describe("an insight", () => {
           uppercase: [...document.querySelectorAll("main *")].filter((el) => getComputedStyle(el).textTransform === "uppercase").length,
         }));
       };
-      return [await read(FULL), await read(PLAIN), await read("/insights/fixture-bar-chart")];
+      return [await read(FULL), await read(PLAIN), await read("/insights/fixture-bar-chart"), await read(LONG)];
     });
     expect(r).toEqual([
       { dash: false, uppercase: 0 },
       { dash: false, uppercase: 0 },
       { dash: false, uppercase: 0 },
+      { dash: false, uppercase: 0 },
     ]);
+  });
+
+  it("shows keyboard focus as the accent ring, not the browser's blue", async () => {
+    const r = await withPage(
+      async (page) => {
+        await page.goto(`${site.url}${FULL}`, { waitUntil: "networkidle" });
+        const rings: Record<string, string> = {};
+        for (let i = 0; i < 60 && Object.keys(rings).length < 3; i++) {
+          await page.keyboard.press("Tab");
+          // past the links' 150ms colour transition, which eases the ring in
+          await page.waitForTimeout(250);
+          const hit = await page.evaluate(() => {
+            const el = document.activeElement as HTMLElement | null;
+            if (!el || !el.matches(":focus-visible")) return null;
+            const which = el.closest("nav[aria-label='On this page']")
+              ? "outline"
+              : el.closest(".article-body")
+                ? "body"
+                : el.matches("a[href^='mailto:']") && !el.closest("header")
+                  ? "call"
+                  : null;
+            const s = getComputedStyle(el);
+            return which ? [which, `${s.outlineStyle} ${s.outlineWidth} ${s.outlineColor}`] : null;
+          });
+          if (hit && !(hit[0] in rings)) rings[hit[0]] = hit[1];
+        }
+        return rings;
+      },
+      { reducedMotion: true }
+    );
+    const fern = "solid 2px rgb(61, 99, 61)";
+    expect(r).toEqual({ outline: fern, body: fern, call: fern });
+  });
+
+  it("moves focus to the section an outline link opens", async () => {
+    const r = await withPage(
+      async (page) => {
+        await page.goto(`${site.url}${FULL}`, { waitUntil: "networkidle" });
+        await page.locator("nav[aria-label='On this page'] a", { hasText: "What changed by the end of the month?" }).click();
+        await page.waitForTimeout(800);
+        return page.evaluate(() => ({
+          focused: document.activeElement?.id,
+          tag: document.activeElement?.tagName,
+        }));
+      },
+      { reducedMotion: true }
+    );
+    expect(r).toEqual({ focused: "what-changed-by-the-end-of-the-month", tag: "H2" });
+  });
+
+  it("follows a footnote and comes back without writing a hash, landing clear of the nav", async () => {
+    const r = await withPage(
+      async (page) => {
+        await page.goto(`${site.url}${LONG}`, { waitUntil: "networkidle" });
+        const at = (sel: string) => page.locator(sel).evaluate((el) => Math.round(el.getBoundingClientRect().top));
+        const state = async () => ({
+          hash: await page.evaluate(() => location.hash),
+          focused: await page.evaluate(() => document.activeElement?.id),
+        });
+        await page.locator("[data-footnote-ref]").first().click();
+        await page.waitForTimeout(1200);
+        const there = { ...(await state()), top: await at("#user-content-fn-1") };
+        await page.locator("#user-content-fn-1 [data-footnote-backref]").click();
+        await page.waitForTimeout(1200);
+        const back = { ...(await state()), top: await at("#user-content-fnref-1") };
+        return { there, back };
+      },
+      { reducedMotion: true }
+    );
+    expect(r.there).toMatchObject({ hash: "", focused: "user-content-fn-1" });
+    expect(r.there.top).toBeGreaterThanOrEqual(80);
+    expect(r.there.top).toBeLessThanOrEqual(100);
+    expect(r.back).toMatchObject({ hash: "", focused: "user-content-fnref-1" });
+    expect(r.back.top).toBeGreaterThanOrEqual(80);
+    expect(r.back.top).toBeLessThanOrEqual(100);
+  });
+
+  it("keeps a long word, a long address, code, and a wide table inside the text column", async () => {
+    const probe = (width: number) =>
+      withPage(
+        async (page) => {
+          await page.goto(`${site.url}${LONG}`, { waitUntil: "networkidle" });
+          return page.evaluate(() => {
+            const body = document.querySelector(".article-body")!;
+            const edge = Math.round(body.getBoundingClientRect().right);
+            // a wide table's rows may run past the edge inside its own
+            // scroll box; the box itself must not
+            const past = [...body.querySelectorAll("*")]
+              .filter((el) => !el.closest(".table-scroll") || el.classList.contains("table-scroll"))
+              .filter((el) => Math.round(el.getBoundingClientRect().right) > edge + 1)
+              .map((el) => el.tagName.toLowerCase());
+            const box = body.querySelector(".table-scroll")!;
+            return {
+              overflow: document.documentElement.scrollWidth - innerWidth,
+              past: [...new Set(past)],
+              tableScrolls: getComputedStyle(box).overflowX === "auto" && box.scrollWidth > box.clientWidth,
+            };
+          });
+        },
+        { width }
+      );
+    expect(await probe(390)).toEqual({ overflow: 0, past: [], tableScrolls: true });
+    expect(await probe(1024)).toEqual({ overflow: 0, past: [], tableScrolls: true });
+  });
+
+  it("reserves a body image's space before it loads, portrait and landscape", async () => {
+    const r = await withPage(async (page) => {
+      // the images never arrive: the space must already be there
+      await page.route(/\/media\/insights\/.*\.(png|jpg)$/, (route) => route.abort());
+      await page.goto(`${site.url}${LONG}`, { waitUntil: "networkidle" });
+      return page.locator(".article-body figure img").evaluateAll((imgs) =>
+        imgs.map((img) => {
+          const { width, height } = img.getBoundingClientRect();
+          return { attrs: [img.getAttribute("width"), img.getAttribute("height")], ratio: Number((width / height).toFixed(2)) };
+        })
+      );
+    });
+    expect(r).toEqual([
+      { attrs: ["600", "800"], ratio: 0.75 },
+      { attrs: ["900", "450"], ratio: 2 },
+    ]);
+  });
+
+  it("scrolls a long outline inside the rail on a short screen and keeps the current section in view", async () => {
+    const r = await withPage(async (page) => {
+      await page.setViewportSize({ width: 1440, height: 700 });
+      await page.goto(`${site.url}${LONG}`, { waitUntil: "networkidle" });
+      // mid-article, where the rail is still pinned (at the end it lifts with the page)
+      await page.locator("#the-tenth-section").evaluate((el) => window.scrollTo(0, el.getBoundingClientRect().top + scrollY - 88));
+      await page.waitForTimeout(600);
+      return page.evaluate(() => {
+        const rail = document.querySelector("[data-rail]")!;
+        const current = document.querySelector("nav[aria-label='On this page'] a[aria-current='location']")!;
+        const box = current.getBoundingClientRect();
+        return {
+          current: current.textContent,
+          railFits: Math.round(rail.getBoundingClientRect().bottom) <= innerHeight,
+          currentInView: box.top >= 0 && box.bottom <= innerHeight,
+        };
+      });
+    });
+    expect(r).toEqual({ current: "The tenth section", railFits: true, currentInView: true });
   });
 });
 
@@ -199,12 +350,12 @@ describe("the insights index", () => {
     });
     expect(r.title).toBe("Insights | Crosswell");
     expect(r.h1).toEqual(["Insights"]);
-    expect(r.posts).toBe(3);
+    expect(r.posts).toBe(4);
     expect(r.featured).toBe("What a sample team learned from its first month of notes");
     expect(r.cover).toBe(1);
-    expect(r.rows).toEqual(["How a sample team spends its week", "A plain research note"]);
-    expect(r.links).toEqual(["/insights/fixture-field-notes", "/insights/fixture-bar-chart", "/insights/fixture-plain-note"]);
-    expect(r.portraits).toBe(3);
+    expect(r.rows).toEqual(["How a sample team spends its week", LONG_TITLE, "A plain research note"]);
+    expect(r.links).toEqual(["/insights/fixture-field-notes", "/insights/fixture-bar-chart", LONG, "/insights/fixture-plain-note"]);
+    expect(r.portraits).toBe(4);
     expect(r.order).toEqual(["insights"]);
   });
 
@@ -220,11 +371,57 @@ describe("the insights index", () => {
   });
 });
 
+describe("without JavaScript", () => {
+  it("shows the whole post, and an outline link still lands its heading clear of the nav", async () => {
+    const r = await withPage(
+      async (page) => {
+        await page.goto(`${site.url}${LONG}`, { waitUntil: "networkidle" });
+        const visible = (sel: string) => page.locator(sel).first().evaluate((el) => getComputedStyle(el).opacity === "1");
+        const end = await visible("#insight [data-portrait]");
+        const related = await visible("[aria-labelledby='keep-reading'] a");
+        await page.locator("nav[aria-label='On this page'] a", { hasText: "The tenth section" }).click();
+        await page.waitForTimeout(400);
+        const top = await page.locator("#the-tenth-section").evaluate((el) => Math.round(el.getBoundingClientRect().top));
+        await page.locator("[data-footnote-ref]").first().click();
+        await page.waitForTimeout(400);
+        const note = await page.locator("#user-content-fn-1").evaluate((el) => Math.round(el.getBoundingClientRect().top));
+        return { end, related, top, note, current: await page.locator("nav[aria-label='On this page'] a[aria-current]").count() };
+      },
+      // reduced motion: the page's own smooth scroll keeps a hash jump
+      // gliding while the driver looks for a still target
+      { js: false, reducedMotion: true }
+    );
+    expect(r).toMatchObject({ end: true, related: true, current: 0 });
+    expect(r.top).toBeGreaterThanOrEqual(80);
+    expect(r.top).toBeLessThanOrEqual(100);
+    expect(r.note).toBeGreaterThanOrEqual(80);
+    expect(r.note).toBeLessThanOrEqual(100);
+  });
+});
+
+describe("the not-found page", () => {
+  it("is the site's own, with the two ways on", async () => {
+    // the static export's 404.html is what Vercel serves for any address
+    // that is not a page, the insights route's _none placeholder included
+    const r = await withPage(async (page) => {
+      await page.goto(`${site.url}/404`, { waitUntil: "networkidle" });
+      return {
+        h1: await page.locator("h1").textContent(),
+        ways: await page.locator("#not-found a").evaluateAll((as) => as.map((a) => a.getAttribute("href"))),
+        nav: await page.locator("header nav a").count(),
+        footer: await page.locator("footer").count(),
+        dash: await page.evaluate(() => document.body.innerText.includes("—")),
+      };
+    });
+    expect(r).toEqual({ h1: "There’s nothing at this address.", ways: ["/insights", "/"], nav: 5, footer: 1, dash: false });
+  });
+});
+
 describe("search", () => {
   it("lists every post in the sitemap and lets the AI crawlers in", () => {
     const sitemap = readFileSync(join("out", "sitemap.xml"), "utf8");
     const robots = readFileSync(join("out", "robots.txt"), "utf8");
-    for (const slug of ["fixture-field-notes", "fixture-bar-chart", "fixture-plain-note"]) {
+    for (const slug of ["fixture-field-notes", "fixture-bar-chart", "fixture-long-read", "fixture-plain-note"]) {
       expect(sitemap).toContain(`<loc>${SITE}/insights/${slug}</loc>`);
     }
     expect(sitemap).toMatch(/fixture-field-notes<\/loc>\s*<lastmod>2026-09-27/);

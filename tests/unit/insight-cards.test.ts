@@ -98,8 +98,8 @@ describe("share cards", () => {
     const r = render("tests/fixtures/insights", "tests/fixtures/insights/media");
     expect(r.stderr).toBe("");
     expect(r.status).toBe(0);
-    expect(r.stdout).toContain(`cards: 3 written to ${out}`);
-    for (const slug of ["fixture-field-notes", "fixture-bar-chart", "fixture-plain-note"]) {
+    expect(r.stdout).toContain(`cards: 4 written to ${out}`);
+    for (const slug of ["fixture-field-notes", "fixture-bar-chart", "fixture-long-read", "fixture-plain-note"]) {
       expect(pngSize(join(out, slug, "card.png"))).toEqual({ png: true, width: 1200, height: 630 });
     }
     for (const slug of ["fixture-bar-chart", "fixture-plain-note"]) expectTypeCardFits(join(out, slug, "card.png"));

@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkGfm from "remark-gfm";
@@ -55,6 +57,46 @@ const faqLike = (text: string) =>
 
 /** a node's text for the FAQPage answer: list items on their own lines */
 const plain = (n: RootContent): string => (n.type === "list" ? n.children.map((li) => toString(li)).join("\n") : toString(n));
+
+/* --- images --- */
+
+/** where posts' images live: the same rule as load.ts's mediaRoot, which
+    cannot be imported here without a cycle (load imports parse imports this) */
+const mediaRoot = () => process.env.INSIGHTS_MEDIA_DIR ?? join("public", "media", "insights");
+
+/**
+ * An image file's pixel size from its header: a PNG's IHDR, or a JPEG's
+ * first frame marker (SOF0 to SOF15, skipping the tables and the segments
+ * that are not frames). Undefined when the file is missing or is neither,
+ * so a post never fails over its picture's size; it just ships without one.
+ */
+export function imageSize(path: string): { width: number; height: number } | undefined {
+  let b: Buffer;
+  try {
+    b = readFileSync(path);
+  } catch {
+    return undefined;
+  }
+  if (b.length >= 24 && b.readUInt32BE(0) === 0x89504e47 && b.toString("ascii", 12, 16) === "IHDR") {
+    return { width: b.readUInt32BE(16), height: b.readUInt32BE(20) };
+  }
+  if (b.length >= 4 && b.readUInt16BE(0) === 0xffd8) {
+    let i = 2;
+    while (i + 9 < b.length) {
+      if (b[i] !== 0xff) return undefined;
+      const marker = b[i + 1];
+      if (marker === 0xff) {
+        i += 1;
+        continue;
+      }
+      const frame = marker >= 0xc0 && marker <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(marker);
+      if (frame) return { height: b.readUInt16BE(i + 5), width: b.readUInt16BE(i + 7) };
+      if (marker === 0xd9 || marker === 0xda) return undefined;
+      i += 2 + b.readUInt16BE(i + 2);
+    }
+  }
+  return undefined;
+}
 
 /**
  * A post's Markdown body, transformed and checked (spec section 4): curled
@@ -162,7 +204,9 @@ export function parseBody(source: string, ctx: BodyContext): { value?: Body; pro
   });
 
   // images come from the post's media folder; one alone in a paragraph is
-  // a figure, its Markdown title the caption
+  // a figure, its Markdown title the caption. Each carries its width and
+  // height, read from the file at build, so the page reserves its space and
+  // the text does not jump as it lazy-loads.
   visit(tree, "image", (node) => {
     const file = node.url;
     if (/^([a-z]+:)?\/\//i.test(file) || file.startsWith("/")) {
@@ -175,7 +219,7 @@ export function parseBody(source: string, ctx: BodyContext): { value?: Body; pro
     if (!ctx.mediaExists(file)) problems.push(`body: image "${file}" is not in public/media/insights/${ctx.slug}/.`);
     node.url = mediaPath(ctx.slug, file);
     if (node.alt) node.alt = smart(node.alt);
-    props(node, { loading: "lazy" });
+    props(node, { loading: "lazy", ...imageSize(join(mediaRoot(), ctx.slug, file)) });
   });
   visit(tree, "paragraph", (node, index, parent) => {
     const only = node.children[0];

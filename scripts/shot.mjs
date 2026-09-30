@@ -1,11 +1,16 @@
 // Screenshot + overflow probe for manual mobile verification.
-// Usage: node scripts/shot.mjs <url> <width> <outfile> [--full] [--open-menu] [--reduced-motion] [--height N]
+// Usage: node scripts/shot.mjs <url> <width> <outfile> [--full] [--open-menu] [--reduced-motion] [--height N] [--el <selector>] [--scroll N]
+//   --el clips the shot to one element (the first match), for reading a
+//   detail at 2x; --scroll scrolls the window down N px first.
 import { chromium } from "playwright";
 
 const args = process.argv.slice(2);
 const [url, width, out] = args;
 const flag = (f) => args.includes(f);
-const height = flag("--height") ? Number(args[args.indexOf("--height") + 1]) : 844;
+const after = (f) => (flag(f) ? args[args.indexOf(f) + 1] : undefined);
+const height = flag("--height") ? Number(after("--height")) : 844;
+const el = after("--el");
+const scroll = flag("--scroll") ? Number(after("--scroll")) : 0;
 
 const browser = await chromium.launch();
 const page = await browser.newPage({
@@ -21,7 +26,12 @@ if (flag("--open-menu")) {
 // the hero art crossfades in over 1.2s after decode and the entrance stagger
 // runs ~1.5s; give the page time to fully settle before capturing
 await page.waitForTimeout(2000);
-await page.screenshot({ path: out, fullPage: flag("--full") });
+if (scroll) {
+  await page.evaluate((y) => window.scrollTo(0, y), scroll);
+  await page.waitForTimeout(600);
+}
+if (el) await page.locator(el).first().screenshot({ path: out });
+else await page.screenshot({ path: out, fullPage: flag("--full") });
 const overflow = await page.evaluate(
   () => document.scrollingElement.scrollWidth - document.documentElement.clientWidth
 );
