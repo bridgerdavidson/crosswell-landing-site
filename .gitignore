@@ -14,3 +14,7 @@ screenshots/
 # local-only prototypes: choreography sketches, never part of the site build
 src/app/prototype/
 public/prototype/
+
+# generated at build: each post's share card, and the e2e build's fixture media
+public/media/insights/*/card.png
+public/media/insights/fixture-*/
