@@ -59,6 +59,12 @@ describe("the body", () => {
     ]);
   });
 
+  it("rejects a heading with no text, which would leave an empty link in the outline", () => {
+    expect(parse("Text.\n\n## \n\nMore text.").problems).toEqual([
+      "body: a heading has no text. Write the heading or remove its # marks.",
+    ]);
+  });
+
   it("rejects raw HTML", () => {
     expect(parse('<div class="x">hi</div>').problems[0]).toMatch(/^body: raw HTML \(<div class="x">hi<\/div>\) is not allowed/);
   });

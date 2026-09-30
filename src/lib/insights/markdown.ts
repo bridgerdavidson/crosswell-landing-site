@@ -56,6 +56,11 @@ export function parseBody(source: string, ctx: BodyContext): { value?: Body; pro
   const outline: OutlineItem[] = [];
   visit(tree, "heading", (node) => {
     const text = toString(node);
+    // a stray "## " would publish an empty heading and an empty outline link
+    if (!text.trim()) {
+      problems.push("body: a heading has no text. Write the heading or remove its # marks.");
+      return;
+    }
     if (node.depth === 1) {
       problems.push(`body: "# ${text}" is a top-level heading. The title comes from frontmatter; use ## for sections.`);
     }

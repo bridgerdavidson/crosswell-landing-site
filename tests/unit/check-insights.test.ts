@@ -12,10 +12,10 @@ describe("npm run check:insights", () => {
     expect(r.stdout).toContain("insights: 3 posts checked, all valid (tests/fixtures/insights)");
   });
 
-  it("passes the real content folder, which holds only its README", () => {
+  it("passes the real content folder, however many posts it holds", () => {
     const r = run({ INSIGHTS_DIR: "content/insights" });
     expect(r.status).toBe(0);
-    expect(r.stdout).toContain("insights: 0 posts checked, all valid");
+    expect(r.stdout).toMatch(/insights: \d+ posts? checked, all valid \(content\/insights\)/);
   });
 
   it("lists every problem in a broken post and fails", () => {
