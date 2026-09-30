@@ -55,8 +55,13 @@ export function parseChart(source: string): { chart?: ChartSpec; problems: strin
     for (const [key, value] of raw) {
       const label = String(key);
       if (typeof value !== "number" || !Number.isFinite(value)) {
-        const attached = typeof value === "string" && /^\d/.test(value) ? " Write the number alone and put the unit in unit:." : "";
-        problems.push(`data value "${String(value)}" for "${label}" is not a number.${attached}`);
+        const s = typeof value === "string" ? value : "";
+        const hint = /^[\d\s.,]+$/.test(s) && s.includes(",")
+          ? " Write it without the comma."
+          : /^\d/.test(s)
+            ? " Write the number alone and put the unit in unit:."
+            : "";
+        problems.push(`data value "${String(value)}" for "${label}" is not a number.${hint}`);
       } else if (value < 0) {
         problems.push(`data value ${value} for "${label}" is below zero. Charts plot zero and up.`);
       } else {

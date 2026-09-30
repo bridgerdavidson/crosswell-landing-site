@@ -49,9 +49,12 @@ describe("chart blocks", () => {
     expect(hint(valid.replace("title: Share", "title: Share: the"))).toBe('A value with ": " in it needs quotes, like title: "Share: the of employees using AI".');
   });
 
-  it("points a value with its unit attached at the unit field", () => {
+  it("points a value with its unit attached at the unit field, and one with a comma at the comma", () => {
     expect(parseChart(valid.replace("2023: 21", "2023: 21%")).problems).toEqual([
       'data value "21%" for "2023" is not a number. Write the number alone and put the unit in unit:.',
+    ]);
+    expect(parseChart(valid.replace("2023: 21", "2023: 1,200")).problems).toEqual([
+      'data value "1,200" for "2023" is not a number. Write it without the comma.',
     ]);
   });
 
