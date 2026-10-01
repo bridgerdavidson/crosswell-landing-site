@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { serveOut } from "../helpers/serve";
@@ -474,12 +474,14 @@ describe("the team page", () => {
     });
     expect(r.title).toBe("Team | Crosswell");
     expect(r.names).toEqual(["Max Marohn", "Bridger Davidson", "Michael Zamora"]);
-    expect(r.roles).toEqual(["Founding partner", "Founding partner, engineering", "Founding partner"]);
+    expect(r.roles).toEqual(["Founding Partner", "Founding Partner, Engineering", "Founding Partner"]);
     expect(r.portraits).toBe(3);
+    // nothing named team sits beside the team page, so no folder can shadow it
+    expect(existsSync(join("out", "team"))).toBe(false);
     expect(r.photos).toEqual([
-      { src: "/team/max.jpg", loaded: true },
-      { src: "/team/bridger.jpg", loaded: true },
-      { src: "/team/michael.jpg", loaded: true },
+      { src: "/media/team/max.jpg", loaded: true },
+      { src: "/media/team/bridger.jpg", loaded: true },
+      { src: "/media/team/michael.jpg", loaded: true },
     ]);
     /* the lede and three roles, and no bios: nothing in the team's paragraphs runs past a line */
     expect(r.bios.filter((t) => t.length > 120)).toEqual([]);

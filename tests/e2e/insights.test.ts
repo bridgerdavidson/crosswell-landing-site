@@ -49,7 +49,7 @@ describe("an insight", () => {
         })),
       };
     });
-    expect(r.author).toEqual({ src: "/team/bridger-avatar.jpg", loaded: true });
+    expect(r.author).toEqual({ src: "/media/team/bridger-avatar.jpg", loaded: true });
     expect(r.title).toBe("What a sample team learned from its first month of notes | Crosswell");
     expect(r.h1).toEqual(["What a sample team learned from its first month of notes"]);
     expect(r.takeaways[0]).toContain("that’s curled");
