@@ -453,6 +453,9 @@ describe("the team page", () => {
         names: await page.locator("#team h3").allTextContents(),
         roles: await page.locator("#team h3 + p").allTextContents(),
         portraits: await page.locator("#team [data-portrait]").count(),
+        photos: await page.locator("#team img[data-portrait]").evaluateAll((imgs) =>
+          (imgs as HTMLImageElement[]).map((i) => ({ src: i.getAttribute("src"), loaded: i.complete && i.naturalWidth === 720 && i.naturalHeight === 900 }))
+        ),
         bios: await page.locator("#team p").allTextContents(),
         labels: await page.locator("#values .type-label").allTextContents(),
         vision: await page.getByText("To become the most sought after name in agentic AI").count(),
@@ -473,6 +476,11 @@ describe("the team page", () => {
     expect(r.names).toEqual(["Max Marohn", "Bridger Davidson", "Michael Zamora"]);
     expect(r.roles).toEqual(["Founding partner", "Founding partner, engineering", "Founding partner"]);
     expect(r.portraits).toBe(3);
+    expect(r.photos).toEqual([
+      { src: "/team/max.jpg", loaded: true },
+      { src: "/team/bridger.jpg", loaded: true },
+      { src: "/team/michael.jpg", loaded: true },
+    ]);
     /* the lede and three roles, and no bios: nothing in the team's paragraphs runs past a line */
     expect(r.bios.filter((t) => t.length > 120)).toEqual([]);
     expect(r.labels).toEqual(["Vision", "Values"]);

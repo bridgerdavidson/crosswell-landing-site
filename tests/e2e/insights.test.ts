@@ -43,8 +43,13 @@ describe("an insight", () => {
         related: await article.locator("[aria-labelledby='keep-reading'] a").evaluateAll((as) => as.map((a) => a.getAttribute("href"))),
         outline: await article.locator("nav[aria-label='On this page'] a").allTextContents(),
         current: await page.locator("header nav a[aria-current='page']").textContent(),
+        author: await article.locator("[data-rail] img[data-portrait]").evaluate((i: HTMLImageElement) => ({
+          src: i.getAttribute("src"),
+          loaded: i.complete && i.naturalWidth === 288,
+        })),
       };
     });
+    expect(r.author).toEqual({ src: "/team/bridger-avatar.jpg", loaded: true });
     expect(r.title).toBe("What a sample team learned from its first month of notes | Crosswell");
     expect(r.h1).toEqual(["What a sample team learned from its first month of notes"]);
     expect(r.takeaways[0]).toContain("that’s curled");

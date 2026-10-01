@@ -12,6 +12,7 @@ const photographed: Person = {
   linkedin: "https://www.linkedin.com/in/example",
   portrait: "/team/sam.jpg",
 };
+const withAvatar: Person = { ...photographed, avatar: "/team/sam-avatar.jpg" };
 const unphotographed: Person = { id: "ria", name: "Ria Tester", role: "Tester" };
 
 /** every portrait <img> tag in a piece of markup */
@@ -27,6 +28,18 @@ describe("portraits", () => {
     expect(team.map(src)).toEqual(["/team/sam.jpg"]);
     expect(end.map(src)).toEqual(["/team/sam.jpg"]);
     expect(rail.map(src)).toEqual(["/team/sam.jpg"]);
+  });
+
+  it("shows the author's square crop in the round photo when there is one, and the portrait on the team page", () => {
+    const team = portraitImgs(renderToStaticMarkup(<Team people={[withAvatar]} />));
+    const end = portraitImgs(renderToStaticMarkup(<AuthorBlock person={withAvatar} variant="end" />));
+    const rail = portraitImgs(renderToStaticMarkup(<AuthorBlock person={withAvatar} variant="rail" />));
+    expect(team.map(src)).toEqual(["/team/sam.jpg"]);
+    expect(end.map(src)).toEqual(["/team/sam-avatar.jpg"]);
+    expect(rail.map(src)).toEqual(["/team/sam-avatar.jpg"]);
+    // the square crop is already framed on the face, so it is not shifted
+    expect(end[0]).toContain("rounded-full");
+    expect(end[0]).not.toContain("object-[50%_30%]");
   });
 
   it("crops the author's photograph round and keeps the team's frame", () => {
