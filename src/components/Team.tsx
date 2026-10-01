@@ -5,9 +5,9 @@ import Reveal from "./Reveal";
    coming back. The roles were set by Bridger on 2026-09-30; the portraits
    are 4:5 placeholders until the new photographs exist. */
 const people = [
-  { name: "Max Marohn", role: "Founding partner" },
-  { name: "Bridger Davidson", role: "Founding partner, engineering" },
-  { name: "Michael Zamora", role: "Founding partner" },
+  { name: "Max Marohn", role: "Founding Partner" },
+  { name: "Bridger Davidson", role: "Founding Partner, Engineering" },
+  { name: "Michael Zamora", role: "Founding Partner" },
 ];
 
 /**

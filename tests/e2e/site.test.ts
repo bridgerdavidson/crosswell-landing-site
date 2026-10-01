@@ -471,7 +471,7 @@ describe("the team page", () => {
     });
     expect(r.title).toBe("Team | Crosswell");
     expect(r.names).toEqual(["Max Marohn", "Bridger Davidson", "Michael Zamora"]);
-    expect(r.roles).toEqual(["Founding partner", "Founding partner, engineering", "Founding partner"]);
+    expect(r.roles).toEqual(["Founding Partner", "Founding Partner, Engineering", "Founding Partner"]);
     expect(r.portraits).toBe(3);
     /* the lede and three roles, and no bios: nothing in the team's paragraphs runs past a line */
     expect(r.bios.filter((t) => t.length > 120)).toEqual([]);
