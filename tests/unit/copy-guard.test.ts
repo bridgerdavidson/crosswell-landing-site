@@ -33,6 +33,17 @@ describe("copy guard", () => {
     expect(r.stderr).toMatch(/bad\.tsx:9: straight apostrophe/);
   });
 
+  it("catches an em dash in a Markdown post", () => {
+    const r = guard("tests/fixtures/copy-bad");
+    expect(r.status).toBe(1);
+    expect(r.stderr).toMatch(/bad\.md:3: em dash/);
+  });
+
+  it("checks Markdown for em dashes only, since the build curls its apostrophes", () => {
+    const r = guard("tests/fixtures/copy-good");
+    expect(r.stderr).not.toMatch(/good\.md/);
+  });
+
   it("passes clean copy", () => {
     const r = guard("tests/fixtures/copy-good");
     expect(r.status).toBe(0);

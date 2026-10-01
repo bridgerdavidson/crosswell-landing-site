@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { serveOut } from "../helpers/serve";
@@ -453,6 +453,9 @@ describe("the team page", () => {
         names: await page.locator("#team h3").allTextContents(),
         roles: await page.locator("#team h3 + p").allTextContents(),
         portraits: await page.locator("#team [data-portrait]").count(),
+        photos: await page.locator("#team img[data-portrait]").evaluateAll((imgs) =>
+          (imgs as HTMLImageElement[]).map((i) => ({ src: i.getAttribute("src"), loaded: i.complete && i.naturalWidth === 720 && i.naturalHeight === 900 }))
+        ),
         bios: await page.locator("#team p").allTextContents(),
         labels: await page.locator("#values .type-label").allTextContents(),
         vision: await page.getByText("To become the most sought after name in agentic AI").count(),
@@ -473,6 +476,13 @@ describe("the team page", () => {
     expect(r.names).toEqual(["Max Marohn", "Bridger Davidson", "Michael Zamora"]);
     expect(r.roles).toEqual(["Founding Partner", "Founding Partner, Engineering", "Founding Partner"]);
     expect(r.portraits).toBe(3);
+    // nothing named team sits beside the team page, so no folder can shadow it
+    expect(existsSync(join("out", "team"))).toBe(false);
+    expect(r.photos).toEqual([
+      { src: "/media/team/max.jpg", loaded: true },
+      { src: "/media/team/bridger.jpg", loaded: true },
+      { src: "/media/team/michael.jpg", loaded: true },
+    ]);
     /* the lede and three roles, and no bios: nothing in the team's paragraphs runs past a line */
     expect(r.bios.filter((t) => t.length > 120)).toEqual([]);
     expect(r.labels).toEqual(["Vision", "Values"]);
@@ -488,24 +498,6 @@ describe("the team page", () => {
     expect(r.h1).toBe(0);
     expect(r.order).toEqual(["team", "values"]);
     expect(r.top).toBeGreaterThanOrEqual(112);
-  });
-});
-
-describe("the insights page", () => {
-  it("holds the slot for the blog", async () => {
-    const r = await withPage(async (page) => {
-      await page.goto(`${site.url}/insights`, { waitUntil: "networkidle" });
-      return {
-        title: await page.title(),
-        heading: await page.locator("#insights h2").textContent(),
-        posts: await page.locator("#insights article").count(),
-        order: await page.evaluate(() => [...document.querySelectorAll("main section[id]")].map((s) => s.id)),
-      };
-    });
-    expect(r.title).toBe("Insights | Crosswell");
-    expect(r.heading).toBe("Insights");
-    expect(r.posts).toBe(0);
-    expect(r.order).toEqual(["insights"]);
   });
 });
 

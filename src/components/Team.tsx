@@ -1,14 +1,13 @@
 import Band, { CONTAINER, HANG } from "./Band";
+import Portrait from "./Portrait";
 import Reveal from "./Reveal";
+import { PEOPLE, type Person } from "@/lib/people";
 
 /* Names and roles only. The bios came out in September 2026 and are not
-   coming back. The roles were set by Bridger on 2026-09-30; the portraits
-   are 4:5 placeholders until the new photographs exist. */
-const people = [
-  { name: "Max Marohn", role: "Founding Partner" },
-  { name: "Bridger Davidson", role: "Founding Partner, Engineering" },
-  { name: "Michael Zamora", role: "Founding Partner" },
-];
+   coming back. The people, their roles, and their photographs come from
+   lib/people.ts, the file every post's author block reads, so a role or a
+   photograph changes in one place. Each portrait is a 4:5 placeholder
+   until its photograph exists. */
 
 /**
  * The team. The page opens on it, under the nav with no seam above it (the
@@ -22,7 +21,7 @@ const people = [
  * name and role, so a phone reads the whole team in one screen. No cards
  * (the team's were the page's last) and no bios.
  */
-export default function Team() {
+export default function Team({ people = PEOPLE }: { people?: Person[] }) {
   return (
     <section id="team" className={`${CONTAINER} pt-28 pb-24 sm:pt-40 sm:pb-32`}>
       <Band
@@ -32,13 +31,13 @@ export default function Team() {
       />
       <ul className={`${HANG} border-t border-ink/8 md:grid md:grid-cols-3 md:gap-x-6 md:border-t-0`}>
         {people.map((person, i) => (
-          <li key={person.name} className="border-b border-ink/8 py-5 md:border-b-0 md:py-0">
+          <li key={person.id} className="border-b border-ink/8 py-5 md:border-b-0 md:py-0">
             <Reveal delay={i * 80} className="flex items-center gap-5 md:block">
-              {/* the portrait's place, a 4:5 placeholder until the photographs exist */}
-              <div
-                data-portrait
-                aria-hidden
-                className="aspect-4/5 w-24 flex-none rounded-xl border border-warmgray/40 bg-warmgray/25 md:w-full md:max-w-[360px] md:rounded-2xl"
+              {/* the photograph, or its 4:5 placeholder until it exists */}
+              <Portrait
+                person={person}
+                shape="frame"
+                className="aspect-4/5 w-24 flex-none rounded-xl md:w-full md:max-w-[360px] md:rounded-2xl"
               />
               <div className="md:mt-5">
                 <h3 className="type-accent text-ink">{person.name}</h3>

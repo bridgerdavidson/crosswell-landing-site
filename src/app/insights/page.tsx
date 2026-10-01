@@ -3,6 +3,7 @@ import Nav from "@/components/Nav";
 import Insights from "@/components/Insights";
 import Footer from "@/components/Footer";
 import { pageMetadata } from "@/lib/site";
+import { getAllPosts } from "@/lib/insights/load";
 
 export const metadata = pageMetadata({
   title: "Insights | Crosswell",
@@ -10,8 +11,8 @@ export const metadata = pageMetadata({
   path: "/insights",
 });
 
-/* The insights page: the blog's home. A held slot until the first pieces
-   publish; the posts and their cards are a separate brief. */
+/* The insights page: the index of every post (spec section 6). With no
+   posts it is the held slot. */
 export default function InsightsPage() {
   /* a short page: the band fills the viewport so the footer sits at the
      bottom of the window rather than a third of the way down it */
@@ -20,7 +21,7 @@ export default function InsightsPage() {
       <Canonical path="/insights" />
       <Nav />
       <div className="flex-1">
-        <Insights />
+        <Insights posts={getAllPosts()} />
       </div>
       <Footer />
     </main>

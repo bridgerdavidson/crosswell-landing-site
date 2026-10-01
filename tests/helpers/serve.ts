@@ -20,10 +20,12 @@ export async function serveOut(dir = "out") {
   const server = createServer(async (req, res) => {
     const url = new URL(req.url ?? "/", "http://x");
     let file = join(dir, decodeURIComponent(url.pathname));
-    try {
-      if ((await stat(file)).isDirectory()) file = join(file, "index.html");
-    } catch {
-      if (!extname(file)) file += ".html";
+    // cleanUrls: /insights is insights.html even beside an insights/ folder
+    // of posts; a folder's index.html only when there is no such file
+    if (!extname(file)) {
+      const page = await stat(`${file}.html`).catch(() => null);
+      if (page?.isFile()) file += ".html";
+      else if ((await stat(file).catch(() => null))?.isDirectory()) file = join(file, "index.html");
     }
     try {
       const body = await readFile(file);
