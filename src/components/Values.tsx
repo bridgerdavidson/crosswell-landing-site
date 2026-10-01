@@ -24,14 +24,15 @@ const values = [
   },
 ];
 
-/* The team page opens on this section, so it can sit under the nav with no
-   seam above it (first): the nav's 80 plus 32, or 80 from sm, before the
-   label. Anywhere else it keeps the page's seam and section padding. */
-export default function Values({ first = false }: { first?: boolean }) {
+/* The band is the vision (its label says so, since the vision line is the
+   title itself and there is no "Mission" heading), and the three values
+   hang from it under a label of their own. On the team page the section
+   follows the team, with the page's seam and section padding. */
+export default function Values() {
   return (
-    <section id="values" className={first ? `${CONTAINER} pt-28 pb-24 sm:pt-40 sm:pb-32` : `${SEAM} ${CONTAINER} ${SECTION}`}>
+    <section id="values" className={`${SEAM} ${CONTAINER} ${SECTION}`}>
       <Band
-        label="Values"
+        label="Vision"
         title={
           /* the vision line breaks only between its phrases: "To become",
              "the most sought after", "name in agentic AI", "by setting the
@@ -50,12 +51,17 @@ export default function Values({ first = false }: { first?: boolean }) {
         lede="That is what we are building toward. What we do every day is simpler: we help businesses become AI native."
       />
 
+      {/* the values' label hangs from the vision by the section's hang, and
+          the columns follow 32 under it */}
+      <Reveal className={HANG}>
+        <p className="type-label text-fern-deep">Values</p>
+      </Reveal>
       {/* three columns on five shared rows (rule, name, line, "What it
           costs", cost), so the labels sit on one line across the row
           whatever the lines above them wrap to; the rows' spacing lives on
           the elements, not in the grid's gap. The columns share the card
           rows' lines (three across the container, 24 apart) */}
-      <div className={`${HANG} grid gap-y-12 md:grid-cols-3 md:gap-x-6 md:gap-y-0`}>
+      <div className="mt-8 grid gap-y-12 md:grid-cols-3 md:gap-x-6 md:gap-y-0">
         {values.map((value, i) => (
           <Reveal
             key={value.name}
