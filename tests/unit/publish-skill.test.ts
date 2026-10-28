@@ -37,7 +37,7 @@ describe("the publishing command", () => {
   it("calls a post an update only when its slug is on origin/main, and continues an unshipped branch", () => {
     expect(skill).toContain("git cat-file -e origin/main:content/insights/<slug>.md");
     expect(skill).not.toMatch(/already exists in `content\/insights\/`/);
-    expect(skill).toMatch(/branch already exists[\s\S]{0,300}`git switch insights\/<slug>`/);
+    expect(skill).toMatch(/branch already exists[\s\S]{0,300}`git switch insights-post\/<slug>`/);
   });
 
   it("has the reviewer set published to the merge day, and tells the author so", () => {
@@ -49,5 +49,12 @@ describe("the publishing command", () => {
     expect(skill).not.toContain("git add content/insights/<slug>.md public/media/insights/<slug>");
     expect(skill).toMatch(/only when the post has a cover or images/);
     expect(skill).toMatch(/never name the note's path/);
+  });
+
+  it("never names a branch under insights/, which the repository's own insights branch blocks", () => {
+    // Git cannot hold refs/heads/insights and refs/heads/insights/<anything> at once
+    expect(skill).not.toMatch(/(switch -c |switch |push -u origin |branch is `)insights\/(<slug>|update-)/);
+    expect(skill).toContain("git switch -c insights-post/<slug> origin/main");
+    expect(skill).toContain("insights-update/<slug>");
   });
 });
