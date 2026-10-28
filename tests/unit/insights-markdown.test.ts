@@ -5,7 +5,7 @@ import { parseBody } from "@/lib/insights/markdown";
 import { staticParams } from "@/lib/insights/paths";
 
 const ctx = { slug: "a-test-post", mediaExists: () => true };
-const parse = (md: string, mediaExists = () => true) => parseBody(md, { ...ctx, mediaExists });
+const parse = (md: string, mediaExists: (file: string) => boolean = () => true) => parseBody(md, { ...ctx, mediaExists });
 const ok = (md: string) => {
   const r = parse(md);
   expect(r.problems).toEqual([]);
@@ -171,6 +171,25 @@ describe("images and links", () => {
     const [img] = elements(figure as unknown as Root, "img");
     expect(img.properties).toMatchObject({ src: "/media/insights/a-test-post/notes.png", alt: "A chart of notes", loading: "lazy" });
     expect(text(elements(figure as unknown as Root, "figcaption")[0])).toBe("Notes per week");
+  });
+
+  it("serves a figure's phone drawing below sm when one sits beside it", () => {
+    const { body } = ok('![An org chart](chart.png "The chart")');
+    const [figure] = elements(body, "figure");
+    const [picture] = elements(figure as unknown as Root, "picture");
+    const [source] = elements(picture as unknown as Root, "source");
+    expect(source.properties).toMatchObject({ media: "(max-width: 39.99rem)", srcSet: "/media/insights/a-test-post/chart-phone.png" });
+    expect(elements(picture as unknown as Root, "img")[0].properties.src).toBe("/media/insights/a-test-post/chart.png");
+    expect(text(elements(figure as unknown as Root, "figcaption")[0])).toBe("The chart");
+  });
+
+  it("leaves a figure without a phone drawing as one image, and never looks for a phone drawing's own", () => {
+    const asked: string[] = [];
+    const { value } = parse("![An org chart](chart.png)\n\n![A phone chart](chart-phone.png)", (f) => (asked.push(f), true));
+    expect(elements(value!.body, "picture")).toHaveLength(1);
+    expect(asked).not.toContain("chart-phone-phone.png");
+    const lone = parse("![An org chart](chart.png)", (f) => f === "chart.png").value!;
+    expect(elements(lone.body, "picture")).toHaveLength(0);
   });
 
   it("rejects an image with no alt text, a missing file, and an outside URL", () => {

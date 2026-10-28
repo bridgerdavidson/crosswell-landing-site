@@ -2015,6 +2015,11 @@ body {
   font-weight: 600;
   color: var(--color-ink);
 }
+/* a figure with a phone drawing wraps its image in a picture; block, so the
+   picture adds no line box under the image */
+.article-body figure picture {
+  display: block;
+}
 .article-body figure img {
   width: 100%;
   /* the file's width and height attributes reserve its space; auto keeps
