@@ -5,7 +5,7 @@ author: max
 published: 2026-10-28
 takeaways:
   - 63 percent of RIAs now use AI in some capacity, more than double since 2023, but only about 1 in 10 have fully integrated it into the business (Schwab, 2026).
-  - Six workflows hold up: meetings that file themselves, briefings before the meeting, onboarding, recurring reports, document intake, and asking the firm what it knows.
+  - "Six workflows hold up: meetings that file themselves, briefings before the meeting, onboarding, recurring reports, document intake, and asking the firm what it knows."
   - None of them compound as a separate app. The value starts when each one writes back into the same firm memory.
 ---
 
