@@ -28,13 +28,13 @@ The post format is in `content/insights/README.md`. Read it before converting an
 
 ## 1. Convert the note
 
-The branch is `insights/<slug>` for a new post and `insights/update-<slug>` for an update:
+The branch is `insights-post/<slug>` for a new post and `insights-update/<slug>` for an update. Never `insights/<slug>`: the repository keeps a branch named `insights`, and Git cannot hold a branch and a branch folder under the same name.
 
 ```bash
-git switch -c insights/<slug> origin/main
+git switch -c insights-post/<slug> origin/main
 ```
 
-If that fails because the branch already exists (an earlier run that stopped before shipping, or a pull request already open), run `git switch insights/<slug>` and continue from what is there: read `content/insights/<slug>.md` and show the author the diff against the note before writing anything.
+If that fails because the branch already exists (an earlier run that stopped before shipping, or a pull request already open), run `git switch insights-post/<slug>` and continue from what is there: read `content/insights/<slug>.md` and show the author the diff against the note before writing anything.
 
 Write `content/insights/<slug>.md`:
 
@@ -96,7 +96,7 @@ Only when the author says "ship it" (or says plainly that it is ready to go live
 git add content/insights/<slug>.md
 git add public/media/insights/<slug>/<the cover and each body image>
 git commit -m "feat: publish \"<title>\"" -m "<the Co-Authored-By trailer this session uses>"
-git push -u origin insights/<slug>
+git push -u origin insights-post/<slug>
 gh pr create --base main --title "Publish: <title>" --body-file <a file you wrote with the body below>
 ```
 
@@ -123,7 +123,7 @@ Give the author the pull request's URL. **Never merge it. Never push to `main`. 
 
 ## 6. Updating a published post
 
-- Start from the repo's file, `content/insights/<slug>.md`: once published, it is the source of truth, not the note. The branch is `insights/update-<slug>`; if it already exists, switch to it and continue, as in section 1.
+- Start from the repo's file, `content/insights/<slug>.md`: once published, it is the source of truth, not the note. The branch is `insights-update/<slug>`; if it already exists, switch to it and continue, as in section 1.
 - If the author brings a revised note, convert it and show the diff against the published file before writing anything.
 - Set `updated` to today only if the author says the change is substantive; never for a typo. The same merge-day rule applies to `updated`: the pull request body asks the reviewer to set it to the merge day.
 - The slug never changes. `published` never changes.
