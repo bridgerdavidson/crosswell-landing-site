@@ -12,7 +12,7 @@ import type { Heading, Root, RootContent } from "mdast";
 import type { Root as HastRoot } from "hast";
 import { SITE } from "@/lib/site";
 import { parseChart } from "./chart";
-import { mediaPath, webName } from "./paths";
+import { isWebName, mediaPath, webName } from "./paths";
 import { curlContractions, smart } from "./smart";
 import type { ChartSpec, FaqItem, OutlineItem } from "./types";
 
@@ -206,7 +206,10 @@ export function parseBody(source: string, ctx: BodyContext): { value?: Body; pro
   // images come from the post's media folder; one alone in a paragraph is
   // a figure, its Markdown title the caption. Each carries its width and
   // height, read from the file at build, so the page reserves its space and
-  // the text does not jump as it lazy-loads.
+  // the text does not jump as it lazy-loads. A figure with a phone drawing
+  // beside it (chart.png and chart-phone.png) shows that one below sm, the
+  // way a chart is drawn twice, so a diagram's words stay readable.
+  const phones = new Map<object, RootContent>();
   visit(tree, "image", (node) => {
     const file = node.url;
     if (/^([a-z]+:)?\/\//i.test(file) || file.startsWith("/")) {
@@ -216,7 +219,13 @@ export function parseBody(source: string, ctx: BodyContext): { value?: Body; pro
     if (!node.alt?.trim()) {
       problems.push(`body: image "${file}" has no alt text. Write it as ![what the image shows](${file}).`);
     }
-    if (!ctx.mediaExists(file)) problems.push(`body: image "${file}" is not in public/media/insights/${ctx.slug}/.`);
+    const exists = ctx.mediaExists(file);
+    if (!exists) problems.push(`body: image "${file}" is not in public/media/insights/${ctx.slug}/.`);
+    const phone = file.replace(/(\.[a-z0-9]+)$/i, "-phone$1");
+    if (exists && isWebName(file) && !/-phone\.[a-z0-9]+$/i.test(file) && ctx.mediaExists(phone)) {
+      const size = imageSize(join(mediaRoot(), ctx.slug, phone));
+      phones.set(node, custom("source", "source", [], { media: "(max-width: 39.99rem)", srcSet: mediaPath(ctx.slug, phone), ...size }));
+    }
     node.url = mediaPath(ctx.slug, file);
     if (node.alt) node.alt = smart(node.alt);
     props(node, { loading: "lazy", ...imageSize(join(mediaRoot(), ctx.slug, file)) });
@@ -226,7 +235,9 @@ export function parseBody(source: string, ctx: BodyContext): { value?: Body; pro
     if (!parent || index === undefined || node.children.length !== 1 || only.type !== "image") return;
     const caption = only.title ? [custom("caption", "figcaption", [{ type: "text", value: smart(only.title) }])] : [];
     only.title = null;
-    parent.children[index] = custom("figure", "figure", [only, ...caption]) as never;
+    const phone = phones.get(only);
+    const picture = phone ? custom("picture", "picture", [phone, only]) : only;
+    parent.children[index] = custom("figure", "figure", [picture, ...caption]) as never;
   });
 
   // links out of the site open in a new tab

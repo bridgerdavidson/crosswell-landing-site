@@ -36,6 +36,7 @@ related: [another-post, a-third-post]
 - Sections are `##` headings; `###` goes inside a section. Phrase sections as the questions a reader is asking. Never use a single `#`: the title comes from the top of the file.
 - Link every statistic to its source.
 - Images: put the file in `public/media/insights/<slug>/` and write `![what the image shows](file.png "Optional caption")`. Name files with letters, digits, hyphens, and dots, no spaces: a screenshot called `Screenshot 2026-09-30 at 10.00.png` becomes `screenshot-2026-09-30.png`.
+- A diagram whose words would be too small on a phone can have a phone drawing beside it: `chart.png` and `chart-phone.png` in the same folder. Phones show the `-phone` one; everything else shows `chart.png`. Draw it about 340 pixels wide at 1:1 (export at 3x, so 1020 wide), and write only `chart.png` in the post.
 - Tables, lists, and `>` pull quotes work as usual. Raw HTML does not.
 - An FAQ is a section called `## Frequently asked questions` with each question as a `###` heading and its answer under it. It shows on the page and is marked up for search engines.
 - A chart is a block of data. The site draws it:
