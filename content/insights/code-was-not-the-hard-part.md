@@ -5,9 +5,9 @@ author: max
 published: 2026-10-28
 takeaways:
   - The interface is a melting asset. AI platforms make their own tools easier every month, so a friendlier skin on a model will not last.
-  - Building a different version of the system for each person now takes about an hour, down from a year of development. His hypothesis: fit, not intelligence, drives adoption.
-  - The hard part is not the code anymore. It is collecting the context: what the firm knows and how the work actually happens.
-  - Owning a system means owning what a vendor used to absorb: maintenance, security, technical debt, and key-person risk.
+  - "Building a different version of the system for each person now takes about an hour, down from a year of development. His hypothesis: fit, not intelligence, drives adoption."
+  - "The hard part is not the code anymore. It is collecting the context: what the firm knows and how the work actually happens."
+  - "Owning a system means owning what a vendor used to absorb: maintenance, security, technical debt, and key-person risk."
 ---
 
 Not the code. One owner, not an engineer by trade, built his financial services firm its own agentic AI system, agentic AI meaning AI that does the work rather than just answering questions, over the past year at his own desk, tool by tool, failure by failure, until his team ran on it. The hard part turned out to be something else entirely: collecting what his firm actually knows and feeding it into the system. His answer to where the value lives came in three parts, none of them the part the demos show: the tool built for the firm's actual work, the memory that keeps what the firm learns, and software people use because it fits them.
