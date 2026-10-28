@@ -6,7 +6,7 @@ published: 2026-10-28
 takeaways:
   - 85 percent of investment adviser firms named AI the hottest compliance topic of 2026, the most dominant response in the survey's 21-year history (IAA and ACA Group).
   - More than half of employees who use AI at work admit to hiding it from their employer, and nearly half admit to policy-violating use (KPMG and University of Melbourne, 2025).
-  - Five questions test four boundaries: who owns the context, where the data lives, what the system may do without a person, and whether you can leave.
+  - "Five questions test four boundaries: who owns the context, where the data lives, what the system may do without a person, and whether you can leave."
   - Regulators have already moved. Reg S-P's compliance dates have passed, and the SEC has already brought AI-washing enforcement actions.
 ---
 
