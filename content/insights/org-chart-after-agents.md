@@ -8,6 +8,8 @@ takeaways:
   - Deloitte reports 84 percent of companies have not redesigned jobs for AI, and asks how many agents one human can be accountable for.
   - Gartner found workforce reductions common among large AI deployers, with no matching improvement in returns.
   - The practical problem is not headcount. It is what you check delegated work against.
+cover: cover.jpg
+coverAlt: An org chart built from blank ivory cards on linen, one card at the top, three below it, and one under each of those, with the bottom row replaced by clusters of small green tokens wired to the three lowest cards.
 ---
 
 The traditional chart has a bottom row whose job is to execute tasks somebody above them thought up. If agents do that execution, the row changes, and so does every job above it. The short answer is that there are two different drawings of what happens. In the softer version, the analysts and associates stay and each one supervises agents. In the harder version, the row is removed and the directors and managers who were already there absorb the delegation and the checking. Large advisory firms have published versions of both. What almost nobody has published is the operating detail underneath either one: how many agents one person can actually be accountable for, and what they check the output against. This piece lays out the shape and shows who is saying what.
