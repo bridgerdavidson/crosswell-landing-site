@@ -557,19 +557,34 @@ body {
   }
 }
 
-/* ---------- Hero load entrance ----------
-   A one-shot staggered rise+fade that plays on first paint, in the same
-   motion language as the scroll reveals above. JS-gated (only hides when
-   the head script has set .js) so no-JS renders the finished hero. Per-
-   element pacing is driven by --enter-delay / --enter-dur set in the markup. */
+/* ---------- Page entrance ----------
+   A one-shot staggered rise+fade, top to bottom, that plays when a page
+   first paints, in the same motion language as the scroll reveals above.
+   JS-gated (only hides when the head script has set .js) so no-JS renders
+   the finished page. Per-element pacing is driven by --enter-delay /
+   --enter-dur set in the markup (components/enter.ts). The nav lives in
+   the root layout and drops in once; after the first tab click it is
+   already in place (Nav.tsx sets .navigated), so every page from then on
+   starts its entrance --enter-lead sooner instead of waiting for it.
+   .reveal-enter is a Reveal already in the first frame on arrival: the
+   same rise, its delay set inline to follow the opening (Reveal.tsx). */
 
-.js .hero-enter {
-  opacity: 0;
-  animation: hero-rise var(--enter-dur, 0.9s) cubic-bezier(0.22, 1, 0.36, 1)
-    var(--enter-delay, 0s) both;
+:root {
+  --enter-lead: 0s;
 }
 
-@keyframes hero-rise {
+:root.navigated {
+  --enter-lead: 0.3s;
+}
+
+.js .page-enter,
+.js .reveal-enter {
+  opacity: 0;
+  animation: page-rise var(--enter-dur, 0.9s) cubic-bezier(0.22, 1, 0.36, 1)
+    calc(var(--enter-delay, 0s) - var(--enter-lead)) both;
+}
+
+@keyframes page-rise {
   from {
     opacity: 0;
     transform: translateY(26px);
@@ -596,7 +611,8 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .js .hero-enter,
+  .js .page-enter,
+  .js .reveal-enter,
   .js .nav-enter {
     opacity: 1;
     transform: none;

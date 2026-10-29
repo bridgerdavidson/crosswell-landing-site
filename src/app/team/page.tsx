@@ -1,5 +1,4 @@
 import Canonical from "@/components/Canonical";
-import Nav from "@/components/Nav";
 import Team from "@/components/Team";
 import Values from "@/components/Values";
 import FinalCta from "@/components/FinalCta";
@@ -20,7 +19,6 @@ export default function TeamPage() {
   return (
     <main>
       <Canonical path="/team" />
-      <Nav />
       <Team />
       <Values />
       <FinalCta />

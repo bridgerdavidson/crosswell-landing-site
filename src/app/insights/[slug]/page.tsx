@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { CONTAINER, GRID } from "@/components/Band";
 import Canonical from "@/components/Canonical";
 import Footer from "@/components/Footer";
-import Nav from "@/components/Nav";
+import Reveal from "@/components/Reveal";
 import ArticleEnd from "@/components/insights/ArticleEnd";
 import ArticleHeader from "@/components/insights/ArticleHeader";
 import ArticleRail from "@/components/insights/ArticleRail";
@@ -49,19 +49,21 @@ export default async function InsightPage({ params }: Props) {
   return (
     <main>
       <Canonical path={postPath(post.slug)} />
-      <Nav />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLdScript(faq ? [articleJsonLd(post), faq] : [articleJsonLd(post)]) }}
       />
       <article id="insight" className={`${CONTAINER} pt-28 pb-24 sm:pt-40 sm:pb-32`}>
         <ArticleHeader post={post} />
+        {/* in the first frame, the cover rises after the title band */}
         {post.cover && (
-          <img
-            src={post.cover.src}
-            alt={post.cover.alt}
-            className="insight-cover mt-16 aspect-[2/1] w-full rounded-2xl object-cover sm:mt-20"
-          />
+          <Reveal className="mt-16 sm:mt-20">
+            <img
+              src={post.cover.src}
+              alt={post.cover.alt}
+              className="insight-cover aspect-[2/1] w-full rounded-2xl object-cover"
+            />
+          </Reveal>
         )}
         <div className={`${GRID} mt-16 border-t border-ink/8 pt-12 sm:mt-20 sm:pt-14`}>
           <div className="min-w-0 max-w-[620px]">

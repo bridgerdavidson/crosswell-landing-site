@@ -14,7 +14,7 @@ export default function Insights({ posts }: { posts: Post[] }) {
   const [newest, ...older] = posts;
   return (
     <section id="insights" className={`${CONTAINER} pt-28 pb-24 sm:pt-40 sm:pb-32`}>
-      <Band label="From the desk" title="Insights" titleAs="h1" lede={posts.length ? LEDE : HELD} />
+      <Band opening label="From the desk" title="Insights" titleAs="h1" lede={posts.length ? LEDE : HELD} />
       {newest && <PostFeatured post={newest} />}
       {older.length > 0 && (
         <ul className="mt-24 border-t border-ink/8 sm:mt-32">

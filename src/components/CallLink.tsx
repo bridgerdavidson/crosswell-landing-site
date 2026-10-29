@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { CALL_MAILTO } from "@/lib/site";
 
 /*
@@ -11,14 +11,16 @@ import { CALL_MAILTO } from "@/lib/site";
 export default function CallLink({
   className = "",
   children = "Set up a call",
+  style,
   onClick,
 }: {
   className?: string;
+  style?: CSSProperties;
   children?: ReactNode;
   onClick?: () => void;
 }) {
   return (
-    <a href={CALL_MAILTO} className={className} onClick={onClick}>
+    <a href={CALL_MAILTO} className={className} style={style} onClick={onClick}>
       {children}
     </a>
   );

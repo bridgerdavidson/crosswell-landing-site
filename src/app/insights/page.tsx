@@ -1,5 +1,4 @@
 import Canonical from "@/components/Canonical";
-import Nav from "@/components/Nav";
 import Insights from "@/components/Insights";
 import Footer from "@/components/Footer";
 import { pageMetadata } from "@/lib/site";
@@ -19,7 +18,6 @@ export default function InsightsPage() {
   return (
     <main className="flex min-h-dvh flex-col">
       <Canonical path="/insights" />
-      <Nav />
       <div className="flex-1">
         <Insights posts={getAllPosts()} />
       </div>

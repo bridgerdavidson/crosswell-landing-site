@@ -11,6 +11,7 @@ export default function ArticleHeader({ post }: { post: Post }) {
   return (
     <div>
       <Band
+        opening
         label={
           /* phones: negative margins cancel the padding in layout, so the
              thumb's target comes free without moving the label */

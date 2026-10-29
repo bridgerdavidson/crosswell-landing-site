@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Newsreader, Instrument_Sans } from "next/font/google";
+import Nav from "@/components/Nav";
 import SafeAreaTheme from "@/components/SafeAreaTheme";
 import { SITE, SITE_DESCRIPTION, SITE_TITLE, pageMetadata } from "@/lib/site";
 import "./globals.css";
@@ -84,6 +85,8 @@ export default function RootLayout({
       </head>
       <body>
         <SafeAreaTheme />
+        {/* here, not in each page, so a tab click keeps it in place */}
+        <Nav />
         {children}
       </body>
     </html>

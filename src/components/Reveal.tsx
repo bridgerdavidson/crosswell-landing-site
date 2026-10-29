@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { BEAT } from "./enter";
 
 type RevealProps = {
   children: ReactNode;
@@ -8,27 +9,42 @@ type RevealProps = {
   className?: string;
 };
 
-/* The hero's page-load entrance ends with its buttons rising at 1.0s; a
-   block already inside the viewport on arrival enters one site step (80ms)
-   after them, so the first frame completes itself without a scroll. */
-const ARRIVAL_MS = 1080;
+/* A block already inside the viewport on arrival is part of the page's
+   entrance (enter.ts), not a scroll reveal: it rises one beat after the
+   last part of the opening in view began (the landing page's buttons, a
+   page's lede), plus its own delay. Timed from the opening's own
+   animations rather than from navigation start, so the order holds on a
+   fresh load, wherever hydration lands, and after a tab click, when the
+   new page's opening has only just begun. */
+function arrivalWait(delay: number) {
+  const now = performance.now();
+  let last = -Infinity;
+  for (const el of document.querySelectorAll("main .page-enter")) {
+    const box = el.getBoundingClientRect();
+    if (box.bottom <= 0 || box.top >= window.innerHeight) continue;
+    for (const a of el.getAnimations()) {
+      // a pending animation (the page has just been inserted) starts now
+      last = Math.max(last, Number(a.startTime ?? now) + Number(a.effect?.getTiming().delay ?? 0));
+    }
+  }
+  return Math.max(0, (last === -Infinity ? now : last) + BEAT + delay - now);
+}
 
 export default function Reveal({ children, delay = 0, className = "" }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(false);
-  const [arrivalDelay, setArrivalDelay] = useState<number | null>(null);
+  const [arrival, setArrival] = useState<number | null>(null);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
     // on arrival: anything whose top is already inside the viewport is part
-    // of the first frame and enters with the page-load entrance, wherever the
+    // of the first frame and enters with the page's entrance, wherever the
     // unified depth falls on this viewport
-    const top = el.getBoundingClientRect().top;
-    if (top < window.innerHeight && el.getBoundingClientRect().bottom > 0) {
-      setArrivalDelay(Math.max(0, ARRIVAL_MS - performance.now()) + delay);
-      setShown(true);
+    const box = el.getBoundingClientRect();
+    if (box.top < window.innerHeight && box.bottom > 0) {
+      setArrival(arrivalWait(delay));
       return;
     }
 
@@ -47,12 +63,18 @@ export default function Reveal({ children, delay = 0, className = "" }: RevealPr
     return () => observer.disconnect();
   }, [delay]);
 
-  const wait = arrivalDelay ?? delay;
+  if (arrival !== null) {
+    return (
+      <div ref={ref} className={`reveal-enter ${className}`} style={{ animationDelay: `${Math.round(arrival)}ms` }}>
+        {children}
+      </div>
+    );
+  }
   return (
     <div
       ref={ref}
       className={`reveal ${shown ? "reveal-shown" : ""} ${className}`}
-      style={wait ? { transitionDelay: `${Math.round(wait)}ms` } : undefined}
+      style={delay ? { transitionDelay: `${delay}ms` } : undefined}
     >
       {children}
     </div>

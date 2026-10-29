@@ -2,8 +2,8 @@ import Band, { CONTAINER } from "@/components/Band";
 import Canonical from "@/components/Canonical";
 import CallLink from "@/components/CallLink";
 import Footer from "@/components/Footer";
-import Nav from "@/components/Nav";
 import { CONTACT_EMAIL, pageMetadata } from "@/lib/site";
+import { ENTER, enter } from "@/components/enter";
 import { tie } from "@/components/tie";
 
 export const metadata = pageMetadata({
@@ -20,19 +20,19 @@ export default function ContactPage() {
   return (
     <main className="flex min-h-dvh flex-col">
       <Canonical path="/contact" />
-      <Nav />
       <div className="flex-1">
         <section className={`${CONTAINER} pt-28 pb-24 sm:pt-40 sm:pb-32`}>
           <Band
+            opening
             label="Contact"
             title="It starts with a call."
             aside={
               <div className="flex flex-col items-start gap-5">
-                <p className="type-body text-ink/80">
+                <p className="page-enter type-body text-ink/80" style={enter(ENTER.sub)}>
                   {tie("Thirty minutes. We ask how your firm handles knowledge today and how the work actually moves, and we tell you straight whether the audit is worth it. It starts with an email.")}
                 </p>
-                <CallLink className="type-text rounded-lg bg-fern px-6 py-3 font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep" />
-                <a href={`mailto:${CONTACT_EMAIL}`} className="type-text text-ink/70 transition-colors hover:text-fern-deep">
+                <CallLink style={enter(ENTER.buttons)} className="page-enter type-text rounded-lg bg-fern px-6 py-3 font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep" />
+                <a href={`mailto:${CONTACT_EMAIL}`} style={enter(ENTER.buttons)} className="page-enter type-text text-ink/70 transition-colors hover:text-fern-deep">
                   {CONTACT_EMAIL}
                 </a>
               </div>
