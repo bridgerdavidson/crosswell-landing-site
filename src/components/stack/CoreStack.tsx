@@ -4,6 +4,7 @@ import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { CONTAINER } from "../Band";
+import Reveal from "../Reveal";
 import { tie } from "../tie";
 import {
   AG_START,
@@ -240,14 +241,24 @@ export default function CoreStack() {
     <section ref={root} className="stack-scroll" style={{ "--stack-units": END } as CSSProperties}>
       <div className={`stack-frame ${CONTAINER}`}>
         <div className="stack-caps">
-          {CAPTIONS.map((c, i) => (
-            <div key={c.label} className={`stack-cap stack-cap-${i} max-w-md`}>
-              <p className="type-label text-fern-deep">{c.label}</p>
-              <h3 className="type-h2 mt-3 text-ink">{tie(c.title)}</h3>
-              <p className="type-text mt-4 text-ink/80">{tie(c.body)}</p>
-              {c.legend && <Legend />}
-            </div>
-          ))}
+          {CAPTIONS.map((c, i) => {
+            const words = (
+              <>
+                <p className="type-label text-fern-deep">{c.label}</p>
+                <h3 className="type-h2 mt-3 text-ink">{tie(c.title)}</h3>
+                <p className="type-text mt-4 text-ink/80">{tie(c.body)}</p>
+                {c.legend && <Legend />}
+              </>
+            );
+            /* the first caption is already standing as the frame scrolls
+               in, so it settles in like the page's other blocks; the rest
+               take their turns on the scrub */
+            return (
+              <div key={c.label} className={`stack-cap stack-cap-${i} max-w-md`}>
+                {i === 0 ? <Reveal>{words}</Reveal> : words}
+              </div>
+            );
+          })}
         </div>
 
         <div className="stack-stage" aria-hidden>

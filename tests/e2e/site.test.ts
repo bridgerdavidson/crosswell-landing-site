@@ -159,6 +159,35 @@ describe("what we do", () => {
     expect(r.layers).toBe(3);
     expect(r.tiles).toBe(3);
   });
+
+  it("settles the stack's first caption in as its frame scrolls in, not before", async () => {
+    for (const width of [1440, 390]) {
+      const r = await withPage(async (page) => {
+        await page.goto(site.url, { waitUntil: "networkidle" });
+        await page.waitForTimeout(1500);
+        /* how much of the first caption's title shows, through every ancestor */
+        const shows = () =>
+          page.evaluate(() => {
+            let o = 1;
+            for (let n: Element | null = document.querySelector(".stack-cap-0 h3"); n; n = n.parentElement) o *= +getComputedStyle(n).opacity;
+            return Math.round(o * 100) / 100;
+          });
+        const before = await shows();
+        /* bring the frame in until the caption's top sits halfway down the window */
+        await page.evaluate(() => {
+          const cap = document.querySelector(".stack-cap-0")!.getBoundingClientRect();
+          window.scrollTo({ top: window.scrollY + cap.top - innerHeight / 2, behavior: "instant" });
+        });
+        await page.waitForTimeout(80);
+        const rising = await shows();
+        await page.waitForTimeout(1400);
+        return { before, rising, after: await shows() };
+      }, { width });
+      expect(r.before, `hidden below the fold at ${width}`).toBe(0);
+      expect(r.rising, `still settling at ${width}`).toBeLessThan(0.9);
+      expect(r.after, `settled at ${width}`).toBe(1);
+    }
+  });
 });
 
 describe("product run", () => {
