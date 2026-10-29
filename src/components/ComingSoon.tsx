@@ -1,8 +1,8 @@
 import Band, { CONTAINER } from "./Band";
 import Canonical from "./Canonical";
 import Footer from "./Footer";
-import Nav from "./Nav";
 import CallLink from "./CallLink";
+import { ENTER, enter } from "./enter";
 import { tie } from "./tie";
 
 /*
@@ -17,16 +17,16 @@ export default function ComingSoon({ path, title, line }: { path: string; title:
   return (
     <main className="flex min-h-dvh flex-col">
       <Canonical path={path} />
-      <Nav />
       <div className="flex-1">
         <section className={`${CONTAINER} pt-28 pb-24 sm:pt-40 sm:pb-32`}>
           <Band
+            opening
             label="Coming soon"
             title={title}
             aside={
               <div className="flex flex-col items-start gap-5">
-                <p className="type-body text-ink/80">{tie(line)}</p>
-                <CallLink className="type-text rounded-lg bg-fern px-6 py-3 font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep" />
+                <p className="page-enter type-body text-ink/80" style={enter(ENTER.sub)}>{tie(line)}</p>
+                <CallLink style={enter(ENTER.buttons)} className="page-enter type-text rounded-lg bg-fern px-6 py-3 font-semibold text-ivory shadow-whisper transition-colors hover:bg-fern-deep" />
               </div>
             }
           />

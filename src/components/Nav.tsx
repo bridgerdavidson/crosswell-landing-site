@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties, type MouseEvent } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type MouseEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -19,10 +19,26 @@ const links = [
   { href: "/insights", label: "Insights" },
 ];
 
+/* The nav lives in the root layout, so it mounts once and drops in once:
+   a tab click swaps the page under it, and only the current page's bar
+   moves. The prototype pages carry no nav. */
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const firstPath = useRef(pathname);
+
+  // After the first tab click the nav is already in place, so every page
+  // from then on starts its entrance without waiting for the nav's drop
+  // (globals.css, --enter-lead). A layout effect, so the flag is on before
+  // the new page first paints and its entrance begins.
+  useLayoutEffect(() => {
+    if (pathname !== firstPath.current) document.documentElement.classList.add("navigated");
+  }, [pathname]);
+
+  // a page change (a link, or back and forward) closes the menu, which a
+  // nav that outlives its page would otherwise carry over
+  useEffect(() => setOpen(false), [pathname]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -31,15 +47,16 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Strip any leftover URL hash on load so a refresh restores the scroll
-  // position instead of jumping back to a previously-clicked section. Safari
-  // honors the hash on every reload; the browser has already done its one-time
-  // fragment scroll by the time this effect runs, so removing it is safe.
+  // Strip any leftover URL hash on each page so a refresh restores the
+  // scroll position instead of jumping back to a previously-clicked section.
+  // Safari honors the hash on every reload; the browser has already done its
+  // one-time fragment scroll by the time this effect runs, so removing it is
+  // safe.
   useEffect(() => {
     if (window.location.hash) {
       history.replaceState(null, "", window.location.pathname + window.location.search);
     }
-  }, []);
+  }, [pathname]);
 
   // While the ink takeover is open: lock page scroll, close on Escape, and
   // paint the iOS Safari chrome ink so it reads as part of the overlay.
@@ -71,6 +88,8 @@ export default function Nav() {
   };
   // a post under /insights still marks Insights as the current page
   const current = (href: string) => (pathname === href || pathname.startsWith(`${href}/`) ? "page" : undefined);
+
+  if (pathname.startsWith("/prototype")) return null;
 
   // Open sits the header on the ink overlay, so it goes see-through with a
   // light logo; otherwise the scrolled state gets the opaque ivory bar. It

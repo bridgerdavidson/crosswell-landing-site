@@ -25,6 +25,7 @@ export default function Team({ people = PEOPLE }: { people?: Person[] }) {
   return (
     <section id="team" className={`${CONTAINER} pt-28 pb-24 sm:pt-40 sm:pb-32`}>
       <Band
+        opening
         label="The team"
         title="The people you’ll work with."
         lede="You work directly with the people who build and run your Core. Nobody stands between you and the work."

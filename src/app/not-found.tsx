@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Band, { CONTAINER } from "@/components/Band";
 import Footer from "@/components/Footer";
-import Nav from "@/components/Nav";
 
 /* New copy, pending Max (spec section 13). */
 const TITLE = "There’s nothing at this address.";
@@ -18,10 +17,10 @@ const LEDE = "The link may be old, or a letter is off. Everything we have publis
 export default function NotFound() {
   return (
     <main className="flex min-h-dvh flex-col">
-      <Nav />
       <div className="flex-1">
         <section id="not-found" className={`${CONTAINER} pt-28 pb-24 sm:pt-40 sm:pb-32`}>
           <Band
+            opening
             label="Not found"
             title={TITLE}
             titleAs="h1"

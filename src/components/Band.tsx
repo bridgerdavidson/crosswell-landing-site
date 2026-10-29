@@ -1,5 +1,6 @@
 import type { ElementType, ReactNode } from "react";
 import Reveal from "./Reveal";
+import { ENTER, enter } from "./enter";
 import { tie } from "./tie";
 
 /* strings are held at their sentence edges; anything already marked up
@@ -54,6 +55,10 @@ type BandProps = {
   /** something other than a lede in the lede's place (why Crosswell's pull quote) */
   aside?: ReactNode;
   dark?: boolean;
+  /** the page's opening band: its parts rise in turn with the page's
+      entrance (the label and title, then the lede, then `more`) instead of
+      revealing as one block; an `aside` paces its own parts */
+  opening?: boolean;
 };
 
 /**
@@ -75,22 +80,28 @@ export default function Band({
   more,
   aside,
   dark = false,
+  opening = false,
 }: BandProps) {
   const ink = dark ? "text-ivory" : "text-ink";
   const muted = dark ? "text-ivory/80" : "text-ink/80";
   const column = label
     ? "lg:col-start-2 lg:row-start-2 lg:mt-[9px] lg:self-start"
     : "lg:col-start-2 lg:row-start-1 lg:-mt-[3px] lg:self-start";
+  // an opening band's parts each carry their place in the entrance
+  const rise = opening ? "page-enter " : "";
+  const at = (s: number) => (opening ? enter(s) : undefined);
+  const Wrap = opening ? "div" : Reveal;
 
   return (
-    <Reveal className={GRID}>
+    <Wrap className={GRID}>
       {label && (
-        <div className="lg:col-start-1 lg:row-start-1">
+        <div className={`${rise}lg:col-start-1 lg:row-start-1`} style={at(ENTER.header)}>
           <p className={`type-label ${dark ? "text-fern-soft" : "text-fern-deep"}`}>{label}</p>
         </div>
       )}
       <Title
-        className={`type-h2 max-w-2xl lg:col-start-1 lg:self-start ${label ? "mt-3 lg:row-start-2" : "lg:row-start-1"} ${ink}`}
+        className={`${rise}type-h2 max-w-2xl lg:col-start-1 lg:self-start ${label ? "mt-3 lg:row-start-2" : "lg:row-start-1"} ${ink}`}
+        style={at(ENTER.header)}
       >
         {held(title)}
       </Title>
@@ -100,14 +111,14 @@ export default function Band({
         lede &&
         (more ? (
           <div className={`mt-5 max-w-xl ${column}`}>
-            <p className={`type-body ${muted}`}>{held(lede)}</p>
-            {more}
+            <p className={`${rise}type-body ${muted}`} style={at(ENTER.sub)}>{held(lede)}</p>
+            {opening ? <div className="page-enter" style={enter(ENTER.buttons)}>{more}</div> : more}
           </div>
         ) : (
-          <p className={`type-body mt-5 max-w-xl ${column} ${muted}`}>{held(lede)}</p>
+          <p className={`${rise}type-body mt-5 max-w-xl ${column} ${muted}`} style={at(ENTER.sub)}>{held(lede)}</p>
         ))
       )}
-    </Reveal>
+    </Wrap>
   );
 }
 

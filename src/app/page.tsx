@@ -1,5 +1,4 @@
 import Canonical from "@/components/Canonical";
-import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import ProductRun from "@/components/product/ProductRun";
 import WhoItsFor from "@/components/WhoItsFor";
@@ -22,7 +21,6 @@ export default function Home() {
   return (
     <main>
       <Canonical path="/" />
-      <Nav />
       <Hero />
       <ProductRun />
       <WhoItsFor />

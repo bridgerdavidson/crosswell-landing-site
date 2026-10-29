@@ -697,3 +697,84 @@ describe("resilience", () => {
     }
   });
 });
+
+describe("the page entrance", () => {
+  /* when each watched element's rise begins, in ms after t0 (navigation
+     start on a fresh load, the click on a tab click), or null when it has
+     no rise; read once the whole entrance has run */
+  const rises = (page: import("playwright").Page, sels: Record<string, string>) =>
+    page.evaluate((sels) => {
+      const t0 = (window as unknown as { __t0?: number }).__t0 ?? 0;
+      const at = (sel: string) => {
+        const a = document.querySelector(sel)?.getAnimations().find((x) => (x as CSSAnimation).animationName === "page-rise");
+        return a ? Math.round(Number(a.startTime) + Number(a.effect!.getTiming().delay) - t0) : null;
+      };
+      return Object.fromEntries(Object.entries(sels).map(([k, s]) => [k, at(s)]));
+    }, sels);
+  /* a click on a link, the way a visitor makes it, timed from the click */
+  const click = async (page: import("playwright").Page, sel: string, url: string) => {
+    await page.evaluate((sel) => {
+      (window as unknown as { __t0: number }).__t0 = performance.now();
+      document.querySelector<HTMLAnchorElement>(sel)!.click();
+    }, sel);
+    await page.waitForURL(url);
+    await page.waitForTimeout(2500);
+  };
+  const HOME = { h1: "#top h1", sub: "#top h1 + p", buttons: "#top h1 + p + div", next: "#what-we-do > :first-child" };
+
+  it("settles the landing page top to bottom, what we do one beat after the buttons", async () => {
+    const r = await withPage(async (page) => {
+      await page.goto(site.url, { waitUntil: "networkidle" });
+      await page.waitForTimeout(2500);
+      return rises(page, HOME);
+    });
+    expect(r.sub! - r.h1!).toBeGreaterThan(200);
+    expect(r.buttons! - r.sub!).toBeGreaterThan(200);
+    expect(r.next! - r.buttons!).toBeGreaterThanOrEqual(250);
+    expect(r.next! - r.buttons!).toBeLessThan(450);
+  });
+
+  it("keeps the nav in place on a tab click, and only the current page's bar moves", async () => {
+    const r = await withPage(async (page) => {
+      await page.goto(site.url, { waitUntil: "networkidle" });
+      await page.waitForTimeout(1200);
+      await page.evaluate(() => ((document.querySelector("header") as HTMLElement & { __kept?: boolean }).__kept = true));
+      await click(page, 'header nav a[href="/team"]', "**/team");
+      return page.evaluate(() => {
+        const header = document.querySelector("header") as HTMLElement & { __kept?: boolean };
+        return {
+          kept: header.__kept === true,
+          replaying: header.getAnimations().filter((a) => a.playState !== "finished").length,
+          current: document.querySelector("header nav a[aria-current='page']")?.textContent,
+        };
+      });
+    });
+    expect(r).toEqual({ kept: true, replaying: 0, current: "Team" });
+  });
+
+  it("settles every page on a tab click the way the landing page loads, starting sooner", async () => {
+    const r = await withPage(async (page) => {
+      await page.goto(site.url, { waitUntil: "networkidle" });
+      await page.waitForTimeout(1200);
+      await click(page, 'header nav a[href="/team"]', "**/team");
+      const team = await rises(page, { label: "#team div:has(> .type-label)", title: "#team h2", sub: "#team .type-body", next: "#team li > div" });
+      await click(page, 'header nav a[href="/the-core"]', "**/the-core");
+      const soon = await rises(page, { title: "main h2", sub: "main .type-body", buttons: "main section a" });
+      await click(page, 'header nav a[href="/insights"]', "**/insights");
+      const insights = await rises(page, { title: "#insights h1", sub: "#insights .type-body", next: "#insights > :has([data-featured])" });
+      await click(page, 'header a[href="/"]', `${site.url}/`);
+      const home = await rises(page, HOME);
+      return { team, soon, insights, home };
+    });
+    for (const [name, p] of Object.entries(r) as [string, Record<string, number | null>][]) {
+      const first = p.h1 ?? p.title!;
+      expect(first, `${name} starts soon after the click`).toBeGreaterThanOrEqual(100);
+      expect(first, `${name} starts soon after the click`).toBeLessThan(300);
+      const order = Object.entries(p).filter(([k]) => k !== "label");
+      for (let i = 1; i < order.length; i++) {
+        expect(order[i][1]! - order[i - 1][1]!, `${name}: ${order[i][0]} after ${order[i - 1][0]}`).toBeGreaterThan(200);
+      }
+    }
+    expect(r.team.label).toBe(r.team.title);
+  });
+});

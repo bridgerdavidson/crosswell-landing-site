@@ -1,7 +1,7 @@
-import type { CSSProperties } from "react";
 import CallLink from "./CallLink";
 import SeeHowItWorks from "./SeeHowItWorks";
 import HeroCore from "./HeroCore";
+import { ENTER, enter } from "./enter";
 
 export default function Hero() {
   return (
@@ -32,14 +32,14 @@ export default function Hero() {
       />
       <div className="relative mx-auto max-w-4xl px-6 py-20 text-center lg:pt-32 lg:pb-0">
         <h1
-          className="hero-enter hero-display type-display text-ink"
-          style={{ "--enter-delay": "0.45s", "--enter-dur": "0.95s" } as CSSProperties}
+          className="page-enter hero-display type-display text-ink"
+          style={enter(ENTER.header, 0.95)}
         >
           The operating layer your business actually runs on.
         </h1>
         <p
-          className="hero-enter type-body mx-auto mt-6 max-w-3xl text-ink/70"
-          style={{ "--enter-delay": "0.75s" } as CSSProperties}
+          className="page-enter type-body mx-auto mt-6 max-w-3xl text-ink/70"
+          style={enter(ENTER.sub)}
         >
           We build the{" "}
           <span className="font-serif italic text-fern-deep">
@@ -48,8 +48,8 @@ export default function Hero() {
           that run on it.
         </p>
         <div
-          className="hero-enter mt-9 flex flex-wrap items-center justify-center gap-x-8 gap-y-4"
-          style={{ "--enter-delay": "1s" } as CSSProperties}
+          className="page-enter mt-9 flex flex-wrap items-center justify-center gap-x-8 gap-y-4"
+          style={enter(ENTER.buttons)}
         >
           {/* one ask: the work is consulting, custom and personal, and its
               first step is always the call, so a button that starts with the
